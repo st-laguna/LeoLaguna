@@ -1,0 +1,467 @@
+---
+// CtaButton.astro
+---
+
+<div id="cta-btn" aria-label="Open contact panel">
+  <canvas id="cta-canvas"></canvas>
+</div>
+
+<style>
+  #cta-btn {
+    position: fixed;
+    top: var(--cta-top, 1.5rem);
+    left: var(--cta-left, 1.5rem);
+    z-index: 1000;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity  0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #cta-btn.hidden-right {
+    transform: translateX(calc(100% + var(--cta-left, 1.5rem) + 2rem));
+    opacity: 0;
+    pointer-events: none;
+  }
+  #cta-canvas { display: block; }
+
+  /* ── DESKTOP ───────────────────── */
+  @media (min-width: 1025px) {
+    #cta-btn { --cta-top: 1.5rem; --cta-left: 1.5rem; }
+  }
+  /* ── TABLET ────────────────────── */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    #cta-btn { --cta-top: 1.25rem; --cta-left: 1.25rem; }
+  }
+  /* ── MOBILE ────────────────────── */
+  @media (max-width: 640px) {
+    #cta-btn { --cta-top: 1rem; --cta-left: 1rem; }
+  }
+</style>
+
+<script>
+  // ── DETECCIÓN ────────────────────────────────────────────
+  const IS_TOUCH = navigator.maxTouchPoints > 0;
+
+  // ── BREAKPOINTS → dimensiones ────────────────────────────
+  function getDims() {
+    const w = window.innerWidth;
+    if (w <= 640) {
+      // mobile
+      return { R: 17, PILL_W: 110, CY: 30, CANVAS_H: 60, GAP: 1, FONT_SIZE: 13 };
+    } else if (w <= 1024) {
+      // tablet
+      return { R: 20, PILL_W: 128, CY: 35, CANVAS_H: 70, GAP: 1, FONT_SIZE: 15 };
+    } else {
+      // desktop
+      return { R: 22, PILL_W: 140, CY: 40, CANVAS_H: 80, GAP: 1, FONT_SIZE: 17 };
+    }
+  }
+
+  const COLOR   = '#00e5a0';
+  const TEXT_BG = '#080808';
+  const ANIM_MS = 500;
+
+  interface Vec { x: number; y: number }
+
+  function metaball(c1x: number, c2x: number, r1: number, r2: number, cy: number) {
+    const d = Math.abs(c2x - c1x);
+    if (d <= 0 || d > r1 + r2 * 1.5 || d <= Math.abs(r1 - r2)) return null;
+
+    const HALF_PI = Math.PI / 2;
+    const v = 0.5, hs = 2.4;
+    let u1 = 0, u2 = 0;
+
+    if (d < r1 + r2) {
+      u1 = Math.acos(Math.max(-1, Math.min(1, (r1*r1 + d*d - r2*r2) / (2*r1*d))));
+      u2 = Math.acos(Math.max(-1, Math.min(1, (r2*r2 + d*d - r1*r1) / (2*r2*d))));
+    }
+
+    const ab     = Math.atan2(0, c2x - c1x);
+    const spread = Math.acos(Math.max(-1, Math.min(1, (r1 - r2) / d)));
+    const a1 = ab + u1 + (spread - u1) * v;
+    const a2 = ab - u1 - (spread - u1) * v;
+    const a3 = ab + Math.PI - u2 - (Math.PI - u2 - spread) * v;
+    const a4 = ab - Math.PI + u2 + (Math.PI - u2 - spread) * v;
+
+    const vec = (cx: number, a: number, r: number): Vec =>
+      ({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r });
+
+    const p1 = vec(c1x, a1, r1), p2 = vec(c1x, a2, r1);
+    const p3 = vec(c2x, a3, r2), p4 = vec(c2x, a4, r2);
+
+    const d2 = Math.min(v * hs, Math.hypot(p1.x-p3.x, p1.y-p3.y) / (r1+r2))
+             * Math.min(1, (d * 2) / (r1 + r2));
+
+    const h = (p: Vec, a: number, r: number, sign: number): Vec =>
+      ({ x: p.x + Math.cos(a + sign * HALF_PI) * r * d2,
+         y: p.y + Math.sin(a + sign * HALF_PI) * r * d2 });
+
+    return {
+      p1, p2, p3, p4,
+      h1: h(p1, a1, r1, -1), h2: h(p2, a2, r1, +1),
+      h3: h(p3, a3, r2, +1), h4: h(p4, a4, r2, -1),
+      bigArc: d > r1,
+    };
+  }
+
+  function easeInOut(t: number) {
+    return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+  }
+
+  // ── LOGO ─────────────────────────────────────────────────
+  const logoImg = new Image();
+  let logoReady = false;
+  logoImg.onload = () => { logoReady = true; };
+  logoImg.src = '/images/logoN.svg';
+
+  function init() {
+    const btn    = document.getElementById('cta-btn');
+    const canvas = document.getElementById('cta-canvas') as HTMLCanvasElement | null;
+    if (!btn || !canvas) return;
+
+    const ctx = canvas.getContext('2d')!;
+
+    // dims actuales (se recalculan en resize)
+    let dims = getDims();
+    let { R, PILL_W, CY, CANVAS_H, GAP, FONT_SIZE } = dims;
+    let CA_X     = R + 4;
+    let CR_X     = CA_X + PILL_W + R * 2 + 16;
+    let BASE_pL  = CR_X - PILL_W;
+    let HOVER_pL = CA_X + GAP;
+
+    function applyDims() {
+      dims      = getDims();
+      R         = dims.R;
+      PILL_W    = dims.PILL_W;
+      CY        = dims.CY;
+      CANVAS_H  = dims.CANVAS_H;
+      GAP       = dims.GAP;
+      FONT_SIZE = dims.FONT_SIZE;
+      CA_X      = R + 4;
+      CR_X      = CA_X + PILL_W + R * 2 + 16;
+      BASE_pL   = CR_X - PILL_W;
+      HOVER_pL  = CA_X + GAP;
+      canvas!.width  = CR_X + R + 4;
+      canvas!.height = CANVAS_H;
+    }
+
+    applyDims();
+
+    // ── ESTADO ──────────────────────────────────────────────
+    let pillX      = BASE_pL;
+    let pillW      = PILL_W;
+    let crScale    = 1;
+    let textAlpha  = 1;
+    let plusRAlpha = 1;
+    let slideX     = 0;   // para animación de salida hacia derecha (CSS la maneja)
+
+    let animFromX = pillX, animToX = pillX;
+    let animFromW = pillW, animToW = pillW;
+    let animStart = -1;
+    let rafId     = 0;
+
+    let collapsed    = false;
+    let manualOpen   = false;
+    let hiddenFooter = false;
+
+    // touch toggle state
+    let touchExpanded = false;
+
+    // ── DRAW ────────────────────────────────────────────────
+    function drawBlob(c1x: number, c2x: number) {
+      const mb = metaball(c1x, c2x, R, R, CY);
+      if (!mb) return;
+      const d = Math.abs(c2x - c1x);
+      const maxD = R + R * 4;
+      const fadeStart = maxD * 0.80;
+      const alpha = Math.max(0, Math.min(1, (maxD - d) / (maxD - fadeStart)));
+      ctx.globalAlpha = alpha;
+      const { p1, p2, p3, p4, h1, h2, h3, h4, bigArc } = mb;
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.bezierCurveTo(h1.x, h1.y, h3.x, h3.y, p3.x, p3.y);
+      ctx.arc(c2x, CY, R, Math.atan2(p3.y - CY, p3.x - c2x),
+                            Math.atan2(p4.y - CY, p4.x - c2x), bigArc);
+      ctx.bezierCurveTo(h4.x, h4.y, h2.x, h2.y, p2.x, p2.y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    function drawLogoOrPlus(cx: number, alpha: number) {
+      if (alpha < 0.02) return;
+      ctx.globalAlpha = alpha;
+      if (IS_TOUCH && logoReady) {
+        const logoSize = R * 1.1;
+        ctx.drawImage(logoImg, cx - logoSize / 2, CY - logoSize / 2, logoSize, logoSize);
+      } else {
+        ctx.fillStyle = TEXT_BG;
+        ctx.font = `900 ${Math.round(FONT_SIZE + 2)}px "Archivo", sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('+', cx, CY);
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas!.width, canvas!.height);
+      ctx.fillStyle = COLOR;
+
+      const pLx = pillX;
+      const pRx = pillX + pillW;
+      const showRight = crScale > 0.01;
+
+      if (pillW > 2) {
+        drawBlob(pLx, CA_X);
+        if (showRight) drawBlob(pRx, CR_X);
+
+        ctx.fillStyle = COLOR;
+
+        if (showRight) {
+          ctx.save();
+          ctx.translate(CR_X, CY);
+          ctx.scale(crScale, crScale);
+          ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+        }
+
+        ctx.fillStyle = COLOR;
+        ctx.beginPath();
+        ctx.arc(pLx, CY, R, Math.PI * 0.5, Math.PI * 1.5);
+        ctx.arc(pRx, CY, R, Math.PI * 1.5, Math.PI * 0.5);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // círculo izquierdo — siempre visible
+      ctx.fillStyle = COLOR;
+      ctx.beginPath(); ctx.arc(CA_X, CY, R, 0, Math.PI * 2); ctx.fill();
+
+      // texto del pill
+      if (pillW > 20 && textAlpha > 0.01) {
+        ctx.globalAlpha = textAlpha * Math.min(1, (pillW - 20) / 40);
+        ctx.fillStyle = TEXT_BG;
+        ctx.font = `700 ${FONT_SIZE}px "Host Grotesk", sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText("Let's work together", pLx + pillW / 2, CY);
+        ctx.globalAlpha = 1;
+      }
+
+      // logo/+ círculo izquierdo
+      const opCA = pillW < 20
+        ? 1
+        : Math.max(0, Math.min(1, (pLx - CA_X - R * 0.5) / R));
+      drawLogoOrPlus(CA_X, opCA);
+
+      // + círculo derecho
+      if (pillW > 2 && showRight && plusRAlpha > 0.01) {
+        const opCR = Math.max(0, Math.min(1, (CR_X - pRx - R * 0.5) / R));
+        if (opCR > 0.02) {
+          ctx.globalAlpha = opCR * crScale * plusRAlpha;
+          ctx.fillStyle = TEXT_BG;
+          ctx.font = `900 ${Math.round(FONT_SIZE + 2)}px "Archivo", sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('+', CR_X, CY);
+          ctx.globalAlpha = 1;
+        }
+      }
+    }
+
+    // ── ANIMATION LOOP ───────────────────────────────────────
+    function loop(now: number) {
+      if (animStart >= 0) {
+        const t = Math.min(1, (now - animStart) / ANIM_MS);
+        const e = easeInOut(t);
+        pillX = animFromX + (animToX - animFromX) * e;
+        pillW = animFromW + (animToW - animFromW) * e;
+        if (t >= 1) { pillX = animToX; pillW = animToW; animStart = -1; }
+      }
+      draw();
+      if (animStart >= 0) rafId = requestAnimationFrame(loop);
+      else rafId = 0;
+    }
+
+    function startAnim(toX: number, toW: number) {
+      animFromX = pillX; animToX = toX;
+      animFromW = pillW; animToW = toW;
+      animStart = performance.now();
+      if (!rafId) rafId = requestAnimationFrame(loop);
+    }
+
+    function animateValue(
+      getter: () => number,
+      setter: (v: number) => void,
+      to: number,
+      dur: number,
+      onDone?: () => void
+    ) {
+      const from  = getter();
+      const start = performance.now();
+      function tick(now: number) {
+        const t = Math.min(1, (now - start) / dur);
+        setter(from + (to - from) * easeInOut(t));
+        draw();
+        if (t < 1) requestAnimationFrame(tick);
+        else if (onDone) onDone();
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // ── SECUENCIA COLAPSO ────────────────────────────────────
+    function collapseSequence() {
+      animateValue(() => textAlpha,  v => { textAlpha  = v; }, 0, 150, () => {
+      animateValue(() => plusRAlpha, v => { plusRAlpha = v; }, 0, 100, () => {
+      animateValue(() => crScale,    v => { crScale    = v; }, 0, 150, () => {
+        startAnim(CA_X, 0);
+      });});});
+    }
+
+    // ── SECUENCIA EXPAND ─────────────────────────────────────
+    function expandSequence() {
+      crScale    = 0;
+      textAlpha  = 0;
+      plusRAlpha = 0;
+      draw();
+      startAnim(BASE_pL, PILL_W);
+      setTimeout(() => {
+        animateValue(() => crScale,    v => { crScale    = v; }, 1, 200, () => {
+        animateValue(() => plusRAlpha, v => { plusRAlpha = v; }, 1, 150, () => {
+        animateValue(() => textAlpha,  v => { textAlpha  = v; }, 1, 200);
+        });});
+      }, ANIM_MS);
+    }
+
+    // ── TOUCH TOGGLE (ping-pong) ─────────────────────────────
+    function touchToggle() {
+      if (hiddenFooter) return;
+      if (collapsed && !manualOpen) {
+        manualOpen    = true;
+        touchExpanded = true;
+        expandSequence();
+      } else if (collapsed && manualOpen) {
+        manualOpen    = false;
+        touchExpanded = false;
+        collapseSequence();
+      } else {
+        // en hero — anima ida y vuelta
+        if (!touchExpanded) {
+          touchExpanded = true;
+          startAnim(HOVER_pL, PILL_W);
+          setTimeout(() => {
+            touchExpanded = false;
+            startAnim(BASE_pL, PILL_W);
+          }, ANIM_MS + 300);
+        }
+      }
+    }
+
+    // ── EVENTOS ──────────────────────────────────────────────
+    if (IS_TOUCH) {
+      btn.addEventListener('click', () => {
+        if (hiddenFooter) return;
+        touchToggle();
+      });
+    } else {
+      btn.addEventListener('mouseenter', () => {
+        if (pillW < PILL_W * 0.5) return;
+        startAnim(HOVER_pL, PILL_W);
+      });
+      btn.addEventListener('mouseleave', () => {
+        if (pillW < PILL_W * 0.5) return;
+        startAnim(BASE_pL, PILL_W);
+      });
+      btn.addEventListener('click', () => {
+        if (hiddenFooter) return;
+        if (collapsed && !manualOpen) {
+          manualOpen = true;
+          expandSequence();
+        } else if (collapsed && manualOpen) {
+          manualOpen = false;
+          collapseSequence();
+        } else {
+          window.location.href = '/#contact';
+        }
+      });
+    }
+
+    // ── INTERSECTION OBSERVER — hero ─────────────────────────
+    const hero = document.getElementById('hero');
+    if (hero) {
+      const obs = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) {
+          collapsed  = true;
+          manualOpen = false;
+          touchExpanded = false;
+          collapseSequence();
+        } else {
+          collapsed  = false;
+          manualOpen = false;
+          touchExpanded = false;
+          expandSequence();
+        }
+      }, { threshold: 0.2 });
+      obs.observe(hero);
+    }
+
+    // ── INTERSECTION OBSERVER — footer nav ───────────────────
+    const footerNav = document.getElementById('footer-navigation');
+    if (footerNav) {
+      const obs2 = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          hiddenFooter = true;
+          btn.classList.add('hidden-right');
+        } else {
+          hiddenFooter = false;
+          btn.classList.remove('hidden-right');
+        }
+      }, { threshold: 0.1 });
+      obs2.observe(footerNav);
+    }
+
+    // ── RESIZE ───────────────────────────────────────────────
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        applyDims();
+        // resetea posición según estado actual
+        if (collapsed) {
+          pillX = CA_X; pillW = 0;
+        } else {
+          pillX = BASE_pL; pillW = PILL_W;
+        }
+        draw();
+      }, 150);
+    });
+
+    // ── ANIMACIÓN DE ENTRADA ─────────────────────────────────
+    const entryDur   = 650;
+    const entryStart = performance.now();
+    let   entryOffsetY = -80;
+
+    function entryLoop(now: number) {
+      const t = Math.min(1, (now - entryStart) / entryDur);
+      const e = easeInOut(t);
+      entryOffsetY = -80 + 80 * e;
+      ctx.save();
+      ctx.translate(0, entryOffsetY);
+      ctx.globalAlpha = e;
+      draw();
+      ctx.restore();
+      ctx.globalAlpha = 1;
+      if (t < 1) requestAnimationFrame(entryLoop);
+    }
+
+    requestAnimationFrame(entryLoop);
+
+  } // ── fin init() ───────────────────────────────────────────
+
+  document.addEventListener('astro:page-load', init);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

@@ -1,0 +1,182 @@
+---
+import Layout from "../../layouts/Layout.astro";
+const items = [
+    { "title":"Título", "w": 3840, "h": 2160},
+    { "title":"Título", "w": 3036, "h": 2025},
+    { "title":"Título", "w": 1624, "h": 2165},
+    { "title":"Título", "w": 2361, "h": 2701},
+    { "title":"Título", "w": 3840, "h": 2160},
+    { "title":"Título", "w": 2880, "h": 1620},
+    { "title":"Título", "w": 3508, "h": 1972},
+    { "title":"Título", "w": 3508, "h": 1972},
+    { "title":"Título", "w": 3958, "h": 2227},
+    { "title":"Título", "w": 3958, "h": 2227},
+    { "title":"Título", "w": 2160, "h": 3840},
+    { "title":"Título", "w": 3958, "h": 2227},
+    { "title":"Título", "w": 3958, "h": 2227},
+    { "title":"Título", "w": 3496, "h": 2880},
+    { "title":"Título", "w": 3496, "h": 2880},
+    { "title":"Título", "w": 3496, "h": 2880},
+    { "title":"Título", "w": 4608, "h": 2592},
+    { "title":"Título", "w": 5397, "h": 2792},
+    { "title":"Título", "w": 4860, "h": 2160},
+    { "title":"Título", "w": 2160, "h": 2880},
+    { "title":"Título", "w": 3600, "h": 1200},
+    { "title":"Título", "w": 2094, "h": 2605},
+    { "title":"Título", "w": 2095, "h": 2605},
+    { "title":"Título", "w": 2094, "h": 2605},
+    { "title":"Título", "w": 2196, "h": 5440},
+    { "title":"Título", "w": 2520, "h": 1418},
+    { "title":"Título", "w": 3730, "h": 2455},
+    { "title":"Título", "w": 3500, "h": 3500},
+    { "title":"Título", "w": 3688, "h": 2760}
+]
+---
+<Layout>
+    <div id="masonry" class="w-full gap-0 opacity-0">
+        {
+            items.map((item, index) => (
+                    <figure style="width: calc((100%) / 3);" class="gallery-item flex flex-col gap-1 cursor-zoom-in border border-gray-600 hover:border-gray-400 transition-colors duration-300 p-3 rounded-lg">
+                        <div class="text-xs">{index+1}</div>
+                        <img
+                                src={`/images/masonry/2/${index+1}.png`}
+                                loading={index < 9 ? "eager" : "lazy"}
+                                decoding="async"
+                                style={`aspect-ratio:${item.w}/${item.h}`}
+                                class="w-full overflow-hidden rounded-md"
+                        />
+                        <h3>{item.title}</h3>
+                    </figure>
+            ))
+        }
+    </div>
+    <div id="viewer" class="fixed inset-0 hidden items-center justify-center z-50
+           bg-black/40 backdrop-blur-xl">
+        <img id="viewer-image" class="max-w-[90vw] max-h-[90vh] rounded-xl"/>
+    </div>
+</Layout>
+
+<script>
+    import { MasonryGrid } from "@egjs/grid";
+
+    document.addEventListener("astro:page-load", async () => {
+        const container = document.getElementById("masonry");
+
+        const eagerImages = [
+            ...container.querySelectorAll('img[loading="eager"]')
+        ];
+
+        await Promise.all(
+            eagerImages.map(img => {
+                if (img.complete) return Promise.resolve();
+
+                return new Promise(resolve => {
+                    img.addEventListener("load", resolve, { once: true });
+                    img.addEventListener("error", resolve, { once: true });
+                });
+            })
+        );
+
+        const masonry = new MasonryGrid("#masonry", {
+            gap: 0,
+            column: 3,
+            defaultDirection: "end",
+        });
+
+        masonry.renderItems();
+
+        container.classList.remove("opacity-0");
+        container.classList.add(
+            "opacity-100",
+            "transition-opacity",
+            "duration-500"
+        );
+    });
+
+    import gsap from "gsap";
+
+    document.addEventListener("astro:page-load", () => {
+
+        const viewer = document.getElementById("viewer");
+        const viewerImage = document.getElementById("viewer-image");
+
+        document.querySelectorAll(".gallery-item").forEach((figure) => {
+            figure.addEventListener("click", () => {
+                const image = figure.querySelector("img");
+
+                viewerImage.src = image.src;
+
+                viewer.classList.remove("hidden");
+                viewer.classList.add("flex");
+
+                gsap.set(viewerImage, {
+                    scale: 0.85,
+                    opacity: 0,
+                    y: 30
+                });
+
+                const tl = gsap.timeline();
+
+                tl.fromTo(
+                    viewer,
+                    {
+                        opacity: 0,
+                        backdropFilter: "blur(0px)"
+                    },
+                    {
+                        opacity: 1,
+                        backdropFilter: "blur(12px)",
+                        duration: 0.35,
+                        ease: "power2.out"
+                    }
+                );
+
+                tl.to(
+                    viewerImage,
+                    {
+                        scale: 1,
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.6,
+                        ease: "power4.out"
+                    },
+                    "-=0.15"
+                );
+            });
+        });
+
+        function closeViewer() {
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    viewer.classList.add("hidden");
+                    viewer.classList.remove("flex");
+                }
+            });
+
+            tl.to(viewerImage, {
+                scale: 0.92,
+                opacity: 0,
+                y: 20,
+                duration: 0.3,
+                ease: "power2.in"
+            });
+
+            tl.to(
+                viewer,
+                {
+                    opacity: 0,
+                    duration: 0.25
+                },
+                "-=0.15"
+            );
+        }
+
+        viewer.addEventListener("click", closeViewer);
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                closeViewer();
+            }
+        });
+    });
+</script>

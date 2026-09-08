@@ -1,23 +1,105 @@
+---
+import Footer from '../components/Footer.astro'
+import '../styles/global.css'
+import Header from "../components/Header.astro";
+import Preloader from "../components/Preloader.astro";
+import { ClientRouter } from "astro:transitions";
+
+const { title = "Leonardo Laguna" } = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Preload fuentes — antes del icon y stylesheet -->
+    <link rel="preload" href="/Fonts/HostGrotesk-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/Fonts/Archivo.woff2" as="font" type="font/woff2" crossorigin />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+
+    <ClientRouter />
+    <meta name="theme-color" content="#192e39" />
+    </head>
+    
+    <body class="bg-gradient-to-b from-[#192e39] to-[#101a1e]">
+
+        <Header />
+        <main class="flex flex-col justify-center items-stretch">
+            <slot />
+        </main>
+
+        <script>
+        import initSmoothScroll from '../scripts/smoothScroll';
+
+        let smoothScrollInitialized = false;
+
+        document.addEventListener("astro:page-load", () => {
+            if (!smoothScrollInitialized) {
+            initSmoothScroll();
+            smoothScrollInitialized = true;
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            if (params.has("transition")) {
+            document.documentElement.classList.add("clip-transition");
+            history.replaceState({}, "", window.location.pathname);
+            setTimeout(() => {
+                document.documentElement.classList.remove("clip-transition");
+            }, 100);
+            }
+        });
+        </script>
+
+    </body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+<style is:global>
+    ::view-transition-old(root) {
+    animation: page-out .5s cubic-bezier(.4,0,.2,1) forwards;
+}
+
+::view-transition-new(root) {
+    animation: page-in .7s cubic-bezier(.4,0,.2,1) forwards;
+}
+
+@keyframes page-out {
+    to {
+        opacity: 0;
+        transform: scale(.98);
+        filter: blur(8px);
+    }
+}
+
+@keyframes page-in {
+    from {
+        opacity: 0;
+        transform: scale(1.02);
+        filter: blur(8px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+html.clip-transition ::view-transition-old(root),
+html.clip-transition ::view-transition-new(root) {
+    animation: none;
+}
+.page-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #var(--color-bg);
+  pointer-events: none;
+  opacity: 0;
+}
 </style>

@@ -1,0 +1,52 @@
+---
+
+---
+
+<div id="preloader" class="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1d1e] select-none" style="will-change: opacity, transform;">
+    <div class="flex flex-col items-center gap-6">
+        <div class="relative flex items-center justify-center w-28 h-28">
+            <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-white border-r-slate-400 animate-spin"></div>
+            <div class="absolute inset-2 rounded-full border border-transparent border-b-slate-500 border-l-slate-500 animate-[spin_1.5s_linear_reverse_infinite]"></div>
+            <img src="/images/logo.svg" alt="Logo" class="relative z-10 w-12 h-12" />
+        </div>
+        <span class="text-slate-500 font-medium tracking-[0.3em] text-xs uppercase animate-pulse"> Loading... </span>
+    </div>
+</div>
+
+<script>
+    import gsap from 'gsap';
+
+    // Ejecutar cuando toda la página (imágenes, scripts, estilos) esté 100% cargada
+    document.addEventListener("astro:page-load", () => {
+        setTimeout(() => {
+            const preloader = document.getElementById("preloader");
+
+            if (!preloader) return;
+
+            // Ya se mostró anteriormente
+            if (sessionStorage.getItem("preloader-shown")) {
+                gsap.to(preloader, {
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    onComplete: () => preloader.remove()
+                });
+
+                return;
+            }
+
+            sessionStorage.setItem("preloader-shown", "true");
+
+            gsap.to(preloader, {
+                opacity: 0,
+                scale: 0.95,
+                filter: "blur(10px)",
+                duration: 0.8,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    preloader.remove();
+                }
+            });
+        }, 250);
+    });
+</script>

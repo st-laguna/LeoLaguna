@@ -1,0 +1,217 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import HomeNav from '../../components/HomeNav.astro';
+
+const hero = "/images/masonry/1/12.png";
+const title = "Applied Sciences Communication";
+const items = [
+    { "title":"Título", "w": 2560, "h": 1440},
+    { "title":"Título", "w": 4000, "h": 2250},
+    { "title":"Título", "w": 4224, "h": 2376},
+    { "title":"Título", "w": 2880, "h": 1620},
+    { "title":"Título", "w": 4800, "h": 2700},
+    { "title":"Título", "w": 2880, "h": 1620},
+    { "title":"Título", "w": 4800, "h": 2700},
+    { "title":"Título", "w": 4800, "h": 2700},
+    { "title":"Título", "w": 4800, "h": 2700},
+    { "title":"Título", "w": 4800, "h": 2700},
+    { "title":"Título", "w": 1920, "h": 1080},
+    { "title":"Título", "w": 4800, "h": 2700},
+    { "title":"Título", "w": 3840, "h": 2160},
+    { "title":"Título", "w": 4800, "h": 2700},
+    { "title":"Título", "w": 2880, "h": 1620},
+    { "title":"Título", "w": 1086, "h": 711},
+    { "title":"Título", "w": 3840, "h": 2160},
+    { "title":"Título", "w": 3840, "h": 2160},
+    { "title":"Título", "w": 3840, "h": 2160},
+    { "title":"Título", "w": 3784, "h": 2128},
+    { "title":"Título", "w": 4050, "h": 2576},
+    { "title":"Título", "w": 1727, "h": 1298},
+    { "title":"Título", "w": 1942, "h": 1101},
+    { "title":"Título", "w": 3032, "h": 1566},
+    { "title":"Título", "w": 1275, "h": 705},
+    { "title":"Título", "w": 1275, "h": 705},
+    { "title":"Título", "w": 1275, "h": 705},
+]
+---
+<Layout>
+
+    <HomeNav />
+
+    <!-- Hero -->
+    <section class="service-hero">
+        <img src={hero} alt={title} transition:name="applied-sciences-communication" class="service-hero-img" id="hero-img" />
+        <div class="service-hero-content"><h1 class="service-hero-title" id="hero-title">{title}</h1></div>
+        <div class="service-hero-scroll"><span class="service-scroll-line"></span></div>
+    </section>
+
+    <!-- Masonry -->
+    <div id="masonry" class="w-full gap-0 opacity-0">
+        {items.map((item, index) => (
+                <figure
+                        style="width: calc((100%) / 3);"
+                        class="gallery-item flex flex-col gap-1 cursor-zoom-in border border-gray-600 hover:border-gray-400 transition-colors duration-300 p-3 rounded-lg">
+                    <div class="text-xs">{index+1}</div>
+                    <img
+                            src={`/images/masonry/1/${index+1}.png`}
+                            loading={index < 9 ? "eager" : "lazy"}
+                            decoding="async"
+                            style={`aspect-ratio:${item.w}/${item.h}`}
+                            class="w-full overflow-hidden rounded-md"
+                    />
+                    <h3>{item.title}</h3>
+                </figure>
+        ))}
+    </div>
+
+    <div id="viewer" class="fixed inset-0 hidden items-center justify-center z-50 bg-black/40 backdrop-blur-xl">
+        <img id="viewer-image" class="max-w-[90vw] max-h-[90vh] rounded-xl"/>
+    </div>
+
+</Layout>
+
+<script>
+    import { MasonryGrid } from "@egjs/grid";
+    import gsap from "gsap";
+
+    document.addEventListener("astro:page-load", async () => {
+
+        // ── Cleanup de overlays residuales de la transición ──────
+        document.querySelectorAll(".transition-clone, .page-overlay").forEach(el => el.remove());
+
+        const params = new URLSearchParams(window.location.search);
+        const isClipTransition = params.has("transition");
+
+        // Crear overlay que tapa el parpadeo durante clip-transition
+        let overlay: HTMLDivElement | null = null;
+        if (isClipTransition) {
+            history.replaceState({}, "", window.location.pathname);
+            overlay = document.createElement("div");
+            overlay.className = "page-overlay";
+            document.body.appendChild(overlay);
+        }
+
+        const container = document.getElementById("masonry") as HTMLElement;
+        const heroTitle = document.getElementById("hero-title") as HTMLElement;
+        const heroImg   = document.getElementById("hero-img") as HTMLElement;
+
+        // Estados iniciales
+        container.style.opacity = "0";
+        gsap.set(heroTitle, { y: 28, opacity: 0 });
+        gsap.set(heroImg,   { scale: 1.06 });
+
+        if (isClipTransition) {
+            container.style.transform = "translateY(80px)";
+        }
+
+        // Esperar imágenes eager
+        const eagerImages = [...container.querySelectorAll('img[loading="eager"]')];
+        await Promise.all(
+            eagerImages.map(img => {
+                if ((img as HTMLImageElement).complete) return Promise.resolve();
+                return new Promise(resolve => {
+                    img.addEventListener("load", resolve, { once: true });
+                    img.addEventListener("error", resolve, { once: true });
+                });
+            })
+        );
+
+        const masonry = new MasonryGrid("#masonry", {
+            gap: 0,
+            column: 3,
+            defaultDirection: "end",
+        });
+        masonry.renderItems();
+
+        // ── Animación del hero title ─────────────────────────────
+        gsap.to(heroTitle, {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            delay: 0.1,
+            ease: "power3.out",
+        });
+
+        // Ken Burns sutil en la imagen hero
+        gsap.to(heroImg, {
+            scale: 1,
+            duration: 2.5,
+            delay: 0,
+            ease: "power2.out",
+        });
+
+        console.log(isClipTransition, overlay);
+
+        setInterval(()=>{
+            container.style.transition = "opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)";
+            container.style.opacity = "1";
+            container.style.transform = "translateY(0)";
+        }, 800);
+
+        /*
+        // ── Quitar overlay y animar masonry ──────────────────────
+        if (isClipTransition && overlay) {
+          gsap.to(overlay, {
+            opacity: 0,
+            duration: 0.25,
+            delay: 0.05,
+            ease: "power2.out",
+            onComplete: () => overlay?.remove()
+          });
+
+          container.style.transition = "opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)";
+          container.style.opacity = "1";
+          container.style.transform = "translateY(0)";
+        } else {
+          container.classList.remove("opacity-0");
+          container.classList.add("opacity-100", "transition-opacity", "duration-500");
+        }
+        */
+    });
+</script>
+
+<script>
+    import gsap from "gsap";
+
+    document.addEventListener("astro:page-load", () => {
+        const viewer = document.getElementById("viewer");
+        const viewerImage = document.getElementById("viewer-image") as HTMLImageElement;
+
+        document.querySelectorAll(".gallery-item").forEach((figure) => {
+            figure.addEventListener("click", () => {
+                const image = figure.querySelector("img") as HTMLImageElement;
+                viewerImage.src = image.src;
+                viewer!.classList.remove("hidden");
+                viewer!.classList.add("flex");
+
+                gsap.set(viewerImage, { scale: 0.85, opacity: 0, y: 30 });
+
+                const tl = gsap.timeline();
+                tl.fromTo(viewer!,
+                    { opacity: 0, backdropFilter: "blur(0px)" },
+                    { opacity: 1, backdropFilter: "blur(12px)", duration: 0.35, ease: "power2.out" }
+                );
+                tl.to(viewerImage,
+                    { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: "power4.out" },
+                    "-=0.15"
+                );
+            });
+        });
+
+        function closeViewer() {
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    viewer!.classList.add("hidden");
+                    viewer!.classList.remove("flex");
+                }
+            });
+            tl.to(viewerImage, { scale: 0.92, opacity: 0, y: 20, duration: 0.3, ease: "power2.in" });
+            tl.to(viewer!, { opacity: 0, duration: 0.25 }, "-=0.15");
+        }
+
+        viewer!.addEventListener("click", closeViewer);
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeViewer();
+        });
+    });
+</script>

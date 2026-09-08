@@ -1,0 +1,403 @@
+@import "tailwindcss";
+:root {
+  --color-text: #c5c5c5;
+  --color-bg: #000000;
+  --color-accent: #5aa799;
+}
+
+/* ============================================================
+   🔤 FONTS
+============================================================ */
+
+@font-face {
+  font-family: 'Host Grotesk';
+  src: url('/Fonts/HostGrotesk-VariableFont_wght.woff2') format('woff2');
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('/Fonts/Archivo.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+/* ============================================================
+   🌐 BASE
+============================================================ */
+body {
+  color: var(--color-text);
+  background: var(--color-bg);
+  font-family: 'Host Grotesk', sans-serif;
+}
+
+/* ============================================================
+   🟢 HERO
+============================================================ */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Video fallback iOS */
+.video-fallback {
+  display: none;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .video-fallback {
+    display: block;
+  }
+  .video-layer {
+    display: none;
+  }
+}
+
+/* ── Hero text block ── */
+.hero-text-block {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+  padding-top: 12vh;
+  padding-left: clamp(1rem, 3vw, 3rem);
+  padding-right: clamp(1rem, 3vw, 3rem);
+}
+
+.hero-text-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.75rem, 1.5vw, 0rem);
+  will-change: transform;
+}
+
+.hero-name-wrap {
+  width: 100%;
+}
+
+.hero-name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(5rem, 14.5vw, 27rem);  /* era 10vw, ahora más grande */
+  letter-spacing: -0.03em;
+  padding-right: 0.09em;
+  line-height: 0.92;
+  color: #c5c5c5;
+  text-align: center;
+  margin: 0;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.hero-tagline {
+  font-family: 'Host Grotesk', sans-serif;
+  font-weight: 900;
+  font-size: clamp(0.75rem, 1.2vw, 2.5rem);
+  color: var(--color-text);
+  text-align: right;
+  align-self: flex-end;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  margin: 0;
+  margin-top: clamp(-1rem, -1.5vw, 0.5rem);
+  margin-right: clamp(0.75rem, 2vw, 2rem);
+  will-change: transform;
+  max-width: 32ch;
+}
+.hero-black-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: clamp(4rem, 37vh, 70rem);
+  background: var(--color-bg);
+  z-index: 2;
+  overflow: visible;
+}
+.hero-black-bar::before,
+.hero-black-bar::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; /* ajusta al alto de tu SVG */
+  width: 40px;   /* ajusta al ancho de tu SVG */
+  height: 40px;
+  z-index: 2;
+}
+
+.hero-black-bar::before {
+  left: 0;
+  background: url('/images/SVG/curva3.svg') no-repeat center/100%;
+}
+
+.hero-black-bar::after {
+  right: 0;
+  background: url('/images/SVG/curva3.svg') no-repeat center/100%;
+  transform: scaleX(-1); /* espejo horizontal */
+}
+
+.hero-filter {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  backdrop-filter: grayscale(100%);
+  -webkit-backdrop-filter: grayscale(100%);
+
+}
+
+/* ── Tablet: 641px–1366px ── */
+@media (min-width: 641px) and (max-width: 1440px) {
+  .layer {
+    object-position: center 70%;
+  }
+}
+
+/* ── Mobile: ≤640px ── */
+@media (max-width: 640px) {
+  .layer {
+    object-position: center 70%;
+  }
+
+  .hero-name {
+    font-size: clamp(2.5rem, 14vw, 4rem);
+    white-space: normal;
+  }
+
+  .hero-tagline {
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+  }
+}
+/* ============================================================
+   🔵 PLANKTON / TAGLINE
+============================================================ */
+.text {
+  font-family: 'Archivo', sans-serif !important;
+  font-size: clamp(3rem, 7vw, 9rem);
+  font-weight: 900; /* Más gruesa */
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  color: #bdc0bf17;
+  background: linear-gradient(to right, var(--color-text), var(--color-text)) no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-size: 0%;
+  transition: background-size cubic-bezier(0.1, 0.5, 0.5, 1) 0.5s;
+  border-bottom: 1px solid #2f2b2800;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.text span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  clip-path: polygon(0 50%, 100% 50%, 100% 50%, 0 50%);
+  transform-origin: center;
+  transition: all cubic-bezier(0.1, 0.5, 0.5, 1) 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text:hover > span {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+/* ============================================================
+   🔴 BRANDS
+============================================================ */
+.brand-flipper {
+  transform-style: preserve-3d;
+  transform-origin: center center;
+}
+
+/* ============================================================
+   🟣 NAVIGATION
+============================================================ */
+.nav-item .nav-bg {
+  opacity: 0;
+  transition: opacity 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-item:hover .nav-bg {
+  opacity: 1;
+}
+.nav-item span:first-child {
+  transition: font-weight 0s, letter-spacing 0s;
+}
+
+.nav-item span:first-child.is-scrambling {
+  font-weight: 300;
+  letter-spacing: 0.15em;
+}
+@keyframes arrow-loop {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(3px, -3px); }
+}
+
+.services-explore-arrow {
+  display: inline-block;
+  animation: arrow-loop 1s ease-in-out infinite;
+}
+/* ============================================================
+   📄 SERVICE PAGES
+============================================================ */
+
+/* Hero */
+.service-hero {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.service-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.service-hero-content {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 2.5rem;
+}
+
+.service-hero-title {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
+}
+
+/* Scroll indicator */
+.service-hero-scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.service-scroll-line {
+  display: block;
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, var(--color-text)60, transparent);
+  animation: scroll-line 1.5s ease-in-out infinite;
+}
+
+@keyframes scroll-line {
+  0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+  50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+}
+
+/* Masonry grid */
+.service-masonry {
+  background: var(--color-bg);
+  padding: 2px;
+}
+
+.service-grid {
+  columns: 3;
+  column-gap: 2px;
+}
+
+.service-grid-item {
+  break-inside: avoid;
+  margin-bottom: 2px;
+}
+
+.service-grid-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .service-grid {
+    columns: 2;
+  }
+}
+@media (max-width: 768px) {
+  .mobile-break {
+    display: block;
+  }
+  .hero-name {
+    font-size: 17vw !important;
+    left: 2% !important;
+    top: 11% !important;
+    right: 5% !important;
+  }
+  .hero-hello {
+    font-size:3.5vw /* tamaño */ !important;
+    top: 8% /* posición vertical */ !important;
+    left: 3% /* distancia izquierda */ !important;
+  }
+  .hero-desc {
+    font-size:3.5vw /* tamaño */ !important;
+    top:25% /* posición vertical */ !important;
+    right:6% /* distancia derecha */ !important;
+    max-width:45vw /* ancho máximo para partir líneas */ !important;
+  }
+@media (max-width: 1024px) {
+  .plankton-work-wrap {
+    position: relative;
+  }
+
+  #plankton-section {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  #work {
+    position: relative;
+    z-index: 2;
+    background: transparent;
+  }
+
+  .sw-section {
+    background: transparent;
+  }
+}
+}

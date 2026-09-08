@@ -1,11 +1,1021 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import Preloader from '../components/Preloader.astro';
 import Layout from '../layouts/Layout.astro';
+import BrandsMarquee from '../components/BrandsMarquee.astro';
+import HomeNav from '../components/HomeNav.astro';
+import SelectedWork from '../components/SelectedWork.astro';
+import CTAButton from '../components/CTAButton.astro';
+const cards = [
+	{
+		link: "/services/applied-sciences-communication",
+		title: "Applied Sciences Communication",
+		image: "/images/masonry/1/optimized/12.webp",
+    imageMobile: "/images/masonry/1/optimized/10.webp",
+		bgColor: " var(--color-text)",
+		textColor: " var(--color-text)",
+		name: "applied-sciences-communication"
+	},
+	{
+		link: "/services/scientific-illustration",
+		title: "Scientific Illustration",
+		image: "/images/masonry/2/optimized/17.webp",
+    imageMobile: "/images/masonry/2/optimized/4.webp",
+		bgColor: " var(--color-text)",
+		textColor: " var(--color-text)",
+		name: "scientific-illustration"
+	},
+	{
+		link: "/services/educational-visual-media",
+		title: "Educational Visual Media",
+		image: "/images/masonry/3/optimized/14.webp",
+    imageMobile: "/images/masonry/3/optimized/24.webp",
+		bgColor: " var(--color-text)",
+		textColor: " var(--color-text)",
+		name: "educational-visual-media"
+	},
+	{
+		link: "/services/animation-video",
+		title: "Animation & Video",
+		image: "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg",
+		video: "/Videos/LS_CameraMotion.webm",
+		bgColor: " var(--color-text)",
+		textColor: " var(--color-text)",
+		name: "animation-video"
+	}
+];
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const projects = [
+	{
+		index: "01/04",
+		title: "Gro Aqua — Expo Stand",
+		client: "Gro Aqua",
+		year: "2024",
+		description: "Exhibition stand design and scientific visualization for aquaculture trade show.",
+		images: [
+			"/images/optimized/001.webp",
+			"/images/optimized/002.webp",
+			"/images/optimized/003.webp",
+			"/images/optimized/004.webp",
+		]
+	},
+	{
+		index: "02/04",
+		title: "WeWhale — Visual Identity",
+		client: "WeWhale",
+		year: "2024",
+		description: "Brand identity and visual communication for marine conservation platform.",
+		images: ["/images/masonry/1/optimized/1.webp"]
+	},
+	{
+		index: "03/04",
+		title: "Exo Engineering — The 'Living Windfarms Project'",
+		client: "Exo Engineering",
+		year: "2024",
+		description: "Educational visual media and scientific illustration for university program.",
+		images:  [
+			"/images/optimized/005.webp",
+			"/images/optimized/006.webp",
+			"/images/optimized/007.webp",
+			"/images/optimized/008.webp",
+		]
+	},
+	{
+		index: "04/04",
+		title: "Exo Environmental — Scientific Illustration",
+		client: "Exo Environmental",
+		year: "2024",
+		description: "Scientific illustration and data visualization for environmental consultancy.",
+		images: ["/images/optimized/009.webp"]
+	},
+  {
+    index: "05/05",
+    title: "LeoLaguna Studio — Brand Identity",
+    client: "LeoLaguna Studio",
+    year: "2024",
+    description: "Visual identity and brand communication for scientific studio.",
+    images: ["/images/optimized/001.webp"]
+  },
+];
+
+const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/#work", label: "Work" },
+    { href: "/#services", label: "Services" },
+    { href: "/#about", label: "About" },
+    { href: "/#contact", label: "Contact" },
+];
+
+const tools = [
+	{ svg: "/images/programs/AE.svg",      name: "After Effects" },
+	{ svg: "/images/programs/PS.svg",      name: "Photoshop" },
+	{ svg: "/images/programs/AI.svg",      name: "Illustrator" },
+	{ svg: "/images/programs/BLENDER.svg", name: "Blender" },
+	{ svg: "/images/programs/DAVINCI.svg", name: "Davinci" },
+	{ svg: "/images/programs/GAEA.svg",    name: "Gaea" },
+	{ svg: "/images/programs/QGIS.svg",    name: "QGIS" },
+	{ svg: "/images/programs/UNREAL.svg",  name: "Unreal" },
+];
+
+const brands = [
+	{ file: "BL.svg",           name: "Birdlife International" },
+	{ file: "COA3.svg",         name: "Coalición Tiburón" },
+	{ file: "EXO3.svg",         name: "Exo Environmental" },
+	{ file: "GROA3.svg",        name: "Gro Aqua" },
+	{ file: "HAVIDA3.svg",      name: "Hávida" },
+	{ file: "IMA3.svg",         name: "IMARPE" },
+	{ file: "ISRA3.svg",        name: "Important Sharks and Ray Areas" },
+	{ file: "KA.svg",           name: "Kystarbeid AS" },
+	{ file: "QW3.svg",          name: "SUNY Old Westbury" },
+	{ file: "SOA3.svg",         name: "Sustainable Ocean Alliance" },
+	{ file: "SPERMWHALES3.svg", name: "Sperm Whales Dominica" },
+	{ file: "STRA3.svg",        name: "Strategik" },
+	{ file: "VH.svg",           name: "Valhalla Orca Expedition" },
+	{ file: "WEWHALE3.svg",     name: "WeWhale" },
+	{ file: "WWF3.svg",         name: "World Wildlife Fund" },
+];
 ---
 
 <Layout>
-	<Welcome />
+	<Preloader />
+  <CTAButton />
+<!-- ============================================================
+  🟢 HERO
+============================================================ -->
+
+<HomeNav />
+<section class="relative hero" id="hero">
+
+  <img class="layer" style="z-index:1;" src="/images/parallax/optimized/1.webp" data-speed="0.01" alt="">
+
+  <div class="hero-black-bar"></div>
+  <div class="hero-filter"></div>
+
+  <div class="hero-text-block" id="heroTextBlock" style="z-index:3;">
+    <div class="hero-text-inner" id="heroTextInner">
+      <div class="hero-name-wrap">
+        <h1 class="hero-name" id="heroName">LEO LAGUNA</h1>
+      </div>
+      <p class="hero-tagline" id="heroTagline">
+        Bridging Marine Biology<br>and Visual Communication
+      </p>
+    </div>
+  </div>
+
+  <img class="layer" style="z-index:4;" src="/images/parallax/optimized/2.webp" data-speed="0.10" alt="">
+  <img class="layer" style="z-index:5;" src="/images/parallax/optimized/3.webp" data-speed="0.08" alt="">
+  <img class="layer" style="z-index:6;" src="/images/parallax/optimized/4.webp" data-speed="0.07" alt="">
+  <img class="layer" style="z-index:7;" src="/images/parallax/optimized/5.webp" data-speed="0.02" alt="">
+
+  <img class="layer video-fallback" style="z-index:8;" src="/images/parallax/1webo.webp" alt="">
+  <video
+    class="layer video-layer"
+    style="z-index:8; object-position: center 20%; transform: translateZ(0); will-change: transform;"
+    autoplay muted loop playsinline preload="auto"
+    poster="/images/parallax/1webo.webp"
+  >
+    <source src="/images/parallax/water222220000-0250.webm" type="video/webm">
+  </video>
+
+</section>
+<div class="plankton-work-wrap">
+	<!-- ============================================================
+	  🔵 PLANKTON / TAGLINE
+	============================================================ -->
+	<section id="plankton-section"  data-theme="light" class="relative w-full min-h-screen grid place-items-center overflow-visible px-6 sm:px-8 lg:px-10">
+		<canvas
+			class="absolute inset-x-0 pointer-events-none"
+			style="top: -20vh; height: 100%; width: 100%;">
+		</canvas>
+		<div class="relative z-10 mx-auto w-full max-w-5xl text-center">
+			<h1 class="text mx-auto">SCIENTIFIC<span>DESIGNED</span></h1>
+			<h1 class="text mx-auto">VISUALS<span>TO</span></h1>
+			<h1 class="text mx-auto">THAT<span>LEAVE</span></h1>
+			<h1 class="text mx-auto">CONNECT<span>IMPACT</span></h1>
+		</div>
+	</section>
+
+	<!-- ============================================================
+	  🟡 SELECTED WORK
+	============================================================ -->
+    <section data-theme="light">
+      <SelectedWork projects={projects} heroImage="/images/proyectos/010.webp" />
+    </section>
+</div>
+<!-- ============================================================
+     🟠 SERVICES — Stacking Cards
+     ============================================================ -->
+<section id="services" data-theme="light"
+  style="background-color:  var(--color-bg); position: relative; z-index: 20; width: 100%; min-height: 300vh;">
+  <div class="services-wrap">
+
+    <!-- IZQUIERDA: sticky en desktop, bloque normal en tablet/mobile -->
+    <div class="services-left">
+      <p class="services-eyebrow">Our Services</p>
+      <h2 class="services-heading">What<br />we do</h2>
+      <p class="services-desc">
+        Visual storytelling for ocean innovation.
+      </p>
+    </div>
+
+    <!-- DERECHA: stacking cards -->
+    <div class="services-right" data-lenis-prevent>
+      <div class="services-track">
+        {cards.map((card, index) => (
+          <a
+            href={card.link}
+            transition:name={card.name}
+            class="services-item"
+            aria-label={card.title}
+          >
+            <div class="services-item-header">
+              <div class="services-item-left">
+                <span class="services-item-dot"></span>
+                <span class="services-item-index">({String(index + 1).padStart(2, "0")})</span>
+              </div>
+              <h3
+                class="services-item-title"
+                style={{ color: card.textColor || " var(--color-text)" }}
+              >
+                {card.title}
+              </h3>
+            </div>
+
+        <div class="services-item-media">
+              {!card.video && (
+               <picture>
+                 {card.imageMobile && (
+                   <source media="(max-width: 768px)" srcset={card.imageMobile} />
+                 )}
+                 <img
+                   src={card.image}
+                   alt={card.title}
+                   loading="lazy"
+                   decoding="async"
+                 />
+               </picture>
+              )}
+              {card.video && (
+                <video
+				autoplay
+				muted
+				loop
+				playsinline
+				preload="metadata"
+				poster={card.image}
+				aria-hidden="true"
+				>
+                  <source src={card.video} type="video/webm" />
+                </video>
+              )}
+              <span class="services-explore">
+                Explore <span class="services-explore-arrow" aria-hidden="true">↗</span>
+              </span>
+                <span class="services-explore-mobile" aria-hidden="true">
+               Explore <span class="services-explore-arrow" aria-hidden="true">↗</span>
+             </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<style>
+  /* ── Wrapper general ── */
+  .services-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 4rem;
+    width: 100%;
+    max-width: 2200px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+    box-sizing: border-box;
+  }
+
+  /* ── Columna izquierda ── */
+  .services-left {
+    position: sticky;
+    top: 6rem;
+    flex: 0 0 25%;
+    max-width: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 6rem;
+    box-sizing: border-box;
+    font-weight: 900;
+  }
+
+  .services-eyebrow {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #bdc0bf80;
+    margin: 0;
+  }
+
+  .services-heading {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color:  var(--color-text);
+    margin: 0;
+  }
+
+  .services-desc {
+    font-size: 1rem;
+    line-height: 1.6;
+    color:   #bdc0bf99;
+    max-width: 28ch;
+    margin: 0;
+  }
+
+  .services-right {
+  flex: 1 1 75%;
+  min-width: 0;
+  box-sizing: border-box;
+  height: var(--services-total-height, 100vh);
+}
+
+  /* El "stage" visible: alto de una sola card. Las demás cards se
+     posicionan dentro vía transform, calculado en servicesStack.ts */
+  .services-track {
+    position: sticky;
+    top: 0rem;
+    width: 100%;
+    height: var(--services-card-height, 100vh);
+    overflow: hidden;
+  }
+
+  /* ── Cada item ── */
+  .services-item {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg);
+    border-radius: 14px;
+    padding: 1.5rem;
+    text-decoration: none;
+    box-sizing: border-box;
+    will-change: transform;
+    overflow: hidden;
+  }
+
+  /* Header: punto + número horizontal + título, siempre presente,
+     pero solo se "asoma" mediante el slide-in controlado por JS
+     cuando la card queda cubierta (ver services-item-header dentro). */
+  .services-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2rem 0 2rem;
+  flex-shrink: 0;
+  will-change: transform;
+}
+
+  .services-item-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .services-item-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color:  #bdc0bf40;
+    flex-shrink: 0;
+  }
+
+  .services-item-index {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #bdc0bf50;
+  }
+
+  .services-item-title {
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    text-align: right;
+  }
+
+/* El contenedor (sin cambios, se queda igual que ya tenías) */
+.services-item-media {
+  flex: 1;
+  min-height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* La imagen Y el video, ambos con las mismas reglas visuales + transición */
+.services-item-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.services-item-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+  .services-explore {
+  position: absolute;
+  font-size: 0.75rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease;
+}
+
+  /* Hover solo en dispositivos con mouse real, nunca en touch */
+@media (hover: hover) and (pointer: fine) {
+  .services-item:hover .services-item-media img,
+  .services-item:hover .services-item-media video {
+    transform: scale(1.03);
+  }
+
+  .services-item:hover .services-explore {
+    opacity: 1;
+  }
+}
+
+  .services-item:focus-visible {
+  outline: none;
+}
+
+  /* ── Fallback: prefers-reduced-motion ──
+     Cuando servicesStack.ts detecta la preferencia, añade esta clase
+     a la sección. Las cards vuelven a flujo normal de documento, sin
+     sticky/transform, apiladas verticalmente una debajo de otra. */
+  .services--reduced-motion .services-track {
+    position: static;
+    height: auto;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .services--reduced-motion .services-item {
+    position: static;
+    transform: none !important;
+    height: var(--services-card-height, 420px);
+  }
+
+  .services--reduced-motion .services-item-header {
+    transform: none !important;
+  }
+
+/* ── Tablet (iPad y similares) ── */
+@media (max-width: 1024px) {
+  .services-wrap {
+    flex-direction: column;
+    gap: 2.5rem;
+    padding: 4rem 1.5rem;
+    height: auto;
+  }
+
+  .services-left {
+    position: static;
+    flex: 1 1 100%;
+    max-width: 100%;
+    padding-bottom: 0;
+  }
+
+  .services-right {
+    width: 100%;
+    flex: 1 1 100%;
+    overflow: visible;
+    height: var(--services-total-height, 100vh);
+    position: relative;
+    min-height: var(--services-total-height, 100vh);
+  }
+
+  .services-track {
+    position: sticky;
+    top: 0rem;
+    height: 90vh;
+    overflow: hidden;
+  }
+
+  .services-item {
+    border-radius: 16px;
+    padding: 1rem;
+  }
+
+  .services-item-media {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+}
+
+/* ── Mobile ── */
+  @media (max-width: 640px) {
+  .services-wrap {
+    padding: 3rem 1.25rem;
+    gap: 2rem;
+    overflow: visible;
+    height: auto;
+  }
+
+  .services-right {
+    overflow: visible;
+    height: var(--services-total-height);
+    position: sticky;
+    min-height: var(--services-total-height, 100vh);
+  }
+
+  .services-heading {
+    font-size: clamp(2rem, 9vw, 2.75rem);
+  }
+
+  .services-item {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .services-item-title {
+    font-size: 1rem;
+  }
+
+  .services-item-header {
+    padding-bottom: 0.75rem;
+  }
+
+  .services-desc {
+    max-width: 28ch;
+  }
+
+  /* Versión mobile del "Explore" — centrada, controlada por scroll, no por mouse */
+.services-explore-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .services-explore-mobile {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    color:  var(--color-text);
+    background: rgb(17 18 20 / 0.6);
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .services-explore-mobile.is-visible {
+    opacity: 1;
+  }
+
+  /* En mobile, el Explore de desktop (el que sigue al mouse) nunca debe aparecer */
+  .services-explore {
+    display: none;
+  }
+}
+
+}
+</style>
+
+<!-- ============================================================
+ 		 BRANDS
+		============================================================ -->
+		<section data-theme="light">
+  			<BrandsMarquee />
+		</section>
+
+<!-- ============================================================
+	  🟣 NAVIGATION (Big Footer Nav)
+	============================================================ -->
+  <section
+    id="footer-navigation"
+    data-theme="dark"
+    data-nav-visibility="hidden"
+    class="w-full px-6 md:px-10 lg:px-16 pt-12 md:pt-16 lg:pt-20 pb-16 md:pb-24 lg:pb-[200px]"
+    style="background-color: var(--color-bg);"
+  >
+
+		<div class="w-full flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-0">
+
+			<!-- Nav links -->
+			<div class="flex flex-col w-full lg:w-2/3 lg:pr-20">
+				<div class="w-full pb-4 border-b border-white/10">
+        <span class="text-xs text-[var(--color-text)]/30 uppercase tracking-widest">Navigation</span>				
+        </div>
+				<nav class="flex flex-col w-full" aria-label="Footer navigation">
+					{navLinks.map((item) => (
+						<a href={item.href}
+						   class="nav-item group relative w-full py-4 md:py-5 flex items-center justify-between overflow-hidden cursor-pointer border-b border-white/[0.08]">
+
+							<!-- Texto con sangría al hover -->
+							<span class="relative z-10 text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-black group-hover:translate-x-4 md:group-hover:translate-x-8">
+								{item.label}
+							</span>
+
+							<!-- Flecha SVG — solo visible en hover -->
+							<img
+								src="/images/arrow.svg"
+								alt=""
+								class="relative z-10 w-8 h-8 md:w-12 md:h-12 mr-3 md:mr-6 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-4 group-hover:translate-x-0 group-hover:rotate-45"
+							/>
+
+							<div class="nav-bg absolute inset-0" style="background-color: var(--color-text)"></div>
+						</a>
+					))}
+				</nav>
+			</div>
+
+			<!-- Studio details + social -->
+			<div class="flex flex-col gap-10 w-full lg:w-auto lg:pt-2">
+				<div class="flex flex-col gap-2">
+					<span class="text-xs text-white/30 uppercase tracking-widest">Studio Details</span>
+					<a href="mailto:hello@leolaguna.com" class="text-white/60 text-sm hover:text-white transition">
+						hello@leolaguna.com
+					</a>
+					<span class="text-white/40 text-sm">Based in Lima, Peru.<br>Working Worldwide.</span>
+				</div>
+				<div class="flex flex-col gap-2">
+					<span class="text-xs text-white/30 uppercase tracking-widest">Social</span>
+					<a href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer" class="text-white/60 text-sm hover:text-white transition">LinkedIn ↗</a>
+					<a href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer" class="text-white/60 text-sm hover:text-white transition">Instagram ↗</a>
+					<a href="https://www.artstation.com/leolaguna" target="_blank" rel="noopener noreferrer" class="text-white/60 text-sm hover:text-white transition">ArtStation ↗</a>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<!-- ============================================================
+	  ⚫ FOOTER (Clock + Water Shader)
+	============================================================ -->
+	<footer class="relative w-full overflow-hidden bg-[ var(--color-bg)]">
+
+		<div class="w-full flex flex-col md:flex-row justify-between items-start md:items-end px-6 md:px-10 lg:px-16 py-6 md:py-8 gap-4 md:gap-0">
+			<div class="flex flex-col gap-1 items-start">
+				<span id="clock-time" class="text-white/50 text-xs"></span>
+				<span id="clock-date" class="text-white/50 text-xs"></span>
+			</div>
+			<div class="flex flex-col gap-1 items-start md:items-center">
+				<a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+				   class="text-white/50 text-xs hover:text-white transition">
+					Back to top ↑
+				</a>
+				<span class="text-white/50 text-xs">Available for projects</span>
+			</div>
+			<div class="flex flex-col gap-1 items-start md:items-end">
+				<span class="text-white/50 text-xs">©2026 LeoLaguna Studio</span>
+			</div>
+		</div>
+
+		<div style="height: 400px;">
+			<canvas id="water-shader" style="width: 100%; height: 100%;"></canvas>
+		</div>
+	</footer>
+
 </Layout>
+
+<!-- ============================================================
+  📌 ABOUT PANEL (fuera del Layout, fixed)
+============================================================ -->
+<div id="about-panel"
+	 class="fixed top-0 right-0 h-full w-full md:w-[480px] z-50 translate-x-full transition-transform duration-500 ease-in-out overflow-y-auto"
+	 style="background-color:  var(--color-bg); border-left: 1px solid rgba(255,255,255,0.08);">
+
+	<button id="close-panel"
+			class="absolute top-6 right-6 text-white/40 hover:text-white text-sm uppercase tracking-widest transition">
+		✕ Close
+	</button>
+
+	<!-- Photo placeholder -->
+	<div class="w-full aspect-square bg-white/5" style="border-bottom: 1px solid rgba(255,255,255,0.08);"></div>
+
+	<!-- Content -->
+	<div class="flex flex-col gap-10 p-10">
+
+		<div class="flex flex-col gap-4">
+			<span class="text-xs text-white/30 uppercase tracking-widest">About the studio</span>
+			<p class="text-white/70 text-sm leading-7">
+				Hey, I'm Leonardo. Marine biologist and visual communicator with over 5 years of experience
+				creating visual content for science, education, and environmental communication.
+			</p>
+			<p class="text-white/70 text-sm leading-7">
+				My work spans scientific illustration, 3D visualization, infographics, and digital media.
+				I believe good design doesn't simplify knowledge — it makes it easier to understand.
+			</p>
+		</div>
+
+		<div class="flex flex-col gap-2 text-xs text-white/30 uppercase tracking-widest">
+			<span>Based in Lima, Peru</span>
+			<span>Working Worldwide</span>
+		</div>
+
+		<!-- Tools grid -->
+		<!--
+		<div class="flex flex-col gap-4">
+			<span class="text-xs text-white/30 uppercase tracking-widest">Tools</span>
+			<div class="grid grid-cols-4 gap-0"
+				 style="border-top: 1px solid rgba(255,255,255,0.06); border-left: 1px solid rgba(255,255,255,0.06);">
+				{tools.map((tool) => (
+					<div class="group flex flex-col items-center justify-center gap-2 p-4 cursor-default transition-all duration-300 hover:bg-white/5"
+						 data-tool={tool.name}
+						 style="border-right: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06);">
+						<img src={tool.svg} class="h-8 w-8 object-contain opacity-40 group-hover:opacity-80 transition-opacity duration-300">
+					</div>
+				))}
+			</div>
+		</div>
+		-->
+
+	</div>
+</div>
+
+<!-- Panel overlay -->
+<div id="panel-overlay"
+	 class="fixed inset-0 z-40 opacity-0 pointer-events-none transition-opacity duration-500"
+	 style="background-color: rgba(0,0,0,0.5);">
+</div>
+
+<!-- Cursor label -->
+<div id="cursor-label"
+	 class="fixed z-[100] pointer-events-none opacity-0 transition-opacity duration-200 bg-white text-black text-xs uppercase tracking-widest px-3 py-1.5 rounded-full">
+</div>
+
+<!-- ============================================================
+  📜 SCRIPTS
+============================================================ -->
+<script>
+import { initWaterShader } from '../scripts/waterShader';
+import { initParallax, destroyAnimations, initStickyCards } from "../scripts/parallax.js";
+import { mountPlanktonParticles } from "../scripts/planktonParticles.ts";
+import { initTextReveal } from "../scripts/textReveal.ts";
+import { initServicesStack, destroyServicesStack } from "../scripts/servicesStack";
+import { initSelectedWork, teardownSelectedWork } from '../scripts/selectedWork';
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// ── Flags globales ──────────────────────────────────────────────
+
+let programInterval: ReturnType<typeof setInterval> | null = null;
+let clockInterval: ReturnType<typeof setInterval> | null = null;
+let destroyPlankton: (() => void) | null = null;
+let projectRowObservers: IntersectionObserver[] = [];
+
+document.addEventListener("astro:page-load", async () => {
+
+// ── Animaciones ─────────────────────────────────────────────
+
+	destroyAnimations();
+	initParallax();
+	initTextReveal();
+	initServicesStack();
+	setTimeout(() => initSelectedWork(), 100);         // ← agregar esta línea
+
+
+// ── Plankton ─────────────────────────────────────────────────
+
+	destroyPlankton?.();
+destroyPlankton = null;
+
+const planktonSection = document.getElementById("plankton-section");
+
+if (planktonSection) {
+    destroyPlankton = mountPlanktonParticles(planktonSection);
+}
+
+// ── About panel ──────────────────────────────────────────────
+
+	const panel   = document.getElementById("about-panel");
+	const overlay = document.getElementById("panel-overlay");
+	const closeBtn = document.getElementById("close-panel");
+
+	if (panel && overlay && closeBtn) {
+		document.querySelectorAll('a[href="/#about"]').forEach((link) => {
+			link.addEventListener("click", (e) => {
+				e.preventDefault();
+				panel.classList.remove("translate-x-full");
+				overlay.classList.remove("opacity-0", "pointer-events-none");
+			});
+		});
+		closeBtn.addEventListener("click", () => {
+			panel.classList.add("translate-x-full");
+			overlay.classList.add("opacity-0", "pointer-events-none");
+		});
+		overlay.addEventListener("click", () => {
+			panel.classList.add("translate-x-full");
+			overlay.classList.add("opacity-0", "pointer-events-none");
+		});
+	}
+
+// ── Cursor label (tools) ─────────────────────────────────────
+
+	const cursorLabel = document.getElementById("cursor-label");
+
+	if (cursorLabel) {
+		document.addEventListener("mousemove", (e) => {
+			cursorLabel.style.left = `${e.clientX + 14}px`;
+			cursorLabel.style.top  = `${e.clientY - 10}px`;
+		});
+	}
+
+// ── Water shader ─────────────────────────────────────────────
+
+	const destroyWaterShader = initWaterShader();
+document.addEventListener("astro:before-swap", destroyWaterShader, { once: true });
+
+// ── Clock ────────────────────────────────────────────────────
+
+	const clockTime = document.getElementById("clock-time");
+	const clockDate = document.getElementById("clock-date");
+
+	if (clockTime && clockDate) {
+		const updateClock = () => {
+			const now = new Date();
+			clockTime.textContent = `Lima ${now.toLocaleTimeString("en-US", { timeZone: "America/Lima" })}`;
+			clockDate.textContent  = now.toLocaleDateString("en-US", {
+				weekday: "long", year: "numeric", month: "short", day: "numeric",
+				timeZone: "America/Lima"
+			});
+		};
+		updateClock();
+		if (clockInterval) clearInterval(clockInterval);
+		clockInterval = setInterval(updateClock, 1000);
+	}
+
+// end astro:page-load
+
+document.addEventListener("astro:before-swap", () => {
+    if (clockInterval) clearInterval(clockInterval);
+    clockInterval = null;
+    destroyPlankton?.();
+    destroyPlankton = null;
+    destroyServicesStack();
+    teardownSelectedWork();      // ← agregar esta línea
+});
+
+// ── Text Scramble hover ──────────────────────────────────────
+
+const chars = "▖▗▘◢◣◤◥▲▶▼◀▴▸▾◂◭◮◬◫◸◹◺◿⯅⯆⯇⯈ ▝▚▞▙▛▜▟◢◣◤◥▀▄▌▐▏▎█▁▂▃▄▅";
+
+const FADE_DURATION = 150;   // debe coincidir con el transition del CSS
+const OVERSHOOT = 1.15;       // la última letra se revela al 115% del fade
+
+function scramble(el: HTMLElement) {
+  const original = el.textContent ?? "";
+  const len = original.length;
+  let rafId: number | null = null;
+  let startTime: number | null = null;
+  let direction: "in" | "out" | null = null;
+  let randomSnapshot: string[] = [];
+
+  function randomChar() {
+    return chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  function clearAnim() {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    startTime = null;
+  }
+
+  function tick(timestamp: number) {
+    if (!startTime) startTime = timestamp;
+    const elapsed = timestamp - startTime;
+    const progress = Math.min(elapsed / (FADE_DURATION * OVERSHOOT), 1);
+
+    // cuántas letras están reveladas según el progreso
+    const revealed = Math.floor(progress * len);
+
+    let output = "";
+
+    if (direction === "in") {
+      // cambia instantáneo a random, luego revela de izq a der
+      for (let i = 0; i < len; i++) {
+        if (original[i] === " ") {
+          output += " ";
+        } else if (i < revealed) {
+          output += original[i];
+        } else {
+          output += randomSnapshot[i];
+        }
+      }
+    } else {
+      // revela de der a izq
+      const scrambledFrom = len - revealed;
+      for (let i = 0; i < len; i++) {
+        if (original[i] === " ") {
+          output += " ";
+        } else if (i >= scrambledFrom) {
+          output += original[i];
+        } else {
+          output += randomSnapshot[i];
+        }
+      }
+    }
+
+    el.textContent = output;
+
+     if (progress < 1) {
+      rafId = requestAnimationFrame(tick);
+    } else {
+      el.textContent = original;
+      el.classList.remove("is-scrambling");
+      rafId = null;
+    }
+  }
+  function play() {
+  clearAnim();
+  direction = "in";
+  el.classList.add("is-scrambling");
+  randomSnapshot = Array.from(original).map(c => c === " " ? " " : randomChar());
+  el.textContent = randomSnapshot.join("");
+  rafId = requestAnimationFrame(tick);
+}
+
+  function cancel() {
+  clearAnim();
+  direction = "out";
+  el.classList.add("is-scrambling");
+  randomSnapshot = Array.from(original).map(c => c === " " ? " " : randomChar());
+  el.textContent = randomSnapshot.join("");
+  rafId = requestAnimationFrame(tick);
+}
+
+  return { play, cancel };
+}
+
+document.querySelectorAll<HTMLElement>(".nav-item span:first-child").forEach((el) => {
+  const fx = scramble(el);
+  const navItem = el.closest(".nav-item") as HTMLElement;
+  navItem.addEventListener("mouseenter", () => fx.play());
+  navItem.addEventListener("mouseleave", () => fx.cancel());
+});
+
+// ── Services explore label ───────────────────────────────────
+
+let globalMouseX = 0;
+let globalMouseY = 0;
+
+window.addEventListener("mousemove", (e) => {
+  globalMouseX = e.clientX;
+  globalMouseY = e.clientY;
+});
+
+document.querySelectorAll<HTMLElement>(".services-item-media").forEach((media) => {
+  const label = media.querySelector<HTMLElement>(".services-explore");
+  if (!label) return;
+
+  const updatePosition = () => {
+    const rect = media.getBoundingClientRect();
+    const isInside =
+      globalMouseX >= rect.left &&
+      globalMouseX <= rect.right &&
+      globalMouseY >= rect.top &&
+      globalMouseY <= rect.bottom;
+
+    if (!isInside) return;
+
+    const x = globalMouseX - rect.left;
+    const y = globalMouseY - rect.top;
+    label.style.left = `${x}px`;
+    label.style.top  = `${y}px`;
+  };
+
+  media.addEventListener("mousemove", updatePosition);
+  window.addEventListener("scroll", updatePosition, { passive: true });
+}); // ← cierre del forEach
+
+}); // ← cierre del astro:page-load
+</script>

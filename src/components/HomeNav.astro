@@ -1,0 +1,709 @@
+---
+// HomeNav.astro
+---
+
+<div id="home-nav-wrapper">
+  <nav id="home-nav" aria-label="Primary navigation">
+    <div id="nav-left" class="nav-side" aria-hidden="true">
+      <a href="/" class="nav-link">Home</a>
+      <span class="nav-divider" aria-hidden="true"></span>
+      <a href="/work" class="nav-link">Work</a>
+    </div>
+
+    <div id="nav-center">
+      <button
+        id="nav-logo-btn"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-left nav-right"
+        type="button"
+      >
+        <img src="/images/logo.svg" alt="Leo Laguna Studio" id="nav-logo-img" />
+      </button>
+    </div>
+
+    <div id="nav-right" class="nav-side" aria-hidden="true">
+      <a href="/services" class="nav-link">Services</a>
+      <span class="nav-divider" aria-hidden="true"></span>
+      <button class="nav-link" id="nav-about" type="button" aria-controls="about-panel">About</button>
+    </div>
+  </nav>
+</div>
+
+<style>
+  #home-nav-wrapper {
+    --nav-size: 54px;
+    position: fixed;
+    top: 1.5rem;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  #home-nav {
+    width: var(--nav-size);
+    height: var(--nav-size);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--nav-size) minmax(0, 1fr);
+    align-items: center;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #var(--color-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+    pointer-events: auto;
+    transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+  }
+
+  #home-nav.is-animating {
+    will-change: width, transform, opacity;
+  }
+
+  #home-nav.is-light {
+    background: #var(--color-text);
+    border-color: rgba(0, 0, 0, 0.12);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-side {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  #nav-left {
+    justify-content: flex-end;
+   padding-left: 4rem;
+  padding-right: 4rem;
+  }
+
+  #nav-right {
+    justify-content: flex-start;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  }
+
+  #nav-center {
+    width: var(--nav-size);
+    height: var(--nav-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+  }
+
+  #nav-logo-btn {
+    width: calc(var(--nav-size) - 8px);
+    height: calc(var(--nav-size) - 8px);
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  #nav-logo-btn:focus-visible,
+  .nav-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  #nav-logo-img {
+    width: 25px;
+    height: 25px;
+    display: block;
+    object-fit: contain;
+    object-position: center;
+    opacity: 0;
+    filter: brightness(0) invert(1);
+    transform-origin: 50% 50%;
+    translate: -0.2px -0.5px;
+  }
+
+  #home-nav.is-light #nav-logo-img {
+    filter: brightness(0);
+  }
+
+  .nav-link {
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.72);
+    cursor: pointer;
+    font-family: "Host Grotesk", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    border-radius: 999px;
+    padding: 0.42rem 1rem;
+    transition: color 0.22s ease, background 0.22s ease;
+  }
+
+  .nav-link:hover {
+    color: #var(--color-text);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  #home-nav.is-light .nav-link {
+    color: rgba(0, 0, 0, 0.62);
+  }
+
+  #home-nav.is-light .nav-link:hover {
+    color: #000000;
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .nav-divider {
+    width: 1px;
+    height: 12px;
+    flex: 0 0 auto;
+    background: rgba(255, 255, 255, 0.14);
+    transition: background 0.45s ease;
+  }
+
+  #home-nav.is-light .nav-divider {
+    background: rgba(0, 0, 0, 0.14);
+  }
+
+  @media (max-width: 560px) {
+    #home-nav-wrapper {
+      --nav-size: 52px;
+      top: 1rem;
+    }
+
+    #nav-logo-img {
+      width: 23px;
+      height: 23px;
+    }
+
+    .nav-link {
+      font-size: 0.74rem;
+      letter-spacing: 0.02em;
+      padding: 0.38rem 0.52rem;
+    }
+
+    #nav-left {
+      padding-left: 18px;
+      padding-right: var(--logo-gap, 22px);
+    }
+
+    #nav-right {
+      padding-left: var(--logo-gap, 22px);
+      padding-right: 40px;
+    }
+
+    .nav-divider {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #home-nav,
+    .nav-link,
+    .nav-divider {
+      transition-duration: 0.01ms;
+    }
+  }
+
+/* ── Por defecto: oculto en desktop ── */
+#mobile-nav-bar {
+  display: none;
+}
+
+/* ── Solo visible en mobile y landscape pequeño ── */
+@media (max-width: 640px), (orientation: landscape) and (max-height: 500px) {
+  
+  /* Oculta la pill */
+  #home-nav-wrapper {
+    display: none !important;
+  }
+
+  /* Muestra la barra mobile */
+  #mobile-nav-bar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    pointer-events: auto;
+  }
+}
+
+  #mobile-logo img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    display: block;
+  }
+
+  #mobile-menu-btn {
+    background: #var(--color-bg);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.85);
+    font-family: 'Host Grotesk', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.45rem 1.1rem;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  /* Overlay — fondo oscuro, NO ocupa todo */
+  #mobile-menu-overlay {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0,0,0,0.6);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  #mobile-menu-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Caja del menú — solo lo necesario */
+  #mobile-menu-container {
+    background: #var(--color-bg);
+    padding: 5rem 2rem 2rem;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+  }
+
+  #mobile-menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mobile-link {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: #var(--color-text);
+    font-family: 'Host Grotesk', sans-serif;
+    font-size: clamp(2rem, 10vw, 3rem);
+    font-weight: 700;
+    text-decoration: none;
+    padding: 1rem 0;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+  }
+@media (orientation: landscape) and (max-height: 500px) {
+    #mobile-menu-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+    .mobile-link {
+    font-size: 1.1rem;
+    text-align: center;
+    border-bottom: none;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 0.75rem;
+    padding: 0.75rem 0.5rem;
+  }
+}
+</style>
+
+<!-- NAV MOBILE -->
+<div id="mobile-nav-bar">
+  <a href="/" id="mobile-logo">
+    <img src="/images/logo.svg" alt="Leo Laguna Studio" />
+  </a>
+  <button id="mobile-menu-btn" aria-expanded="false" aria-label="Open menu">
+    Menu
+  </button>
+</div>
+
+<div id="mobile-menu-overlay" aria-hidden="true">
+  <div id="mobile-menu-container">
+    <nav id="mobile-menu-links">
+      <a href="/" class="mobile-link">Home</a>
+      <a href="#selected-works" class="mobile-link">Work</a>
+      <a href="/services" class="mobile-link">Services</a>
+      <button class="mobile-link" id="mobile-about-btn" type="button">About</button>
+      <a href="/contact" class="mobile-link">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<script>
+  import gsap from "gsap";
+
+  type NavState = "center-expanded" | "corner-collapsed" | "center-overlay-expanded" | "hidden";
+
+  const CLEANUP_KEY = "__homeNavCleanup";
+
+  document.addEventListener("astro:page-load", () => {
+    (window as any)[CLEANUP_KEY]?.();
+
+    const wrapper = document.getElementById("home-nav-wrapper") as HTMLElement | null;
+    const nav = document.getElementById("home-nav") as HTMLElement | null;
+    const left = document.getElementById("nav-left") as HTMLElement | null;
+    const right = document.getElementById("nav-right") as HTMLElement | null;
+    const center = document.getElementById("nav-center") as HTMLElement | null;
+    const logoBtn = document.getElementById("nav-logo-btn") as HTMLButtonElement | null;
+    const logoImg = document.getElementById("nav-logo-img") as HTMLImageElement | null;
+    const aboutBtn = document.getElementById("nav-about") as HTMLButtonElement | null;
+
+    if (!wrapper || !nav || !left || !right || !center || !logoBtn || !logoImg) return;
+
+    const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    let state: NavState = "center-expanded";
+    let targetState: NavState = "center-expanded";
+    let activeTween: gsap.core.Timeline | null = null;
+    let rafId = 0;
+    let scrollPastHero = false;
+    let footerNavVisible = false;
+    let userOpenedFromCorner = false;
+    let openedAtScrollY = 0;
+
+    const animatedElements = [wrapper, nav, left, right, logoImg];
+
+    function isReducedMotion() {
+      return reduceMotionQuery.matches;
+    }
+
+    function duration(value: number) {
+      return isReducedMotion() ? 0.01 : value;
+    }
+
+    function getClosedWidth() {
+      return center.getBoundingClientRect().width || 54;
+    }
+
+    function getExpandedWidth() {
+      // scrollWidth measures natural content width even while the grid columns are compressed.
+      const sideWidth = Math.max(left.scrollWidth, right.scrollWidth);
+      const maxWidth = Math.max(getClosedWidth(), window.innerWidth - 24);
+      const calculated = getClosedWidth() + sideWidth * 2 + 80;
+      return Math.ceil(Math.min(Math.max(calculated, 480), maxWidth));
+    }
+
+    function getCornerX() {
+      const gap = window.innerWidth <= 560 ? 16 : 24;
+      return window.innerWidth / 2 - getClosedWidth() / 2 - gap;
+    }
+
+    function setMenuAvailability(expanded: boolean) {
+      logoBtn.setAttribute("aria-expanded", String(expanded));
+      logoBtn.setAttribute("aria-label", expanded ? "Close navigation menu" : "Open navigation menu");
+
+      for (const side of [left, right]) {
+        side.setAttribute("aria-hidden", String(!expanded));
+        side.toggleAttribute("inert", !expanded);
+      }
+
+      gsap.set([left, right], {
+        pointerEvents: expanded ? "auto" : "none",
+        visibility: expanded ? "visible" : "hidden",
+      });
+    }
+
+    function setWrapperAvailability(visible: boolean) {
+      wrapper.style.pointerEvents = visible ? "none" : "none";
+      nav.style.pointerEvents = visible ? "auto" : "none";
+    }
+
+    function clearActiveTween() {
+      activeTween?.kill();
+      activeTween = null;
+      gsap.killTweensOf(animatedElements);
+      nav.classList.remove("is-animating");
+    }
+
+    function findFooterNavigation() {
+      const explicit = document.querySelector<HTMLElement>(
+        "#navigation, #footer-navigation, #big-footer-nav, [data-section='navigation'], [data-nav='footer']",
+      );
+
+      if (explicit) return explicit;
+
+      const footer = document.querySelector("footer");
+      const footerNav = footer?.querySelector<HTMLElement>("nav, [aria-label*='Navigation' i], [aria-label*='Footer' i]");
+      if (footerNav) return footerNav;
+
+      return undefined;
+    }
+
+        function measureScene() {
+    const hero = document.getElementById("hero");
+    const hiddenNavSection = findHiddenNavSection();
+
+    if (hero) {
+        const rect = hero.getBoundingClientRect();
+        scrollPastHero = Math.abs(Math.min(rect.top, 0)) > rect.height * 0.5;
+    } else {
+        scrollPastHero = window.scrollY > window.innerHeight * 0.5;
+    }
+
+    if (hiddenNavSection) {
+        const rect = hiddenNavSection.getBoundingClientRect();
+
+        footerNavVisible =
+        rect.top < window.innerHeight * 0.72 &&
+        rect.bottom > 0;
+    } else {
+        footerNavVisible = false;
+    }
+    }
+
+    function updateTheme() {
+      const navRect = nav.getBoundingClientRect();
+      const probeX = navRect.left + navRect.width / 2;
+      const probeY = navRect.top + navRect.height / 2;
+      const elements = document.elementsFromPoint(probeX, probeY);
+
+      const themedElement = elements.find((element) => {
+        return element instanceof HTMLElement && element.dataset.theme;
+      }) as HTMLElement | undefined;
+
+      nav.classList.toggle("is-light", themedElement?.dataset.theme === "light");
+    }
+
+    function findHiddenNavSection() {
+    return document.querySelector<HTMLElement>("[data-nav-visibility='hidden']");
+    }
+
+    function animateTo(nextState: NavState, delay = 0, force = false) {
+      if (!force && targetState === nextState && activeTween) return;
+      if (!force && targetState === nextState && state === nextState) return;
+
+      targetState = nextState;
+      clearActiveTween();
+      nav.classList.add("is-animating");
+
+      const tl = gsap.timeline({
+        delay: duration(delay),
+        defaults: { overwrite: "auto" },
+        onComplete: () => {
+          state = nextState;
+          activeTween = null;
+          nav.classList.remove("is-animating");
+        },
+      });
+
+      activeTween = tl;
+
+      if (nextState === "hidden") {
+        tl.call(() => {
+          setMenuAvailability(false);
+          setWrapperAvailability(false);
+        })
+          .to([left, right], { opacity: 0, x: 0, duration: duration(0.18), ease: "power2.out" })
+          .to(nav, { width: getClosedWidth(), duration: duration(0.36), ease: "power3.inOut" }, "<")
+          .to(wrapper, { autoAlpha: 0, y: -8, duration: duration(0.28), ease: "power2.out" }, "-=0.1");
+        return;
+      }
+
+      setWrapperAvailability(true);
+
+      if (nextState === "center-expanded" || nextState === "center-overlay-expanded") {
+        tl.call(() => {
+          setMenuAvailability(false);
+          gsap.set([left, right], { opacity: 0, x: 0 });
+        })
+          .to(wrapper, {
+            autoAlpha: 1,
+            x: 0,
+            y: 0,
+            duration: state === "center-expanded" ? duration(0.01) : duration(0.62),
+            ease: "power4.out",
+          })
+          .to(logoImg, { opacity: 1, duration: duration(0.18), ease: "power2.out" }, "<")
+          .to(nav, { width: getExpandedWidth(), duration: duration(0.72), ease: "expo.out" }, "<")
+          .call(() => {
+            gsap.set([left, right], { visibility: "visible" });
+          }, undefined, "-=0.34")
+          .fromTo(left, { opacity: 0, x: 10 }, { opacity: 1, x: 0, duration: duration(0.42), ease: "power2.out" }, "-=0.28")
+          .fromTo(right, { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: duration(0.42), ease: "power2.out" }, "<")
+          .call(() => setMenuAvailability(true));
+
+        return;
+      }
+
+      tl.call(() => setMenuAvailability(false))
+        .to(wrapper, { autoAlpha: 1, y: 0, duration: duration(0.12), ease: "power2.out" })
+        .to([left, right], { opacity: 0, x: 0, duration: duration(0.18), ease: "power2.out" }, "<")
+        .to(nav, { width: getClosedWidth(), duration: duration(0.46), ease: "power3.inOut" }, "<")
+        .to(logoImg, { opacity: 1, duration: duration(0.12), ease: "power2.out" }, "<")
+        .to(wrapper, { x: getCornerX(), duration: duration(0.62), ease: "power4.inOut" });
+    }
+
+    function chooseStateFromScroll(force = false) {
+      measureScene();
+      updateTheme();
+
+      if (footerNavVisible) {
+        userOpenedFromCorner = false;
+        animateTo("hidden", 0, force);
+        return;
+      }
+
+      if (userOpenedFromCorner && Math.abs(window.scrollY - openedAtScrollY) > 8) {
+        userOpenedFromCorner = false;
+        animateTo("corner-collapsed", 0, force);
+        return;
+      }
+
+      if (userOpenedFromCorner) return;
+
+      animateTo(scrollPastHero ? "corner-collapsed" : "center-expanded", 0, force);
+    }
+
+    function updateLogoRotation() {
+      if (isReducedMotion()) return;
+      gsap.set(logoImg, { rotation: window.scrollY * 0.22 });
+    }
+
+    function requestScrollUpdate() {
+      if (rafId) return;
+
+      rafId = window.requestAnimationFrame(() => {
+        rafId = 0;
+        updateLogoRotation();
+        chooseStateFromScroll();
+      });
+    }
+
+    function handleResize() {
+      if (rafId) window.cancelAnimationFrame(rafId);
+
+      rafId = window.requestAnimationFrame(() => {
+        rafId = 0;
+        updateLogoRotation();
+        chooseStateFromScroll(true);
+      });
+    }
+
+    function handleLogoClick() {
+      measureScene();
+      updateTheme();
+
+      if (footerNavVisible) return;
+
+      const effectiveState = targetState;
+
+      if (effectiveState === "center-overlay-expanded") {
+        userOpenedFromCorner = false;
+        animateTo(scrollPastHero ? "corner-collapsed" : "center-expanded", 0, true);
+        return;
+      }
+
+      if (effectiveState === "corner-collapsed") {
+        userOpenedFromCorner = true;
+        openedAtScrollY = window.scrollY;
+        animateTo("center-overlay-expanded", 0, true);
+      }
+    }
+
+    function handleAboutClick() {
+      document.getElementById("about-panel")?.classList.remove("translate-x-full");
+      document.getElementById("panel-overlay")?.classList.remove("opacity-0", "pointer-events-none");
+    }
+
+    function destroy() {
+      clearActiveTween();
+
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
+
+      controller.abort();
+      delete (window as any)[CLEANUP_KEY];
+    }
+
+    (window as any)[CLEANUP_KEY] = destroy;
+
+    gsap.set(wrapper, { x: 0, y: 0, autoAlpha: 1 });
+    gsap.set(nav, { width: getClosedWidth() });
+    gsap.set(logoImg, { opacity: 0, rotation: isReducedMotion() ? 0 : window.scrollY * 0.22 });
+    gsap.set([left, right], { opacity: 0, x: 0, pointerEvents: "none", visibility: "hidden" });
+    setMenuAvailability(false);
+
+    measureScene();
+    updateTheme();
+
+    animateTo(footerNavVisible ? "hidden" : scrollPastHero ? "corner-collapsed" : "center-expanded", 0.45, true);
+
+    window.addEventListener("scroll", requestScrollUpdate, { passive: true, signal });
+    window.addEventListener("resize", handleResize, { signal });
+    logoBtn.addEventListener("click", handleLogoClick, { signal });
+    aboutBtn?.addEventListener("click", handleAboutClick, { signal });
+    reduceMotionQuery.addEventListener("change", handleResize, { signal });
+    document.addEventListener("astro:before-swap", destroy, { once: true, signal });
+
+    document.fonts?.ready.then(() => {
+      if (!signal.aborted) handleResize();
+    });
+// Mobile menu
+const mobileBtn = document.getElementById('mobile-menu-btn');
+const mobileOverlay = document.getElementById('mobile-menu-overlay');
+const mobileAbout = document.getElementById('mobile-about-btn');
+
+mobileBtn?.addEventListener('click', () => {
+  const isOpen = mobileOverlay?.classList.toggle('is-open');
+  if (mobileBtn) mobileBtn.textContent = isOpen ? 'Close' : 'Menu';
+  mobileBtn.setAttribute('aria-expanded', String(isOpen));
+  mobileOverlay?.setAttribute('aria-hidden', String(!isOpen));
+});
+
+mobileAbout?.addEventListener('click', () => {
+  mobileOverlay?.classList.remove('is-open');
+  if (mobileBtn) mobileBtn.textContent = 'Menu';
+
+  const mobileBar = document.getElementById('mobile-nav-bar');
+  if (mobileBar) {
+    mobileBar.style.opacity = '0';
+    mobileBar.style.pointerEvents = 'none';
+  }
+
+  document.getElementById('about-panel')?.classList.remove('translate-x-full');
+  document.getElementById('panel-overlay')?.classList.remove('opacity-0', 'pointer-events-none');
+
+  const aboutPanel = document.getElementById('about-panel');
+  if (aboutPanel && mobileBar) {
+    const observer = new MutationObserver(() => {
+      if (aboutPanel.classList.contains('translate-x-full')) {
+        mobileBar.style.opacity = '1';
+        mobileBar.style.pointerEvents = 'auto';
+        observer.disconnect();
+      }
+    });
+    observer.observe(aboutPanel, { attributes: true, attributeFilter: ['class'] });
+  }
+});
+
+}); // ← cierre del astro:page-load
+</script>

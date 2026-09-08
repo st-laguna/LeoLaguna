@@ -1,0 +1,285 @@
+---
+// BrandsMarquee.astro
+// Marquee de logos SVG — dos filas, CSS puro, sin JS de animación.
+// Fila 1 → izquierda | Fila 2 → derecha. Responsive con clamp() fluido.
+
+type Brand = {
+  file: string;
+  name: string;
+  /** Ancho intrínseco real (tomado del viewBox del SVG) */
+  w: number;
+  /** Alto intrínseco real (tomado del viewBox del SVG) */
+  h: number;
+};
+
+// w/h tomados directamente del viewBox de cada SVG.
+// Esto permite al navegador reservar el aspect-ratio correcto
+// ANTES de que la imagen cargue, eliminando el salto/hueco de layout.
+const brands: Brand[] = [
+  { file: "BL.svg",           name: "Birdlife International",            w: 275,  h: 205  },
+  { file: "COA3.svg",         name: "Coalición Tiburón",                 w: 1927, h: 696  },
+  { file: "EXO3.svg",         name: "Exo Environmental",                 w: 1026, h: 1068 },
+  { file: "GROA3.svg",        name: "Gro Aqua",                          w: 1971, h: 696  },
+  { file: "HAVIDA3.svg",      name: "Hávida",                            w: 1975, h: 696  },
+  { file: "IMA3.svg",         name: "IMARPE",                            w: 1026, h: 1068 },
+  { file: "ISRA3.svg",        name: "Important Sharks and Ray Areas",    w: 1200, h: 1067 },
+  { file: "KA.svg",           name: "Kystarbeid AS",                     w: 539,  h: 519  },
+  { file: "QW3.svg",          name: "SUNY Old Westbury",                 w: 1026, h: 1068 },
+  { file: "SOA3.svg",         name: "Sustainable Ocean Alliance",        w: 1343, h: 696  },
+  { file: "SPERMWHALES3.svg", name: "Sperm Whales Dominica",             w: 1347, h: 696  },
+  { file: "STRA3.svg",        name: "Strategik",                         w: 1915, h: 696  },
+  { file: "VH.svg",           name: "Valhalla Orca Expedition",          w: 876,  h: 259  },
+  { file: "WEWHALE3.svg",     name: "WeWhale",                           w: 1026, h: 1068 },
+  { file: "WWF3.svg",         name: "World Wildlife Fund",               w: 1026, h: 1068 },
+];
+
+// Dos grupos repartidos en dos filas. Cada grupo se duplica UNA vez:
+// con translateX(-50%) el loop ya es perfecto y no hace falta triplicar.
+const group1 = brands.slice(0, 8);
+const group2 = brands.slice(8);
+
+// en el frontmatter, donde se arman las filas
+const row1 = [...group1, ...group1, ...group1, ...group1]; // x4 en vez de x2
+const row2 = [...group2, ...group2, ...group2, ...group2]; // x4 en vez de x2
+---
+
+<section class="bm-section">
+
+  <!-- Encabezado -->
+  <div class="bm-header">
+    <h2 class="bm-label">Organizations we<br />collaborate with</h2>
+  </div>
+
+  <!-- Lista accesible real para lectores de pantalla.
+       El marquee visual de abajo es 100% decorativo (aria-hidden),
+       así que esta es la única fuente de esta información para AT. -->
+  <ul class="bm-sr-list" role="list">
+    {brands.map((brand) => (
+      <li>{brand.name}</li>
+    ))}
+  </ul>
+
+  <!-- Contenedor de las dos filas -->
+  <div class="bm-wrapper">
+
+    <div class="bm-divider"></div>
+
+    <!-- Fila 1 → izquierda -->
+    <div class="bm-track" aria-hidden="true">
+      <div class="bm-row bm-row--to-left">
+        {row1.map((brand, i) => (
+          <div class="bm-item">
+            <img
+              src={`/images/brands/${brand.file}`}
+              alt=""
+              width={brand.w}
+              height={brand.h}
+              decoding="async"
+              draggable="false"
+              class="bm-logo"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="bm-divider"></div>
+
+    <!-- Fila 2 → izquierda a derecha -->
+    <div class="bm-track" aria-hidden="true">
+      <div class="bm-row bm-row--to-right bm-row--offset">
+        {row2.map((brand, i) => (
+          <div class="bm-item">
+            <img
+              src={`/images/brands/${brand.file}`}
+              alt=""
+              width={brand.w}
+              height={brand.h}
+              decoding="async"
+              draggable="false"
+              class="bm-logo"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="bm-divider"></div>
+
+  </div>
+</section>
+
+<style>
+  /* ── Sección principal ─────────────────────────────────── */
+  .bm-section {
+    width: 100%;
+    background-color: #0000;
+    padding: clamp(60px, 20px + 8vw, 140px) 0 clamp(60px, 20px + 9vw, 180px) 0;
+    margin-top: clamp(80px, 30px + 8vw, 140px);
+    overflow: hidden;
+    /* No renderiza el contenido hasta que se acerca al viewport,
+       acelera el pintado inicial de la página si esta sección
+       queda fuera de la primera pantalla. */
+    content-visibility: auto;
+    contain-intrinsic-size: 0 600px;
+  }
+
+  /* ── Encabezado ────────────────────────────────────────── */
+  .bm-header {
+    padding: 0 clamp(1.5rem, 0.5rem + 4vw, 4rem) clamp(2rem, 1.6rem + 1.5vw, 2.5rem) clamp(1.5rem, 0.5rem + 4vw, 4rem);
+    text-align: center;
+  }
+
+  .bm-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* ── Lista accesible (oculta visualmente, presente para AT) ── */
+  .bm-sr-list {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ── Separadores tipo grilla ───────────────────────────── */
+  .bm-divider {
+    width: 100%;
+    height: 1px;
+    background-color: #ffffff14;
+  }
+
+  /* ── Track: contenedor con fade en los bordes ─────────── */
+  .bm-track {
+    position: relative;
+    width: 100%;
+    min-height: clamp(5.5rem, 3rem + 9vw, 10.5rem);
+    overflow: hidden;
+    contain: layout paint;
+    mask-image: linear-gradient(
+      to right,
+      hsl(0 0% 0% / 0),
+      hsl(0 0% 0% / 1) 12%,
+      hsl(0 0% 0% / 1) 88%,
+      hsl(0 0% 0% / 0)
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      hsl(0 0% 0% / 0),
+      hsl(0 0% 0% / 1) 12%,
+      hsl(0 0% 0% / 1) 88%,
+      hsl(0 0% 0% / 0)
+    );
+  }
+
+  /* ── Fila de logos ─────────────────────────────────────── */
+  .bm-row {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    padding: 0;
+    will-change: transform;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  .bm-row--to-left {
+    animation-name: marquee-to-left;
+    animation-duration: 70s;
+  }
+
+  .bm-row--to-right {
+    animation-name: marquee-to-right;
+    animation-duration: 70s;
+  }
+
+  /* Pequeño desfase de tiempo en la segunda fila para que no
+     se vean "sincronizadas" en espejo y se note más profundidad */
+  .bm-row--offset {
+    animation-duration: 85s;
+  }
+
+  /* La animación avanza siempre, sin importar el cursor.
+     (Antes se pausaba toda la fila en :hover — eliminado a propósito) */
+
+  /* ── Cada logo individual ──────────────────────────────── */
+  .bm-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 0.7rem + 1.5vw, 1.5rem) clamp(2rem, 0vw + 8vw, 5rem);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+  }
+
+  .bm-logo {
+    height: clamp(3rem, 1.5rem + 8vw, 9rem);
+    width: auto;
+    object-fit: contain;
+    opacity: 0.65;
+    display: block;
+    /* easing con leve "overshoot" → se siente más vivo que linear */
+    transition:
+      opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Hover: se agranda ligeramente y se ilumina.
+     Solo en dispositivos con mouse real (evita que quede "pegado"
+     en iPad/mobile tras un tap). */
+  @media (hover: hover) and (pointer: fine) {
+    .bm-item:hover .bm-logo {
+      opacity: 1;
+      filter: brightness(1.15);
+      transform: scale(1.08);
+    }
+  }
+
+  /* ── Animación CSS pura ────────────────────────────────── */
+  @keyframes marquee-to-left {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-25%, 0, 0); }
+}
+
+@keyframes marquee-to-right {
+  from { transform: translate3d(-25%, 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+
+  /* ── Accesibilidad: respeta prefers-reduced-motion ─────── */
+  /* No solo "pausa" (eso congelaría la fila a mitad de logo en
+     una posición aleatoria) — resetea a una posición de reposo limpia. */
+  @media (prefers-reduced-motion: reduce) {
+    .bm-row {
+      animation: none;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  /* ── Responsive: velocidad de animación ────────────────── */
+  @media (max-width: 600px) {
+    .bm-row--to-left {
+      animation-duration: 30s;
+    }
+
+    .bm-row--to-right {
+      animation-duration: 30s;
+    }
+
+    .bm-row--offset {
+      animation-duration: 38s;
+    }
+  }
+</style>

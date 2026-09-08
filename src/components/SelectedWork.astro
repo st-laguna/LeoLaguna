@@ -1,0 +1,532 @@
+---
+interface Project {
+	index: string;
+	title: string;
+	client: string;
+	year: string;
+	description: string;
+	images: string[];
+}
+
+interface Props {
+	projects: Project[];
+	heroImage?: string;
+}
+
+const { projects, heroImage = projects[0]?.images?.[0] } = Astro.props;
+---
+
+<section id="work" class="sw-section" data-theme="dark">
+
+	<!-- ══════════════════════════════════════════════
+	     PIN WRAPPER — esto es lo que GSAP pinea (desktop)
+	════════════════════════════════════════════════ -->
+	<div class="sw-pin">
+
+		<!-- ── ACTO 1 + 2: imagen hero + título + fondo ── -->
+		<div class="sw-stage">
+			<div class="sw-hero-img-wrap">
+				<img src={heroImage} alt="" class="sw-hero-img" loading="eager" decoding="async" />
+				<div class="sw-hero-fade"></div>
+			</div>
+			<h2 class="sw-hero-title">Selected Work</h2>
+		</div>
+
+		<!-- ── ACTO 3: panel con cartas ── -->
+		<div class="sw-panel-stage">
+			<div class="sw-panel">
+				<div class="sw-panel-inner">
+
+				<!-- Flechas mobile -->
+				<button class="sw-nav-arrow sw-nav-arrow--prev" aria-label="Proyecto anterior" type="button">
+					<span aria-hidden="true">←</span>
+				</button>
+				<button class="sw-nav-arrow sw-nav-arrow--next" aria-label="Siguiente proyecto" type="button">
+					<span aria-hidden="true">→</span>
+				</button>
+
+				<div class="sw-track">
+					{projects.map((project, pIndex) => (
+						<article class="sw-card" data-card-index={pIndex}>
+
+							<div class="sw-card-img-wrap">
+								{project.images.map((src, i) => (
+									<img
+										src={src}
+										class="sw-card-img"
+										style={`${i === 0
+											? "opacity: 1;"
+											: "opacity: 0;"}`}
+										data-img-index={i}
+										alt={i === 0 ? project.title : ""}
+										loading="lazy"
+										decoding="async"
+									/>
+								))}
+							</div>
+
+							<div class="sw-card-info">
+								<h3 class="sw-card-title">{project.title}</h3>
+								<p class="sw-card-desc">{project.description}</p>
+							</div>
+
+						</article>
+					))}
+				</div>
+			<div class="sw-progress-wrap">
+				<div class="sw-progress-line"></div>
+			</div>
+				<!-- Dots mobile -->
+				<div class="sw-dots" role="tablist" aria-label="Navegación de proyectos">
+					{projects.map((_, i) => (
+						<button class="sw-dot" data-dot-index={i} aria-label={`Ir al proyecto ${i + 1}`} type="button"></button>
+					))}
+				</div>
+
+			</div>
+		</div>
+		</div>
+
+	</div>
+
+	<!-- Espaciador de scroll para el pin (solo desktop, vía CSS) -->
+	<div class="sw-scroll-spacer" aria-hidden="true"></div>
+
+</section>
+
+<style>
+	/* ════════════════════════════════════════════
+	   BASE / SHARED
+	════════════════════════════════════════════ */
+	.sw-section {
+		position: relative;
+		width: 100%;
+		background-color:  var(--color-bg);
+	}
+
+	.sw-pin {
+		position: relative;
+		width: 100%;
+		height: 100vh;
+		overflow: visible ;
+		background-color:  var(--color-bg);
+	}
+
+	/* Espaciador: da "distancia" de scroll para que GSAP pinee sobre ella.
+	   Solo necesario en desktop, donde el pin existe. */
+	.sw-scroll-spacer {
+		height: 10vh;
+	}
+
+	/* ════════════════════════════════════════════
+	   ACTO 1+2 — STAGE (imagen hero + título)
+	════════════════════════════════════════════ */
+	.sw-stage {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 1;
+	}
+
+	/* Contenedor del panel: ocupa toda la pantalla y centra su hijo con flex,
+	   así el panel solo necesita animar translateY en px, sin pisar el centrado. */
+	.sw-panel-stage {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 3;
+		pointer-events: none;
+	}
+
+	.sw-hero-img-wrap {
+		position: relative;
+		width: 70vw;
+		height: 60vh;
+		max-width: 720px;
+		border-radius: 28px;
+		overflow: hidden;
+		will-change: transform;
+	}
+
+	.sw-hero-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.sw-hero-fade {
+		position: absolute;
+		inset: 0;
+		background-color:  var(--color-bg);
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.sw-hero-title {
+		position: absolute;
+		z-index: 2;
+		font-family: 'Archivo', sans-serif;
+		font-weight: 700;
+		font-size: clamp(2.5rem, 7vw, 6rem);
+		letter-spacing: -0.02em;
+		color:  var(--color-text);
+		margin: 0;
+		text-align: center;
+		pointer-events: none;
+		will-change: transform, opacity;
+	}
+
+	/* ════════════════════════════════════════════
+	   ACTO 3 — PANEL (70% × 85vh, centrado)
+	════════════════════════════════════════════ */
+	.sw-panel {
+		position: relative;
+		width: 70%;
+		height: 85vh;
+		max-width: 1400px;
+		transform: translateY(110vh);
+		background-color: var(--color-bg);
+		border-radius: 28px;
+		overflow: hidden;
+		pointer-events: auto;
+		will-change: transform;
+	}
+
+	.sw-panel-inner {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	/* ── Track horizontal de cartas ── */
+	.sw-track {
+		position: relative;
+		display: flex;
+		align-items: center;
+		height: 100%;
+		will-change: transform;
+	}
+
+	.sw-card {
+		position: relative;
+		flex: 0 0 auto;
+		display: flex;
+		flex-direction: column;
+		width: 60%;
+		height: 80%;
+		margin: 0 2.5%;
+		border-radius: 20px;
+		overflow: hidden;
+		background-color: var(--color-bg);
+	}
+	.sw-progress-wrap {
+		position: absolute;
+		bottom: 1.75rem;
+		left: 1.75rem;
+		right: 1.75rem;
+		height: 1px;
+		background-color: var(--color-text);
+	}
+
+		.sw-progress-line {
+		height: 100%;
+		width: 100%;
+		background-color: var(--color-text);
+		transform: scaleX(0);
+		transform-origin: left center;
+	}
+	.sw-card:last-child {
+		width: calc(100% - 7%);
+	}
+
+	.sw-card-img-wrap {
+		position: relative;
+		width: 100%;
+		flex: 1 1 auto;
+		overflow: hidden;
+	}
+
+	.sw-card-img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: opacity 0.6s ease;
+	}
+
+	.sw-card-code {
+		position: absolute;
+		top: 1.25rem;
+		left: 1.25rem;
+		z-index: 2;
+		font-size: 0.7rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color:  var(--color-text);
+		background-color: rgba(0, 0, 0, 0.35);
+		padding: 0.3rem 0.7rem;
+		border-radius: 999px;
+		backdrop-filter: blur(4px);
+	}
+
+	.sw-card-info {
+		flex: 0 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		padding: 1.5rem 1.75rem;
+		max-width: 60%;
+	}
+
+	.sw-card-title {
+		font-family: 'Archivo', sans-serif;
+		font-weight: 600;
+		font-size: 1.15rem;
+		color:  var(--color-text);
+		margin: 0;
+		line-height: 1.2;
+	}
+
+	.sw-card-desc {
+		font-size: 0.85rem;
+		line-height: 1.5;
+		color:  var(--color-text);
+		margin: 0;
+		font-weight: 300;
+	}
+
+	.sw-card-link {
+		margin-top: 0.25rem;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color:  var(--color-text);
+		text-decoration: none;
+		width: fit-content;
+		transition: color 0.2s ease;
+	}
+
+	.sw-card-link:hover {
+		color:  var(--color-text);
+	}
+
+	/* ── Flechas (mobile-first, ocultas en desktop) ── */
+	.sw-nav-arrow {
+		display: none;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		z-index: 5;
+		width: 2.75rem;
+		height: 2.75rem;
+		border-radius: 50%;
+		border: none;
+		background-color: rgba(17, 18, 20, 0.7);
+		color:  var(--color-text);
+		font-size: 1.1rem;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		backdrop-filter: blur(4px);
+	}
+
+	.sw-nav-arrow--prev { left: 0.75rem; }
+	.sw-nav-arrow--next { right: 0.75rem; }
+
+	.sw-nav-arrow:disabled {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	/* ── Dots (mobile-first, ocultos en desktop) ── */
+	.sw-dots {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 1rem 0 0;
+	}
+
+	.sw-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		border: none;
+		background-color: #000040;
+		padding: 0;
+		cursor: pointer;
+		transition: background-color 0.25s ease, transform 0.25s ease;
+	}
+
+	.sw-dot[data-active="true"] {
+		background-color:  var(--color-bg);
+		transform: scale(1.4);
+	}
+
+	/* ════════════════════════════════════════════
+	   DESKTOP (≥1024px) — pin + carrusel por scroll
+	════════════════════════════════════════════ */
+	@media (min-width: 1024px) {
+    .sw-dots {
+        display: none;
+		}
+	}
+
+	/* ════════════════════════════════════════════
+	   MOBILE (<1024px) — sin pin, swipe nativo
+	════════════════════════════════════════════ */
+		@media (max-width: 1023.98px) {
+		.sw-panel {
+		transform: translateY(100vh);
+		}
+		.sw-section {
+		background: transparent;
+		}
+
+		.sw-pin {
+		background: transparent;
+		}
+		.sw-hero-img-wrap {
+			width: 78vw;
+			height: 42vh;
+			border-radius: 20px;
+		}
+
+		.sw-panel {
+			width: 88%;
+			height: 78vh;
+			border-radius: 22px;
+		}
+
+		.sw-track {
+			overflow-x: auto;
+			overflow-y: hidden;
+			scroll-snap-type: x mandatory;
+			-webkit-overflow-scrolling: touch;
+			scrollbar-width: none;
+		}
+
+		.sw-track::-webkit-scrollbar {
+			display: none;
+		}
+
+		.sw-card {
+			width: 100%;
+			height: 82%;
+			margin: 0;
+			scroll-snap-align: center;
+			flex: 0 0 100%;
+		}
+
+		.sw-nav-arrow {
+			display: flex;
+		}
+
+		.sw-dots {
+			display: flex;
+		}
+	}
+
+	/* ════════════════════════════════════════════
+	LANDSCAPE MOBILE — texto izquierda, imagen derecha
+	════════════════════════════════════════════ */
+	@media (orientation: landscape) and (max-height: 500px) {
+
+	.sw-panel {
+		width: 92%;
+		height: 88vh;
+	}
+
+	.sw-card {
+		flex-direction: row;
+		width: 100%;
+		height: 86%;
+	}
+
+	/* Texto — lado izquierdo */
+	.sw-card-info {
+		flex: 0 0 40%;
+		max-width: 40%;
+		justify-content: center;
+		padding: 1.5rem;
+		gap: 0.75rem;
+	}
+
+	/* Imagen — lado derecho */
+	.sw-card-img-wrap {
+		flex: 1 1 auto;
+	}
+
+	/* El código/badge se reposiciona para el nuevo layout */
+	.sw-card-code {
+		top: 1rem;
+		left: auto;
+		right: 1rem;
+	}
+	}
+
+	/* ════════════════════════════════════════════
+	   REDUCED MOTION — fallback estático, sin pin
+	════════════════════════════════════════════ */
+	.sw-section.sw--reduced-motion .sw-scroll-spacer {
+		height: 0;
+	}
+
+	.sw-section.sw--reduced-motion .sw-pin {
+		position: relative;
+		height: auto;
+		padding: 4rem 0;
+	}
+
+	.sw-section.sw--reduced-motion .sw-stage {
+		display: none;
+	}
+
+	.sw-section.sw--reduced-motion .sw-panel-stage {
+		position: relative;
+		inset: auto;
+		display: block;
+	}
+
+	.sw-section.sw--reduced-motion .sw-panel {
+		position: relative;
+		top: auto;
+		left: auto;
+		transform: none;
+		width: 90%;
+		height: auto;
+		margin: 0 auto;
+	}
+
+	.sw-section.sw--reduced-motion .sw-track {
+		flex-direction: column;
+		overflow: visible;
+		height: auto;
+		padding: 2rem 0;
+	}
+
+	.sw-section.sw--reduced-motion .sw-card {
+		width: 100%;
+		height: auto;
+		margin: 0 0 1.5rem;
+		scroll-snap-align: none;
+	}
+
+	.sw-section.sw--reduced-motion .sw-card-img-wrap {
+		aspect-ratio: 16/10;
+	}
+
+	.sw-section.sw--reduced-motion .sw-nav-arrow,
+	.sw-section.sw--reduced-motion .sw-dots {
+		display: none;
+	}
+</style>
