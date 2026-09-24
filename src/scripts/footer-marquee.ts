@@ -84,14 +84,17 @@ updateGlassColors();
     }
     draw();
   }
+  let shapeKey='';
   function draw() {
     const total=amounts.reduce((a,b)=>a+b,0), cycle=period+total;
 
-    const paths=glyphs.map((_,i)=>pathData(i,amounts[i]));
+    const key=amounts.map(a=>a.toFixed(3)).join(',')+':'+copies.length;
+    const changed=key!==shapeKey;shapeKey=key;
+    const paths=changed?glyphs.map((_,i)=>pathData(i,amounts[i])):[];
     for(let k=0;k<copies.length;k++){
       copies[k].group.setAttribute('transform',`translate(${phase+(k-1)*cycle-total/2} 0)`);
       let offset=0;
-      glyphs.forEach((_,i)=>{
+      if(changed)glyphs.forEach((_,i)=>{
         const a=amounts[i];
         copies[k].paths[i].setAttribute('d',paths[i]);
         copies[k].paths[i].setAttribute('transform',`translate(${offset+a/2} 0)`);

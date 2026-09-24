@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import '../styles/ipad-portrait.css';
+import '../styles/tablet-portrait.css';
 import PageNavigation from '../components/PageNavigation.astro';
 import SiteControls from '../components/SiteControls.astro';
 interface Props {
@@ -20,6 +22,7 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+
     <meta name="description" content={description} />
     <title>{title}</title>
     <PageNavigation />
@@ -89,6 +92,7 @@ const {
 
     <script>
       import '../scripts/main';
+      import { isIPadPortrait } from '../scripts/ipad-layout';
 
       document.addEventListener('contextmenu', e => {
         if ((e.target as Element)?.closest('img, video')) e.preventDefault();
@@ -101,15 +105,23 @@ const {
       const header = document.querySelector<HTMLElement>('[data-site-header]');
       const menuButton = header?.querySelector<HTMLButtonElement>('.mobile-menu-toggle');
       const menuPanel = header?.querySelector<HTMLElement>('[data-mobile-menu]');
-      const menuMedia = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)');
+      const menuMedia = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait)');
+      const tabletMedia = matchMedia('(min-width:701px) and (max-width:1100px) and (orientation:portrait)');
+      const controls = header?.querySelector<HTMLElement>('.site-controls');
+      function placeControls() {
+        if (controls && header && menuPanel) ((tabletMedia.matches || isIPadPortrait()) ? header : menuPanel).append(controls);
+      }
+      tabletMedia.addEventListener('change', placeControls);
+      placeControls();
+      window.addEventListener('leo:ipad-layout', () => { placeControls(); setMobileMenu(false); });
 
       function setMobileMenu(open: boolean) {
         if (!header || !menuButton || !menuPanel) return;
-        const active = open && menuMedia.matches;
+        const active = open && (menuMedia.matches || isIPadPortrait());
         header.toggleAttribute('data-menu-open', active);
         menuButton.setAttribute('aria-expanded', String(active));
         menuButton.setAttribute('aria-label', active ? 'Close menu / Cerrar menú' : 'Open menu / Abrir menú');
-        menuPanel.inert = menuMedia.matches ? !active : false;
+        menuPanel.inert = (menuMedia.matches || isIPadPortrait()) ? !active : false;
         document.documentElement.classList.toggle('mobile-menu-open', active);
       }
 

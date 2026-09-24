@@ -33,7 +33,8 @@ export function createAboutScene(section, callbacks = {}) {
     const w=container.clientWidth,h=container.clientHeight;if(!w||!h)return;
     renderer.setSize(w,h,false);aspect=w/h;request();
   }
-  function frame(){
+  let entranceStart=null;
+  function frame(now){
     raf=0;if(disposed||lost||!visible||document.hidden)return;
     const composition=section.querySelector('.about__composition');
     const distance=Math.max(1,section.offsetHeight-composition.clientHeight);
@@ -43,6 +44,10 @@ export function createAboutScene(section, callbacks = {}) {
     const actor=actors[index] || actors.slice(0,index+1).filter(Boolean).at(-1) || actors.find(Boolean);
     actors.forEach(a=>{if(a)a.pivot.visible=a===actor;});
     if(actor){
+      if(entranceStart===null)entranceStart=now;
+      const entrance=reduced?1:Math.min(1,(now-entranceStart)/700);
+      actor.pivot.scale.setScalar(1-Math.pow(1-entrance,3));
+      if(entrance<1)request();
       actor.pivot.rotation.y=actor.profile+(reduced||paused?0:local*Math.PI*2);
       // Constant bounds for the entire turn, including the ears and muzzle in profile.
       const halfHeight=Math.max(actor.height/2,actor.radius/aspect)/actor.fill;

@@ -1,3 +1,4 @@
+import { isIPadPortrait } from './ipad-layout';
 import './entrances';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -31,12 +32,17 @@ if (clock) {
   }
 }
 if (hero && mask && image) {
-  const phoneMask = window.matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)');
+  const phoneMask = window.matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait)');
   // Ajusta la geometría del logo al tamaño real de la portada.
   function updateMask() {
+    hero?.querySelectorAll<HTMLSourceElement>('picture source').forEach(source => {
+      source.dataset.originalMedia ||= source.media;
+      source.media = isIPadPortrait() ? 'all' : source.dataset.originalMedia;
+    });
     if (!hero || !mask) return;
+    if(hero.closest('[data-journey],[data-mobile-journey]'))return;
 
-    if (phoneMask.matches) {
+    if ((phoneMask.matches || isIPadPortrait())) {
       if(hero.closest('[data-mobile-journey]')) return;
       const url = 'url("/icons/logo_phn_mask.svg")';
       mask.dataset.portalMask = url;
@@ -107,12 +113,13 @@ if (hero && mask && image) {
   const observer = new ResizeObserver(updateMask);
   observer.observe(hero);
   phoneMask.addEventListener('change', updateMask);
+  window.addEventListener('leo:ipad-layout', updateMask);
 
   // Mueve únicamente la imagen, respetando movimiento reducido.
   const media = gsap.matchMedia();
 
   media.add(hero.closest('.home-journey')?'(prefers-reduced-motion: no-preference) and (max-width:1000px), (prefers-reduced-motion: no-preference) and (max-height:680px)':'(prefers-reduced-motion: no-preference)', () => {
-    if (phoneMask.matches) return;
+    if ((phoneMask.matches || isIPadPortrait())) return;
     gsap.fromTo(
       image,
       { y: 0 },
@@ -135,6 +142,7 @@ if (hero && mask && image) {
     import.meta.hot.dispose(() => {
       observer.disconnect();
       phoneMask.removeEventListener('change', updateMask);
+      window.removeEventListener('leo:ipad-layout', updateMask);
       media.revert();
     });
   }

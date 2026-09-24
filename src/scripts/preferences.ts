@@ -34,6 +34,10 @@
     }
   }
 
+  function initialTheme(): Theme {
+    const saved=readPreference('leo-theme');
+    return saved==='dark'||saved==='light'?saved:matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches?'dark':'light';
+  }
   function applyTheme(theme: Theme) {
     root.dataset.theme = theme;
 
@@ -76,7 +80,7 @@
 
   // Recupera las preferencias guardadas.
   applyTheme(
-    readPreference('leo-theme') === 'dark' ? 'dark' : 'light'
+    initialTheme()
   );
 
   applyLanguage(
@@ -85,7 +89,7 @@
 
   window.addEventListener('pageshow', event => {
     if (!event.persisted) return;
-    applyTheme(readPreference('leo-theme') === 'dark' ? 'dark' : 'light');
+    applyTheme(initialTheme());
     applyLanguage(readPreference('leo-language') === 'es' ? 'es' : 'en');
   });
 

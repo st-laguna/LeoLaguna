@@ -273,7 +273,7 @@ html.footer-active .site-nav__items {
   }
 }
 
-@media (max-width:700px), (max-width:1000px) and (max-height:500px) {
+@media (max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait) {
   .footer{height:100svh;min-height:680px;}
   .footer__heading{top:auto;bottom:18px;left:18px;right:18px;height:auto;}
   .footer__name {
@@ -483,7 +483,7 @@ html.footer-active .site-nav__items {
 
 }
 
-@media(max-width:700px), (max-width:1000px) and (max-height:500px) {
+@media(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait) {
  .footer__mobile-message {gap:4svh;font-size:clamp(78px,29vw,150px);line-height:.85;letter-spacing:-.055em;}
  .footer__mobile-message>.footer__mobile-row {padding:0;font-size:inherit;line-height:1;display:block;overflow:hidden;text-align:left;}
  .footer__mobile-track {display:flex;width:max-content;animation:footer-mobile-flow 22s linear infinite reverse;}
@@ -493,7 +493,7 @@ html.footer-active .site-nav__items {
 @keyframes footer-mobile-flow {from {transform:translateX(0)} to {transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){.footer__mobile-track {animation:none!important;}}
 
-@media(max-width:700px), (max-width:1000px) and (max-height:500px){
+@media(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait){
  .footer {height:auto;min-height:100svh;display:flex;flex-direction:column;padding:18svh 0 24px;gap:7svh;}
  .footer__marquee {position:relative;inset:auto;transform:none;width:100%;height:auto;flex:none;order:0;}
  .footer__mobile-message {gap:3svh;font-size:clamp(78px,29vw,140px);}
@@ -507,4 +507,16 @@ html.footer-active .site-nav__items {
 
 @media(max-width:1000px) and (max-height:500px) and (orientation:landscape) {
  .footer {padding-top:26svh;}
+}
+
+.footer__mobile-track {animation-play-state:paused;}
+.footer[data-mobile-visible] .footer__mobile-track {animation-play-state:running;}
+@media(hover:none) and (pointer:coarse) {
+ [data-footer-glass] {display:none!important;}
+}
+
+/* Touch devices use the original vector letters without offscreen refraction. */
+@media(any-pointer:coarse) {
+ .footer [data-footer-glass] {display:none!important;}
+ .footer [data-marquee-svg] g[filter] {filter:none!important;}
 }

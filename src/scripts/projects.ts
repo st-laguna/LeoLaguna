@@ -1,3 +1,4 @@
+import { isIPadPortrait, isRotating } from './ipad-layout';
 import { scrollPage } from './smooth-scroll';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
@@ -30,7 +31,7 @@ if(section){
   // Solo medimos al cambiar la geometría, nunca en cada fotograma de scroll.
   function measureLayout() {
     sidebarTravel=sidebar.offsetLeft+sidebar.offsetWidth+16;
-    if(!motion.matches)return;
+    if(!(motion.matches && !isIPadPortrait()))return;
     const height=main.clientHeight;
     const controls=document.querySelector<HTMLElement>('.site-controls');
     const rect=controls?.getBoundingClientRect();
@@ -57,7 +58,8 @@ if(section){
       Object.entries(values).forEach(([key,value])=>guide.style.setProperty(key,`${value}px`));
     });
   }
-  const motion=matchMedia('(min-width:1001px) and (min-height:681px) and (prefers-reduced-motion:no-preference)');
+  const motion=matchMedia('(min-width:1001px) and (min-height:681px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1101px) and (min-height:681px) and (prefers-reduced-motion:no-preference)');
+  const tabletPortrait=matchMedia('(min-width:701px) and (max-width:1100px) and (orientation:portrait)');
   const mobileMotion=matchMedia('((max-width:700px) or ((max-width:1000px) and (max-height:500px))) and (prefers-reduced-motion:no-preference)');
   const events=new AbortController();
   const state={position:0,exit:0};
@@ -144,7 +146,7 @@ if (brandsLayout) {
       const top=i*strip+(height-i*strip)*(1-enter);
       panel.style.top=landscape?'0px':`${top}px`;
       panel.style.left=landscape?`${top}px`:'0px';
-      const extent=`${height-i*strip-(height-(i+1)*strip)*compress}px`;
+      const extent=`${height-i*strip-(height-(i+1)*strip)*compress-2*compress}px`;
       panel.style.height=landscape?'100%':extent;
       panel.style.width=landscape?extent:'100%';
       panel.style.setProperty('--compression',String(compress));
@@ -170,9 +172,21 @@ if (brandsLayout) {
     renderMobile();ScrollTrigger.refresh();
   }
   function configure(){
-    disposeScroll();pause();closeMenu();section!.toggleAttribute('data-horizontal',motion.matches);
-    if(!motion.matches){
-      if(mobileMotion.matches){configureMobile();return;}
+    if (isRotating()) return;
+    disposeScroll();pause();closeMenu();
+    const videoPanel=panels.find(panel=>panel.classList.contains('project-panel--video'));
+    if(videoPanel) {
+      const selected=Number(videoPanel.querySelector<HTMLElement>('[aria-selected="true"]')?.dataset.select || 0);
+      videoPanel.querySelectorAll<HTMLElement>('[data-slide]').forEach((slide,i)=>{
+        gsap.killTweensOf(slide);
+        gsap.set(slide,{clearProps:'transform,clipPath'});
+        slide.hidden=i!==selected;
+      });
+    }
+    if(menuToggle)menuToggle.disabled=false;
+    section!.toggleAttribute('data-horizontal',(motion.matches && !isIPadPortrait()));
+    if(!(motion.matches && !isIPadPortrait())){
+      if((mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){configureMobile();return;}
       if (brandsLayout) {
   brandsLayout.style.removeProperty('clip-path');
   brandsLayout.inert = false;
@@ -227,6 +241,7 @@ if (brandsLayout) {
   }
   section.addEventListener('click',event=>{
     const button=(event.target as Element).closest<HTMLElement>('button');if(!button)return;
+
     if(button.hasAttribute('data-select'))select(button.closest<HTMLElement>('[data-panel]')!,Number(button.dataset.select));
     if(button.hasAttribute('data-step')){
       const target=Math.max(0,Math.min(3,current+Number(button.dataset.step)));
@@ -235,7 +250,7 @@ if (brandsLayout) {
     }
   },{signal:events.signal});
   section.addEventListener('click',event=>{
-    if(!mobileMotion.matches)return;
+    if(!(mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))return;
     const panel=(event.target as Element).closest<HTMLElement>('[data-panel][data-compressed]');
     if(!panel||((event.target as Element).closest('button')&&!(event.target as Element).closest('[data-panel-back]')))return;
     const index=Number(panel.dataset.panel);const trigger=mobileTimeline?.scrollTrigger;
@@ -245,7 +260,7 @@ if (brandsLayout) {
   panels.forEach(panel=>{
     const media=panel.querySelector<HTMLElement>('.project-media');if(!media)return;
     let startX=0,startY=0,pointer:number|null=null;
-    media.addEventListener('pointerdown',event=>{if(!mobileMotion.matches||!event.isPrimary)return;pointer=event.pointerId;startX=event.clientX;startY=event.clientY;},{signal:events.signal});
+    media.addEventListener('pointerdown',event=>{if((!(mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))&&!(tabletPortrait.matches || isIPadPortrait()))||!event.isPrimary)return;pointer=event.pointerId;startX=event.clientX;startY=event.clientY;},{signal:events.signal});
     media.addEventListener('pointerup',event=>{
       if(pointer!==event.pointerId)return;pointer=null;
       const dx=event.clientX-startX,dy=event.clientY-startY;if(Math.abs(dx)<42||Math.abs(dx)<Math.abs(dy)*1.2)return;
@@ -260,9 +275,9 @@ if (brandsLayout) {
     const index = Math.max(0, Math.min(panels.length - 1, Number(event.detail)));
     if (!Number.isInteger(index) || !panels[index]) return;
     const trigger = timeline?.scrollTrigger;
-    if (motion.matches && trigger) {
+    if ((motion.matches && !isIPadPortrait()) && trigger) {
       scrollPage(trigger.start + stops[index] / total * (trigger.end - trigger.start));
-    } else if (mobileMotion.matches && mobileTimeline?.scrollTrigger) {
+    } else if ((mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)) && mobileTimeline?.scrollTrigger) {
       const mobileTrigger = mobileTimeline.scrollTrigger;
       scrollPage(mobileTrigger.start + (index / 3 * .86) * (mobileTrigger.end - mobileTrigger.start));
     } else {
@@ -281,23 +296,26 @@ if (brandsLayout) {
   window.addEventListener('leo:gallery-unlock',()=>{
     frozen=false;
     // Resume el seguimiento desde el mismo fotograma; nunca reconstruye el pin.
-    if(mobileMotion.matches){
+    if((mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){
       // Update only the mobile stack: the desktop render clips the whole main.
       ScrollTrigger.update();
       mobileTimeline?.scrollTrigger?.getTween()?.play();
       renderMobile();
-    }else if(motion.matches){
+    }else if((motion.matches && !isIPadPortrait())){
       timeline?.scrollTrigger?.getTween()?.play();
       render();
     }
   },{signal:events.signal});
   motion.addEventListener('change',configure,{signal:events.signal});
   mobileMotion.addEventListener('change',configure,{signal:events.signal});
-  const resizeObserver=new ResizeObserver(()=>{measureLayout();if(motion.matches)render();else if(mobileMotion.matches)renderMobile();});
+  tabletPortrait.addEventListener('change',configure,{signal:events.signal});
+  const resizeObserver=new ResizeObserver(()=>{measureLayout();if((motion.matches && !isIPadPortrait()))render();else if((mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))renderMobile();});
   resizeObserver.observe(stage);
   const controlsElement=document.querySelector<HTMLElement>('.site-controls');
   if(controlsElement)resizeObserver.observe(controlsElement);
   ScrollTrigger.addEventListener('refreshInit',measureLayout);
+  window.addEventListener('leo:orientation-ready', configure, {signal:events.signal});
+  window.addEventListener('leo:ipad-layout', configure, {signal:events.signal});
   configure();void document.fonts.ready.then(()=>{if(!events.signal.aborted)ScrollTrigger.refresh();});
   if(import.meta.hot)import.meta.hot.dispose(()=>{events.abort();resizeObserver.disconnect();ScrollTrigger.removeEventListener('refreshInit',measureLayout);disposeScroll();});
 }

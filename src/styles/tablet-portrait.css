@@ -1,0 +1,20 @@
+/* Only tablet scale/spacing; animation and composition come from the phone. */
+html[data-tablet-portrait] {--page-gap:clamp(28px,4vw,44px);}
+html[data-tablet-portrait] body .mobile-menu-toggle {left:calc(var(--page-gap) - 12px);right:auto;top:18px;}
+html[data-tablet-portrait] body .site-header > .site-controls {display:flex;position:fixed;top:24px;right:var(--page-gap);z-index:103;}
+html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow {padding:90px var(--page-gap) 32px;}
+html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__heading {max-width:28ch;font-size:clamp(26px,3.3vw,36px);}
+html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__grid {inset:250px 8vw 48px;}
+html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__card {width:min(100%,580px,calc((100svh - 310px)*.84));}
+html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__back {padding:36px;font-size:clamp(20px,2.8vw,28px);}
+html[data-tablet-portrait] .projects[data-mobile-stack] .projects-stage {height:100svh;min-height:100svh;padding:80px var(--page-gap) 24px;}
+html[data-tablet-portrait] .projects[data-mobile-stack] .project-panel {padding-inline:24px;grid-template-rows:calc(96px - 34px * var(--compression,0)) minmax(0,1fr) calc(48px * (1 - var(--compression,0)));}
+html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-copy h3 {font-size:calc(32px - 7px * var(--compression,0));}
+html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-copy p {font-size:13px;max-width:48ch;}
+html[data-tablet-portrait] .projects[data-mobile-stack] .project-thumbs {gap:10px;}
+html[data-tablet-portrait] .footer {padding:120px 0 40px;gap:60px;}
+html[data-tablet-portrait] .footer__mobile-message {font-size:clamp(150px,24vw,240px);gap:3svh;}
+html[data-tablet-portrait] .footer__mobile-track {text-shadow:-.7px 0 #e84a78,.7px 0 #36c6ce;}
+html[data-tablet-portrait] .footer__contact-info {margin-inline:var(--page-gap);gap:30px;}
+html[data-tablet-portrait] .footer__contact-info a {font-size:clamp(26px,3.8vw,38px);}
+@media(prefers-reduced-motion:reduce){html[data-tablet-portrait] .workflow__grid {grid-template-columns:repeat(2,minmax(0,1fr));}html[data-tablet-portrait] .project-panel {grid-template-columns:1fr;}}

@@ -144,7 +144,7 @@ body .site-header .site-controls {
   }
 }
 
-@media (max-width:700px), (max-width:1000px) and (max-height:500px) {
+@media (max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait) {
   html.mobile-menu-open {overflow:hidden;overscroll-behavior:none;}
   html.mobile-menu-open:not([data-page]) body>main {visibility:hidden;}
   .mobile-menu-toggle {

@@ -1,3 +1,4 @@
+import { isIPadPortrait, isRotating } from './ipad-layout';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import { scrollPage, isCommittingScrollJump } from './smooth-scroll';
@@ -38,8 +39,19 @@ if(root){
   const media=gsap.matchMedia();
   const clamp=(v:number)=>Math.max(0,Math.min(1,v));
   const ease=(v:number)=>{const x=clamp(v);return x*x*(3-2*x);};
-  media.add('(min-width:1001px) and (min-height:681px) and (prefers-reduced-motion:no-preference)',()=>{
+  media.add('(min-width:1001px) and (min-height:681px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1101px) and (min-height:681px) and (prefers-reduced-motion:no-preference)',()=>{
+    if (isIPadPortrait() || isRotating()) return;
     host.setAttribute('data-journey','');
+    // Same four apertures, drawn as holes in a path instead of a luminance mask.
+    // This avoids a full-screen intermediate mask texture on touch tablets.
+    const touchTablet=navigator.maxTouchPoints>0 || matchMedia('(any-pointer:coarse)').matches;
+    const aperture=document.createElementNS('http://www.w3.org/2000/svg','path');
+    aperture.setAttribute('fill','var(--background)');
+    aperture.setAttribute('fill-rule','evenodd');
+    const maskedCover=cover.lastElementChild as SVGElement;
+    if(touchTablet){maskedCover.style.display='none';cover.append(aperture);}
+    let aperturePoints:number[][][]=[];
+    let lastAperture='';
     // El Timeline controla estos nodos; no comparte transforms con el drag de las cartas.
     gsap.killTweensOf([mask,...texts,heading,track,...slots]);
     [mask,...texts,heading,track,...slots].forEach(el=>el.style.clipPath='none');
@@ -63,6 +75,8 @@ if(root){
         `1031.29,${y(308.79)} 1170.53,${y(69.9)} 723.52,${y(69.9)} 584.97,${y(308.79)}`,
         `1031.29,${y(308.79)} 761.25,${h} 1096.53,${h} 1366,${y(308.79)}`];
       polygons.forEach((polygon,i)=>polygon.setAttribute('points',points[i]));
+      aperturePoints=points.map(points=>points.split(' ').map(pair=>pair.split(',').map(Number)));
+      lastAperture='';
       // offsetLeft/Top no incluyen las animaciones aplicadas a cada slot.
       const image=slots[0].querySelector<HTMLImageElement>('.workflow__front img')!;
       target={x:grid.offsetLeft+slots[0].offsetLeft,y:grid.offsetTop+slots[0].offsetTop,w:image.offsetWidth,h:image.offsetHeight};
@@ -99,6 +113,7 @@ if(root){
           const progress = ease((p - imageStarts[index]) / .04);
 
           image.style.opacity = ready ? String(progress) : '0';
+          image.style.visibility=ready&&progress>0&&(index===3||p<imageStarts[index+1]+.04)?'visible':'hidden';
           image.style.filter = `saturate(${saturations[index]})`;
         });
       const staggerStep=.025,exitDuration=.09;
@@ -117,7 +132,15 @@ if(root){
       const px=zoom*(width*.5-focalX*width)-(scale-1)*focalX*width;
       const py=zoom*(height*.5-focalY*height)-(scale-1)*focalY*height;
       // El SVG conserva un buffer del tamaño de la pantalla: solo cambian sus vectores.
-      cutout.setAttribute('transform',`translate(${px/width*1366} ${py/width*1366}) scale(${scale})`);
+      if(touchTablet){
+        const tx=px/width*1366,ty=py/width*1366;
+        const key=`${tx.toFixed(3)},${ty.toFixed(3)},${scale.toFixed(4)}`;
+        if(p<.42&&key!==lastAperture){
+          lastAperture=key;
+          const holes=aperturePoints.map(points=>'M'+points.map(([x,y])=>`${(x*scale+tx).toFixed(2)},${(y*scale+ty).toFixed(2)}`).join('L')+'Z').join('');
+          aperture.setAttribute('d',`M0,0H1366V${svgHeight}H0Z`+holes);
+        }
+      }else cutout.setAttribute('transform',`translate(${px/width*1366} ${py/width*1366}) scale(${scale})`);
       cover.style.visibility=p<.42?'visible':'hidden';
       mask.style.maskImage='none';
 
@@ -224,6 +247,7 @@ slots.forEach((slot, i) => {
       workflow.dispatchEvent(new Event('workflow:reset'));
       animation.scrollTrigger?.kill();animation.kill();resize.disconnect();
       hero.querySelector('a[href="#workflow"]')?.removeEventListener('click',jump);
+      aperture.remove();maskedCover.style.removeProperty('display');
       host.removeAttribute('data-journey');hero.inert=false;workflow.inert=false;
       [hero,fish,workflow,heading,track,...texts,...slots].forEach(el=>{
         ['width','height','left','top','border-radius','transform','translate','rotate','visibility','clip-path','opacity'].forEach(prop=>el.style.removeProperty(prop));
@@ -238,6 +262,7 @@ slots.forEach((slot, i) => {
   });
 
   media.add('((max-width:700px) or ((max-width:1000px) and (max-height:500px))) and (prefers-reduced-motion:no-preference)',()=>{
+    if (isIPadPortrait()) return;
     host.setAttribute('data-mobile-journey','');
     host.removeAttribute('data-journey');
     const stage=host.querySelector<HTMLElement>('.journey-stage')!;
@@ -275,14 +300,16 @@ slots.forEach((slot, i) => {
       }
       // Grow only the aperture; the illustration keeps its viewport dimensions.
       const portalScale=1+portal*18;
-      const fit=Math.min(width/1365.7,height/2462.68);
-      const mw=1365.7*fit, mh=2462.68*fit;
+      const landscape=width>height;
+      const svgW=landscape?1366:1365.7,svgH=landscape?768:2462.68;
+      const fit=landscape?Math.max(width/svgW,height/svgH):Math.min(width/svgW,height/svgH);
+      const mw=svgW*fit, mh=svgH*fit;
       const focalX=.3, focalY=.36;
       mask.style.maskSize=mask.style.webkitMaskSize=`${mw*portalScale}px ${mh*portalScale}px`;
       mask.style.maskPosition=mask.style.webkitMaskPosition=`${(width-mw)/2-(portalScale-1)*mw*focalX}px ${(height-mh)/2-(portalScale-1)*mh*focalY}px`;
-      mask.style.transform='none';fish.style.transform='none';
+      mask.style.transform='none';fish.style.transform=`translate3d(0,${-height*.012*portal}px,0)`;
       if(p>.2){mask.style.maskImage='none';mask.style.webkitMaskImage='none';}
-      else {const url='url("/icons/logo_phn_mask.svg")';mask.style.maskImage=url;mask.style.webkitMaskImage=url;}
+      else {const url=landscape?'url("/icons/logo_w.svg")':'url("/icons/logo_phn_mask.svg")';mask.style.maskImage=url;mask.style.webkitMaskImage=url;}
 
       const imageStarts=[.105,.135,.165,.195];
       intermediateImages.forEach((img,index)=>{
@@ -348,8 +375,13 @@ slots.forEach((slot, i) => {
       const url=mask.dataset.portalMask||'';mask.style.maskImage=url;mask.style.webkitMaskImage=url;
     };
   });
+    const refreshIPadLayout = () => gsap.matchMediaRefresh();
+    window.addEventListener('leo:ipad-layout', refreshIPadLayout);
+    window.addEventListener('leo:orientation-ready', refreshIPadLayout);
     if (import.meta.hot) {
       import.meta.hot.dispose(() => {
+        window.removeEventListener('leo:ipad-layout', refreshIPadLayout);
+        window.removeEventListener('leo:orientation-ready', refreshIPadLayout);
         media.revert();
         back.remove();
         cover.remove();

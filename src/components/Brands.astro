@@ -14,14 +14,17 @@ const t = en as Record<string,string>;
     <div class="brands-grid">
       {[0,1].map(column=><div class="brands-column" data-brand-column={column}>
       {brands.filter((_,index)=>index%2===column).map(brand=>(
-        <div
+        <button
+          type="button"
+          data-brand-preview={`/imgs/brands/previews/${brand.file}.webp`}
+          aria-controls="brand-preview" aria-expanded="false"
           class="brands-cell"
-          style={`--brand-span:${brand.span}`}
+          style={`--brand-span:${brand.span};--brand-order:${brands.indexOf(brand)}`}
           data-brand-name={brand.name}
           aria-label={brand.name}
         >
           <img src={`/imgs/brands/${brand.file}.svg`} data-brand-original={`/imgs/brands/${brand.file}.svg`} data-brand-white={['WWF3','COA3','IMA3','SPERMWHALES3'].includes(brand.file)?`/imgs/brands/${brand.file}_W.svg`:undefined} alt="" loading="lazy" decoding="async" draggable="false" />
-        </div>
+        </button>
       ))}
       </div>)}
     </div>
@@ -31,6 +34,7 @@ const t = en as Record<string,string>;
     </h2>
   </div>
 
+  <div id="brand-preview" class="brand-preview" hidden><figure><div class="brand-preview-image"></div><figcaption></figcaption></figure><button type="button" class="brand-preview-close" data-i18n="brands.close">{t['brands.close']}</button></div>
 </section>
 <script>
   import '../scripts/brands';

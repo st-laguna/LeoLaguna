@@ -1,10 +1,25 @@
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
 import { initFooterMarquee, MARQUEE_VIEW } from './footer-marquee';
 import { scrollPage } from './smooth-scroll';
 export function initFooter() {
   const footer=document.querySelector<HTMLElement>('.footer');
   if(!footer)return ()=>{};
+  const entranceMedia=gsap.matchMedia();
+  entranceMedia.add('(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',()=>{
+    footer.querySelectorAll<HTMLElement>('.footer__mobile-row').forEach((row,i)=>{
+      gsap.fromTo(row,{xPercent:i%2?100:-100},{xPercent:0,ease:'none',scrollTrigger:{trigger:row,start:'top bottom',end:'top 65%',scrub:.8}});
+    });
+    const brands=document.querySelector('.brands-layout');
+    if(brands)gsap.fromTo(brands,{clipPath:'inset(100% 0 0)'},{clipPath:'inset(0% 0 0)',ease:'none',scrollTrigger:{trigger:brands,start:'top 95%',end:'top 35%',scrub:.8}});
+  });
+  const mobileVisibility=new IntersectionObserver(([entry])=>footer.toggleAttribute('data-mobile-visible',entry.isIntersecting));
+  mobileVisibility.observe(footer);
+
   const root=document.documentElement;
   const abort=new AbortController();const signal=abort.signal;
+  signal.addEventListener('abort',()=>{entranceMedia.revert();mobileVisibility.disconnect();});
   footer.querySelector<HTMLAnchorElement>('.footer__mark')
     ?.addEventListener('click', event => {
       if (
@@ -172,10 +187,11 @@ function setFooterNavigation(active: boolean) {
   let scheduled=0,wasActive=false;
   function position(){
     scheduled=0;
-      const remaining =
-        document.documentElement.scrollHeight -
-        window.innerHeight -
-        window.scrollY;
+    const viewport=window.visualViewport;
+    const visibleHeight=viewport?.height ?? innerHeight;
+    const viewportTop=viewport?.offsetTop ?? 0;
+    const scroller=document.scrollingElement || document.documentElement;
+    const remaining=Math.max(0,scroller.scrollHeight-scroller.clientHeight-scroller.scrollTop);
 
       if (remaining <= 4) {
         const name = footer?.querySelector<HTMLElement>('.footer__name');
@@ -191,7 +207,10 @@ function setFooterNavigation(active: boolean) {
       }
     
     const rect=footer!.getBoundingClientRect();
-    const active = rect.top <= 24 && rect.bottom > 100;
+    // A short footer can finish below the top edge when browser chrome retracts.
+    const finalTop=viewportTop+Math.max(0,visibleHeight-rect.height);
+    const inView=rect.top<viewportTop+visibleHeight && rect.bottom>viewportTop+100;
+    const active=inView&&(rect.top<=finalTop+24||remaining<=8);
     if((rect.top>innerHeight+40||rect.bottom<0)&&!reduced.matches){
       animations.forEach(a=>a.cancel());animations.clear();
       entranceElements.forEach(el=>el.removeAttribute('data-entered'));
@@ -225,6 +244,8 @@ window.addEventListener('scroll', schedule, {
   signal,
 });
 
+window.visualViewport?.addEventListener('resize',schedule,{passive:true,signal});
+window.visualViewport?.addEventListener('scroll',schedule,{passive:true,signal});
 window.addEventListener('resize', schedule, {
   passive: true,
   signal,

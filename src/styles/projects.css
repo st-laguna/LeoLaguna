@@ -196,3 +196,9 @@
  .projects[data-mobile-stack] .project-mobile-more {width:36px;height:36px;flex-basis:36px;}
  .gallery-header {padding:16px 24px;flex-direction:row;align-items:center;}
 }
+
+@media (max-width:700px), (max-width:1000px) and (max-height:500px) {
+ .projects[data-mobile-stack] {margin-block:8svh 12svh;}
+ .projects[data-mobile-stack] .projects-stage {height:100dvh;min-height:100dvh;padding:8px;box-sizing:border-box;}
+ .projects[data-mobile-stack] .project-panel {box-sizing:border-box;}
+}

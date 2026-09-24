@@ -55,3 +55,9 @@
  .home-journey[data-mobile-journey] .workflow__card {width:min(100%,calc((100svh - 60px)*.84));}
  .home-journey[data-mobile-journey] .workflow__back {font-size:clamp(12px,3.8svh,17px);padding:18px;}
 }
+
+@media (max-width:700px), (max-width:1000px) and (max-height:500px) {
+ .home-journey[data-mobile-journey] .journey-stage {height:100dvh;}
+ .home-journey[data-mobile-journey] .hero {min-height:0;}
+ .home-journey[data-mobile-journey] .hero__parallax {top:-2%;height:104%;will-change:transform;}
+}

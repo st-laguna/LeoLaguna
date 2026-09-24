@@ -18,13 +18,17 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
 // Native fragment scrolling can precede Lenis/ScrollTrigger initialization.
 // Align once after all page modules have mounted, before the destination reveal.
+let entryAnchorSettled = false;
+let userMoved = false;
+for (const type of ['touchstart','wheel','keydown']) window.addEventListener(type, () => {userMoved=true;}, {once:true,passive:true,signal});
 function settleEntryAnchor() {
+  if (entryAnchorSettled || userMoved) return;
   if (performance.getEntriesByType('navigation').some(entry =>
     (entry as PerformanceNavigationTiming).type === 'back_forward')) return;
   const id = location.hash.slice(1);
   if (id !== 'work' && id !== 'contact') return;
   const target = document.getElementById(id);
-  if (target) commitScrollJump(() => scrollPage(target.getBoundingClientRect().top + scrollY, false));
+  if (target) { entryAnchorSettled=true; commitScrollJump(() => scrollPage(target.getBoundingClientRect().top + scrollY, false)); }
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', settleEntryAnchor, {once:true,signal});

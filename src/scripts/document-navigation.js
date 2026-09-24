@@ -3,10 +3,11 @@ const root = document.documentElement;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 function restorePreferences() {
   try {
-    root.dataset.theme = localStorage.getItem('leo-theme') === 'dark' ? 'dark' : 'light';
+    const saved=localStorage.getItem('leo-theme');
+    root.dataset.theme = saved==='light'||saved==='dark'?saved:matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches?'dark':'light';
     root.lang = localStorage.getItem('leo-language') === 'es' ? 'es' : 'en';
   } catch {
-    root.dataset.theme = 'light';
+    root.dataset.theme = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches?'dark':'light';
     root.lang = 'en';
   }
 }
