@@ -1,0 +1,520 @@
+---
+import en from '../i18n/en.json';
+
+const dictionary = en as Record<string, string>;
+const steps = [1, 2, 3, 4];
+---
+
+<section id="workflow" class="workflow" aria-labelledby="workflow-heading">
+  <h2 id="workflow-heading" class="workflow__heading" data-reveal>
+    <span data-i18n="workflow.intro.start">
+      {dictionary['workflow.intro.start']}
+    </span>
+    {' '}
+    <em data-i18n="workflow.intro.highlight">
+      {dictionary['workflow.intro.highlight']}
+    </em>
+    {' '}
+    <span data-i18n="workflow.intro.end">
+      {dictionary['workflow.intro.end']}
+    </span>
+  </h2>
+
+  <div class="workflow__grid">
+    {steps.map((step) => (
+      <div class="workflow__slot" data-reveal>
+        <button
+          class="workflow__card"
+          type="button"
+          aria-pressed="false"
+          aria-labelledby={`workflow-title-${step}`}
+          aria-describedby="workflow-hint"
+        >
+          <span class="workflow__turn">
+            <span class="workflow__front">
+              <img
+                src={`/imgs/workflow/${step}.webp`}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+                width="600"
+                height="600"
+              />
+              <strong
+                id={`workflow-title-${step}`}
+                data-i18n={`workflow.${step}.title`}
+              >
+                {dictionary[`workflow.${step}.title`]}
+              </strong>
+            </span>
+
+            <span class="workflow__back" aria-hidden="true">
+              <span data-i18n={`workflow.${step}.body`}>
+                {dictionary[`workflow.${step}.body`]}
+              </span>
+            </span>
+          </span>
+        </button>
+      </div>
+    ))}
+  </div>
+
+  <div class="workflow__track" data-reveal aria-hidden="true">
+    <span class="workflow__dot"></span>
+  </div>
+
+  <p id="workflow-hint" class="workflow__hint" data-i18n="workflow.hint">
+    {dictionary['workflow.hint']}
+  </p>
+
+  <div class="workflow__cursor" aria-hidden="true">
+    <span data-i18n="workflow.drag">{dictionary['workflow.drag']}</span>
+  </div>
+</section>
+
+<style>
+  .workflow {
+    --back-background: #111;
+    --back-text: #fff;
+
+    position: relative;
+    padding: clamp(140px, 19vh, 240px) var(--page-gap, 3.2vw) clamp(150px, 20vh, 260px);
+    min-height: 110svh;
+    background-color: var(--background);
+    color: var(--foreground);
+    transition: background-color 450ms ease, color 450ms ease;
+  }
+
+  :global(html[data-theme="dark"]) .workflow {
+    --back-background: #fff;
+    --back-text: #000;
+  }
+
+  .workflow__heading {
+    max-width: 1050px;
+    margin: 0 0 56px;
+    font-size: clamp(24px, 2.65vw, 44px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.035em;
+    color: #858585;
+    text-wrap: balance;
+  }
+
+  .workflow__heading em {
+    color: var(--foreground);
+    font-weight: 700;
+    transition: color 450ms ease;
+  }
+
+  .workflow__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(20px, 3.8vw, 72px);
+    padding: 52px 0 38px;
+    border-top: 1px solid #8886;
+  }
+
+  .workflow__slot {
+    position: relative;
+    min-width: 0;
+    perspective: 1100px;
+  }
+
+  .workflow__slot:nth-child(even) {
+    margin-top: 28px;
+  }
+
+  .workflow__slot:focus-within,
+  .workflow__slot:hover {
+    z-index: 2;
+  }
+
+  .workflow__card {
+    --rx: 0deg;
+    --ry: 0deg;
+    --dx: 0px;
+    --dy: 0px;
+
+    display: block;
+    width: 100%;
+    aspect-ratio: 0.85;
+    padding: 0;
+    border: 0;
+    border-radius: 18px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    user-select: none;
+    touch-action: pan-y;
+    transform-style: preserve-3d;
+    transform:
+      translate(var(--dx), var(--dy))
+      rotateX(var(--rx))
+      rotateY(var(--ry));
+    transition: transform 350ms ease;
+  }
+
+  .workflow__card[data-dragging] {
+    transition: none;
+  }
+
+  .workflow__card:focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 8px;
+  }
+
+  .workflow__turn {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 650ms cubic-bezier(.22, 1, .36, 1);
+  }
+
+  .workflow__card[aria-pressed="true"] .workflow__turn {
+    transform: rotateY(180deg);
+  }
+
+  .workflow__front,
+  .workflow__back {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .workflow__front img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    height: auto;
+    object-fit: cover;
+    border-radius: 18px;
+    pointer-events: none;
+  }
+
+  .workflow__front strong {
+    display: block;
+    margin-top: 16px;
+    font-size: clamp(12px, 1.05vw, 17px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  .workflow__back {
+    align-items: center;
+    text-align: center !important;
+    justify-content: center;
+    padding: clamp(24px, 3vw, 48px);
+    border-radius: 18px;
+    background-color: var(--back-background);
+    color: var(--back-text);
+    transform: rotateY(180deg);
+    font-size: clamp(14px, 1.3vw, 20px);
+    line-height: 1.45;
+    overflow: auto;
+    transition: background-color 450ms ease, color 450ms ease;
+  }
+
+  .workflow__track {
+    position: relative;
+    height: 1px;
+    margin-top: 24px;
+    background: #8886;
+  }
+
+  .workflow__dot {
+    position: absolute;
+    top: -4px;
+    left: 0;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--foreground);
+    visibility: hidden;
+    transition: left 450ms cubic-bezier(.22,1,.36,1);
+    transform: translateX(-50%);
+  }
+
+.workflow__hint {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+  .workflow__cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: none;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border: 1px solid #777;
+    border-radius: 50%;
+    background: #000;
+    color: #fff;
+    font-size: 11px;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .workflow[data-ready] .workflow__card {
+      cursor: none;
+    }
+
+    .workflow__cursor {
+      display: grid;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .workflow__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px 24px;
+    }
+
+    .workflow__slot:nth-child(even) {
+      margin-top: 0;
+    }
+
+    .workflow__back {
+      font-size: clamp(15px, 2vw, 20px);
+      padding: clamp(24px, 3vw, 48px);
+        align-items: center;
+        text-align: center;
+    }
+  }
+    .workflow__back > span {
+    display: block;
+    width: 100%;
+    max-width: 22ch;
+    margin-inline: auto;
+    }
+  @media (max-width: 540px) {
+    .workflow {
+      padding-inline: var(--page-gap, 6vw);
+    }
+
+    .workflow__grid {
+      grid-template-columns: 1fr;
+      padding-inline: 16px;
+    }
+
+    .workflow__card {
+      max-width: 360px;
+      margin-inline: auto;
+    }
+
+    .workflow__back {
+      font-size: 19px;
+      padding: 28px;
+    }
+
+    .workflow__track {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .workflow,
+    .workflow * {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>('#workflow');
+
+  if (section) {
+    const cards =
+      section.querySelectorAll<HTMLButtonElement>('.workflow__card');
+    const cursor =
+      section.querySelector<HTMLElement>('.workflow__cursor')!;
+    const track =
+      section.querySelector<HTMLElement>('.workflow__track')!;
+    const dot =
+      section.querySelector<HTMLElement>('.workflow__dot')!;
+
+    const reducedMotion =
+      window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let activeCard: HTMLButtonElement | null = null;
+
+    function indicate(card: HTMLButtonElement) {
+      activeCard = card;
+      const bounds = card.parentElement!.getBoundingClientRect();
+      const line = track.getBoundingClientRect();
+
+      dot.style.left = `${bounds.left + bounds.width / 2 - line.left}px`;
+      dot.style.visibility = 'visible';
+    }
+
+    function reset(card: HTMLButtonElement) {
+      ['--rx', '--ry', '--dx', '--dy'].forEach((property) => {
+        card.style.removeProperty(property);
+      });
+    }
+
+    function flip(card: HTMLButtonElement) {
+      const showingBack = card.getAttribute('aria-pressed') !== 'true';
+
+      card.setAttribute('aria-pressed', String(showingBack));
+      card.querySelector('.workflow__back')
+        ?.setAttribute('aria-hidden', String(!showingBack));
+
+      if (showingBack) {
+        card.setAttribute(
+          'aria-describedby',
+          `${card.id}-description workflow-hint`
+        );
+      } else {
+        card.setAttribute('aria-describedby', 'workflow-hint');
+      }
+    }
+
+    cards.forEach((card, index) => {
+      card.id = `workflow-card-${index + 1}`;
+      const back = card.querySelector<HTMLElement>('.workflow__back')!;
+      back.id = `${card.id}-description`;
+
+      let pointer: number | null = null;
+      let startX = 0;
+      let startY = 0;
+      let dragged = false;
+      let suppressClick = false;
+
+      function showCursor(event: PointerEvent) {
+        if (event.pointerType !== 'mouse') return;
+        cursor.style.transform =
+          `translate3d(${event.clientX - 32}px, ${event.clientY - 32}px, 0)`;
+        cursor.style.visibility = 'visible';
+      }
+
+      card.addEventListener('pointerenter', (event) => {
+        indicate(card);
+        showCursor(event);
+      });
+
+      card.addEventListener('focus', () => indicate(card));
+
+      card.addEventListener('pointerdown', (event) => {
+        if (!event.isPrimary || event.button !== 0) return;
+
+        pointer = event.pointerId;
+        startX = event.clientX;
+        startY = event.clientY;
+        dragged = false;
+        suppressClick = false;
+
+        card.setPointerCapture(pointer);
+        card.setAttribute('data-dragging', '');
+        indicate(card);
+      });
+
+      card.addEventListener('pointermove', (event) => {
+        showCursor(event);
+
+        if (pointer !== null && pointer === event.pointerId) {
+          const dx = event.clientX - startX;
+          const dy = event.clientY - startY;
+
+          if (Math.hypot(dx, dy) > 10) dragged = true;
+          if (reducedMotion.matches) return;
+
+          card.style.setProperty('--dx', `${Math.max(-45, Math.min(45, dx * .3))}px`);
+          card.style.setProperty('--dy', `${Math.max(-30, Math.min(30, dy * .2))}px`);
+          card.style.setProperty('--ry', `${Math.max(-30, Math.min(30, dx * .2))}deg`);
+          return;
+        }
+
+        if (event.pointerType !== 'mouse' || reducedMotion.matches) return;
+
+        const bounds = card.parentElement!.getBoundingClientRect();
+        const x = Math.max(-.5, Math.min(.5,
+          (event.clientX - bounds.left) / bounds.width - .5));
+        const y = Math.max(-.5, Math.min(.5,
+          (event.clientY - bounds.top) / bounds.height - .5));
+
+        card.style.setProperty('--rx', `${-y * 16}deg`);
+        card.style.setProperty('--ry', `${x * 20}deg`);
+      });
+
+      function finish(event: PointerEvent, cancelled: boolean) {
+        if (pointer !== event.pointerId) return;
+
+        const shouldFlip = dragged && !cancelled;
+        suppressClick = dragged || cancelled;
+        pointer = null;
+
+        card.removeAttribute('data-dragging');
+        reset(card);
+        cursor.style.visibility = 'hidden';
+
+        if (card.hasPointerCapture(event.pointerId)) {
+          card.releasePointerCapture(event.pointerId);
+        }
+
+        if (shouldFlip) flip(card);
+      }
+
+      card.addEventListener('pointerup', (event) => finish(event, false));
+      card.addEventListener('pointercancel', (event) => finish(event, true));
+      card.addEventListener('lostpointercapture', (event) => finish(event, true));
+
+      card.addEventListener('click', (event) => {
+        // Un arrastre ya gira la carta al soltar: evita un segundo giro.
+        if (suppressClick && event.detail !== 0) {
+          suppressClick = false;
+          return;
+        }
+
+        suppressClick = false;
+        flip(card);
+      });
+
+      card.addEventListener('pointerleave', () => {
+        if (pointer !== null) return;
+        reset(card);
+        cursor.style.visibility = 'hidden';
+      });
+    });
+
+    const observer = new ResizeObserver(() => {
+      if (activeCard) indicate(activeCard);
+    });
+    observer.observe(section);
+
+    const hideCursor = () => {
+      cursor.style.visibility = 'hidden';
+    };
+
+    window.addEventListener('scroll', hideCursor, { passive: true });
+    window.addEventListener('blur', hideCursor);
+
+    section.dataset.ready = 'true';
+
+    if (import.meta.hot) {
+      import.meta.hot.dispose(() => {
+        observer.disconnect();
+        window.removeEventListener('scroll', hideCursor);
+        window.removeEventListener('blur', hideCursor);
+      });
+    }
+  }
+</script>

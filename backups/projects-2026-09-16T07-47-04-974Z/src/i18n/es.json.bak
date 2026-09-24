@@ -1,0 +1,21 @@
+{
+  "nav.work": "PROYECTOS",
+  "nav.about": "SOBRE MÍ",
+  "nav.contact": "CONTACTO",
+  "hero.location": "Desde Lima, Perú",
+  "hero.tagline": "Creando Para Todos",
+  "hero.scroll": "DESLIZA PARA EXPLORAR",
+    "workflow.intro.start": "CADA PROYECTO SIGUE UN",
+  "workflow.intro.highlight": "FLUJO DE TRABAJO",
+  "workflow.intro.end": "ESTRUCTURADO QUE MANTIENE ALINEADOS LA INVESTIGACIÓN, LOS RECURSOS VISUALES Y EL RESULTADO FINAL.",
+  "workflow.drag": "arrastra",
+  "workflow.hint": "Haz clic o arrastra para girar",
+  "workflow.1.title": "VISIÓN DEL PROYECTO",
+  "workflow.1.body": "Una breve conversación basta para conocer tus objetivos, público, requisitos técnicos y plazos antes de comenzar a diseñar.",
+  "workflow.2.title": "RECOPILACIÓN DE INFORMACIÓN",
+  "workflow.2.body": "Cada ilustración, animación o interfaz se construye a partir de investigación, referencias y una comunicación clara, sin basarse en suposiciones.",
+  "workflow.3.title": "DISEÑO Y PRODUCCIÓN",
+  "workflow.3.body": "Recibes avances durante la producción para realizar los ajustes a tiempo, en lugar de dejarlos para el final.",
+  "workflow.4.title": "PROYECTO COMPLETADO",
+  "workflow.4.body": "Ajustes finales, exportación y entrega de archivos listos para su publicación o producción."
+}

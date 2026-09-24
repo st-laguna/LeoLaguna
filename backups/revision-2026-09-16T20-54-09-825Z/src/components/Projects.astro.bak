@@ -1,0 +1,100 @@
+---
+import { projects } from '../data/projects';
+import en from '../i18n/en.json';
+import '../styles/projects.css';
+const t = en as Record<string,string>;
+---
+<section id="work" class="projects" aria-label="Projects" data-projects>
+  <div class="projects-stage">
+    <aside class="projects-sidebar">
+      <a class="projects-mark" href="#" aria-label="Leo Laguna">
+        <span aria-hidden="true"></span>
+      </a>
+      <div class="projects-vertical"><span>LIMA, PERU</span><span>LEO LAGUNA</span><span>© {new Date().getFullYear()}</span></div>
+      <nav aria-label="Portfolio">
+        <a href="#work" aria-current="location" data-i18n="nav.work">WORK</a>
+        <a href="#about" data-i18n="nav.about">ABOUT</a>
+        <a href="#contact" data-i18n="nav.contact">CONTACT</a>
+      </nav>
+    </aside>
+    <div class="projects-main">
+      <div class="projects-window">
+        <div class="projects-rail">
+          {projects.map((project,index) => (
+            <article class:list={['project-panel', {'project-panel--video':index===3}]} data-panel={index}>
+              <div class="project-media">
+                {project.assets.map((asset,j) => (
+                  <figure class="project-slide" data-slide={j} hidden={j!==0}>
+                    {asset.kind === 'image' ? (
+                      <img src={asset.src} alt={asset.client || `${project.id} — ${j+1}`} loading="lazy" decoding="async" />
+                    ) : (
+                      <video src={asset.src} controls playsinline preload="metadata" aria-label={asset.client}></video>
+                    )}
+                    <figcaption>
+                      {asset.client && <strong>{asset.client}</strong>}
+                      <span data-i18n={`projects.${project.id}.caption`}>{t[`projects.${project.id}.caption`]}</span>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+              <div class="project-thumbs" role="group" aria-label={`Gallery ${project.id}`}>
+                {project.assets.slice(0,index===3 ? 3 : 6).map((asset,j) => (
+                  <button type="button" data-select={j} aria-pressed={j===0} aria-label={`${project.id} — ${asset.client || j+1}`}>
+                    {asset.kind === 'image' ? <img src={asset.src} alt="" loading="lazy" /> : <span class="project-video-label">▶<small>{asset.client}</small></span>}
+                  </button>
+                ))}
+                {index===3 && Array.from({length:Math.max(0,3-project.assets.length)},()=> (
+                  <button type="button" disabled aria-label="Video"><span aria-hidden="true">—</span></button>
+                ))}
+              </div>
+              <div class="project-mobile-copy">
+                <span>{project.id}</span>
+                <h3 data-i18n={`projects.${project.id}.title`}>{t[`projects.${project.id}.title`]}</h3>
+                <p data-i18n={`projects.${project.id}.description`}>{t[`projects.${project.id}.description`]}</p>
+                <button type="button" data-open={index} data-i18n="projects.viewAll">{t['projects.viewAll']}</button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+      <div class="projects-footer">
+        <div class="projects-number" aria-hidden="true"><span>0</span><span class="projects-digit-window"><span class="projects-digits"><span>1</span><span>2</span><span>3</span><span>4</span></span></span></div>
+        <div class="projects-copy-stack">
+          {projects.map((project,index)=>(
+            <div class="projects-copy" data-copy={index}>
+              <h2 data-i18n={`projects.${project.id}.title`}>{t[`projects.${project.id}.title`]}</h2>
+              <p data-i18n={`projects.${project.id}.description`}>{t[`projects.${project.id}.description`]}</p>
+            </div>
+          ))}
+        </div>
+        <div class="projects-actions">
+          <div class="projects-paging">
+            <button type="button" data-step="-1" aria-label="Previous / Anterior">←</button>
+            <button type="button" data-step="1" aria-label="Next / Siguiente">→</button>
+          </div>
+          <button type="button" class="projects-view-all" data-open="current" aria-controls="projects-expanded" aria-expanded="false"><span data-i18n="projects.viewAll">{t['projects.viewAll']}</span> ↴</button>
+        </div>
+      </div>
+      <div class="projects-progress" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+  <div id="projects-expanded" class="projects-expanded" hidden>
+    <div class="projects-expanded-heading">
+      <h2 tabindex="-1" data-gallery-heading data-i18n="projects.gallery">{t['projects.gallery']}</h2>
+      <button type="button" data-close><span data-i18n="projects.close">{t['projects.close']}</span> ↑</button>
+    </div>
+    {projects.map((project,index)=>(
+      <div class="projects-gallery" data-gallery={index} hidden>
+        {project.assets.map(asset=>(
+          <figure>
+            {asset.kind==='image' ? <a href={asset.src} target="_blank" rel="noopener"><img src={asset.src} alt={asset.client || project.id} loading="lazy" /></a> : <video src={asset.src} controls playsinline preload="none" aria-label={asset.client}></video>}
+            {asset.client && <figcaption>{asset.client}</figcaption>}
+          </figure>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>
+<script>
+  import '../scripts/projects';
+</script>

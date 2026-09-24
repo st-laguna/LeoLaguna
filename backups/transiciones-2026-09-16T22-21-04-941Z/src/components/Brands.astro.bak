@@ -1,0 +1,49 @@
+---
+import { brands } from '../data/brands';
+import en from '../i18n/en.json';
+import '../styles/brands.css';
+const t = en as Record<string,string>;
+---
+<section id="brands" class="brands" data-brands aria-labelledby="brands-statement">
+  <div class="brands-layout">
+    <dl class="brands-stats">
+      <div data-reveal><dt data-i18n="brands.years">{t['brands.years']}</dt><dd>5</dd></div>
+      <div data-reveal><dt data-i18n="brands.count">{t['brands.count']}</dt><dd>15+</dd></div>
+    </dl>
+
+    <div class="brands-grid">
+      {brands.map(brand=>(
+        <button
+          class="brands-cell"
+          data-reveal
+          type="button"
+          style={`--brand-span:${brand.span}`}
+          data-brand-name={brand.name}
+          data-brand-preview={`/imgs/brands/previews/${brand.file}.webp`}
+          aria-label={brand.name}
+          aria-controls="brand-preview"
+          aria-expanded="false"
+        >
+          <img src={`/imgs/brands/${brand.file}.svg`} alt="" loading="lazy" decoding="async" draggable="false" />
+        </button>
+      ))}
+    </div>
+
+    <h2 id="brands-statement" class="brands-statement" data-reveal data-i18n="brands.statement">
+      {t['brands.statement']}
+    </h2>
+  </div>
+
+  <div id="brand-preview" class="brand-preview" hidden>
+    <figure>
+      <div class="brand-preview-image"></div>
+      <figcaption></figcaption>
+    </figure>
+    <button type="button" class="brand-preview-close" data-i18n="brands.close">
+      {t['brands.close']}
+    </button>
+  </div>
+</section>
+<script>
+  import '../scripts/brands';
+</script>

@@ -1,0 +1,160 @@
+---
+import "../styles/cv.css";
+import PageNavigation from "../components/PageNavigation.astro";
+import PageControls from '../components/PageControls.astro';
+import ScrollProgress from "../components/cv/ScrollProgress.astro";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "Leonardo S. Laguna — CV" }: Props = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-page="cv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <PageNavigation />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Host+Grotesk:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="cv-layout" data-page-content>
+      <!-- COLUMNA IZQUIERDA (20%) -->
+      <aside class="cv-sidebar" id="sidebar-panel">
+        <ScrollProgress targetId="sidebar-panel" />
+        <div class="cv-sidebar-inner">
+          <div class="cv-controls"><PageControls home /></div>
+          <slot name="sidebar" />
+        </div>
+      </aside>
+      
+      <!-- COLUMNA DERECHA (80%) -->
+      <main class="cv-content" id="content-panel">
+        <ScrollProgress targetId="content-panel" />
+        <div class="cv-content-inner">
+          <slot name="content" />
+        </div>
+      </main>
+    </div>
+
+    <!-- EL MODAL VA AQUÍ: FUERA DEL cv-layout PERO ANTES DE CERRAR EL BODY -->
+    <div id="image-modal" class="image-modal">
+      <img id="modal-image" src="" alt="Zoom" />
+    </div>
+    <script>
+      import '../scripts/cv-scroll';
+      import '../scripts/preferences';
+    </script>
+
+          
+  </body>
+</html>
+
+<style>
+  .cv-controls { margin: 0 0 28px; position:relative; z-index:4; }
+
+  .cv-layout {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .cv-sidebar,
+  .cv-content {
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .cv-sidebar::-webkit-scrollbar,
+  .cv-content::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cv-sidebar {
+    background: var(--color-bg-panel);
+  }
+
+  .cv-content {
+    background: var(--color-bg-panel-alt);
+  }
+
+  .cv-sidebar-inner {
+    padding: 20px 40px 20px 20px;
+  }
+
+  .cv-content-inner {
+    padding: 28px 20px 37px 35px;
+  }
+
+/* Asegura que el padding no sume ancho extra globalmente */
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  @media (max-width: 809px) {
+    .cv-layout {
+      grid-template-columns: 100%; /* Toma el 100% estricto */
+      height: auto;
+      overflow-x: hidden;
+    }
+
+    .cv-sidebar,
+    .cv-content {
+      height: auto;
+      overflow-x: hidden;
+    }
+
+    /* Reducimos el espacio a los bordes en móviles para que no corte el texto */
+    .cv-sidebar-inner {
+      padding: 30px 20px;
+    }
+
+    .cv-content-inner {
+      padding: 30px 20px;
+    }
+  }
+
+@media (min-width: 810px) {
+    .cv-sidebar {
+      /* Base oscura: Negro en la foto, cayendo a un azul abisal elegante */
+      background: var(--cv-sidebar-background);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ruido (Grain) para unificar la textura y darle un toque premium */
+    .cv-sidebar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 2;
+      mix-blend-mode: overlay;
+    }
+
+    .cv-sidebar-inner {
+      position: relative;
+      z-index: 3;
+    }
+  }
+</style>

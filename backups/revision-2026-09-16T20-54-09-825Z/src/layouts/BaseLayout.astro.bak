@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import SiteControls from '../components/SiteControls.astro';
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: 'es' | 'en';
+}
+
+const {
+  title = 'Leo Laguna',
+  description = 'Ilustración científica y comunicación visual.',
+  lang = 'es',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <script is:inline>
+  try {
+    document.documentElement.dataset.theme =
+      localStorage.getItem('leo-theme') === 'dark' ? 'dark' : 'light';
+
+    document.documentElement.lang =
+      localStorage.getItem('leo-language') === 'es' ? 'es' : 'en';
+  } catch {
+    document.documentElement.dataset.theme = 'light';
+    document.documentElement.lang = 'en';
+  }
+</script>
+  </head>
+  <body>
+    <header class="site-header">
+  <nav class="site-nav" aria-label="Navegación principal">
+    <a href="#work" data-i18n="nav.work">WORK</a>
+    <a href="#about" data-i18n="nav.about">ABOUT</a>
+    <a href="#contact" data-i18n="nav.contact">CONTACT</a>
+  </nav>
+
+  <SiteControls />
+</header>
+    <slot />
+
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

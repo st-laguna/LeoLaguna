@@ -1,0 +1,369 @@
+---
+import { bilingual } from "../../data/cv/translations";
+interface AnimationItem {
+  company: string;
+  dates: string;
+  description: string;
+  images?: string[];
+}
+
+interface Props {
+  items: AnimationItem[];
+}
+
+const { items }: Props = Astro.props;
+const count = items.length;
+---
+
+<div class="animation-row" style={`--card-count: ${count};`}>
+  {items.map((item, index) => (
+    <div class="animation-card" data-index={index}>
+      <div class="card-inner">
+        
+        <div class="card-text">
+          <div class="card-header">
+            <div class="card-title-block">
+              <h3 class="card-company">{item.company}</h3>
+              <span class="card-dates" {...bilingual(item.dates)}>{item.dates}</span>
+            </div>
+            <button class="card-toggle" type="button" aria-label="Expand / Ampliar">
+              <span class="plus-icon" aria-hidden="true"></span>
+            </button>
+          </div>
+          <p class="card-description" {...bilingual(item.description)}>{item.description}</p>
+        </div>
+
+        <div class="card-media">
+          <div class="card-media-inner">
+            {item.images && item.images.length > 0
+              ? item.images.map((src) => {
+                  const isVideo = src.toLowerCase().endsWith(".mp4") || 
+                                  src.toLowerCase().endsWith(".webm") || 
+                                  src.toLowerCase().endsWith(".ogg");
+                  return isVideo ? (
+                    <video src={src} autoplay loop muted playsinline class="media-element"></video>
+                  ) : (
+                    <img src={src} alt={item.company} class="media-element" />
+                  );
+                })
+              : <div class="card-media-placeholder"></div>}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .animation-row {
+    display: flex;
+    gap: var(--space-lg);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: var(--space-sm);
+    scroll-behavior: smooth;
+    cursor: grab;
+    user-select: none;
+    width: 100%; /* Asegura que la fila ocupe toda la columna */
+  }
+
+  .animation-row.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+  }
+
+  .animation-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .animation-card {
+    /* 2. Ocupan todo el ancho equitativamente cuando están retraídas */
+    flex: 1 1 0%; 
+    min-width: 280px; /* Límite mínimo para que no se aplasten si hay muchas */
+    background: var(--color-bg-card);
+    border-radius: var(--radius-card);
+    padding: var(--space-lg);
+    transition: flex var(--duration-slow) var(--ease-premium), min-width var(--duration-slow) var(--ease-premium);
+    min-height: 400px;
+    display: flex;
+    cursor: pointer; /* 5. Indica que toda la carta es clickeable */
+  }
+
+  .animation-card.expanded {
+    /* Al expandirse, toma prioridad absoluta sobre el espacio */
+    flex: 0 0 clamp(720px, 75vw, 1100px);
+  }
+
+  .card-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--space-lg);
+    width: 100%;
+  }
+
+  .card-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex-shrink: 0;
+    width: 100%;
+    transition: width var(--duration-slow) var(--ease-premium);
+  }
+
+  .animation-card.expanded .card-text {
+    width: 35%; 
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .card-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .card-company {
+    position: relative;
+    padding-left: 14px;
+    font-family: "Archivo", var(--font-sub);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: var(--fs-h3);
+    color: var(--color-text);
+  }
+
+  .card-company::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--color-text-secondary);
+  }
+
+  .card-dates {
+    padding-left: 14px;
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .card-toggle {
+    all: unset;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    /* 4. Eliminado el border que formaba el cuadradito */
+  }
+
+  .plus-icon {
+    position: relative;
+    width: 14px;
+    height: 14px;
+  }
+
+  .plus-icon::before,
+  .plus-icon::after {
+    content: "";
+    position: absolute;
+    background: var(--color-text);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform var(--duration-fast) var(--ease-premium), opacity var(--duration-fast) var(--ease-premium);
+  }
+
+  .plus-icon::before { width: 14px; height: 3px; }
+  .plus-icon::after { width: 3px; height: 14px; }
+
+  .animation-card.expanded .plus-icon {
+    transform: rotate(45deg);
+  }
+
+  /* 4. Efecto de brillo de colores continuos solo cuando la X está activa */
+  .animation-card.expanded .plus-icon::before,
+  .animation-card.expanded .plus-icon::after {
+    animation: hoverDotLoop 2.4s var(--ease-premium) infinite;
+  }
+
+  .card-description {
+    padding-left: 14px;
+    /* 3. Esto empuja el párrafo hacia abajo, despegándolo del título */
+    margin-top: auto; 
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-secondary);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+  }
+  
+  .animation-card.expanded .card-description {
+    -webkit-line-clamp: unset;
+  }
+
+  .card-media {
+    display: grid;
+    grid-template-columns: 0fr;
+    transition: grid-template-columns var(--duration-slow) var(--ease-premium);
+    flex-grow: 1;
+    height: 100%;
+  }
+
+  .animation-card.expanded .card-media {
+    grid-template-columns: 1fr;
+  }
+
+  .card-media-inner {
+    overflow: hidden;
+    min-width: 0;
+    height: 100%; /* Forzamos a que respete el 100% de la altura disponible */
+  }
+
+  .media-element,
+  .card-media-placeholder {
+    display: block;
+    width: 100%;
+    height: 100%; /* En lugar de aspect-ratio, toma toda la altura */
+    border-radius: var(--radius-card);
+    background: #000;
+    object-fit: cover;
+    /* 1. Esto ancla la imagen/video a la izquierda para el barrido lateral */
+    object-position: left center; 
+  }
+
+  @media (max-width: 809px) {
+    .animation-card {
+      /* En móviles, cada carta ocupa casi toda la pantalla y haces swipe lateral */
+      flex: 0 0 85vw; 
+      min-width: unset;
+      min-height: auto;
+      padding: var(--space-md);
+    }
+
+    .animation-card.expanded {
+      flex: 0 0 85vw; /* Mantiene el mismo ancho, solo crece hacia abajo */
+    }
+
+    .card-inner {
+      flex-direction: column; /* Apila el video y el texto verticalmente */
+      gap: var(--space-md);
+    }
+
+    .card-text,
+    .animation-card.expanded .card-text {
+      width: 100%; /* El texto toma todo el ancho disponible */
+    }
+
+    .media-element,
+    .card-media-placeholder {
+      aspect-ratio: 16 / 9; /* Forzamos la proporción para que el video se vea entero */
+      height: auto;
+    }
+  }
+</style>
+
+<script>
+  const rows = document.querySelectorAll(".animation-row");
+  const DRAG_CLICK_THRESHOLD = 6;
+
+  rows.forEach((row) => {
+    if (row.hasAttribute("data-init")) return;
+    row.setAttribute("data-init", "true");
+
+    let isPointerDown = false;
+    let isDragging = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let suppressNextClick = false;
+
+    // 5. Lógica de Expansión (Clic en toda la carta)
+    row.addEventListener("click", (e) => {
+      if (suppressNextClick) {
+        suppressNextClick = false;
+        e.stopPropagation();
+        return;
+      }
+
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+
+      // Escuchamos el clic en toda la carta, no solo en el botón toggle
+      const card = target.closest(".animation-card");
+
+      if (card) {
+        const isOpen = card.classList.contains("expanded");
+        
+        // Cerramos todas las cartas
+        row.querySelectorAll(".animation-card").forEach((c) => c.classList.remove("expanded"));
+        
+        // Abrimos la que recibió el clic
+        if (!isOpen) {
+          card.classList.add("expanded");
+        }
+      }
+    });
+
+    const SCROLL_SPEED = 2.5;
+
+    row.addEventListener("wheel", (e) => {
+      if (!(e instanceof WheelEvent)) return;
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        row.scrollLeft += e.deltaY * SCROLL_SPEED;
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    row.addEventListener("pointerdown", (e) => {
+      if (!(e instanceof PointerEvent)) return;
+      if (e.button !== 0) return;
+      
+      isPointerDown = true;
+      isDragging = false;
+      startX = e.clientX;
+      startScrollLeft = row.scrollLeft;
+    });
+
+    row.addEventListener("pointermove", (e) => {
+      if (!isPointerDown) return;
+      if (!(e instanceof PointerEvent)) return;
+
+      const delta = e.clientX - startX;
+      if (!isDragging && Math.abs(delta) > DRAG_CLICK_THRESHOLD) {
+        isDragging = true;
+        row.classList.add("dragging");
+      }
+
+      if (isDragging) {
+        row.scrollLeft = startScrollLeft - delta;
+        e.preventDefault();
+      }
+    });
+
+    const endDrag = () => {
+      if (isDragging) suppressNextClick = true;
+      isPointerDown = false;
+      isDragging = false;
+      row.classList.remove("dragging");
+    };
+
+    row.addEventListener("pointerup", endDrag);
+    row.addEventListener("pointercancel", endDrag);
+    row.addEventListener("pointerleave", () => {
+      if (isPointerDown) endDrag();
+    });
+  });
+</script>

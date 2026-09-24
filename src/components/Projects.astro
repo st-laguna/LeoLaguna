@@ -1,0 +1,112 @@
+---
+import { projects } from '../data/projects';
+import en from '../i18n/en.json';
+import '../styles/projects.css';
+import GlassSidebar from './GlassSidebar.astro';
+
+
+const t = en as Record<string,string>;
+---
+<section id="work" class="projects" aria-label="Projects" data-projects>
+  <div class="projects-stage">
+  <GlassSidebar />
+    <div class="projects-main">
+      <!-- Una retícula por proyecto; recorre el mismo desplazamiento que las imágenes. -->
+      <div class="projects-guides" aria-hidden="true">
+        <div class="projects-guides-rail">
+          {projects.map((project) => (
+            <div class="project-guide-page" data-guide-page={project.id}>
+              {[1,2,3,4].map(n => <span class={`project-guide project-guide--h project-guide--h${n}`} />)}
+              {[1,2,3].map(n => <span class={`project-guide project-guide--v project-guide--v${n}`} />)}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="projects-window">
+        <div class="projects-rail">
+          {projects.map((project,index) => (
+            <article class:list={['project-panel', {'project-panel--video':index===3}]} data-panel={index}>
+              <div class="project-media">
+                {project.assets.map((asset,j) => (
+                  <figure class="project-slide" data-slide={j} hidden={j!==0}>
+                    {asset.kind === 'image' ? (
+                      <button class="project-enlarge" type="button" data-zoom-src={asset.src} data-zoom-alt={asset.client || project.id} aria-label={`Ampliar / Enlarge: ${asset.client || project.id}`}><img src={asset.src} alt={asset.client || `${project.id} — ${j+1}`} loading="lazy" decoding="async" /></button>
+                    ) : (
+                      <video data-auto-video src={asset.src} poster={asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={asset.client || 'Video del proyecto'} ></video>
+                    )}
+                  </figure>
+                ))}
+              </div>
+              <div class="project-mobile-controls">
+                <div class="project-thumbs" role="tablist" aria-label={`Gallery ${project.id}`}>
+                  {project.assets.map((asset,j) => (
+                    <button type="button" role="tab" data-select={j} data-index={j} aria-selected={j===0} aria-pressed={j===0} tabindex={j===0 ? 0 : -1} aria-label={`${project.id} — ${asset.client || j+1}`}>
+                      <img src={asset.kind === 'video' ? asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp') : asset.src} alt="" loading="lazy" decoding="async" />
+                    </button>
+                  ))}
+                </div>
+                <button type="button" class="project-mobile-more" data-open={index} aria-label={t['projects.viewAll']}><span data-i18n="projects.viewAll">{t['projects.viewAll']}</span></button>
+              </div>
+              <div class="project-mobile-copy">
+                <span>{project.id}</span>
+                <h3 data-i18n={`projects.${project.id}.title`}>{t[`projects.${project.id}.title`]}</h3>
+                <p data-i18n={`projects.${project.id}.description`}>{t[`projects.${project.id}.description`]}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+      <div class="projects-footer">
+        <div class="projects-number" aria-hidden="true"><span>0</span><span class="projects-digit-window"><span class="projects-digits"><span>1</span><span>2</span><span>3</span><span>4</span></span></span></div>
+        <div class="projects-copy-stack">
+          {projects.map((project,index)=>(
+            <div class="projects-copy" data-copy={index}>
+              <h2 data-i18n={`projects.${project.id}.title`}>{t[`projects.${project.id}.title`]}</h2>
+              <p data-i18n={`projects.${project.id}.description`}>{t[`projects.${project.id}.description`]}</p>
+            </div>
+          ))}
+        </div>
+        <div class="projects-actions">
+          <div class="projects-paging">
+            <button type="button" data-step="-1" aria-label="Previous / Anterior">←</button>
+            <button type="button" data-step="1" aria-label="Next / Siguiente">→</button>
+          </div>
+          <button type="button" class="projects-view-all" data-open="current" aria-controls="projects-expanded" aria-expanded="false"><span data-i18n="projects.viewAll">{t['projects.viewAll']}</span> ↴</button>
+        </div>
+      </div>
+      <div class="projects-progress" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+</section>
+<dialog id="projects-expanded" class="gallery-dialog" aria-labelledby="gallery-heading">
+  <div class="gallery-shell">
+    <header class="gallery-header">
+      <h2 id="gallery-heading" data-i18n="projects.gallery">{t['projects.gallery']}</h2>
+      <button type="button" data-gallery-close><span data-i18n="projects.close">{t['projects.close']}</span> ↑</button>
+    </header>
+    <div class="gallery-scroll">
+      {projects.map((project,index)=>(
+        <div class="gallery-masonry" data-gallery={index} hidden>
+          {project.assets.map(asset=>(
+            <figure class="gallery-item">
+              {asset.kind==='image' ? (
+                <button type="button" data-zoom-src={asset.src} data-zoom-alt={asset.client || project.id} aria-label={`Ampliar / Enlarge: ${asset.client || project.id}`}>
+                  <img src={asset.src} alt={asset.client || project.id} loading="lazy" decoding="async" />
+                </button>
+              ) : <video data-auto-video src={asset.src} poster={asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={asset.client || 'Video del proyecto'} ></video>}
+              {asset.client && <figcaption>{asset.client}</figcaption>}
+            </figure>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+</dialog>
+<dialog class="project-lightbox" aria-label="Vista ampliada / Enlarged image">
+  <button type="button" class="lightbox-close" data-lightbox-close><span data-i18n="projects.closeImage">{t['projects.closeImage']}</span> ×</button>
+  <figure class="lightbox-figure"><img data-lightbox-image alt="" /><figcaption></figcaption></figure>
+</dialog>
+<script>
+  import '../scripts/projects';
+  import '../scripts/project-videos';
+</script>

@@ -1,0 +1,260 @@
+---
+import { bilingual } from "../../data/cv/translations";
+import { profile } from "../../data/cv/profile.js";
+import { education } from "../../data/cv/education.js";
+import { training } from "../../data/cv/training.js";
+import { languages } from "../../data/cv/languages.js";
+import { skills } from "../../data/cv/skills.js";
+
+const groupedTraining = training.reduce<Record<string, string[]>>((acc, curr) => {
+  if (!acc[curr.institution]) acc[curr.institution] = [];
+  if (Array.isArray(curr.course)) {
+    acc[curr.institution].push(...curr.course);
+  } else {
+    acc[curr.institution].push(curr.course);
+  }
+  return acc;
+}, {});
+---
+
+<div class="sidebar-content">
+  <!-- NUEVO CONTENEDOR PARA MODO HORIZONTAL -->
+  <header class="profile-header">
+    <img src={profile.avatar} alt={profile.name} class="avatar" />
+    <div class="profile-info">
+      <h1>{profile.name}</h1>
+      <p class="tagline" {...bilingual(profile.tagline)}>{profile.tagline}</p>
+      
+      <div class="summary-section desktop-hidden">
+        <h2 {...bilingual('Personal Summary')}>Personal Summary</h2>
+        <p class="body-text" {...bilingual(profile.summary)}>{profile.summary}</p>
+      </div>
+    </div>
+  </header>
+
+  <hr class="mobile-hidden" />
+
+  <section class="summary-section mobile-hidden">
+    <h2 {...bilingual('Personal Summary')}>Personal Summary</h2>
+    <p class="body-text" {...bilingual(profile.summary)}>{profile.summary}</p>
+  </section>
+
+  <hr />
+
+  <section>
+    <h2 {...bilingual('Education')}>Education</h2>
+    <div class="entry-list">
+      {education.map((edu) => (
+        <div class="entry">
+          <h3 class="entry-institution">{edu.institution}, <span {...bilingual(edu.dates)}>{edu.dates}</span></h3>
+          <p class="entry-course" {...bilingual(edu.degree)}>{edu.degree}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <h2 {...bilingual('Training')}>Training</h2>
+    <div class="entry-list">
+      {Object.entries(groupedTraining).map(([institution, courses]) => (
+        <div class="entry">
+          <h3 class="entry-institution">{institution}</h3>
+          {courses.map((course) => (
+            <p class="entry-course" {...bilingual(course)}>{course}</p>
+          ))}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <hr />
+
+<section>
+    <h2 {...bilingual('Languages')}>Languages</h2>
+    <div class="pill-list">
+      {languages.map((lang) => {
+        // Determinamos qué archivo de icono usar según el texto del lenguaje
+        let iconName = '';
+        const lowerLang = lang.toLowerCase();
+        if (lowerLang.includes('spanish') || lowerLang.includes('español')) iconName = 'spain';
+        else if (lowerLang.includes('english') || lowerLang.includes('inglés')) iconName = 'usa';
+        else if (lowerLang.includes('portuguese') || lowerLang.includes('portugués')) iconName = 'port';
+
+        return (
+          <span class="lang-pill">
+            {iconName && <img src={`/cv/icons/${iconName}.svg`} alt={lang} class="lang-icon" />}
+            <span {...bilingual(lang)}>{lang}</span>
+          </span>
+        );
+      })}
+    </div>
+  </section>
+
+  <section>
+    <h2>Software</h2>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <div class="skill-icon"><img src="/cv/programs/AS.svg" alt="AS" /></div>
+        <span class="skill-name">Adobe Suite</span>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon"><img src="/cv/programs/BLENDER.svg" alt="Blender" /></div>
+        <span class="skill-name">Blender</span>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon"><img src="/cv/programs/DAVINCI.svg" alt="DaVinci" /></div>
+        <span class="skill-name">DaVinci<br/>Resolve</span>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon"><img src="/cv/programs/GAEA.svg" alt="Gaea" /></div>
+        <span class="skill-name">Gaea</span>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon"><img src="/cv/programs/QGIS.svg" alt="QGIS" /></div>
+        <span class="skill-name">QGIS</span>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon"><img src="/cv/programs/UNREAL.svg" alt="Unreal" /></div>
+        <span class="skill-name">Unreal</span>
+      </div>
+    </div>
+  </section>
+
+  <hr />
+
+  <section class="footer-section">
+    <h2 {...bilingual(profile.footer.title)}>{profile.footer.title}</h2>
+    <p class="body-text" {...bilingual(profile.footer.subtitle)}>{profile.footer.subtitle}</p>
+    
+    <div class="social-links">
+      <a href={`mailto:${profile.email}`} class="social-link hover-arrow">
+        Gmail
+        <svg class="arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+      </a>
+      
+      {profile.socials
+        .filter(social => social.name.toLowerCase() !== 'gmail')
+        .map((social) => (
+        <a href={social.url} target="_blank" rel="noopener noreferrer" class="social-link hover-arrow">
+          {social.name}
+          <svg class="arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+        </a>
+      ))}
+    </div>
+
+    <p class="copyright">
+      © {profile.footer.year} <span {...bilingual('Designed by')}>Designed by</span> {profile.footer.designedBy}
+    </p>
+  </section>
+</div>
+
+<style>
+  * { box-sizing: border-box; }
+  
+  .sidebar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem; 
+    padding: 0 16px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .avatar {
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-avatar);
+    object-fit: cover;
+  }
+
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+.lang-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Espacio entre el icono y el texto */
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: var(--fs-body-sm);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    padding: 6px 16px;
+    border-radius: 999px;
+  }
+
+  .lang-icon {
+    width: 16px;  /* Ajusta el ancho de la banderita */
+    height: 16px; /* Ajusta el alto de la banderita */
+    object-fit: contain;
+  }
+  .desktop-hidden { display: none; }
+
+  h1 { font-family: var(--font-heading); font-weight: 500; font-size: var(--fs-h1); letter-spacing: -0.05em; line-height: 1.1; }
+  .tagline { font-family: var(--font-body); font-weight: 400; font-size: var(--fs-body-sm); color: var(--color-text-secondary); }
+  
+  hr { border: none; border-top: 1px solid var(--color-border); margin: 0; }
+  h2 { font-family: var(--font-heading); font-weight: 500; font-size: var(--fs-h2); letter-spacing: -0.03em; text-transform: uppercase; margin-bottom: var(--space-sm); margin-top: 1rem; }
+  .body-text { font-family: var(--font-body); font-weight: 300; font-size: var(--fs-body); color: var(--color-text-secondary); line-height: 1.4em; }
+
+  .entry-list { display: flex; flex-direction: column; gap: 1.5rem; padding-left: 1.2rem; }
+  .entry-institution { font-family: var(--font-sub); font-weight: 600; font-size: var(--fs-body); color: var(--color-text); }
+  .entry-course { position: relative; margin-top: 6px; padding-left: 14px; font-family: var(--font-body); font-weight: 300; font-size: var(--fs-body-sm); color: var(--color-text-secondary); }
+  .entry-course::before { content: "•"; position: absolute; left: 0; color: var(--color-text-secondary); opacity: 0.5; }
+
+  .pill-list { display: flex; flex-wrap: wrap; gap: 10px; }
+  .lang-pill { font-family: var(--font-body); font-weight: 500; font-size: var(--fs-body-sm); color: var(--color-text); border: 1px solid var(--color-border); padding: 6px 16px; border-radius: 999px; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem 1.5rem; justify-items: center; }
+  .skill-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; opacity: 0.45; transition: all 0.3s ease; }
+  .skill-item:hover { opacity: 1; transform: scale(1.05); filter: drop-shadow(0px 0px 8px rgba(255,255,255,0.4)); }
+  .skill-icon { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; }
+  .skill-icon img { width: 100%; height: 100%; object-fit: contain; filter: var(--cv-icon-filter, brightness(0) invert(1)); }
+  .skill-name { font-family: var(--font-body); font-weight: 300; font-size: var(--fs-body-sm); color: var(--color-text-secondary); line-height: 1.1; max-width: 80px; }
+
+  .footer-section { display: flex; flex-direction: column; gap: 1rem; padding-bottom: 2rem; }
+  .social-links { display: flex; flex-direction: column; gap: 12px; margin-top: 0.5rem; }
+  .social-link { font-family: var(--font-body); font-weight: 400; font-size: var(--fs-body); color: var(--color-text-secondary); text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; transition: color 0.2s ease; }
+  
+  .hover-arrow { display: inline-flex; align-items: center; width: fit-content; }
+  .arrow-svg { width: 16px; height: 16px; margin-left: 6px; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); }
+  .hover-arrow:hover { color: var(--color-text); }
+  .hover-arrow:hover .arrow-svg { transform: translate(4px, -4px); }
+  
+  .copyright { margin-top: 2rem; font-family: var(--font-body); font-weight: 300; font-size: 11px; color: var(--color-text-secondary); opacity: 0.5; }
+
+  /* MÓVIL VERTICAL */
+  @media (max-width: 809px) and (orientation: portrait) {
+    .sidebar-content { padding: 0 16px; }
+    .avatar { 
+      /* Ajuste preciso matemático para ignorar el padding sin recortarse */
+      width: calc(100% + 32px); 
+      max-width: calc(100% + 32px); 
+      margin-left: -16px; 
+      border-radius: 0; 
+      aspect-ratio: 1 / 1;
+      /* Centra la cara para evitar que se desplace a la derecha */
+      object-position: center center; 
+    }
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* MÓVIL HORIZONTAL (LANDSCAPE) */
+  @media (max-width: 809px) and (orientation: landscape) {
+    .profile-header { flex-direction: row; align-items: center; gap: 2rem; }
+    .avatar { width: 35vw; max-width: 300px; border-radius: var(--radius-avatar); }
+    .profile-info { flex: 1; display: flex; justify-content: center; }
+    .desktop-hidden { display: block; }
+    .mobile-hidden { display: none; }
+    .skills-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>

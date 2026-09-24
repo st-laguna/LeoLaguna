@@ -1,0 +1,14 @@
+---
+import CVLayout from "../layouts/CVLayout.astro";
+import Sidebar from "../components/cv/Sidebar.astro";
+import ExperienceSection from "../components/cv/ExperienceSection.astro";
+---
+
+<CVLayout title="Leonardo S. Laguna — CV">
+  <Fragment slot="sidebar">
+    <Sidebar />
+  </Fragment>
+  <Fragment slot="content">
+    <ExperienceSection />
+  </Fragment>
+</CVLayout>

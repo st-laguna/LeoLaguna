@@ -1,0 +1,10 @@
+---
+import motion from '../scripts/transition-motion.js?raw';
+import navigation from '../scripts/document-navigation.js?raw';
+import '../styles/page-navigation.css';
+// Run before the first render: a deferred module can miss pagereveal.
+const source = `(() => {\n${motion.replace(/^export /gm, '')}\n${navigation}\n})();`;
+---
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" />
+<script is:inline set:html={source}></script>

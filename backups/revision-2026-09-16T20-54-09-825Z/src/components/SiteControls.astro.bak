@@ -1,0 +1,308 @@
+<div class="site-controls">
+  <div class="language" role="group" aria-label="Idioma / Language">
+    <button type="button" data-language="en" aria-pressed="true">
+      EN
+    </button>
+    <button type="button" data-language="es" aria-pressed="false">
+      ES
+    </button>
+  </div>
+
+  <button
+    class="theme"
+    type="button"
+    role="switch"
+    aria-checked="false"
+    aria-label="Modo oscuro / Dark mode"
+    data-theme-toggle
+  >
+    <svg viewBox="0 0 100 40" aria-hidden="true">
+      <!-- Franjas de color sólido -->
+      <g class="halos">
+        <circle cx="20" cy="20" r="66" class="halo-outer" />
+        <circle cx="20" cy="20" r="49" class="halo-middle" />
+        <circle cx="20" cy="20" r="33" class="halo-inner" />
+      </g>
+
+      <!-- Estrellas -->
+      <g class="stars" fill="#fff">
+        <path d="M15 8l1 3 3 1-3 1-1 3-1-3-3-1 3-1Z" />
+        <path d="M37 17l1.3 4 4 1.3-4 1.3-1.3 4-1.3-4-4-1.3 4-1.3Z" />
+        <path d="M52 6l.8 2.5 2.5.8-2.5.8-.8 2.5-.8-2.5-2.5-.8 2.5-.8Z" />
+        <path d="M20 28l.8 2.5 2.5.8-2.5.8-.8 2.5-.8-2.5-2.5-.8 2.5-.8Z" />
+        <circle cx="29" cy="8" r="1" />
+        <circle cx="48" cy="32" r="1" />
+        <circle cx="8" cy="23" r=".8" />
+      </g>
+
+      <!-- Nubes -->
+      <g class="clouds">
+        <path
+          fill="#e5e5e5"
+          d="M40 40V34Q40 27 48 27Q47 18 56 18
+             Q63 18 65 24Q69 15 77 18Q78 10 86 10
+             Q96 10 96 21H100V40Z"
+        />
+        <path
+          fill="#fff"
+          d="M47 40Q45 32 55 32Q55 25 63 25
+             Q70 25 72 30Q75 23 83 26Q84 18 92 18
+             Q100 18 102 27V40Z"
+        />
+      </g>
+
+      <!-- Sol / luna -->
+      <g class="orb">
+        <circle cx="20" cy="20" r="15" fill="#fff" />
+        <g class="craters" fill="#d7d7d7">
+          <circle cx="15" cy="23" r="4.3" />
+          <circle cx="23" cy="13" r="2.7" />
+          <circle cx="26" cy="26" r="2.8" />
+        </g>
+      </g>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .site-controls {
+    position: absolute;
+    top: 4%;
+    right: var(--page-gap, 3.2vw);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .language {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    padding: 3px;
+    border: 1px solid #444;
+    border-radius: 999px;
+    background: #000;
+  }
+
+  .language button {
+    display: grid;
+    place-items: center;
+    width: 35px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #fff;
+    font: 500 11px "Host Grotesk", sans-serif;
+    cursor: pointer;
+    transition: background 180ms ease, color 180ms ease;
+  }
+
+  .language button[aria-pressed="true"] {
+    background: #fff;
+    color: #000;
+  }
+
+  .theme {
+    display: block;
+    width: 90px;
+    height: 36px;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #aaa;
+    border-radius: 999px;
+    background: #ddd;
+    cursor: pointer;
+    transition: background 400ms ease, border-color 400ms ease;
+  }
+
+  .theme svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .halo-outer { fill: #d1d1d1; }
+  .halo-middle { fill: #dedede; }
+  .halo-inner { fill: #ededed; }
+
+  .halos,
+  .orb {
+    transition: transform 600ms cubic-bezier(.22, 1, .36, 1);
+  }
+
+  .halos circle {
+    transition: fill 400ms ease;
+  }
+
+  .stars,
+  .clouds,
+  .craters {
+    transition: transform 500ms ease, opacity 400ms ease;
+  }
+
+  .stars {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  .craters {
+    opacity: 0;
+  }
+
+  :global(html[data-theme="dark"]) .theme {
+    background: #000;
+    border-color: #555;
+  }
+
+  :global(html[data-theme="dark"]) .halo-outer { fill: #101010; }
+  :global(html[data-theme="dark"]) .halo-middle { fill: #1b1b1b; }
+  :global(html[data-theme="dark"]) .halo-inner { fill: #292929; }
+
+  :global(html[data-theme="dark"]) .halos,
+  :global(html[data-theme="dark"]) .orb {
+    transform: translateX(60px);
+  }
+
+  :global(html[data-theme="dark"]) .clouds {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  :global(html[data-theme="dark"]) .stars {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  :global(html[data-theme="dark"]) .craters {
+    opacity: 1;
+  }
+
+  .site-controls button:focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .site-controls {
+      top: 20px;
+      gap: 10px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .site-controls {
+      right: var(--page-gap, 6vw);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-controls *,
+    .site-controls svg * {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import en from '../i18n/en.json';
+  import es from '../i18n/es.json';
+
+  type Language = 'en' | 'es';
+  type Theme = 'light' | 'dark';
+
+  const translations: Record<Language, Record<string, string>> = {
+    en,
+    es,
+  };
+
+  const root = document.documentElement;
+
+  const themeButton =
+    document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+
+  const languageButtons =
+    document.querySelectorAll<HTMLButtonElement>('[data-language]');
+
+  function readPreference(key: string): string | null {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
+
+  function savePreference(key: string, value: string) {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      // Los controles funcionan aunque no se pueda guardar la elección.
+    }
+  }
+
+  function applyTheme(theme: Theme) {
+    root.dataset.theme = theme;
+
+    themeButton?.setAttribute(
+      'aria-checked',
+      String(theme === 'dark')
+    );
+  }
+
+  function applyLanguage(language: Language) {
+    root.lang = language;
+
+    const dictionary = translations[language];
+
+    document.querySelectorAll<HTMLElement>('[data-i18n]')
+      .forEach((element) => {
+        const key = element.dataset.i18n;
+        if (!key) return;
+
+        const text = dictionary[key];
+
+        if (text !== undefined) {
+          element.textContent = text;
+        }
+      });
+
+    languageButtons.forEach((button) => {
+      button.setAttribute(
+        'aria-pressed',
+        String(button.dataset.language === language)
+      );
+    });
+  }
+
+  // Recupera las preferencias guardadas.
+  applyTheme(
+    readPreference('leo-theme') === 'dark' ? 'dark' : 'light'
+  );
+
+  applyLanguage(
+    readPreference('leo-language') === 'es' ? 'es' : 'en'
+  );
+
+  // Cambia entre modo claro y oscuro.
+  themeButton?.addEventListener('click', () => {
+    const theme: Theme =
+      root.dataset.theme === 'dark' ? 'light' : 'dark';
+
+    applyTheme(theme);
+    savePreference('leo-theme', theme);
+  });
+
+  // Cambia entre inglés y español.
+  languageButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const language = button.dataset.language;
+
+      if (language !== 'en' && language !== 'es') return;
+
+      applyLanguage(language);
+      savePreference('leo-language', language);
+    });
+  });
+</script>

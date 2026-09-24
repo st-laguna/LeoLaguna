@@ -1,0 +1,17 @@
+---
+import SiteControls from './SiteControls.astro';
+const { home = false } = Astro.props;
+---
+<div class="page-controls">
+  {home && <a class="home-link" href="/" data-i18n="nav.home">HOME</a>}
+  <SiteControls />
+</div>
+<style>
+  .page-controls { display:flex; align-items:center; flex-wrap:wrap; gap:6px; color:var(--color-text, #171717); }
+  .home-link { display:grid; place-items:center; min-height:36px; padding:0 8px; border:1px solid currentColor; border-radius:999px; color:inherit; text-decoration:none; font:500 11px 'Host Grotesk',sans-serif; }
+  .page-controls :global(.site-controls) { position:static; gap:6px; }
+  .page-controls :global(.theme) { width:56px; }
+  .page-controls :global(.language button) { width:25px; }
+  .home-link:focus-visible { outline:2px solid currentColor; outline-offset:3px; }
+  :global(html[data-theme='dark']) .page-controls { color:#f7f7f7; }
+</style>

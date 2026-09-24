@@ -1,0 +1,208 @@
+
+<section class="hero" aria-label="Leo Laguna — presentación">
+  <div class="hero__mask" aria-hidden="true">
+    <img
+      class="hero__image"
+      src="/imgs/hero/1H.webp"
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+
+<div class="hero__location hero__blend">
+  <span>LIMA, PERU</span>
+  <span>GMT−5 <span data-lima-clock></span></span>
+</div>
+
+  <h1 class="hero__title hero__blend">LEO LAGUNA</h1>
+
+  <p class="hero__subtitle hero__blend">
+    <span data-i18n="hero.location">Based In Lima, Peru</span>
+    <br />
+    <span data-i18n="hero.tagline">Creating For Everyone</span>
+  </p>
+
+  <a class="hero__scroll hero__blend" href="#workflow">
+    <span data-i18n="hero.scroll">SCROLL TO EXPLORE</span>
+    <span aria-hidden="true">↓</span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    /* Controles para ajustar la composición */
+    --image-position: 50% 50%;
+
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+    background: var(--background);
+  }
+
+  .hero__mask {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    /* Amplía ligeramente el logo para eliminar márgenes mínimos */
+    transform: scale(var(--mask-scale));
+
+    -webkit-mask-image: url("/icons/logo_w.svg");
+    mask-image: url("/icons/logo_w.svg");
+
+    -webkit-mask-size: cover;
+    mask-size: cover;
+
+    -webkit-mask-position: center;
+    mask-position: center;
+
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+
+    mask-mode: alpha;
+  }
+
+.hero__image {
+  position: absolute;
+  top: -20%;
+  left: 0;
+  width: 100%;
+  height: 140%;
+  max-width: none;
+  object-fit: cover;
+  object-position: var(--image-position);
+  filter: grayscale(1);
+}
+
+  .hero__blend {
+    position: absolute;
+    z-index: 1;
+    color: #ffffff;
+    mix-blend-mode: difference;
+  }
+
+  .hero a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .hero__nav {
+    top: 4%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: clamp(28px, 6vw, 100px);
+    font-size: clamp(11px, 0.95vw, 15px);
+    font-weight: 400;
+  }
+
+  .hero__nav a {
+    position: relative;
+    padding-block: 8px;
+  }
+
+  .hero__nav a::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 180ms ease;
+  }
+
+  .hero__nav a:hover::after,
+  .hero__nav a:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .hero__location {
+    top: 34.5%;
+    right: 6.3%;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    font-size: clamp(10px, 0.7vw, 13px);
+    line-height: 1.15;
+  }
+
+  .hero__title {
+    top: 49.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    width: max-content;
+    white-space: nowrap;
+    font-family: "Archivo", sans-serif;
+    font-size: 12.2vw;
+    font-weight: 400;
+    word-spacing: 0.08em;
+    line-height: 0.9;
+    letter-spacing: 0.015em;
+  }
+
+  .hero__subtitle {
+    top: 61.5%;
+    left: 3.2%;
+    margin: 0;
+    font-size: clamp(10px, 0.75vw, 14px);
+    line-height: 1.2;
+  }
+
+  .hero__scroll {
+    right: 3.2%;
+    bottom: 4.5%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: clamp(10px, 0.75vw, 14px);
+  }
+
+  .hero__scroll span {
+    font-size: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .hero__nav {
+      top: 20px;
+      gap: 32px;
+      font-size: 12px;
+    }
+
+    .hero__location {
+      top: 36%;
+      right: 6%;
+    }
+
+    .hero__subtitle {
+      top: 60%;
+      left: 6%;
+      font-size: 11px;
+    }
+
+    .hero__scroll {
+      right: 6%;
+      bottom: 28px;
+      font-size: 11px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__nav a::after {
+      transition: none;
+    }
+  }
+  
+  @media (max-width: 900px) {
+  .hero__nav {
+    top: 76px;
+  }
+}
+</style>

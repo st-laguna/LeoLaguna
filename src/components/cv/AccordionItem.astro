@@ -1,0 +1,408 @@
+---
+import { bilingual } from "../../data/cv/translations";
+interface Props {
+  company: string;
+  dates: string;
+  description: string;
+  images?: string[];
+  variant?: "standard" | "media-only";
+}
+
+const { company, dates, description, images = [], variant = "standard" }: Props = Astro.props;
+---
+
+<div class="accordion-item">
+  <span class="hover-dot" aria-hidden="true"></span>
+
+  <button class="accordion-header" type="button">
+    <div class="accordion-title-block">
+      <h3 class="company">{company}</h3>
+      {variant === "standard" && <p class="description" {...bilingual(description)}>{description}</p>}
+    </div>
+    <div class="accordion-meta">
+      <span class="dates">• <span {...bilingual(dates)}>{dates}</span></span>
+      <span class="toggle-icon" aria-hidden="true"></span>
+    </div>
+  </button>
+
+  <div class="accordion-body">
+    <div class="accordion-body-inner">
+      {variant === "standard" && (
+        <div class="media-grid">
+          {images.length > 0
+            ? images.slice(0, 3).map((src) => <img src={src} alt={company} />)
+            : [0, 1, 2].map(() => <div class="media-placeholder"></div>)}
+        </div>
+      )}
+
+      {variant === "media-only" && (
+        <div class="media-full">
+          {images.length > 0
+            ? images.map((src) => <img src={src} alt={company} />)
+            : <div class="media-placeholder-full"></div>}
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+
+<style>
+  /* 1. SEPARACIÓN DEL BORDE IZQUIERDO */
+  .accordion-item {
+    position: relative;
+    border-bottom: 1px solid var(--color-border);
+    /* Aumentamos el último valor (izquierdo) de 30px a 52px */
+    padding: 20px 10px 20px 52px; 
+  }
+
+  .hover-dot {
+    position: absolute;
+    left: 16px; /* Lo movemos también para que acompañe el nuevo margen */
+    top: 26px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-hover-dot-a);
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-premium);
+  }
+
+  .accordion-item:hover .hover-dot {
+    opacity: 1;
+    animation: hoverDotLoop 2.4s var(--ease-premium) infinite;
+  }
+
+  .accordion-header {
+    all: unset;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    cursor: pointer;
+    gap: var(--space-sm);
+  }
+
+  .accordion-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .company {
+    position: relative;
+    padding-left: 14px;
+    font-family: var(--font-sub);
+    font-weight: 550;
+    font-size: var(--fs-h3);
+    text-transform: uppercase;
+    color: var(--color-text);
+    transition: transform 0.4s ease;
+  }
+
+  /* 2. JERARQUÍA: EMPUJAMOS LA DESCRIPCIÓN A LA DERECHA */
+  .description {
+    padding-left: 32px; /* Antes era 14px, ahora está más a la derecha que el título */
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-secondary);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+
+  .accordion-item.open .description {
+    -webkit-line-clamp: unset;
+    display: block;
+  }
+
+  .accordion-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+    flex-shrink: 0;
+  }
+
+  .dates {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
+  /* 3. ÍCONO MÁS GRUESO Y ANIMACIÓN DE GIRO */
+  .toggle-icon {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    /* Añadimos transición para que gire suavemente */
+    transition: transform 0.4s var(--ease-premium); 
+  }
+
+  /* Cuando está abierto, gira 45 grados (de + a X) */
+  .accordion-item.open .toggle-icon {
+    transform: rotate(45deg);
+  }
+
+  .toggle-icon::before,
+  .toggle-icon::after {
+    content: "";
+    position: absolute;
+    background: var(--color-text-secondary);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Eliminamos la opacidad para que ambas líneas se mantengan visibles */
+    transition: background-color 0.3s ease; 
+  }
+
+  /* Hacemos las líneas del ícono más gruesas (3px en lugar de 2px) */
+  .toggle-icon::before {
+    width: 16px;
+    height: 3px; 
+  }
+
+  .toggle-icon::after {
+    width: 3px; 
+    height: 16px;
+    transition: transform 0.4s ease;
+  }
+
+  /* 4. ANIMACIÓN DE COLORES CONTINUA AL ESTAR ABIERTO */
+.accordion-item.open .toggle-icon::before,
+  .accordion-item.open .toggle-icon::after {
+    /* Llamamos a tu animación global, con el mismo tiempo que usas en el hover-dot */
+    animation: hoverDotLoop 2.4s var(--ease-premium) infinite;
+  }
+
+  .accordion-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--duration-slow) var(--ease-premium);
+  }
+
+  .accordion-item.open .accordion-body {
+    grid-template-rows: 1fr;
+  }
+
+  .accordion-body-inner {
+    overflow: hidden;
+    min-height: 0;
+    padding-left: 32px; /* Alineamos las imágenes con el nuevo texto indentado */
+  }
+
+  .accordion-item.open .accordion-body-inner {
+    padding-top: var(--space-lg);
+  }
+
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .media-grid img,
+  .media-grid .media-placeholder {
+    width: 100%;
+    aspect-ratio: 1.6;
+    border-radius: var(--radius-card);
+    background: #000;
+    object-fit: cover;
+  }
+
+  .media-full img,
+  .media-placeholder-full {
+    width: 100%;
+    border-radius: var(--radius-card);
+    background: #000;
+  }
+
+  .media-placeholder-full {
+    aspect-ratio: 1.77;
+  }
+  /* 1. ESTADO INICIAL DE LAS IMÁGENES (Ocultas y ligeramente desplazadas hacia abajo) */
+  .media-grid img,
+  .media-grid .media-placeholder,
+  .media-full img,
+  .media-placeholder-full {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  /* 2. ESTADO FINAL AL ABRIR EL ACORDEÓN (Visibles y en su posición original) */
+  .accordion-item.open .media-grid img,
+  .accordion-item.open .media-grid .media-placeholder,
+  .accordion-item.open .media-full img,
+  .accordion-item.open .media-placeholder-full {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* 3. RETRASOS ESCALONADOS (Aparición una por una) */
+  /* Primera imagen */
+  .accordion-item.open .media-grid img:nth-child(1),
+  .accordion-item.open .media-grid .media-placeholder:nth-child(1),
+  .accordion-item.open .media-full img:nth-child(1) {
+    transition-delay: 0.15s;
+  }
+
+  /* Segunda imagen */
+  .accordion-item.open .media-grid img:nth-child(2),
+  .accordion-item.open .media-grid .media-placeholder:nth-child(2) {
+    transition-delay: 0.3s;
+  }
+
+  /* Tercera imagen */
+  .accordion-item.open .media-grid img:nth-child(3),
+  .accordion-item.open .media-grid .media-placeholder:nth-child(3) {
+    transition-delay: 0.45s;
+  }
+  .media-grid img,
+    .media-full img {
+    cursor: zoom-in;
+    }
+/* Al pasar el mouse por todo el encabezado, el título y el + crecen ligeramente */
+  @media (min-width: 810px) {
+    .accordion-header:hover .company {
+      transform: scale(1.02);
+      transform-origin: left center;
+      color: var(--color-text); /* Opcional: hace que el texto brille un poco */
+    }
+    
+    .accordion-header:hover .toggle-icon {
+      transform: scale(1.15);
+    }
+  }
+/* DISEÑO MÓVIL ACORDEÓN */
+  @media (max-width: 809px) {
+    .accordion-item {
+      padding: 16px 12px; /* Reducimos la sangría para ganar más espacio */
+    }
+
+    /* 1. Posición exacta del punto luminoso */
+    .hover-dot {
+      left: 14px;
+      top: 24px;
+    }
+
+    /* 2. Reestructuración de la grilla (Espacio generoso para el texto) */
+    .accordion-header {
+      display: grid;
+      /* Col 1: Espacio para el punto (24px)
+         Col 2: Texto principal (1fr toma todo el espacio central, aprox 60-70%)
+         Col 3: Ícono + o X (30px) */
+      grid-template-columns: 24px 1fr 30px;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .accordion-meta {
+      display: contents; /* Desintegra el contenedor para reubicar la fecha libremente */
+    }
+
+    .accordion-title-block {
+      grid-column: 2;
+      grid-row: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .company {
+      padding-left: 0;
+      font-size: calc(var(--fs-body) * 1.05);
+    }
+
+    /* Forzamos a que la descripción se muestre completa, sin recortes */
+    .description {
+      padding-left: 0;
+      display: block;
+      -webkit-line-clamp: unset; 
+      font-size: var(--fs-body-sm);
+    }
+
+    .dates {
+      grid-column: 2;
+      grid-row: 2; /* Colocamos la fecha justo debajo de la descripción */
+      padding-left: 0;
+      margin-top: 4px;
+    }
+
+    .toggle-icon {
+      grid-column: 3;
+      grid-row: 1;
+      align-self: start;
+      margin-top: 4px;
+    }
+
+    /* 3. CARRUSEL HORIZONTAL DE IMÁGENES (Deslizar a la derecha) */
+    .accordion-body-inner {
+      padding-left: 0;
+    }
+
+    .media-grid {
+      display: flex; /* Cambiamos la grilla apilada por una fila horizontal */
+      overflow-x: auto; /* Permite arrastrar con el dedo */
+      scroll-snap-type: x mandatory;
+      gap: 16px;
+      padding-top: 16px;
+      padding-bottom: 12px;
+      padding-left: 32px; /* Alineado al texto principal */
+      padding-right: 16px;
+      scrollbar-width: none; /* Oculta la barra en Firefox */
+      -ms-overflow-style: none; /* Oculta la barra en IE */
+    }
+
+    .media-grid::-webkit-scrollbar {
+      display: none; /* Oculta la barra de scroll en Chrome/Safari/Móvil */
+    }
+
+    .media-grid img,
+    .media-grid .media-placeholder {
+      flex: 0 0 75vw; /* Cada imagen es grande (75% de la pantalla) */
+      width: 75vw;
+      height: auto;
+      aspect-ratio: 1.6;
+      scroll-snap-align: start; /* Encaja perfectamente al soltar el dedo */
+    }
+  }
+</style>
+
+<script>
+  // 1. Lógica del Acordeón
+  document.querySelectorAll(".accordion-header").forEach((header) => {
+    header.addEventListener("click", () => {
+      const item = header.closest(".accordion-item");
+      item?.classList.toggle("open");
+    });
+  });
+
+  // 2. Lógica del Modal (Zoom)
+  const modal = document.getElementById("image-modal");
+  // Casting explícito a HTMLImageElement para que TS reconozca la propiedad .src
+  const modalImg = document.getElementById("modal-image") as HTMLImageElement | null;
+
+  if (modal && modalImg) {
+    document.querySelectorAll(".media-grid img, .media-full img").forEach((img) => {
+      img.addEventListener("click", (e) => {
+        e.stopPropagation(); 
+        // Identificamos el target como imagen
+        const targetImg = e.currentTarget as HTMLImageElement;
+        modalImg.src = targetImg.src;
+        modal.classList.add("active");
+      });
+    });
+
+    modal.addEventListener("click", () => {
+      modal.classList.remove("active");
+      setTimeout(() => { 
+        if (modalImg) modalImg.src = ""; 
+      }, 300);
+    });
+  }
+</script>

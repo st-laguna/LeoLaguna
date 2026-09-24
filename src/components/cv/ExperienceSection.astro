@@ -1,0 +1,54 @@
+---
+import { bilingual } from "../../data/cv/translations";
+import { experience } from "../../data/cv/experience.js";
+import AccordionItem from "./AccordionItem.astro";
+import AnimationRow from "./AnimationRow.astro";
+
+const ANIMATION_CATEGORY = "Animation & Video Production";
+---
+
+<div class="experience-wrapper">
+  {experience.map((group) => (
+    <section class="experience-group">
+      <h2 class="category-title" {...bilingual(group.category)}>{group.category}</h2>
+
+      {group.category === ANIMATION_CATEGORY ? (
+        <AnimationRow items={group.items} />
+      ) : (
+        <div class="items-list">
+          {group.items.map((item) => (
+            <AccordionItem
+              company={item.company}
+              dates={item.dates}
+              description={item.description}
+              images={item.images}
+              variant="standard"
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  ))}
+</div>
+
+<style>
+  .experience-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .category-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--fs-category);
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-sm);
+  }
+
+  .items-list {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

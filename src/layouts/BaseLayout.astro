@@ -1,0 +1,143 @@
+---
+import '../styles/global.css';
+import PageNavigation from '../components/PageNavigation.astro';
+import SiteControls from '../components/SiteControls.astro';
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: 'es' | 'en';
+}
+
+const {
+  title = 'Leo Laguna',
+  description = 'Ilustración científica y comunicación visual.',
+  lang = 'es',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <PageNavigation />
+
+<script is:inline>
+  (() => {
+    const home = ['/', '/index.html'].includes(location.pathname);
+    const homeHash = ['', '#home', '#hero', '#hero-top'].includes(location.hash);
+    const restored = performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!home || !homeHash || reduced || restored || document.documentElement.hasAttribute('data-cross-page')) return;
+
+    history.replaceState(null, '', location.pathname + location.search);
+
+    document.documentElement.setAttribute('data-hero-intro', '');
+
+    // Evita restaurar una posición anterior al recargar el inicio.
+    history.scrollRestoration = 'manual';
+
+    // Si el script principal falla o tarda demasiado, mostrar la página.
+    setTimeout(() => {
+      document.documentElement.removeAttribute('data-hero-intro');
+      history.scrollRestoration = 'auto';
+    }, 3500);
+  })();
+</script>
+
+<style is:global>
+  html[data-hero-intro] {
+    background: #000 !important;
+  }
+
+  html[data-hero-intro] body {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+</style>
+
+  </head>
+  <body>
+    <header class="site-header" data-site-header>
+  <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-navigation" aria-label="Open menu / Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="mobile-menu-panel" id="mobile-navigation" data-mobile-menu inert>
+  <nav class="site-nav" aria-label="Navegación principal">
+    <div class="site-nav__items hover-group">
+      <a class="hover-option mobile-only" href="#home" data-i18n="nav.home">HOME</a>
+      <a class="hover-option mobile-only" href="#work" data-i18n="nav.work">WORK</a>
+      <button class="hover-option" type="button" data-footer-work aria-expanded="false" aria-controls="site-work-options" data-i18n="nav.work">WORK</button>
+      <a class="hover-option" href="/about/" data-i18n="nav.about">ABOUT</a>
+      <a class="hover-option" href="#contact" data-i18n="nav.contact">CONTACT</a>
+    </div>
+    <div class="site-nav__submenu hover-group" id="site-work-options" hidden>
+      <a class="hover-option" href="#work" data-project-jump="0" data-i18n="projects.01.title">TECHNICAL VISUALS</a>
+      <a class="hover-option" href="#work" data-project-jump="1" data-i18n="projects.02.title">SCIENTIFIC ILLUSTRATION</a>
+      <a class="hover-option" href="#work" data-project-jump="2" data-i18n="projects.03.title">EDUCATIONAL VISUALS</a>
+      <a class="hover-option" href="#work" data-project-jump="3" data-i18n="projects.04.title">ANIMATION &amp; VIDEO</a>
+    </div>
+  </nav>
+
+  <SiteControls />
+  </div>
+</header>
+    <slot />
+
+    <script>
+      import '../scripts/main';
+
+      document.addEventListener('contextmenu', e => {
+        if ((e.target as Element)?.closest('img, video')) e.preventDefault();
+      });
+
+      document.addEventListener('dragstart', e => {
+        if ((e.target as Element)?.closest('img, video')) e.preventDefault();
+      });
+
+      const header = document.querySelector<HTMLElement>('[data-site-header]');
+      const menuButton = header?.querySelector<HTMLButtonElement>('.mobile-menu-toggle');
+      const menuPanel = header?.querySelector<HTMLElement>('[data-mobile-menu]');
+      const menuMedia = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)');
+
+      function setMobileMenu(open: boolean) {
+        if (!header || !menuButton || !menuPanel) return;
+        const active = open && menuMedia.matches;
+        header.toggleAttribute('data-menu-open', active);
+        menuButton.setAttribute('aria-expanded', String(active));
+        menuButton.setAttribute('aria-label', active ? 'Close menu / Cerrar menú' : 'Open menu / Abrir menú');
+        menuPanel.inert = menuMedia.matches ? !active : false;
+        document.documentElement.classList.toggle('mobile-menu-open', active);
+      }
+
+      menuButton?.addEventListener('click', () => setMobileMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
+      menuPanel?.addEventListener('click', event => {
+        if ((event.target as Element).closest('a, button[data-language], button[data-theme-toggle]')) {
+          if ((event.target as Element).closest('a')) setMobileMenu(false);
+        }
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && menuButton?.getAttribute('aria-expanded') === 'true') {
+          setMobileMenu(false);
+          menuButton.focus({ preventScroll: true });
+        }
+      });
+      menuMedia.addEventListener('change', () => setMobileMenu(false));
+
+      function protectVideos() {
+        document.querySelectorAll<HTMLVideoElement>('video').forEach(video => {
+          video.setAttribute('controlsList', 'nodownload');
+          video.setAttribute('disablepictureinpicture', '');
+          video.draggable = false;
+        });
+      }
+
+      protectVideos();
+      document.addEventListener('astro:page-load', protectVideos);
+    </script>
+
+  </body>
+</html>

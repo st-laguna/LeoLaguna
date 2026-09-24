@@ -1,0 +1,881 @@
+---
+import PageControls from '../PageControls.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<section class="about" id="about" data-about aria-labelledby="about-title">
+  <button class="about-mobile-toggle" type="button" aria-expanded="false" aria-controls="about-mobile-menu" aria-label="Open menu / Abrir menú"><span></span><span></span><span></span></button>
+  <div class="about-mobile-menu" id="about-mobile-menu" inert>
+    <nav aria-label="Main navigation"><a href="/" data-en="HOME" data-es="INICIO">HOME</a><a href="/#work" data-en="WORK" data-es="PROYECTOS">WORK</a><a href="/#contact" data-en="CONTACT" data-es="CONTACTO">CONTACT</a></nav>
+  </div>
+  <div class="about-preferences"><PageControls /></div>
+  <div class="about-mobile-copy">
+    <a class="about-mobile-cv" href="/cv/"><span data-en="THE FORMAL STUFF" data-es="MI CURRÍCULUM">THE FORMAL STUFF</span></a>
+    <div class="about-mobile-intro">
+      <p data-en="Leonardo S. Laguna works at the intersection of science, design and visual storytelling, creating clear and engaging imagery for scientific, environmental and technical projects." data-es="Leonardo S. Laguna trabaja en la intersección entre ciencia, diseño y narrativa visual, creando imágenes claras y atractivas para proyectos científicos, ambientales y técnicos.">Leonardo S. Laguna works at the intersection of science, design and visual storytelling, creating clear and engaging imagery for scientific, environmental and technical projects.</p>
+      <p data-en="His work spans marine research, conservation, aquaculture and engineering, combining scientific accuracy with a strong visual language tailored to each project and audience." data-es="Su trabajo abarca investigación marina, conservación, acuicultura e ingeniería, combinando precisión científica con un lenguaje visual sólido adaptado a cada proyecto y audiencia.">His work spans marine research, conservation, aquaculture and engineering, combining scientific accuracy with a strong visual language tailored to each project and audience.</p>
+    </div>
+    <dl><div><dt>Base</dt><dd>Lima, Peru</dd></div><div><dt data-en="Practice" data-es="Práctica">Practice</dt><dd data-en="Scientific illustration · 3D visualisation · Animation · Science communication" data-es="Ilustración científica · Visualización 3D · Animación · Comunicación científica">Scientific illustration · 3D visualisation · Animation · Science communication</dd></div><div><dt data-en="Education" data-es="Educación">Education</dt><dd>BSc Marine Biology · Universidad Científica del Sur</dd></div></dl>
+  </div>
+  <div class="about__scene-shell">
+    <div class="about__scene" data-scene></div>
+    <button
+      class="about__return"
+      data-return
+      type="button"
+      disabled
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <span aria-hidden="true">↖</span> <span data-en="Go back" data-es="Volver">Go back</span>
+    </button>
+    <div class="about__tooltip" data-tooltip aria-hidden="true">
+      <div class="about__tooltip-card" data-tooltip-card>
+        <p class="about__tooltip-title" data-prop-title></p>
+        <p data-prop-description></p>
+      </div>
+    </div>
+    <div class="about__tools">
+      <details class="about__picker" data-picker hidden>
+        <summary>
+          Explore <span aria-hidden="true">+</span>
+        </summary>
+        <div
+          class="about__choices"
+          data-explore
+          aria-label="Inspect a character or object"
+        ></div>
+      </details>
+      <button data-pause type="button" disabled aria-pressed="false">
+        Pause motion
+      </button>
+    </div>
+    <div class="about__loading">
+      <span class="about__dot" aria-hidden="true"></span>
+      <p data-status role="status" aria-live="polite" aria-atomic="true">
+        A little world of mine.
+      </p>
+      <progress
+        data-load-progress
+        max="1"
+        value="0"
+        aria-label="3D assets loaded"
+        hidden
+      ></progress>
+    </div>
+    <p class="about__hint" data-hint hidden data-en="Drag to look around · Select something to get closer" data-es="Arrastra para explorar · Selecciona un objeto para acercarte">
+      Drag to look around · Select something to get closer
+    </p>
+    <noscript>
+      <p class="about__no-js">Enable JavaScript to explore the 3D scene.</p>
+    </noscript>
+  </div>
+
+  <div class="about__overlay">
+    <div class="box box--intro" data-box-motion>
+      <div class="intro__hero">
+        <h1 id="about-title">
+          <span data-en="HEY, IM LEO" data-es="HOLA, SOY LEO">HEY, IM LEO</span>
+          <span class="intro__hero-name">LAGUNA</span>
+        </h1>
+        <p class="intro__sub">
+          <span data-en="I'm a " data-es="Soy ">I'm a </span><strong data-en="marine biologist" data-es="biólogo marino">marine biologist</strong> <span data-en="and" data-es="y">and</span>{' '}
+          <strong data-en="visual communicator" data-es="comunicador visual">visual communicator</strong>
+        </p>
+      </div>
+      <div class="intro__body">
+        <p data-en="My background in science has become a big part of how I approach visual work, especially when working with scientific, environmental, and technical subjects. Over the years, I've built my practice around illustration, 3D, animation, and visual communication. I enjoy working on projects where understanding the subject is just as important as how it is presented. For me, it's about bringing those two sides together: a scientific way of thinking and a visual way of communicating." data-es="Mi formación científica influye mucho en cómo abordo el trabajo visual, especialmente en temas científicos, ambientales y técnicos. Con los años, he desarrollado mi práctica en torno a la ilustración, el 3D, la animación y la comunicación visual. Disfruto los proyectos en los que comprender el tema es tan importante como presentarlo. Para mí, se trata de unir esas dos facetas: una forma científica de pensar y una forma visual de comunicar.">
+          My background in science has become a big part of how I approach
+          visual work, especially when working with scientific, environmental,
+          and technical subjects. Over the years, I've built my practice around
+          illustration, 3D, animation, and visual communication. I enjoy working
+          on projects where understanding the subject is just as important as
+          how it is presented. For me, it's about bringing those two sides
+          together: a scientific way of thinking and a visual way of
+          communicating.
+        </p>
+      </div>
+    </div>
+
+    <div class="box box--clock" data-box-motion>
+      <p class="clock__city">Lima, Peru</p>
+      <p class="clock__detail">
+        <strong>GMT-5</strong> — <span data-local-time>--:--</span>
+      </p>
+    </div>
+    <div class="box box--links">
+      <div class="links" data-box-motion>
+        <a class="link" href="mailto:sanchezlaguna99@gmail.com">
+          Gmail <span aria-hidden="true">↗</span>
+        </a>
+        <a
+          class="link"
+          href="https://www.linkedin.com/in/leolaguna/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedIn <span aria-hidden="true">↗</span>
+        </a>
+        <a
+          class="link"
+          href="https://www.instagram.com/laguna.99/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Instagram <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+    <div class="box box--nav">
+      <nav
+        class="site-nav"
+        aria-label="Main navigation"
+        data-box-motion
+      >
+        <a href="/" data-en="HOME" data-es="INICIO">HOME</a>
+        <a href={base + '#work'} data-en="WORK" data-es="PROYECTOS">WORK</a>
+        <a href={base + '#contact'} data-en="CONTACT" data-es="CONTACTO">CONTACT</a>
+      </nav>
+
+      <a class="cv-link" href="/cv/">
+        <span data-en="THE FORMAL STUFF" data-es="MI CURRÍCULUM">THE FORMAL STUFF</span>
+        <span class="cv-arrow" aria-hidden="true"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/about/aboutController.js';
+  const about=document.querySelector<HTMLElement>('[data-about]');
+  const toggle=about?.querySelector<HTMLButtonElement>('.about-mobile-toggle');
+  const menu=about?.querySelector<HTMLElement>('.about-mobile-menu');
+  function setMenu(open:boolean){if(!about||!toggle||!menu)return;about.toggleAttribute('data-about-menu-open',open);toggle.setAttribute('aria-expanded',String(open));menu.inert=!open;document.documentElement.classList.toggle('mobile-menu-open',open);}
+  toggle?.addEventListener('click',()=>setMenu(toggle.getAttribute('aria-expanded')!=='true'));
+  menu?.addEventListener('click',event=>{if((event.target as Element).closest('a'))setMenu(false);});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&toggle?.getAttribute('aria-expanded')==='true'){setMenu(false);toggle.focus();}});
+</script>
+
+<style>
+  .about-preferences { position:absolute; top:24px; right:28px; z-index:5; }
+  .about__loading { margin-top:52px; }
+  :global(html[data-theme='dark']) .about { background:#000; --paper:#000; --ink:#f7f7f7; }
+  :global(html[lang='es']) .about { --about-touch-hint:'Toca un objeto para acercarte'; }
+  @media(max-width:700px) {
+    .about-preferences { top:16px; right:16px; }
+    .about__return { left:16px !important; transform:none !important; }
+    :global(html[data-theme='dark']) .about__overlay { background:#202020; }
+  }
+
+  .about {
+    --paper: #f7f7f7;
+    --ink: #171717;
+    --accent: #ff7138;
+
+    --ui-top: 24px;
+    --ui-right: 28px;
+    --status-width: min(54vw, 220px);
+    --ui-height: 48px;
+
+    position: relative;
+    isolation: isolate;
+    min-height: max(840px, 100svh);
+    overflow: clip;
+    background: #e0e0e0;
+    color: var(--ink);
+    font-family: 'Host Grotesk', sans-serif;
+  }
+
+  .about,
+  .about * {
+    box-sizing: border-box;
+  }
+
+  /* ESCENA */
+
+  .about__scene-shell {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .about__scene {
+    position: absolute;
+    inset: 0;
+  }
+
+  .about__scene :global(canvas) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /*
+   * Cada bloque controla su propia fusión.
+   * Esto permite que la cápsula del CV sea negra de verdad.
+   */
+
+  .about__overlay {
+    display: contents;
+    pointer-events: none;
+  }
+
+  .box {
+    position: absolute;
+    padding: 1.5rem 1.75rem;
+    pointer-events: auto;
+    color: var(--paper);
+  }
+
+  .box--intro,
+  .box--clock,
+  .box--links {
+    mix-blend-mode: difference;
+  }
+
+  /* INTRODUCCIÓN: TÍTULO, SUBTÍTULO Y PÁRRAFO */
+
+  .box--intro {
+    position: relative;
+
+    /* Aumenta este valor para mover todo más a la derecha */
+    left: clamp(64px, 8vw, 150px);
+
+    width: clamp(360px, 38vw, 620px);
+    padding-top: clamp(3rem, 6svh, 5rem);
+    padding-bottom: 170px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2rem;
+    text-align: right;
+  }
+
+  /* Durante el zoom, la introducción permanece visible */
+  .about[data-focused='true'] .box--intro {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+
+  .intro__hero {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .intro__hero h1 {
+    display: block;
+    margin: 0;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 4.1vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+  }
+
+  .intro__hero h1 span {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .intro__hero-name {
+    font-size: clamp(2.6rem, 6vw, 6.5rem);
+  }
+
+  .intro__sub {
+    margin: 0;
+    max-width: 85%;
+    font-size: clamp(1.25rem, 2.1vw, 2.1rem);
+    font-weight: 400;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  .intro__sub strong {
+    font-weight: 700;
+  }
+
+  .intro__body {
+    width: min(100%, 290px);
+  }
+
+  .intro__body p {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.5;
+  }
+
+  /* HORA DE LIMA */
+
+  .box--clock {
+    left: 1.5%;
+    bottom: 3%;
+  }
+
+  .clock__city {
+    margin: 0 0 0.45rem;
+    font-family: 'Archivo', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .clock__detail {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.4;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .clock__detail strong {
+    font-weight: 600;
+  }
+
+  .clock__detail [data-local-time] {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  /* ENLACES SOCIALES */
+
+  .box--links {
+    left: 50%;
+    bottom: 3%;
+    transform: translateX(-50%);
+  }
+
+  .links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
+  }
+
+  .link span,
+  .cv-link span {
+    display: inline-block;
+    transition: transform 180ms ease;
+  }
+
+  .link:hover span {
+    transform: translate(2px, -2px);
+  }
+
+  .cv-link:hover span {
+    transform: translateX(3px);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 5px;
+  }
+
+  /* NAVEGACIÓN */
+
+  .box--nav {
+    right: 2%;
+    bottom: 3%;
+    mix-blend-mode: difference;
+      display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  }
+
+  .box--nav .site-nav {
+  color: #fff;
+  mix-blend-mode: difference;
+}
+.box--nav .cv-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+
+  padding: 14px 22px;
+  background: var(--accent);
+  color: #111;
+  border: 0;
+  border-radius: 999px;
+
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.box--nav .cv-link:hover {
+  background: #e85f28;
+}
+  .site-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.45rem;
+  }
+
+  .site-nav a:not(.cv-link) {
+    color: var(--paper);
+    mix-blend-mode: difference;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+  }
+
+  /* CÁPSULA NEGRA DEL CV */
+
+  .site-nav .cv-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+
+    margin-top: 0.9rem;
+    padding: 14px 22px;
+
+    background: var(--accent);
+    color: #111;
+    border: 0;
+    border-radius: 999px;
+    box-shadow: none;
+    mix-blend-mode: normal;
+
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    transition: background 180ms ease;
+  }
+
+  .site-nav .cv-link:hover {
+    background: #e85f28;
+    text-decoration: none;
+  }
+
+  .site-nav .cv-link:focus-visible {
+    outline: none;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  /* GO BACK: SOLO TEXTO CON FUSIÓN DIFFERENCE */
+
+.about__return {
+  position: absolute;
+  top: var(--ui-top);
+  left: 50%;
+  transform: translateX(-50%);
+  right: auto;
+  bottom: auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  height: var(--ui-height);
+  padding: 0;
+
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  backdrop-filter: none;
+
+  color: #fff;
+  mix-blend-mode: difference;
+
+  font-family: 'Host Grotesk', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+}
+
+  .about__return span {
+    margin: 0;
+  }
+
+  .about__return:hover,
+  .about__return:focus-visible {
+    background: transparent;
+    border: 0;
+    outline: none;
+    box-shadow: none;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+  }
+
+  .about__return:disabled {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  /* INSPECTING: CÁPSULA SIN BORDE */
+
+  .about__loading {
+    position: absolute;
+    top: var(--ui-top);
+    right: var(--ui-right);
+    z-index: 3;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: width 280ms ease;
+    overflow: hidden;
+    width: max-content;
+    max-width: min(54vw, 330px);
+    height: var(--ui-height);
+    padding: 12px 18px;
+
+    background: #111;
+    color: #fff;
+    border: 0;
+    border-radius: 24px;
+    box-shadow: none;
+    mix-blend-mode: normal;
+  }
+
+  .about__loading p {
+    flex: 0 1 auto;
+    min-width: 0;
+    margin: 0;
+
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+  }
+
+  /* Puntito con respiración roja, naranja y amarilla */
+
+  .about__dot {
+    display: block;
+    flex: 0 0 7px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ff7138;
+  }
+
+  .about[data-focused='true'] .about__dot {
+    animation: status-breathe 3.6s ease-in-out infinite;
+  }
+
+  @keyframes status-breathe {
+    0%,
+    100% {
+      background: #ff4b3e;
+      opacity: 0.7;
+      transform: scale(0.9);
+      box-shadow: 0 0 4px rgb(255 75 62 / 35%);
+    }
+
+    50% {
+      background: #ff8a32;
+      opacity: 1;
+      transform: scale(1.12);
+      box-shadow:
+        0 0 7px rgb(255 138 50 / 65%),
+        0 0 12px rgb(255 138 50 / 25%);
+    }
+
+    75% {
+      background: #ffd45a;
+      opacity: 0.95;
+      transform: scale(1);
+      box-shadow: 0 0 7px rgb(255 212 90 / 50%);
+    }
+  }
+
+  .about__loading progress {
+    position: absolute;
+    left: 18px;
+    bottom: 5px;
+    width: calc(100% - 36px);
+    height: 3px;
+    border: 0;
+    accent-color: var(--accent);
+  }
+
+  /* ELIMINAR TARJETAS DE PERSONAJES Y CONTROLES */
+
+  .about__tooltip,
+  .about__tooltip-card,
+  .about__tools,
+  .about__picker,
+  .about__choices {
+    display: none !important;
+    pointer-events: none !important;
+  }
+
+  /* INDICACIÓN DE INTERACCIÓN */
+
+  .about__hint {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    bottom: 105px;
+    translate: -50% 0;
+
+    margin: 0;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    opacity: 0.65;
+    pointer-events: none;
+  }
+
+  .about__no-js {
+    position: absolute;
+    right: 24px;
+    top: 100px;
+    max-width: 240px;
+    font-size: 0.85rem;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  /* TABLET */
+
+  @media (max-width: 1024px) and (min-width: 701px) {
+    .box {
+      padding: 1.1rem 1.3rem;
+    }
+
+    .box--intro {
+      padding-top: 6rem;
+      padding-bottom: 180px;
+    }
+
+    .intro__body p {
+      font-size: 0.9rem;
+    }
+
+    .links {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .site-nav .cv-link {
+      font-size: 0.9rem;
+      padding: 13px 18px;
+    }
+
+    .about__hint {
+      bottom: 165px;
+    }
+  }
+
+  /* MÓVIL */
+
+  @media (max-width:700px), (max-width:1000px) and (max-height:500px) {
+    .about {
+      --ui-top: 16px;
+      --ui-right: 16px;
+      --ui-height: 44px;
+      min-height: 100svh;
+    }
+
+    .about__scene-shell {
+      position: relative;
+      height: 360svh;
+    }
+
+    .about__scene {position:sticky;top:0;height:100svh;}
+    .about__scene :global(canvas){height:100svh!important;}
+
+    .about__overlay {
+      display: none;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 2rem 1rem;
+      padding: 2rem 7vw 3rem;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .box {
+      position: static;
+      width: auto;
+      padding: 0;
+      transform: none;
+      color: var(--ink);
+      mix-blend-mode: normal;
+    }
+
+    .box--intro {
+      grid-column: 1 / -1;
+      align-items: flex-start;
+      gap: 1.5rem;
+      text-align: left;
+    }
+
+    .intro__hero {
+      align-items: flex-start;
+    }
+
+    .intro__hero h1 {
+      font-size: clamp(1.5rem, 8.5vw, 3.5rem);
+    }
+
+    .intro__hero-name {
+      font-size: clamp(2rem, 12vw, 5rem);
+    }
+
+    .intro__sub {
+      max-width: 100%;
+      font-size: 1.35rem;
+    }
+
+    .intro__body {
+      width: 100%;
+      max-width: 38rem;
+    }
+
+    .intro__body p {
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .clock__city {
+      font-size: 0.95rem;
+    }
+
+    .clock__detail {
+      font-size: 0.95rem;
+    }
+
+    .clock__detail [data-local-time] {
+      font-size: 1.1rem;
+    }
+
+    .box--links {
+      grid-column: 1 / -1;
+      grid-row: 3;
+    }
+
+    .links {
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .site-nav a:not(.cv-link) {
+      color: var(--ink);
+      mix-blend-mode: normal;
+      font-size: 1rem;
+    }
+
+    .site-nav .cv-link {
+      padding: 12px 14px;
+      font-size: 0.8rem;
+      white-space: normal;
+      text-align: center;
+    }
+
+    .about__return {
+      font-size: 1rem;
+    }
+
+    .about__loading {
+      padding: 10px 13px;
+    }
+
+    .about__loading p {
+      font-size: 0.7rem;
+    }
+
+    .about__hint {
+      bottom: 16px;
+      width: 90%;
+      white-space: normal;
+      text-align: center;
+    }
+  }
+
+  .about-mobile-copy,.about-mobile-toggle,.about-mobile-menu{display:none;}
+  @media(max-width:700px), (max-width:1000px) and (max-height:500px){
+    .about{display:block;min-height:100svh;background:var(--background);color:var(--foreground);}
+    .about-mobile-copy{position:relative;z-index:2;display:block;padding:72px 17px 0;background:var(--background);color:var(--foreground);overflow:hidden;}
+    .about-mobile-cv{position:absolute;top:16px;right:16px;max-width:48vw;padding:10px 15px;border-radius:999px;background:#129bd0;color:#fff;text-decoration:none;text-align:center;font-size:9px;font-weight:700;line-height:1.1;}
+    .about-mobile-intro{font-size:clamp(15px,4.2vw,19px);line-height:1.16;text-align:justify;}
+    .about-mobile-intro p{margin:0 0 20px;}
+    .about-mobile-copy dl{margin:0;padding-bottom:14px;border-top:1px solid currentColor;}
+    .about-mobile-copy dl>div{padding-top:8px;}
+    .about-mobile-copy dt{color:#858585;font-size:13px;}
+    .about-mobile-copy dd{margin:5px 0 0;color:inherit;font-size:13px;line-height:1.35;overflow-wrap:anywhere;}
+    .about__scene-shell{position:relative;inset:auto;width:100%;height:58svh;min-height:360px;background:var(--background);}
+    .about__overlay>.box{display:none!important;}
+    .about[data-scene-unavailable] .about__scene-shell{height:0;min-height:0;overflow:hidden;}
+    .about[data-scene-unavailable] .about__loading{display:none;}
+    .about-mobile-toggle{position:fixed;top:16px;left:14px;z-index:23;display:flex;width:46px;height:46px;padding:10px;border:0;background:transparent;flex-direction:column;justify-content:center;gap:5px;mix-blend-mode:difference;}
+    .about-mobile-toggle span{display:block;width:25px;height:3px;border-radius:2px;background:#fff;transition:transform .3s ease,opacity .2s ease;}
+    [data-about-menu-open] .about-mobile-toggle span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+    [data-about-menu-open] .about-mobile-toggle span:nth-child(2){opacity:0}
+    [data-about-menu-open] .about-mobile-toggle span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+    .about-mobile-menu{position:fixed;inset:0;z-index:20;display:flex;padding:90px 20px 110px;background:var(--background);color:var(--foreground);clip-path:inset(0 0 100%);visibility:hidden;transition:clip-path .5s cubic-bezier(.76,0,.24,1),visibility 0s .5s;}
+    [data-about-menu-open] .about-mobile-menu{clip-path:inset(0);visibility:visible;transition-delay:0s;}
+    .about-mobile-menu nav{display:flex;flex-direction:column;width:100%;}
+    .about-mobile-menu a{padding:12px 0;border-bottom:1px solid #8885;color:inherit;text-decoration:none;font:700 clamp(34px,10vw,52px)/1 'Archivo',sans-serif;}
+    .about-preferences{display:none;position:fixed;top:auto!important;right:18px!important;bottom:22px;z-index:22;}
+    [data-about-menu-open] .about-preferences{display:block;}
+    .about__tools,.about__tooltip,.about__return,.about__hint{display:none!important;}
+    .about__loading{position:fixed;top:auto!important;left:50%;bottom:18px;transform:translateX(-50%);z-index:8;}
+  }
+
+  @media (pointer: coarse) {
+    .about__hint {
+      font-size: 0;
+    }
+
+    .about__hint::after {
+      content: var(--about-touch-hint, 'Tap an object to get closer');
+      font-size: 0.7rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>

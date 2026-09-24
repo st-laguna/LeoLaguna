@@ -1,0 +1,141 @@
+---
+const svgURL = (content: string) =>
+  `data:image/svg+xml,${encodeURIComponent(content)}`;
+
+const displacement = svgURL(`
+  <svg xmlns="http://www.w3.org/2000/svg"
+       width="256" height="256"
+       viewBox="0 0 256 256" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="lens" color-interpolation="sRGB">
+        <stop offset="0" stop-color="rgb(95%,50%,50%)"/>
+        <stop offset=".2" stop-color="rgb(78%,50%,50%)"/>
+        <stop offset=".45" stop-color="rgb(60%,50%,50%)"/>
+        <stop offset=".7" stop-color="rgb(52%,50%,50%)"/>
+        <stop offset=".9" stop-color="rgb(50%,50%,50%)"/>
+        <stop offset="1" stop-color="rgb(50%,50%,50%)"/>
+      </linearGradient>
+    </defs>
+    <rect width="256" height="256" fill="url(#lens)"/>
+  </svg>
+`);
+
+const softness = svgURL(`
+  <svg xmlns="http://www.w3.org/2000/svg"
+       width="256" height="256"
+       viewBox="0 0 256 256" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="falloff">
+        <stop offset="0" stop-color="white" stop-opacity="1"/>
+        <stop offset=".4" stop-color="white" stop-opacity=".95"/>
+        <stop offset=".75" stop-color="white" stop-opacity=".3"/>
+        <stop offset="1" stop-color="white" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect width="256" height="256" fill="url(#falloff)"/>
+  </svg>
+`);
+
+const reverse = (url: string) => svgURL(decodeURIComponent(url.split(",")[1]).replace("<linearGradient", '<linearGradient x1="100%" x2="0%"'));
+---
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>{["left","right"].map(side => ( <filter
+      id={`footer-refraction-${side}`}
+      filterUnits="userSpaceOnUse"
+      primitiveUnits="userSpaceOnUse"
+      x="-150"
+      y="-30"
+      width="600"
+      height="1200"
+      color-interpolation-filters="sRGB"
+    >
+      <feImage
+        data-footer-lens-map
+        href={side === "left" ? displacement : reverse(displacement)}
+        x="0" y="0" width="200" height="1000"
+        preserveAspectRatio="none"
+        result="map"
+      />
+
+      <feDisplacementMap
+        in="SourceGraphic" in2="map"
+        scale="106"
+        xChannelSelector="R" yChannelSelector="G"
+        result="r-shift"
+      />
+      <feColorMatrix
+        in="r-shift"
+        values="1 0 0 0 0
+                0 0 0 0 0
+                0 0 0 0 0
+                0 0 0 1 0"
+        result="r"
+      />
+
+      <feDisplacementMap
+        in="SourceGraphic" in2="map"
+        scale="70"
+        xChannelSelector="R" yChannelSelector="G"
+        result="g-shift"
+      />
+      <feColorMatrix
+        in="g-shift"
+        values="0 0 0 0 0
+                0 1 0 0 0
+                0 0 0 0 0
+                0 0 0 1 0"
+        result="g"
+      />
+
+      <feDisplacementMap
+        in="SourceGraphic" in2="map"
+        scale="54"
+        xChannelSelector="R" yChannelSelector="G"
+        result="b-shift"
+      />
+      <feColorMatrix
+        in="b-shift"
+        values="0 0 0 0 0
+                0 0 0 0 0
+                0 0 1 0 0
+                0 0 0 1 0"
+        result="b"
+      />
+
+      <feBlend in="r" in2="g" mode="screen" result="rg"/>
+      <feBlend in="rg" in2="b" mode="screen" result="rgb"/>
+
+      <feGaussianBlur
+        in="rgb"
+        stdDeviation="3.2"
+        result="soft-glass"
+      />
+
+      <feImage
+        data-footer-lens-map
+        href={side === "left" ? softness : reverse(softness)}
+        x="0" y="0" width="200" height="1000"
+        preserveAspectRatio="none"
+        result="falloff"
+      />
+
+      <feComposite
+        in="soft-glass" in2="falloff"
+        operator="in" result="glass"
+      />
+      <feComposite
+        in="SourceGraphic" in2="falloff"
+        operator="out" result="original"
+      />
+      <feComposite
+        in="glass" in2="original"
+        operator="arithmetic"
+        k1="0" k2="1" k3="1" k4="0"
+      />
+    </filter> ))}</defs></svg>
+<span class="footer-glass footer-glass--left" data-footer-glass="left" aria-hidden="true"></span>
+<span class="footer-glass footer-glass--right" data-footer-glass="right" aria-hidden="true"></span>
+<style>
+.footer-glass {position:absolute;top:0%;bottom:0%;width:clamp(40px,10vw,220px);pointer-events:none;visibility:hidden;}
+.footer-glass--left {left:0;}
+.footer-glass--right {right:0;}
+</style>

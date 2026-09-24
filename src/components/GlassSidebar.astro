@@ -1,0 +1,423 @@
+---
+const svgURL = (content: string) =>
+  `data:image/svg+xml,${encodeURIComponent(content)}`;
+
+const displacement = svgURL(`
+  <svg xmlns="http://www.w3.org/2000/svg"
+       width="256" height="256"
+       viewBox="0 0 256 256" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="lens" color-interpolation="sRGB">
+        <stop offset="0" stop-color="rgb(95%,50%,50%)"/>
+        <stop offset=".2" stop-color="rgb(78%,50%,50%)"/>
+        <stop offset=".45" stop-color="rgb(60%,50%,50%)"/>
+        <stop offset=".7" stop-color="rgb(52%,50%,50%)"/>
+        <stop offset=".9" stop-color="rgb(50%,50%,50%)"/>
+        <stop offset="1" stop-color="rgb(50%,50%,50%)"/>
+      </linearGradient>
+    </defs>
+    <rect width="256" height="256" fill="url(#lens)"/>
+  </svg>
+`);
+
+const softness = svgURL(`
+  <svg xmlns="http://www.w3.org/2000/svg"
+       width="256" height="256"
+       viewBox="0 0 256 256" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="falloff">
+        <stop offset="0" stop-color="white" stop-opacity="1"/>
+        <stop offset=".4" stop-color="white" stop-opacity=".95"/>
+        <stop offset=".75" stop-color="white" stop-opacity=".3"/>
+        <stop offset="1" stop-color="white" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect width="256" height="256" fill="url(#falloff)"/>
+  </svg>
+`);
+---
+
+<svg class="glass-definitions" aria-hidden="true">
+  <defs>
+    <filter
+      id="sidebar-refraction"
+      filterUnits="userSpaceOnUse"
+      primitiveUnits="userSpaceOnUse"
+      x="-150"
+      y="-30"
+      width="600"
+      height="1200"
+      color-interpolation-filters="sRGB"
+    >
+      <feImage
+        data-lens-map
+        href={displacement}
+        x="0" y="0" width="200" height="1000"
+        preserveAspectRatio="none"
+        result="map"
+      />
+
+      <feDisplacementMap
+        in="SourceGraphic" in2="map"
+        scale="106"
+        xChannelSelector="R" yChannelSelector="G"
+        result="r-shift"
+      />
+      <feColorMatrix
+        in="r-shift"
+        values="1 0 0 0 0
+                0 0 0 0 0
+                0 0 0 0 0
+                0 0 0 1 0"
+        result="r"
+      />
+
+      <feDisplacementMap
+        in="SourceGraphic" in2="map"
+        scale="70"
+        xChannelSelector="R" yChannelSelector="G"
+        result="g-shift"
+      />
+      <feColorMatrix
+        in="g-shift"
+        values="0 0 0 0 0
+                0 1 0 0 0
+                0 0 0 0 0
+                0 0 0 1 0"
+        result="g"
+      />
+
+      <feDisplacementMap
+        in="SourceGraphic" in2="map"
+        scale="54"
+        xChannelSelector="R" yChannelSelector="G"
+        result="b-shift"
+      />
+      <feColorMatrix
+        in="b-shift"
+        values="0 0 0 0 0
+                0 0 0 0 0
+                0 0 1 0 0
+                0 0 0 1 0"
+        result="b"
+      />
+
+      <feBlend in="r" in2="g" mode="screen" result="rg"/>
+      <feBlend in="rg" in2="b" mode="screen" result="rgb"/>
+
+      <feGaussianBlur
+        in="rgb"
+        stdDeviation="3.2"
+        result="soft-glass"
+      />
+
+      <feImage
+        data-lens-map
+        href={softness}
+        x="0" y="0" width="200" height="1000"
+        preserveAspectRatio="none"
+        result="falloff"
+      />
+
+      <feComposite
+        in="soft-glass" in2="falloff"
+        operator="in" result="glass"
+      />
+      <feComposite
+        in="SourceGraphic" in2="falloff"
+        operator="out" result="original"
+      />
+      <feComposite
+        in="glass" in2="original"
+        operator="arithmetic"
+        k1="0" k2="1" k3="1" k4="0"
+      />
+    </filter>
+  </defs>
+</svg>
+
+
+  <button
+    class="glass-toggle"
+    type="button"
+    aria-label="Abrir / cerrar menú"
+    aria-expanded="false"
+    aria-controls="glass-project-menu"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+    <nav id="glass-project-menu" aria-label="Portfolio" inert>
+      <a href="/" data-i18n="nav.home">HOME</a>
+      <a href="#work" data-i18n="nav.work">WORK</a>
+      <a href="/about/" data-i18n="nav.about">ABOUT</a>
+      <a href="#contact" data-i18n="nav.contact">CONTACT</a>
+    </nav>
+  <aside class="projects-sidebar" data-glass-sidebar>
+
+  </aside>
+
+<style>
+  .glass-definitions {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* El contenido utiliza todo el ancho. */
+  :global(.projects[data-horizontal] .projects-stage) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Vidrio independiente del botón y del menú. */
+  :global(.projects[data-horizontal]) .projects-sidebar {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(var(--media-gap) + 110px);
+    padding: 0;
+    z-index: 10;
+    display: block;
+    background: transparent;
+    overflow: visible;
+    pointer-events: none;
+
+    -webkit-backdrop-filter: url("#sidebar-refraction");
+    backdrop-filter: url("#sidebar-refraction");
+  }
+
+  .projects-sidebar::before {
+    display: none;
+  }
+
+  /* Botón: área de clic amplia, rayitas pequeñas. */
+  .glass-toggle {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 72px;
+    height: 88px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    mix-blend-mode: difference;
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+    z-index: 11;
+  }
+
+  :global(.projects[data-horizontal]) .glass-toggle {
+    display: flex;
+  }
+
+  .glass-toggle:disabled {
+    pointer-events: none;
+  }
+
+  .glass-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: currentColor;
+    transition: transform 350ms ease;
+  }
+
+  .glass-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .glass-toggle[aria-expanded="true"] span:nth-child(2) {
+    transform: scaleX(0);
+  }
+
+  .glass-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* Menú independiente: abrirlo no modifica el vidrio. */
+  #glass-project-menu {
+    position: absolute;
+    top: 50%;
+    left: 72px;
+    right: auto;
+    transform: translateY(-50%);
+    box-sizing: border-box;
+    width: 230px;
+    max-width: calc(100vw - 88px);
+    margin: 0;
+    padding: 30px 24px;
+    display: grid;
+    gap: 18px;
+    border: 1px solid rgb(128 128 128 / 18%);
+    border-radius: 0 16px 16px 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: inherit;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    z-index: 12;
+    isolation: isolate;
+
+    filter: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    mix-blend-mode: normal;
+
+    clip-path: inset(0 100% 0 0);
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+      clip-path 450ms cubic-bezier(.22, 1, .36, 1),
+      visibility 0s 450ms;
+  }
+
+  #glass-project-menu[data-open] {
+    clip-path: inset(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
+  #glass-project-menu a {
+    position: relative;
+    display: block;
+    padding: 8px 0 8px 18px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Punto naranja únicamente al pasar el cursor o enfocar. */
+  #glass-project-menu a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ff8a00;
+    transform: translateY(-50%);
+    visibility: hidden;
+  }
+
+  #glass-project-menu a:hover::before,
+  #glass-project-menu a:focus-visible::before {
+    visibility: visible;
+  }
+
+  .glass-toggle:focus-visible,
+  #glass-project-menu a:focus-visible {
+    outline: 2px solid var(--accent, #ff8a00);
+    outline-offset: 4px;
+  }
+
+  :global(.projects:not([data-horizontal])) .projects-sidebar,
+  :global(.projects:not([data-horizontal])) .glass-toggle,
+  :global(.projects:not([data-horizontal])) #glass-project-menu {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glass-toggle span,
+    #glass-project-menu {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const sidebar = document.querySelector<HTMLElement>(
+    '[data-glass-sidebar]'
+  );
+
+  if (sidebar) {
+        const toggle = sidebar.parentElement!.querySelector<HTMLButtonElement>(
+      '.glass-toggle'
+    )!;
+    const menu = sidebar.parentElement!.querySelector<HTMLElement>(
+  '#glass-project-menu'
+)!;
+    const events = new AbortController();
+
+      function setOpen(open: boolean) {
+        sidebar!.toggleAttribute('data-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        menu.inert = !open;
+        menu.toggleAttribute('data-open', open);
+      }
+
+    toggle.addEventListener('click', () => {
+      setOpen(!sidebar.hasAttribute('data-open'));
+    }, { signal: events.signal });
+
+    menu.addEventListener('click', event => {
+      if ((event.target as Element).closest('a')) {
+        setOpen(false);
+      }
+    }, { signal: events.signal });
+
+    document.addEventListener('pointerdown', event => {
+      if (
+        !sidebar.contains(event.target as Node) &&
+        !toggle.contains(event.target as Node) &&
+        !menu.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }, { signal: events.signal });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && sidebar.hasAttribute('data-open')) {
+        setOpen(false);
+        toggle.focus({ preventScroll: true });
+      }
+    }, { signal: events.signal });
+
+    if (import.meta.hot) {
+      import.meta.hot.dispose(() => events.abort());
+    }
+    // Ajusta los mapas al tamaño real de la franja.
+const lensBar = document.querySelector<HTMLElement>(
+  '[data-glass-sidebar]'
+);
+const lensFilter = document.querySelector<SVGFilterElement>(
+  '#sidebar-refraction'
+);
+
+if (lensBar && lensFilter) {
+  const resizeLens = () => {
+    const width = lensBar.clientWidth;
+    const height = lensBar.clientHeight;
+    if (!width || !height) return;
+
+    lensFilter.setAttribute('width', String(width + 300));
+    lensFilter.setAttribute('height', String(height + 60));
+
+    lensFilter.querySelectorAll('[data-lens-map]').forEach(map => {
+      map.setAttribute('width', String(width));
+      map.setAttribute('height', String(height));
+    });
+  };
+
+  const lensObserver = new ResizeObserver(resizeLens);
+  lensObserver.observe(lensBar);
+  resizeLens();
+
+  if (import.meta.hot) {
+    import.meta.hot.dispose(() => lensObserver.disconnect());
+  }
+}
+  }
+</script>

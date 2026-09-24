@@ -1,0 +1,75 @@
+---
+import FooterGlass from './FooterGlass.astro';
+import '../styles/footer.css';
+---
+<footer id="contact" class="footer" aria-label="Leo Laguna — Contact">
+  <div class="footer__heading">
+    <span class="footer__name" data-footer-enter="0">LEO LAGUNA<sup>©</sup></span>
+    <a href="/" class="footer__mark" data-footer-enter="140" aria-label="Leo Laguna — Home"></a>
+  </div>
+
+      <a
+        class="footer__marquee"
+        data-footer-marquee
+        data-footer-click-target
+        data-footer-enter="80"
+        href="mailto:sanchezlaguna99@gmail.com"
+        aria-label="Get in touch — sanchezlaguna99@gmail.com"
+      >
+        <svg
+          data-marquee-svg
+          viewBox="0 -32 1400 200"
+          preserveAspectRatio="xMinYMid meet"
+          aria-hidden="true"
+        >
+          <g filter="url(#footer-refraction-left)">
+            <g filter="url(#footer-refraction-right)">
+              <g data-marquee-track fill="currentColor"></g>
+            </g>
+          </g>
+        </svg>
+
+        <noscript>
+          <span class="footer__fallback">GET IN TOUCH</span>
+        </noscript>
+
+        <span class="footer__mobile-message" aria-hidden="true">
+          <span>GET · GET · GET ·</span>
+          <span>IN · IN · IN ·</span>
+          <span>TOUCH</span>
+        </span>
+
+        <FooterGlass />
+      </a>
+
+      <div
+        class="footer__click-cursor"
+        data-footer-click-cursor
+        aria-hidden="true"
+      >
+        <span>CLICK</span>
+        <img src="/icons/arrow.svg" alt="" class="footer__click-arrow" />
+      </div>
+
+  <div class="footer__contact-info">
+    <div><span>socials</span><a href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
+    <div><span>contact</span><a href="mailto:sanchezlaguna99@gmail.com">sanchezlaguna99@gmail.com</a></div>
+  </div>
+
+  <div class="footer__bottom" data-footer-enter="0">
+    <p class="footer__meta" data-footer-enter="140">LIMA, PERU © <span data-footer-year></span><br/><span data-footer-clock></span> (UTC−5)</p>
+    <div class="footer__social hover-group">
+      <a class="hover-option" data-footer-enter="240" href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a class="hover-option" data-footer-enter="340" href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+<script>
+  import { initFooter } from '../scripts/footer';
+  let dispose: (()=>void)|undefined;
+  function setup(){dispose?.();dispose=initFooter();}
+  setup();
+  document.addEventListener('astro:page-load',setup);
+  document.addEventListener('astro:before-swap',()=>{dispose?.();dispose=undefined;});
+  if(import.meta.hot)import.meta.hot.dispose(()=>{dispose?.();document.removeEventListener('astro:page-load',setup);});
+</script>

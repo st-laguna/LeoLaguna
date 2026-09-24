@@ -1,0 +1,204 @@
+<section id="home" class="hero" aria-label="Leo Laguna — presentación">
+  <div class="hero__mask" aria-hidden="true">
+    <div class="hero__parallax">
+      <picture>
+      <source media="(max-width: 1000px)" srcset="/imgs/hero/3H.webp" />
+      <img
+        class="hero__image hero__image--light"
+        src="/imgs/hero/1H.webp"
+        alt=""
+        loading="eager"
+        fetchpriority="high"
+      /></picture>
+      <picture>
+      <source media="(max-width: 1000px)" srcset="/imgs/hero/4H.webp" />
+      <img
+        class="hero__image hero__image--dark"
+        src="/imgs/hero/2H.webp"
+        alt=""
+        loading="eager"
+        decoding="async"
+      /></picture>
+    </div>
+  </div>
+
+  <svg class="hero__mobile-overlay hero__blend" viewBox="0 0 1365.7 2462.68" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <use href="/icons/logo_phn.svg#title"></use>
+    <use href="/icons/logo_phn.svg#subtitle"></use>
+  </svg>
+
+  <div class="hero__location hero__blend" data-transition-enter>
+    <span>LIMA, PERU</span>
+    <span>GMT−5 <span data-lima-clock></span></span>
+  </div>
+
+  <h1 class="hero__title hero__blend"><span class="hero__word hero__word--leo">LEO</span> <span class="hero__word hero__word--laguna">LAGUNA</span></h1>
+
+  <p class="hero__subtitle hero__blend" data-transition-enter>
+    <span data-i18n="hero.location">Based In Lima, Peru</span>
+    <br />
+    <span data-i18n="hero.tagline">Creating For Everyone</span>
+  </p>
+
+  <a
+    class="hero__scroll hero__blend"
+    href="#workflow"
+    data-transition-enter
+  >
+    <span data-i18n="hero.scroll">SCROLL TO EXPLORE</span>
+    <span aria-hidden="true">↓</span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    /* Controles para ajustar la composición */
+    --image-position: 50% 50%;
+
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+    background: var(--background);
+  }
+
+  .hero__mask {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    /* Amplía ligeramente el logo para eliminar márgenes mínimos */
+    
+
+    -webkit-mask-image: url("/icons/logo_w.svg");
+    mask-image: url("/icons/logo_w.svg");
+
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+
+    -webkit-mask-position: center;
+    mask-position: center;
+
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+
+    mask-mode: alpha;
+  }
+
+ .hero__parallax {position:absolute;top:-20%;left:0;width:100%;height:140%;}
+ .hero__image {position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:var(--image-position);filter:grayscale(1);}
+ .hero__parallax picture {position:absolute;inset:0;}
+ .hero__image--dark {clip-path:inset(100% 0 0);transition:clip-path 450ms cubic-bezier(.76,0,.24,1);}
+ :global(html[data-theme="dark"]) .hero__image--dark {clip-path:inset(0);}
+  .hero__blend {
+    position: absolute;
+    z-index: 1;
+    color: #ffffff;
+    mix-blend-mode: difference;
+  }
+
+  .hero__mobile-overlay {display:none;}
+
+  .hero a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .hero__location {
+    top: 34.5%;
+    right: 6.3%;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    font-size: clamp(10px, 0.7vw, 13px);
+    line-height: 1.15;
+  }
+
+  .hero__title {
+    top: 49.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    width: max-content;
+    white-space: nowrap;
+    font-family: "Archivo", sans-serif;
+    font-size: 12.2vw;
+    font-weight: 800;
+    word-spacing: 0.08em;
+    line-height: 0.9;
+    letter-spacing: 0.015em;
+  }
+
+  .hero__subtitle {
+    top: 61.5%;
+    left: 3.2%;
+    margin: 0;
+    font-size: clamp(10px, 0.75vw, 14px);
+    line-height: 1.2;
+  }
+
+  .hero__scroll {
+    right: 3.2%;
+    bottom: 4.5%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: clamp(10px, 0.75vw, 14px);
+  }
+
+  .hero__scroll > span[aria-hidden] {
+    font-size: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .hero__nav {
+      top: 20px;
+      gap: 32px;
+      font-size: 12px;
+    }
+
+    .hero__location {
+      top: 36%;
+      right: 6%;
+    }
+
+    .hero__subtitle {
+      top: 60%;
+      left: 6%;
+      font-size: 11px;
+    }
+
+    .hero__scroll {
+      right: 6%;
+      bottom: 28px;
+      font-size: 11px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__image--dark {transition:none;}
+    .hero__nav a::after {
+      transition: none;
+    }
+  }
+  
+  @media (max-width: 900px) {
+  .hero__nav {
+    top: 76px;
+  }
+}
+
+@media (max-width:700px), (max-width:1000px) and (max-height:500px) {
+  .hero {height:100svh;min-height:100svh;}
+  .hero__mask {
+    -webkit-mask-image:url('/icons/logo_phn_mask.svg');mask-image:url('/icons/logo_phn_mask.svg');
+    -webkit-mask-size:contain;mask-size:contain;-webkit-mask-position:center;mask-position:center;
+  }
+  .hero__parallax {top:0;height:100%;}
+  .hero__image {object-position:center;filter:none;}
+  .hero__mobile-overlay {display:block;position:absolute;inset:0;width:100%;height:100%;color:#fff;mix-blend-mode:difference;pointer-events:none;}
+  .hero__title,.hero__subtitle {display:none;}
+  .hero__location,.hero__scroll {display:none;}
+}
+</style>

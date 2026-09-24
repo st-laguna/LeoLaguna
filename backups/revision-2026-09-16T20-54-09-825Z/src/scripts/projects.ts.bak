@@ -1,0 +1,172 @@
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
+
+const root = document.querySelector<HTMLElement>('[data-projects]');
+if (root) {
+  const section = root;
+  const $ = <T extends HTMLElement>(selector:string) => section.querySelector<T>(selector)!;
+  const panels = Array.from(section.querySelectorAll<HTMLElement>('[data-panel]'));
+  const copies = Array.from(section.querySelectorAll<HTMLElement>('[data-copy]'));
+  const rail = $<HTMLElement>('.projects-rail');
+  const digits = $<HTMLElement>('.projects-digits');
+  const progress = $<HTMLElement>('.projects-progress > span');
+  const expanded = $<HTMLElement>('#projects-expanded');
+  const desktop = matchMedia('(min-width:901px) and (min-height:621px) and (prefers-reduced-motion:no-preference)');
+  const reduced = matchMedia('(prefers-reduced-motion:reduce)');
+  const listeners = new AbortController();
+  let animation: gsap.core.Tween | undefined;
+  let chrome: ScrollTrigger | undefined;
+  let current = 0;
+  let savedProgress = 0;
+  let expandedState = false;
+  let busy = false;
+  let opener: HTMLElement | null = null;
+  const state = {position:0};
+  const pauseVideos = () => section.querySelectorAll('video').forEach(v=>v.pause());
+
+  function render(position:number) {
+    const rounded = Math.max(0, Math.min(3, Math.round(position)));
+    if (rounded !== current) pauseVideos();
+    current = rounded;
+    rail.style.transform = `translate3d(${-position*100}%,0,0)`;
+    // Each digit is 1em; the track contains four digits.
+    digits.style.transform = `translateY(${-position*25}%)`;
+    progress.style.transform = `scaleX(${position/3})`;
+    copies.forEach((copy,i)=> {
+      const opacity = Math.max(0,1-Math.abs(position-i)*2);
+      copy.style.opacity = String(opacity);
+      copy.style.visibility = opacity > 0 ? 'visible' : 'hidden';
+      copy.setAttribute('aria-hidden',String(i!==rounded));
+    });
+    panels.forEach((panel,i)=> {
+      panel.inert = i !== rounded;
+      panel.setAttribute('aria-hidden',String(i!==rounded));
+    });
+    section.querySelectorAll<HTMLButtonElement>('[data-step]').forEach(button=>{
+      button.disabled = Number(button.dataset.step)<0 ? current===0 : current===3;
+    });
+  }
+
+  function clearScroll() {
+    animation?.scrollTrigger?.kill();
+    animation?.kill();
+    animation=undefined;
+    chrome?.kill();
+    chrome=undefined;
+    document.documentElement.classList.remove('projects-active');
+  }
+
+  function configure() {
+    clearScroll();
+    const horizontal=desktop.matches;
+    section.toggleAttribute('data-horizontal',horizontal);
+    if (horizontal) {
+      if (!expandedState) {
+        state.position=0;
+        render(0);
+        animation=gsap.to(state,{
+          position:3,ease:'none',
+          onUpdate:()=>render(state.position),
+          scrollTrigger:{trigger:section,start:'top top',end:'bottom bottom',scrub:.55,invalidateOnRefresh:true},
+        });
+      }
+      chrome=ScrollTrigger.create({
+        trigger:section,start:'top top',end:'bottom top',
+        onToggle:self=>document.documentElement.classList.toggle('projects-active',self.isActive),
+        onRefresh:self=>document.documentElement.classList.toggle('projects-active',self.isActive),
+      });
+      if (expandedState) render(current);
+    } else {
+      rail.style.removeProperty('transform');
+      panels.forEach(panel=>{panel.inert=false;panel.removeAttribute('aria-hidden');});
+    }
+    ScrollTrigger.refresh();
+  }
+
+  function selectAsset(panel:HTMLElement,index:number) {
+    panel.querySelectorAll<HTMLElement>('[data-slide]').forEach((slide,i)=>{
+      slide.hidden=i!==index;
+      if(i!==index) slide.querySelector('video')?.pause();
+    });
+    panel.querySelectorAll('[data-select]').forEach(button=>{
+      button.setAttribute('aria-pressed',String(Number((button as HTMLElement).dataset.select)===index));
+    });
+  }
+
+  async function openGallery(index:number,button:HTMLElement) {
+    if(busy||expandedState)return;
+    busy=true;
+    opener=button;
+    savedProgress=animation?.scrollTrigger?.progress ?? index/3;
+    current=index;
+    pauseVideos();
+    const top=section.getBoundingClientRect().top+window.scrollY;
+    expandedState=true;
+    clearScroll();
+    section.setAttribute('data-expanded','');
+    panels.forEach((panel,i)=>panel.toggleAttribute('data-selected-panel',i===index));
+    expanded.querySelectorAll<HTMLElement>('[data-gallery]').forEach((gallery,i)=>gallery.hidden=i!==index);
+    expanded.hidden=false;
+    section.querySelectorAll('[data-open]').forEach(el=>el.setAttribute('aria-expanded','true'));
+    // The rail is now a single panel; keep footer synchronized separately.
+    if(desktop.matches) {
+      render(index);
+      window.scrollTo({top,behavior:'instant'});
+    } else {
+      panels.forEach(panel=>{panel.inert=false;panel.removeAttribute('aria-hidden');});
+    }
+    configure();
+    expanded.scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});
+    const heading=$<HTMLElement>('[data-gallery-heading]');
+    heading.focus({preventScroll:true});
+    await gsap.fromTo(expanded,{opacity:0,y:reduced.matches?0:24},{opacity:1,y:0,duration:reduced.matches?0:.4});
+    ScrollTrigger.refresh();
+    busy=false;
+  }
+
+  function closeGallery() {
+    if(busy||!expandedState)return;
+    pauseVideos();
+    expandedState=false;
+    expanded.hidden=true;
+    expanded.style.removeProperty('opacity');
+    expanded.style.removeProperty('transform');
+    section.removeAttribute('data-expanded');
+    panels.forEach(panel=>panel.removeAttribute('data-selected-panel'));
+    section.querySelectorAll('[data-open]').forEach(el=>el.setAttribute('aria-expanded','false'));
+    // Rebuild from zero, then seek to the exact saved scroll position.
+    state.position=0;
+    configure();
+    const st=animation?.scrollTrigger;
+    if(st) {
+      window.scrollTo({top:st.start+savedProgress*(st.end-st.start),behavior:'instant'});
+      ScrollTrigger.update();
+      animation?.progress(savedProgress);
+    } else {
+      panels[current].scrollIntoView({behavior:'instant',block:'start'});
+    }
+    opener?.focus({preventScroll:true});
+  }
+
+  section.addEventListener('click',event=>{
+    const target=(event.target as Element).closest<HTMLElement>('button');
+    if(!target)return;
+    if(target.hasAttribute('data-select')) {
+      selectAsset(target.closest<HTMLElement>('[data-panel]')!,Number(target.dataset.select));
+    } else if(target.hasAttribute('data-open')) {
+      void openGallery(target.dataset.open==='current'?current:Number(target.dataset.open),target);
+    } else if(target.hasAttribute('data-close')) {
+      closeGallery();
+    } else if(target.hasAttribute('data-step')&&!expandedState) {
+      const next=Math.max(0,Math.min(3,current+Number(target.dataset.step)));
+      const st=animation?.scrollTrigger;
+      if(st)window.scrollTo({top:st.start+(next/3)*(st.end-st.start),behavior:'smooth'});
+    }
+  },{signal:listeners.signal});
+  section.addEventListener('keydown',event=>{if(event.key==='Escape')closeGallery();},{signal:listeners.signal});
+  desktop.addEventListener('change',configure,{signal:listeners.signal});
+  configure();
+  void document.fonts.ready.then(()=>ScrollTrigger.refresh());
+  if(import.meta.hot)import.meta.hot.dispose(()=>{listeners.abort();clearScroll();});
+}

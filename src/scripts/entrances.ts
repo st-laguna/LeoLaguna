@@ -1,0 +1,46 @@
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
+const media=gsap.matchMedia();
+media.add('(prefers-reduced-motion: no-preference)',()=>{
+  const portal=matchMedia('(min-width:1001px) and (min-height:681px)').matches;
+  const elements=Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]')).filter(el=>!(portal&&el.closest('.home-journey')));
+  const regular=elements.filter(el=>!el.closest('.brands'));
+  const reveal=(el:HTMLElement)=>gsap.to(el,{clipPath:'inset(0% 0% 0% 0%)',duration:.85,ease:'power3.inOut',overwrite:true});
+  gsap.set(elements,{clipPath:'inset(100% 0% 0% 0%)'});
+  regular.forEach((el,index)=>{
+    if(el.closest('.hero')||el.closest('.site-header'))gsap.to(el,{clipPath:'inset(0% 0% 0% 0%)',duration:1.1,delay:index*.06,ease:'power3.inOut'});
+    else gsap.to(el,{clipPath:'inset(0% 0% 0% 0%)',duration:.85,ease:'power3.inOut',scrollTrigger:{trigger:el,start:'top 90%',once:true}});
+  });
+  const brands=document.querySelector('.brands');
+if (brands) {
+  const content = brands.querySelectorAll('[data-reveal]');
+
+  gsap.fromTo(
+    content,
+    {
+      y: 28,
+      clipPath: 'inset(100% 0% 0% 0%)',
+    },
+    {
+      y: 0,
+      clipPath: 'inset(0% 0% 0% 0%)',
+      duration: 1,
+      stagger: 0.09,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: brands,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+    }
+  );
+}
+  const focus=(event:FocusEvent)=>{
+    const element=(event.target as HTMLElement)?.closest<HTMLElement>('[data-reveal]');
+    if(element)reveal(element);
+  };
+  document.addEventListener('focusin',focus);
+  return()=>{document.removeEventListener('focusin',focus);gsap.set(elements,{clearProps:'clipPath'});};
+});
+if(import.meta.hot)import.meta.hot.dispose(()=>media.revert());
