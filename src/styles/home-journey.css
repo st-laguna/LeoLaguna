@@ -46,3 +46,12 @@
   .home-journey[data-mobile-journey] .workflow__track {display:none;}
   .home-journey[data-mobile-journey] .journey-cover {display:none;}
 }
+
+/* Phone landscape: keep the workflow copy beside the animated cards. */
+@media(max-width:1000px) and (max-height:500px) and (orientation:landscape) {
+ .home-journey[data-mobile-journey] .workflow {padding:60px 5vw 20px;}
+ .home-journey[data-mobile-journey] .workflow__heading {position:absolute;left:5vw;top:50%;transform:translateY(-50%);width:36%;max-width:22ch;margin:0;font-size:clamp(20px,3.4vw,30px);text-align:left;}
+ .home-journey[data-mobile-journey] .workflow__grid {inset:32px 4vw 22px 46%;}
+ .home-journey[data-mobile-journey] .workflow__card {width:min(100%,calc((100svh - 60px)*.84));}
+ .home-journey[data-mobile-journey] .workflow__back {font-size:clamp(12px,3.8svh,17px);padding:18px;}
+}

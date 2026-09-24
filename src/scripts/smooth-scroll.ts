@@ -15,6 +15,7 @@ const media = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduce
 const tick = (seconds: number) => lenis?.raf(seconds * 1000);
 
 export function isScrollLocked() { return locked || transitioning; }
+export function isCommittingScrollJump() { return committing; }
 export function beginScrollTransition() {
   if (isScrollLocked()) return false;
   transitioning = true;
@@ -47,6 +48,8 @@ export function scrollPage( top: number, smooth = true, duration?: number ) {
   const max = Math.max(0, document.documentElement.scrollHeight - innerHeight);
   const destination = Math.max(0, Math.min(top, max));
   if (lenis) {
+    // Sticky sections can change page height before Lenis observes their size.
+    if (immediate) lenis.resize();
     lenis.scrollTo(destination, { immediate, force: committing, ...(duration !== undefined && !immediate ? { duration, lerp: 0, easing: (t: number) => t * t * (3 - 2 * t), } : {}), });
   } else {
     window.scrollTo({ top: destination, behavior: immediate ? 'instant' : 'smooth' });
@@ -64,7 +67,7 @@ function configure() {
     syncTouch: false,
     lerp: 0.1,
     anchors: false,
-    prevent: element => Boolean(element.closest('dialog, .workflow__back')),
+    prevent: element => Boolean(element.closest('dialog')),
   });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add(tick);
@@ -75,10 +78,12 @@ window.addEventListener('leo:gallery-lock', () => {
   locked = true;
   lenis?.stop();
 }, { signal });
-window.addEventListener('leo:gallery-unlock', () => {
+window.addEventListener('leo:gallery-unlock', (event) => {
+  const top = (event as CustomEvent<{scroll:number}>).detail?.scroll ?? window.scrollY;
   locked = false;
   if (lenis) {
-    lenis.scrollTo(window.scrollY, { immediate: true, force: true });
+    lenis.resize();
+    lenis.scrollTo(top, { immediate: true, force: true });
     if (!transitioning) lenis.start();
   }
   ScrollTrigger.update();

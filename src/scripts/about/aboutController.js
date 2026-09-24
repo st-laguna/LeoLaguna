@@ -177,9 +177,8 @@ function mount(section) {
   });
   on(returnButton, 'click', () => scene?.reset());
   on(mobileQuery, 'change', () => {
-    const hideIntro = false;
-    intro.inert = hideIntro;
-    tween(intro, { autoAlpha: hideIntro ? 0 : 1, y: hideIntro ? -14 : 0 });
+    dispose();
+    mounted.set(section, mount(section));
   });
   on(section, 'keydown', (event) => {
     if (event.key === 'Escape' && focused) {
@@ -214,11 +213,11 @@ function mount(section) {
     watchdog = setTimeout(() => {
       if (!destroyed) {
         setStatus('The 3D scene is taking a little longer. You can keep reading.');
-        if (mobileQuery.matches) section.setAttribute('data-scene-unavailable', '');
+
       }
     }, 12000);
     try {
-      const { createAboutScene } = await import('./dogScene.js');
+      const { createAboutScene } = await (mobileQuery.matches ? import('./portraitScene.js') : import('./dogScene.js'));
       if (destroyed || leaving) {
         starting = false;
         return;

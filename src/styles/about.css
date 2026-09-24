@@ -74,3 +74,7 @@
 @font-face { font-family: 'Archivo'; src: url('/about/fonts/Archivo.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
 html[data-page="about"], html[data-page="about"] body { margin: 0; padding: 0; background: #dbdbdb; }
 html[data-page="about"][data-theme="dark"], html[data-page="about"][data-theme="dark"] body { background:#181818; }
+
+html[data-page="about"] {--background:#f7f7f7;--foreground:#171717;--surface:#efefef;color-scheme:light;}
+html[data-page="about"][data-theme="dark"] {--background:#181818;--foreground:#f7f7f7;--surface:#222;color-scheme:dark;}
+html[data-page="about"].mobile-menu-open {overflow:hidden;}

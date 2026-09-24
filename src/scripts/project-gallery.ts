@@ -29,7 +29,7 @@ if(gallery&&lightbox&&section){
     if(locks===0){
       document.documentElement.style.overflow=previousOverflow;
       window.scrollTo({top:scroll,behavior:'instant'});
-      window.dispatchEvent(new Event('leo:gallery-unlock'));
+      window.dispatchEvent(new CustomEvent('leo:gallery-unlock',{detail:{scroll}}));
     }
   }
   function pause(root:Element){root.querySelectorAll('video').forEach(video=>video.pause());}

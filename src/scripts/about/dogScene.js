@@ -96,7 +96,7 @@ export function createAboutScene(section, callbacks = {}) {
   composer.addPass(outputPass);
 
   const draco = new DRACOLoader();
-  if (SCENE.dracoPath) draco.setDecoderPath(SCENE.dracoPath);
+  draco.setDecoderPath(SCENE.dracoPath || '/about/draco/');
   draco.setWorkerLimit(2);
   const loader = new GLTFLoader();
   loader.setDRACOLoader(draco);

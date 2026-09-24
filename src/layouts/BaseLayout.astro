@@ -126,6 +126,9 @@ const {
         }
       });
       menuMedia.addEventListener('change', () => setMobileMenu(false));
+      window.addEventListener('leo:close-menu', () => setMobileMenu(false));
+
+      setMobileMenu(false);
 
       function protectVideos() {
         document.querySelectorAll<HTMLVideoElement>('video').forEach(video => {

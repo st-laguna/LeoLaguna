@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
-import { scrollPage } from './smooth-scroll';
+import { scrollPage, isCommittingScrollJump } from './smooth-scroll';
 gsap.registerPlugin(ScrollTrigger);
 const root=document.querySelector<HTMLElement>('.home-journey');
 if(root){
@@ -75,6 +75,10 @@ if(root){
     function render(){
       if(!width)return;
       const requested=clamp(state.p);
+      if(isCommittingScrollJump()) {
+        returning?.kill();returning=null;returnFloor.p=0;
+        workflow.dispatchEvent(new Event('workflow:reset'));
+      }
       if (requested < .995 && !returning &&
           workflow.querySelector('.workflow__card[aria-pressed="true"]')) {
         // Complete the existing 650ms CSS flip before moving or hiding slots.
@@ -247,8 +251,8 @@ slots.forEach((slot, i) => {
 
     function measure(){
       const rect=stage.getBoundingClientRect();width=rect.width;height=rect.height;
-      const first=cards[0].getBoundingClientRect();
-      target={x:first.left-rect.left,y:first.top-rect.top,w:first.width,h:first.height};
+      const w=cards[0].offsetWidth,h=cards[0].offsetHeight;
+      target={x:grid.offsetLeft+(grid.clientWidth-w)/2,y:grid.offsetTop+(grid.clientHeight-h)/2,w,h};
       render();
     }
 
@@ -256,21 +260,27 @@ slots.forEach((slot, i) => {
       if(!width)return;
       const p=clamp(state.p);
       const portal=ease(p/.2);
-      texts.forEach((text,i)=>{
+      texts.filter(text=>text!==mobileOverlay).forEach((text,i)=>{
         const out=ease((p-i*.012)/.075);
         text.style.translate=`0 ${-70*out}px`;
         text.style.clipPath=`inset(0 0 ${out*100}% 0)`;
       });
       if(mobileOverlay){
-        const out=ease(p/.085);
-        mobileOverlay.style.translate=`0 ${-70*out}px`;
-        mobileOverlay.style.clipPath=`inset(0 0 ${out*100}% 0)`;
+        mobileOverlay.style.translate='none';mobileOverlay.style.clipPath='none';
+        mobileOverlay.querySelectorAll('use').forEach((part,i)=>{
+          const out=ease((p-i*.008)/.026);
+          part.style.opacity=String(1-out);
+          part.style.transform=`translateY(${-100*out}px)`;
+        });
       }
-      mask.style.transformOrigin='31% 23%';
+      // Grow only the aperture; the illustration keeps its viewport dimensions.
       const portalScale=1+portal*18;
-      mask.style.transform=`scale(${portalScale})`;
-      fish.style.transformOrigin='31% 23%';
-      fish.style.transform=`scale(${1/portalScale})`;
+      const fit=Math.min(width/1365.7,height/2462.68);
+      const mw=1365.7*fit, mh=2462.68*fit;
+      const focalX=.3, focalY=.36;
+      mask.style.maskSize=mask.style.webkitMaskSize=`${mw*portalScale}px ${mh*portalScale}px`;
+      mask.style.maskPosition=mask.style.webkitMaskPosition=`${(width-mw)/2-(portalScale-1)*mw*focalX}px ${(height-mh)/2-(portalScale-1)*mh*focalY}px`;
+      mask.style.transform='none';fish.style.transform='none';
       if(p>.2){mask.style.maskImage='none';mask.style.webkitMaskImage='none';}
       else {const url='url("/icons/logo_phn_mask.svg")';mask.style.maskImage=url;mask.style.webkitMaskImage=url;}
 
@@ -290,11 +300,11 @@ slots.forEach((slot, i) => {
       hero.style.left=`${target.x*shrink}px`;
       hero.style.top=`${target.y*shrink}px`;
       hero.style.borderRadius=`${18*shrink}px`;
-      const handoff=.295;
-      const blackout=ease((p-.255)/.035);
-      fish.style.filter=`brightness(${1-blackout})`;
+      const handoff=.32;
+      const crossfade=ease((p-.29)/.03);
+      fish.style.filter='none';
       hero.style.visibility=p<handoff?'visible':'hidden';
-      hero.style.opacity='1';
+      hero.style.opacity=String(1-crossfade);
       hero.inert=p>.03;
       workflow.style.visibility=p>.22?'visible':'hidden';
       workflow.inert=true;
@@ -306,8 +316,8 @@ slots.forEach((slot, i) => {
       const cardsEnd=.97;
       const span=(cardsEnd-cardsStart)/slots.length;
       slots.forEach((slot,i)=>{
-        const local=(p-(cardsStart+i*span))/span;
-        const enter=ease(local/.22);
+        const local=(p-(cardsStart+i*span))/(span*1.12);
+        const enter=ease(local/(i===0?.16:.22));
         const flip=ease((local-.28)/.28);
         const leave=ease((local-.68)/.32);
         const visible=local>-.02&&local<1.03;
@@ -331,8 +341,9 @@ slots.forEach((slot, i) => {
       host.removeAttribute('data-mobile-journey');hero.inert=false;workflow.inert=false;
       workflow.dispatchEvent(new Event('workflow:reset'));
       [hero,mask,fish,workflow,heading,...texts,...slots,...turns,...(mobileOverlay?[mobileOverlay]:[])].forEach(el=>{
-        ['width','height','left','top','border-radius','transform','translate','visibility','opacity','z-index','transform-origin','clip-path','filter'].forEach(prop=>el.style.removeProperty(prop));
+        ['width','height','left','top','border-radius','transform','translate','visibility','opacity','z-index','transform-origin','clip-path','filter','mask-size','mask-position','-webkit-mask-size','-webkit-mask-position'].forEach(prop=>el.style.removeProperty(prop));
       });
+      mobileOverlay?.querySelectorAll('use').forEach(part=>{part.style.removeProperty('opacity');part.style.removeProperty('transform');});
       intermediateImages.forEach(img=>{img.style.removeProperty('opacity');img.style.removeProperty('filter');});
       const url=mask.dataset.portalMask||'';mask.style.maskImage=url;mask.style.webkitMaskImage=url;
     };

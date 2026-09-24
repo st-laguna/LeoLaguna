@@ -37,6 +37,7 @@ if (hero && mask && image) {
     if (!hero || !mask) return;
 
     if (phoneMask.matches) {
+      if(hero.closest('[data-mobile-journey]')) return;
       const url = 'url("/icons/logo_phn_mask.svg")';
       mask.dataset.portalMask = url;
       mask.style.setProperty('mask-image', url);
@@ -111,6 +112,7 @@ if (hero && mask && image) {
   const media = gsap.matchMedia();
 
   media.add(hero.closest('.home-journey')?'(prefers-reduced-motion: no-preference) and (max-width:1000px), (prefers-reduced-motion: no-preference) and (max-height:680px)':'(prefers-reduced-motion: no-preference)', () => {
+    if (phoneMask.matches) return;
     gsap.fromTo(
       image,
       { y: 0 },

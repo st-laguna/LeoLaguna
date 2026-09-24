@@ -34,9 +34,7 @@ import '../styles/footer.css';
         </noscript>
 
         <span class="footer__mobile-message" aria-hidden="true">
-          <span>GET · GET · GET ·</span>
-          <span>IN · IN · IN ·</span>
-          <span>TOUCH</span>
+          {['GET','IN','TOUCH'].map(word=><span class="footer__mobile-row"><span class="footer__mobile-track">{[0,1].map(()=> <span>{Array(4).fill(word+' · ').join('')}</span>)}</span></span>)}
         </span>
 
         <FooterGlass />

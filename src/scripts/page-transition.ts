@@ -30,6 +30,8 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', settleEntryAnchor, {once:true,signal});
 } else settleEntryAnchor();
 window.addEventListener('leo:page-position', settleEntryAnchor, {signal});
+// The responsive sticky sections establish their final height after module setup.
+window.addEventListener('load', () => requestAnimationFrame(settleEntryAnchor), {once:true,signal});
 
 function getCurtain() {
   if (curtain?.isConnected) return curtain;
@@ -243,6 +245,7 @@ document.addEventListener('click', event => {
   if (!section && !isHome) return;
   event.preventDefault();
   event.stopImmediatePropagation();
+  window.dispatchEvent(new Event('leo:close-menu'));
   // Close menus without altering the WORK button's existing toggle behavior.
   document.querySelector('[data-footer-work]')?.setAttribute('aria-expanded', 'false');
   const options = document.getElementById('site-work-options');
