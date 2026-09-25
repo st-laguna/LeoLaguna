@@ -120,7 +120,7 @@ body,
 body .site-header .site-controls {
   position: fixed;
   top: 24px;
-  right: var(--page-gap, 3.2vw);
+  right: var(--page-gap);
   left: auto;
   z-index: 51;
   mix-blend-mode: normal;
@@ -173,7 +173,7 @@ body .site-header .site-controls {
   html.projects-active .site-nav {transform:none;pointer-events:auto;}
 }
 /* Espaciado compartido y transiciones por desplazamiento. */
-:root {--page-gap:clamp(24px,3.2vw,64px);}
+:root {--composition-max:1920px;--page-gap:clamp(24px,3.2vw,64px);}
 html {scrollbar-gutter:stable;}
 .site-nav {transition:transform 600ms cubic-bezier(.76,0,.24,1);}
 html.projects-active .site-nav {transform:translate(-50%,-160px);pointer-events:none;}

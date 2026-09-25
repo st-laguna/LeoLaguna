@@ -2,7 +2,7 @@ import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-const desktop = matchMedia('(min-width: 810px)');
+const desktop = matchMedia('(min-width: 810px) and (min-height: 501px), (min-width: 1001px)');
 const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
 const events = new AbortController();
 let instances: Lenis[] = [];

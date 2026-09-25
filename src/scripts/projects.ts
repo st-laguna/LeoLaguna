@@ -1,4 +1,4 @@
-import { isIPadPortrait } from './ipad-layout';
+import { isTabletPortrait } from './responsive-layout';
 import { scrollPage } from './smooth-scroll';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
@@ -31,14 +31,15 @@ if(section){
   // Solo medimos al cambiar la geometría, nunca en cada fotograma de scroll.
   function measureLayout() {
     sidebarTravel=sidebar.offsetLeft+sidebar.offsetWidth+16;
-    if(!(motion.matches && !isIPadPortrait()))return;
+    if(!(motion.matches && !isTabletPortrait()))return;
     const height=main.clientHeight;
     const controls=document.querySelector<HTMLElement>('.site-controls');
     const rect=controls?.getBoundingClientRect();
-    const controlsVisible=!!rect && rect.height>0 && rect.top>=0 && rect.bottom<height*.25;
-    const top=controlsVisible?rect!.top:height*.018;
-    const bottom=controlsVisible?rect!.bottom:height*.045;
-    const mediaTop=Math.max(68,height*.059,bottom+24);
+    const controlsVisible=!!rect && rect.height>0 && rect.top>=0 && rect.bottom-(parseFloat(getComputedStyle(stage).top)||0)<height*.25;
+    const stageTop=parseFloat(getComputedStyle(stage).top)||0;
+    const top=controlsVisible?rect!.top-stageTop:height*.018;
+    const bottom=controlsVisible?rect!.bottom-stageTop:height*.045;
+    const mediaTop=Math.max(68,Math.min(100,height*.059),bottom+24);
     section!.style.setProperty('--project-top',`${mediaTop}px`);
     panels.forEach((panel,i)=>{
       const media=panel.querySelector<HTMLElement>('.project-media')!;
@@ -184,9 +185,9 @@ if (brandsLayout) {
       });
     }
     if(menuToggle)menuToggle.disabled=false;
-    section!.toggleAttribute('data-horizontal',(motion.matches && !isIPadPortrait()));
-    if(!(motion.matches && !isIPadPortrait())){
-      if((mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){configureMobile();return;}
+    section!.toggleAttribute('data-horizontal',(motion.matches && !isTabletPortrait()));
+    if(!(motion.matches && !isTabletPortrait())){
+      if((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){configureMobile();return;}
       if (brandsLayout) {
   brandsLayout.style.removeProperty('clip-path');
   brandsLayout.inert = false;
@@ -250,7 +251,7 @@ if (brandsLayout) {
     }
   },{signal:events.signal});
   section.addEventListener('click',event=>{
-    if(!(mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))return;
+    if(!(mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))return;
     const panel=(event.target as Element).closest<HTMLElement>('[data-panel][data-compressed]');
     if(!panel||((event.target as Element).closest('button')&&!(event.target as Element).closest('[data-panel-back]')))return;
     const index=Number(panel.dataset.panel);const trigger=mobileTimeline?.scrollTrigger;
@@ -260,7 +261,7 @@ if (brandsLayout) {
   panels.forEach(panel=>{
     const media=panel.querySelector<HTMLElement>('.project-media');if(!media)return;
     let startX=0,startY=0,pointer:number|null=null;
-    media.addEventListener('pointerdown',event=>{if((!(mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))&&!(tabletPortrait.matches || isIPadPortrait()))||!event.isPrimary)return;pointer=event.pointerId;startX=event.clientX;startY=event.clientY;},{signal:events.signal});
+    media.addEventListener('pointerdown',event=>{if((!(mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))&&!(tabletPortrait.matches || isTabletPortrait()))||!event.isPrimary)return;pointer=event.pointerId;startX=event.clientX;startY=event.clientY;},{signal:events.signal});
     media.addEventListener('pointerup',event=>{
       if(pointer!==event.pointerId)return;pointer=null;
       const dx=event.clientX-startX,dy=event.clientY-startY;if(Math.abs(dx)<42||Math.abs(dx)<Math.abs(dy)*1.2)return;
@@ -275,9 +276,9 @@ if (brandsLayout) {
     const index = Math.max(0, Math.min(panels.length - 1, Number(event.detail)));
     if (!Number.isInteger(index) || !panels[index]) return;
     const trigger = timeline?.scrollTrigger;
-    if ((motion.matches && !isIPadPortrait()) && trigger) {
+    if ((motion.matches && !isTabletPortrait()) && trigger) {
       scrollPage(trigger.start + stops[index] / total * (trigger.end - trigger.start));
-    } else if ((mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)) && mobileTimeline?.scrollTrigger) {
+    } else if ((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)) && mobileTimeline?.scrollTrigger) {
       const mobileTrigger = mobileTimeline.scrollTrigger;
       scrollPage(mobileTrigger.start + (index / 3 * .86) * (mobileTrigger.end - mobileTrigger.start));
     } else {
@@ -296,25 +297,26 @@ if (brandsLayout) {
   window.addEventListener('leo:gallery-unlock',()=>{
     frozen=false;
     // Resume el seguimiento desde el mismo fotograma; nunca reconstruye el pin.
-    if((mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){
+    if((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){
       // Update only the mobile stack: the desktop render clips the whole main.
       ScrollTrigger.update();
       mobileTimeline?.scrollTrigger?.getTween()?.play();
       renderMobile();
-    }else if((motion.matches && !isIPadPortrait())){
+    }else if((motion.matches && !isTabletPortrait())){
       timeline?.scrollTrigger?.getTween()?.play();
       render();
     }
   },{signal:events.signal});
-  motion.addEventListener('change',configure,{signal:events.signal});
-  mobileMotion.addEventListener('change',configure,{signal:events.signal});
+  let configureTimer: ReturnType<typeof setTimeout>;
+  const scheduleConfigure = () => { clearTimeout(configureTimer); configureTimer = setTimeout(configure, 180); };
+  motion.addEventListener('change',scheduleConfigure,{signal:events.signal});
+  mobileMotion.addEventListener('change',scheduleConfigure,{signal:events.signal});
   tabletPortrait.addEventListener('change',configure,{signal:events.signal});
-  const resizeObserver=new ResizeObserver(()=>{measureLayout();if((motion.matches && !isIPadPortrait()))render();else if((mobileMotion.matches || (isIPadPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))renderMobile();});
+  const resizeObserver=new ResizeObserver(()=>{measureLayout();if((motion.matches && !isTabletPortrait()))render();else if((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))renderMobile();});
   resizeObserver.observe(stage);
   const controlsElement=document.querySelector<HTMLElement>('.site-controls');
   if(controlsElement)resizeObserver.observe(controlsElement);
   ScrollTrigger.addEventListener('refreshInit',measureLayout);
-  window.addEventListener('leo:ipad-layout', configure, {signal:events.signal});
   configure();void document.fonts.ready.then(()=>{if(!events.signal.aborted)ScrollTrigger.refresh();});
-  if(import.meta.hot)import.meta.hot.dispose(()=>{events.abort();resizeObserver.disconnect();ScrollTrigger.removeEventListener('refreshInit',measureLayout);disposeScroll();});
+  if(import.meta.hot)import.meta.hot.dispose(()=>{clearTimeout(configureTimer);events.abort();resizeObserver.disconnect();ScrollTrigger.removeEventListener('refreshInit',measureLayout);disposeScroll();});
 }

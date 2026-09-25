@@ -267,7 +267,7 @@ const { company, dates, description, images = [], variant = "standard" }: Props 
     cursor: zoom-in;
     }
 /* Al pasar el mouse por todo el encabezado, el título y el + crecen ligeramente */
-  @media (min-width: 810px) {
+  @media (min-width: 810px) and (min-height: 501px), (min-width: 1001px) {
     .accordion-header:hover .company {
       transform: scale(1.02);
       transform-origin: left center;
@@ -279,7 +279,7 @@ const { company, dates, description, images = [], variant = "standard" }: Props 
     }
   }
 /* DISEÑO MÓVIL ACORDEÓN */
-  @media (max-width: 809px) {
+  @media (max-width: 809px), (max-width: 1000px) and (max-height: 500px) {
     .accordion-item {
       padding: 16px 12px; /* Reducimos la sangría para ganar más espacio */
     }

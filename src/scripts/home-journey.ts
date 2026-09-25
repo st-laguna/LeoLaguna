@@ -1,4 +1,4 @@
-import { isIPadPortrait } from './ipad-layout';
+import { isTabletPortrait } from './responsive-layout';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import { scrollPage, isCommittingScrollJump } from './smooth-scroll';
@@ -41,8 +41,11 @@ if(root){
   const clamp=(v:number)=>Math.max(0,Math.min(1,v));
   const ease=(v:number)=>{const x=clamp(v);return x*x*(3-2*x);};
   media.add('(min-width:1001px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1101px) and (prefers-reduced-motion:no-preference)',()=>{
-    if (isIPadPortrait()) return;
+    if (isTabletPortrait()) return;
     host.setAttribute('data-journey','');
+    // Desktop Journey owns the logo immediately, before the first measured render.
+    mask.style.maskImage='none';
+    mask.style.webkitMaskImage='none';
     // Same four apertures, drawn as holes in a path instead of a luminance mask.
     // This avoids a full-screen intermediate mask texture on touch tablets.
     const touchTablet=navigator.maxTouchPoints>0 || matchMedia('(any-pointer:coarse)').matches;
@@ -144,6 +147,7 @@ if(root){
       }else cutout.setAttribute('transform',`translate(${px/width*1366} ${py/width*1366}) scale(${scale})`);
       cover.style.visibility=p<.42?'visible':'hidden';
       mask.style.maskImage='none';
+      mask.style.webkitMaskImage='none';
 
 
 const shrink = ease((p - .42) / .29);
@@ -258,14 +262,15 @@ slots.forEach((slot, i) => {
       slots[0].querySelector<HTMLElement>('.workflow__front strong')!.style.removeProperty('opacity');
       mask.style.removeProperty('mask-size');mask.style.removeProperty('mask-position');
       mask.style.maskImage=mask.dataset.portalMask||'';
+      mask.style.webkitMaskImage=mask.dataset.portalMask||'';
       slots[0].querySelector<HTMLElement>('.workflow__front strong')!.style.removeProperty('clip-path');
     };
   });
 
-  media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',reduced:'(prefers-reduced-motion:reduce)',always:'all'},()=>{
+  media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',tablet:'(min-width:701px) and (max-width:1100px) and (orientation:portrait)',reduced:'(prefers-reduced-motion:reduce)',always:'all'},()=>{
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-    if (!isIPadPortrait() && !matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches) return;
-    const mobileOverlay=isIPadPortrait()?ipadOverlay:phoneOverlay;
+    if (!isTabletPortrait() && !matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches) return;
+    const mobileOverlay=isTabletPortrait()?ipadOverlay:phoneOverlay;
     const ipadSize=(hero.dataset.ipadViewbox || '0 0 2048 2732').split(/\s+/).map(Number);
     const phoneSize=hero.dataset.phoneViewbox!.split(/\s+/).map(Number);
     host.setAttribute('data-mobile-journey','');
@@ -305,7 +310,7 @@ slots.forEach((slot, i) => {
       }
       // Grow only the aperture; the illustration keeps its viewport dimensions.
       const portalScale=1+portal*18;
-      const tablet=isIPadPortrait();
+      const tablet=isTabletPortrait();
       const svgW=tablet?ipadSize[2]:phoneSize[2],svgH=tablet?ipadSize[3]:phoneSize[3];
       const fit=Math.min(width/svgW,height/svgH);
       const mw=svgW*fit, mh=svgH*fit;
@@ -380,11 +385,8 @@ slots.forEach((slot, i) => {
       const url=mask.dataset.portalMask||'';mask.style.maskImage=url;mask.style.webkitMaskImage=url;
     };
   });
-    const refreshIPadLayout = () => gsap.matchMediaRefresh();
-    window.addEventListener('leo:ipad-layout', refreshIPadLayout);
     if (import.meta.hot) {
       import.meta.hot.dispose(() => {
-        window.removeEventListener('leo:ipad-layout', refreshIPadLayout);
         media.revert();
         back.remove();
         cover.remove();

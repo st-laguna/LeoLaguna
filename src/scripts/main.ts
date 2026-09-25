@@ -1,4 +1,4 @@
-import { isIPadPortrait } from './ipad-layout';
+import { isTabletPortrait } from './responsive-layout';
 import './entrances';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -37,14 +37,14 @@ if (hero && mask && image) {
   function updateMask() {
     hero?.querySelectorAll<HTMLSourceElement>('picture source').forEach(source => {
       source.dataset.originalMedia ||= source.media;
-      source.media = isIPadPortrait() ? 'all' : source.dataset.originalMedia;
+      source.media = isTabletPortrait() ? 'all' : source.dataset.originalMedia;
     });
     if (!hero || !mask) return;
     if(hero.closest('[data-journey],[data-mobile-journey]'))return;
 
-    if ((phoneMask.matches || isIPadPortrait())) {
+    if ((phoneMask.matches || isTabletPortrait())) {
       if(hero.closest('[data-mobile-journey]')) return;
-      const url = isIPadPortrait() ? hero.dataset.ipadMask! : hero.dataset.phoneMask!;
+      const url = isTabletPortrait() ? hero.dataset.ipadMask! : hero.dataset.phoneMask!;
       mask.dataset.portalMask = url;
       mask.style.setProperty('mask-image', url);
       mask.style.setProperty('-webkit-mask-image', url);
@@ -113,13 +113,13 @@ if (hero && mask && image) {
   const observer = new ResizeObserver(updateMask);
   observer.observe(hero);
   phoneMask.addEventListener('change', updateMask);
-  window.addEventListener('leo:ipad-layout', updateMask);
+  window.addEventListener('leo:orientation-ready', updateMask);
 
   // Mueve únicamente la imagen, respetando movimiento reducido.
   const media = gsap.matchMedia();
 
   media.add(hero.closest('.home-journey')?'(prefers-reduced-motion: no-preference) and (max-width:1000px)':'(prefers-reduced-motion: no-preference)', () => {
-    if ((phoneMask.matches || isIPadPortrait())) return;
+    if ((phoneMask.matches || isTabletPortrait())) return;
     gsap.fromTo(
       image,
       { y: 0 },
@@ -142,7 +142,7 @@ if (hero && mask && image) {
     import.meta.hot.dispose(() => {
       observer.disconnect();
       phoneMask.removeEventListener('change', updateMask);
-      window.removeEventListener('leo:ipad-layout', updateMask);
+      window.removeEventListener('leo:orientation-ready', updateMask);
       media.revert();
     });
   }

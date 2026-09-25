@@ -31,6 +31,7 @@ export function createAboutScene(section, callbacks = {}) {
   function theme(){scene.background=new THREE.Color(document.documentElement.dataset.theme==='dark'?'#181818':'#f7f7f7');request();}
   function resize(){
     const w=container.clientWidth,h=container.clientHeight;if(!w||!h)return;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(w,h,false);aspect=w/h;request();
   }
   let entranceStart=null;

@@ -179,6 +179,7 @@ const base = import.meta.env.BASE_URL;
 
     position: relative;
     isolation: isolate;
+    width: 100%;
     min-height: max(840px, 100svh);
     overflow: clip;
     background: #e0e0e0;
@@ -707,7 +708,7 @@ const base = import.meta.env.BASE_URL;
   /* Compact desktop uses its available height, without scaling the scene or UI. */
   @media (min-width:1001px) and (max-height:850px) {
     .about {min-height:100svh;}
-    .box--intro {left:5vw;width:42vw;padding:32px 20px 120px;gap:18px;}
+    .box--intro {left:clamp(50px,5vw,96px);width:min(42vw,620px);padding:32px 20px 120px;gap:18px;}
     .intro__hero {gap:12px;}
     .intro__hero h1 {font-size:clamp(30px,5.6svh,46px);}
     .intro__hero-name {font-size:clamp(42px,8svh,68px);}
@@ -737,7 +738,7 @@ const base = import.meta.env.BASE_URL;
   }
   @media(max-width:700px), (max-width:1000px) and (max-height:500px) {
     :global(html[data-theme="dark"]) .about {background:var(--background);}
-    .about {height:400svh;min-height:0;overflow:clip;background:var(--background);color:var(--foreground);}
+    .about {height:400svh;min-height:0;margin-block:0;overflow:clip;background:var(--background);color:var(--foreground);}
     .about__composition {position:sticky;top:0;display:grid;grid-template-rows:auto minmax(0,1fr);height:100svh;padding:0 max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left));overflow:hidden;}
     .about-mobile-copy {position:relative;z-index:2;display:block;padding-top:64px;color:inherit;}
     .about-mobile-cv {position:absolute;top:12px;right:0;display:flex;align-items:center;justify-content:center;min-height:40px;padding:8px 15px;border-radius:999px;background:#129bd0;color:#fff;text-decoration:none;font-size:10px;font-weight:700;}
@@ -806,8 +807,8 @@ const base = import.meta.env.BASE_URL;
   }
 
   @media (min-width:1001px) and (max-width:1600px), (min-width:1001px) and (max-height:850px) {
-    :global(html:not([data-ipad]):not([data-tablet-portrait])) .box--intro {margin-left:-20px;}
-    :global(html:not([data-ipad]):not([data-tablet-portrait])) .about__loading {top:24px;right:142px;margin-top:0;height:30px;padding:6px 12px;max-width:280px;}
-    :global(html:not([data-ipad]):not([data-tablet-portrait])) .about__loading p {font-size:10px;}
+    :global(html:not([data-tablet-portrait])) .box--intro {margin-left:-20px;}
+    :global(html:not([data-tablet-portrait])) .about__loading {top:24px;right:142px;margin-top:0;height:30px;padding:6px 12px;max-width:280px;}
+    :global(html:not([data-tablet-portrait])) .about__loading p {font-size:10px;}
   }
 </style>

@@ -1,19 +1,18 @@
-import { isIOS } from './ipad-layout';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
-// Safari's retracting toolbar is not a layout rotation. Avoid refresh scroll restoration.
-if (isIOS()) ScrollTrigger.config({ignoreMobileResize:true,autoRefreshEvents:'visibilitychange,DOMContentLoaded,load'});
-window.addEventListener('leo:orientation-ready', () => ScrollTrigger.refresh());
+// Toolbar height changes do not require rebuilding responsive animations.
+ScrollTrigger.config({ignoreMobileResize:true});
 let lenis: Lenis | null = null;
 let locked = false;
 let transitioning = false;
 let committing = false;
 const events = new AbortController();
 const signal = events.signal;
+window.addEventListener('leo:orientation-ready', () => ScrollTrigger.refresh(), {signal});
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const media = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
 const tick = (seconds: number) => lenis?.raf(seconds * 1000);
@@ -64,7 +63,7 @@ function configure() {
   gsap.ticker.remove(tick);
   lenis?.destroy();
   lenis = null;
-  if (!media.matches || isIOS()) return;
+  if (!media.matches) return;
   lenis = new Lenis({
     autoRaf: false,
     smoothWheel: true,

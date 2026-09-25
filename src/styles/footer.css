@@ -5,6 +5,7 @@
 .footer {
   position: relative;
   isolation: isolate;
+  width: 100%;
   box-sizing: border-box;
   height: 100svh;
   min-height: 0;
@@ -71,7 +72,7 @@
 }
 
 .footer__fallback {
-  font-size: 12vw;
+  font-size: min(12vw, 230px);
   white-space: nowrap;
 }
 .footer__mobile-message{display:none;}

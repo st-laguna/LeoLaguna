@@ -81,7 +81,7 @@ img {
   100% { background: var(--color-hover-dot-a); }
 }
 
-@media (max-width: 809px) {
+@media (max-width: 809px), (max-width: 1000px) and (max-height: 500px) {
   :root {
     --fs-h1: 22px;
     --fs-h2: 17px;
@@ -95,7 +95,7 @@ img {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -115,7 +115,7 @@ img {
 
 .image-modal img {
   max-width: 90vw;
-  max-height: 90vh;
+  max-height: 90dvh;
   object-fit: contain;
   border-radius: var(--radius-card); /* Asegúrate de que esta variable exista en global, si no pon 12px */
   transform: scale(0.95);

@@ -2,7 +2,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 const media=gsap.matchMedia();
-media.add('(prefers-reduced-motion: no-preference)',()=>{
+media.add({motion:'(prefers-reduced-motion: no-preference)',portal:'(min-width:1001px) and (orientation:landscape), (min-width:1101px)'},context=>{
+  if (!context.conditions?.motion) return;
   const portal=matchMedia('(min-width:1001px) and (orientation:landscape), (min-width:1101px)').matches && !document.documentElement.hasAttribute('data-tablet-portrait');
   const elements=Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]')).filter(el=>!(portal&&el.closest('.home-journey')));
   const regular=elements.filter(el=>!el.closest('.brands'));

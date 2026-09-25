@@ -1,0 +1,2 @@
+/* Touch scrolling uses the document without chaining past its endpoints. */
+@media (pointer: coarse) { html { overscroll-behavior-y: none; overflow-anchor: none; } }

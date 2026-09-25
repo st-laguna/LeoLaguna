@@ -245,7 +245,7 @@ const count = items.length;
     object-position: left center; 
   }
 
-  @media (max-width: 809px) {
+  @media (max-width: 809px), (max-width: 1000px) and (max-height: 500px) {
     .animation-card {
       /* En móviles, cada carta ocupa casi toda la pantalla y haces swipe lateral */
       flex: 0 0 85vw; 
@@ -322,8 +322,10 @@ const count = items.length;
     row.addEventListener("wheel", (e) => {
       if (!(e instanceof WheelEvent)) return;
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        const before = row.scrollLeft;
         row.scrollLeft += e.deltaY * SCROLL_SPEED;
-        e.preventDefault();
+        // Let the document continue scrolling at either end of the carousel.
+        if (row.scrollLeft !== before) e.preventDefault();
       }
     }, { passive: false });
 

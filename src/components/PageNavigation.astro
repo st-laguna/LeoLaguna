@@ -1,6 +1,6 @@
 ---
-import ipadDevice from '../scripts/ipad-device.js?raw';
-import '../styles/ipad-device.css';
+import responsiveInit from '../scripts/responsive-init.js?raw';
+import '../styles/native-scroll.css';
 import motion from '../scripts/transition-motion.js?raw';
 import navigation from '../scripts/document-navigation.js?raw';
 import '../styles/page-navigation.css';
@@ -9,5 +9,5 @@ const source = `(() => {\n${motion.replace(/^export /gm, '')}\n${navigation}\n})
 ---
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" />
-<script is:inline set:html={ipadDevice}></script>
+<script is:inline set:html={responsiveInit}></script>
 <script is:inline set:html={source}></script>

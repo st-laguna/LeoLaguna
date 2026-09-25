@@ -249,7 +249,7 @@ const groupedTraining = training.reduce<Record<string, string[]>>((acc, curr) =>
   }
 
   /* MÓVIL HORIZONTAL (LANDSCAPE) */
-  @media (max-width: 809px) and (orientation: landscape) {
+  @media (max-width: 809px) and (orientation: landscape), (max-width: 1000px) and (max-height: 500px) and (orientation: landscape) {
     .profile-header { flex-direction: row; align-items: center; gap: 2rem; }
     .avatar { width: 35vw; max-width: 300px; border-radius: var(--radius-avatar); }
     .profile-info { flex: 1; display: flex; justify-content: center; }
