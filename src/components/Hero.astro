@@ -6,10 +6,15 @@ const ipadViewBox = ipadLogo.match(/viewBox="([^"]+)"/)![1];
 const ipadMaskGroup = ipadLogo.slice(ipadLogo.indexOf('<g id="mask">'), ipadLogo.indexOf('<g id="tittle">')).trim().replaceAll('class="cls-1"', 'fill="#fff"');
 const ipadLabels = ipadLogo.slice(ipadLogo.indexOf('<g id="tittle">'), ipadLogo.lastIndexOf('</svg>')).replaceAll('class="cls-1"', 'fill="#fff"').replace('id="tittle"', 'data-hero-part="title"').replace('id="subtitle"', 'data-hero-part="subtitle"');
 const ipadMask = 'url("data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + ipadViewBox + '">' + ipadMaskGroup + '</svg>') + '")';
+// Derive both layers from the current phone asset, including its exported fill.
+const phoneViewBox = phoneLogo.match(/viewBox="([^"]+)"/)![1];
+const phoneTitleStart = phoneLogo.indexOf('<g id="title">');
+const phoneMaskGroup = phoneLogo.slice(phoneLogo.indexOf('<g id="mask">'), phoneTitleStart).trim().replaceAll('class="st0"', 'fill="#fff"');
+const phoneMask = 'url("data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + phoneViewBox + '">' + phoneMaskGroup + '</svg>') + '")';
 // Inline paths avoid external SVG <use> rendering differences in WebKit.
-const phoneLabels = phoneLogo.slice(phoneLogo.indexOf('  <g id="title">'), phoneLogo.lastIndexOf('</svg>')).replaceAll('class="cls-1"', 'fill="#fff"').replace('id="title"', 'data-hero-part="title"').replace('id="subtitle"', 'data-hero-part="subtitle"');
+const phoneLabels = phoneLogo.slice(phoneTitleStart, phoneLogo.lastIndexOf('</svg>')).replaceAll('class="st0"', 'fill="#fff"').replace('id="title"', 'data-hero-part="title"').replace('id="subtitle"', 'data-hero-part="subtitle"');
 ---
-<section id="home" class="hero" style={'--ipad-hero-mask:' + ipadMask} data-ipad-mask={ipadMask} data-ipad-viewbox={ipadViewBox} aria-label="Leo Laguna — presentación">
+<section id="home" class="hero" style={'--ipad-hero-mask:' + ipadMask + ';--phone-hero-mask:' + phoneMask} data-phone-mask={phoneMask} data-phone-viewbox={phoneViewBox} data-ipad-mask={ipadMask} data-ipad-viewbox={ipadViewBox} aria-label="Leo Laguna — presentación">
   <div class="hero__mask" aria-hidden="true">
     <div class="hero__parallax">
       <picture>
@@ -33,7 +38,7 @@ const phoneLabels = phoneLogo.slice(phoneLogo.indexOf('  <g id="title">'), phone
     </div>
   </div>
 
-  <svg class="hero__mobile-overlay hero__blend" viewBox="0 0 1365.7 2462.68" preserveAspectRatio="xMidYMid meet" aria-hidden="true" set:html={phoneLabels}></svg>
+  <svg class="hero__mobile-overlay hero__blend" viewBox={phoneViewBox} preserveAspectRatio="xMidYMid meet" aria-hidden="true" set:html={phoneLabels}></svg>
   <svg class="hero__ipad-overlay hero__blend" viewBox={ipadViewBox} preserveAspectRatio="xMidYMid meet" aria-hidden="true" set:html={ipadLabels}></svg>
 
   <div class="hero__location hero__blend" data-transition-enter>
@@ -201,7 +206,7 @@ const phoneLabels = phoneLogo.slice(phoneLogo.indexOf('  <g id="title">'), phone
 @media (max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait) {
   .hero {height:100svh;min-height:100svh;}
   .hero__mask {
-    -webkit-mask-image:url('/icons/logo_phn_mask.svg');mask-image:url('/icons/logo_phn_mask.svg');
+    -webkit-mask-image:var(--phone-hero-mask);mask-image:var(--phone-hero-mask);
     -webkit-mask-size:contain;mask-size:contain;-webkit-mask-position:center;mask-position:center;
   }
   .hero__parallax {top:0;height:100%;}
@@ -211,11 +216,4 @@ const phoneLabels = phoneLogo.slice(phoneLogo.indexOf('  <g id="title">'), phone
   .hero__location,.hero__scroll {display:none;}
 }
 @media (max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait) {.hero {height:100dvh;min-height:100dvh;}}
-@media(max-width:1000px) and (max-height:500px) and (orientation:landscape) {
- .hero__mobile-overlay {display:none!important;}
- .hero__title,.hero__subtitle {display:block!important;}
- .hero__title {font-size:clamp(60px,13vw,125px);}
- .hero__subtitle {font-size:clamp(12px,2vw,18px);}
- .hero__mask {mask-image:url('/icons/logo_w.svg');-webkit-mask-image:url('/icons/logo_w.svg');}
-}
 </style>

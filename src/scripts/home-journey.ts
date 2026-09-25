@@ -267,6 +267,7 @@ slots.forEach((slot, i) => {
     if (!isIPadPortrait() && !matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches) return;
     const mobileOverlay=isIPadPortrait()?ipadOverlay:phoneOverlay;
     const ipadSize=(hero.dataset.ipadViewbox || '0 0 2048 2732').split(/\s+/).map(Number);
+    const phoneSize=hero.dataset.phoneViewbox!.split(/\s+/).map(Number);
     host.setAttribute('data-mobile-journey','');
     host.removeAttribute('data-journey');
     const stage=host.querySelector<HTMLElement>('.journey-stage')!;
@@ -304,17 +305,16 @@ slots.forEach((slot, i) => {
       }
       // Grow only the aperture; the illustration keeps its viewport dimensions.
       const portalScale=1+portal*18;
-      const landscape=width>height;
       const tablet=isIPadPortrait();
-      const svgW=tablet?ipadSize[2]:landscape?1366:1365.7,svgH=tablet?ipadSize[3]:landscape?768:2462.68;
-      const fit=landscape&&!tablet?Math.max(width/svgW,height/svgH):Math.min(width/svgW,height/svgH);
+      const svgW=tablet?ipadSize[2]:phoneSize[2],svgH=tablet?ipadSize[3]:phoneSize[3];
+      const fit=Math.min(width/svgW,height/svgH);
       const mw=svgW*fit, mh=svgH*fit;
       const focalX=.3, focalY=.36;
       mask.style.maskSize=mask.style.webkitMaskSize=`${mw*portalScale}px ${mh*portalScale}px`;
       mask.style.maskPosition=mask.style.webkitMaskPosition=`${(width-mw)/2-(portalScale-1)*mw*focalX}px ${(height-mh)/2-(portalScale-1)*mh*focalY}px`;
       mask.style.transform='none';fish.style.transform=`translate3d(0,${-height*.012*portal}px,0)`;
       if(p>.2){mask.style.maskImage='none';mask.style.webkitMaskImage='none';}
-      else {const url=tablet?hero.dataset.ipadMask!:landscape?'url("/icons/logo_w.svg")':'url("/icons/logo_phn_mask.svg")';mask.style.maskImage=url;mask.style.webkitMaskImage=url;}
+      else {const url=tablet?hero.dataset.ipadMask!:hero.dataset.phoneMask!;mask.style.maskImage=url;mask.style.webkitMaskImage=url;}
 
       const imageStarts=[.105,.135,.165,.195];
       intermediateImages.forEach((img,index)=>{

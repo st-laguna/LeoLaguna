@@ -44,7 +44,7 @@ if (hero && mask && image) {
 
     if ((phoneMask.matches || isIPadPortrait())) {
       if(hero.closest('[data-mobile-journey]')) return;
-      const url = 'url("/icons/logo_phn_mask.svg")';
+      const url = isIPadPortrait() ? hero.dataset.ipadMask! : hero.dataset.phoneMask!;
       mask.dataset.portalMask = url;
       mask.style.setProperty('mask-image', url);
       mask.style.setProperty('-webkit-mask-image', url);
