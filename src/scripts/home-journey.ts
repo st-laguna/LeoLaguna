@@ -1,4 +1,4 @@
-import { isIPadPortrait, isRotating } from './ipad-layout';
+import { isIPadPortrait } from './ipad-layout';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import { scrollPage, isCommittingScrollJump } from './smooth-scroll';
@@ -9,7 +9,8 @@ if(root){
   const hero=host.querySelector<HTMLElement>('.hero')!;
   const mask=host.querySelector<HTMLElement>('.hero__mask')!;
   const fish=host.querySelector<HTMLElement>('.hero__parallax')!;
-  const mobileOverlay=host.querySelector<SVGElement>('.hero__mobile-overlay');
+  const phoneOverlay=host.querySelector<SVGElement>('.hero__mobile-overlay');
+  const ipadOverlay=host.querySelector<SVGElement>('.hero__ipad-overlay');
   const intermediateImages = [1, 2, 3, 4].map(index => {
   const image = new Image();
 
@@ -40,7 +41,7 @@ if(root){
   const clamp=(v:number)=>Math.max(0,Math.min(1,v));
   const ease=(v:number)=>{const x=clamp(v);return x*x*(3-2*x);};
   media.add('(min-width:1001px) and (min-height:681px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1101px) and (min-height:681px) and (prefers-reduced-motion:no-preference)',()=>{
-    if (isIPadPortrait() || isRotating()) return;
+    if (isIPadPortrait()) return;
     host.setAttribute('data-journey','');
     // Same four apertures, drawn as holes in a path instead of a luminance mask.
     // This avoids a full-screen intermediate mask texture on touch tablets.
@@ -261,9 +262,11 @@ slots.forEach((slot, i) => {
     };
   });
 
-  media.add({phone:'((max-width:700px) or ((max-width:1000px) and (max-height:500px))) and (prefers-reduced-motion:no-preference)',always:'all'},()=>{
-    if (isRotating() || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',always:'all'},()=>{
+    if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
     if (!isIPadPortrait() && !matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches) return;
+    const mobileOverlay=isIPadPortrait()?ipadOverlay:phoneOverlay;
+    const ipadSize=(hero.dataset.ipadViewbox || '0 0 2048 2732').split(/\s+/).map(Number);
     host.setAttribute('data-mobile-journey','');
     host.removeAttribute('data-journey');
     const stage=host.querySelector<HTMLElement>('.journey-stage')!;
@@ -293,7 +296,7 @@ slots.forEach((slot, i) => {
       });
       if(mobileOverlay){
         mobileOverlay.style.translate='none';mobileOverlay.style.clipPath='none';
-        mobileOverlay.querySelectorAll('use').forEach((part,i)=>{
+        mobileOverlay.querySelectorAll<SVGElement>('[data-hero-part]').forEach((part,i)=>{
           const out=ease((p-i*.008)/.026);
           part.style.opacity=String(1-out);
           part.style.transform=`translateY(${-100*out}px)`;
@@ -302,15 +305,16 @@ slots.forEach((slot, i) => {
       // Grow only the aperture; the illustration keeps its viewport dimensions.
       const portalScale=1+portal*18;
       const landscape=width>height;
-      const svgW=landscape?1366:1365.7,svgH=landscape?768:2462.68;
-      const fit=landscape?Math.max(width/svgW,height/svgH):Math.min(width/svgW,height/svgH);
+      const tablet=isIPadPortrait();
+      const svgW=tablet?ipadSize[2]:landscape?1366:1365.7,svgH=tablet?ipadSize[3]:landscape?768:2462.68;
+      const fit=landscape&&!tablet?Math.max(width/svgW,height/svgH):Math.min(width/svgW,height/svgH);
       const mw=svgW*fit, mh=svgH*fit;
       const focalX=.3, focalY=.36;
       mask.style.maskSize=mask.style.webkitMaskSize=`${mw*portalScale}px ${mh*portalScale}px`;
       mask.style.maskPosition=mask.style.webkitMaskPosition=`${(width-mw)/2-(portalScale-1)*mw*focalX}px ${(height-mh)/2-(portalScale-1)*mh*focalY}px`;
       mask.style.transform='none';fish.style.transform=`translate3d(0,${-height*.012*portal}px,0)`;
       if(p>.2){mask.style.maskImage='none';mask.style.webkitMaskImage='none';}
-      else {const url=landscape?'url("/icons/logo_w.svg")':'url("/icons/logo_phn_mask.svg")';mask.style.maskImage=url;mask.style.webkitMaskImage=url;}
+      else {const url=tablet?hero.dataset.ipadMask!:landscape?'url("/icons/logo_w.svg")':'url("/icons/logo_phn_mask.svg")';mask.style.maskImage=url;mask.style.webkitMaskImage=url;}
 
       const imageStarts=[.105,.135,.165,.195];
       intermediateImages.forEach((img,index)=>{
@@ -371,7 +375,7 @@ slots.forEach((slot, i) => {
       [hero,mask,fish,workflow,heading,...texts,...slots,...turns,...(mobileOverlay?[mobileOverlay]:[])].forEach(el=>{
         ['width','height','left','top','border-radius','transform','translate','visibility','opacity','z-index','transform-origin','clip-path','filter','mask-size','mask-position','-webkit-mask-size','-webkit-mask-position'].forEach(prop=>el.style.removeProperty(prop));
       });
-      mobileOverlay?.querySelectorAll('use').forEach(part=>{part.style.removeProperty('opacity');part.style.removeProperty('transform');});
+      mobileOverlay?.querySelectorAll<SVGElement>('[data-hero-part]').forEach(part=>{part.style.removeProperty('opacity');part.style.removeProperty('transform');});
       intermediateImages.forEach(img=>{img.style.removeProperty('opacity');img.style.removeProperty('filter');});
       const url=mask.dataset.portalMask||'';mask.style.maskImage=url;mask.style.webkitMaskImage=url;
     };

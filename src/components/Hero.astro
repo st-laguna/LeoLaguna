@@ -1,4 +1,15 @@
-<section id="home" class="hero" aria-label="Leo Laguna — presentación">
+---
+import phoneLogo from '../../public/icons/logo_phn.svg?raw';
+import ipadLogo from '../../public/icons/logo_ipad.svg?raw';
+// The authored iPad artwork uses "tittle" for its title group.
+const ipadViewBox = ipadLogo.match(/viewBox="([^"]+)"/)![1];
+const ipadMaskGroup = ipadLogo.slice(ipadLogo.indexOf('<g id="mask">'), ipadLogo.indexOf('<g id="tittle">')).trim().replaceAll('class="cls-1"', 'fill="#fff"');
+const ipadLabels = ipadLogo.slice(ipadLogo.indexOf('<g id="tittle">'), ipadLogo.lastIndexOf('</svg>')).replaceAll('class="cls-1"', 'fill="#fff"').replace('id="tittle"', 'data-hero-part="title"').replace('id="subtitle"', 'data-hero-part="subtitle"');
+const ipadMask = 'url("data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + ipadViewBox + '">' + ipadMaskGroup + '</svg>') + '")';
+// Inline paths avoid external SVG <use> rendering differences in WebKit.
+const phoneLabels = phoneLogo.slice(phoneLogo.indexOf('  <g id="title">'), phoneLogo.lastIndexOf('</svg>')).replaceAll('class="cls-1"', 'fill="#fff"').replace('id="title"', 'data-hero-part="title"').replace('id="subtitle"', 'data-hero-part="subtitle"');
+---
+<section id="home" class="hero" style={'--ipad-hero-mask:' + ipadMask} data-ipad-mask={ipadMask} data-ipad-viewbox={ipadViewBox} aria-label="Leo Laguna — presentación">
   <div class="hero__mask" aria-hidden="true">
     <div class="hero__parallax">
       <picture>
@@ -22,10 +33,8 @@
     </div>
   </div>
 
-  <svg class="hero__mobile-overlay hero__blend" viewBox="0 0 1365.7 2462.68" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-    <use href="/icons/logo_phn.svg#title"></use>
-    <use href="/icons/logo_phn.svg#subtitle"></use>
-  </svg>
+  <svg class="hero__mobile-overlay hero__blend" viewBox="0 0 1365.7 2462.68" preserveAspectRatio="xMidYMid meet" aria-hidden="true" set:html={phoneLabels}></svg>
+  <svg class="hero__ipad-overlay hero__blend" viewBox={ipadViewBox} preserveAspectRatio="xMidYMid meet" aria-hidden="true" set:html={ipadLabels}></svg>
 
   <div class="hero__location hero__blend" data-transition-enter>
     <span>LIMA, PERU</span>
@@ -98,7 +107,7 @@
     mix-blend-mode: difference;
   }
 
-  .hero__mobile-overlay {display:none!important;}
+  .hero__ipad-overlay,.hero__mobile-overlay {display:none!important;}
 
   .hero a {
     color: #fff;

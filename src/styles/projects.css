@@ -202,3 +202,22 @@
  .projects[data-mobile-stack] .projects-stage {height:100dvh;min-height:100dvh;padding:8px;box-sizing:border-box;}
  .projects[data-mobile-stack] .project-panel {box-sizing:border-box;}
 }
+
+/* Motion preference changes animation, never the readability of the cards. */
+@media (prefers-reduced-motion:reduce) and (max-width:1100px) {
+ .projects {height:auto;min-height:0;padding:70px var(--page-gap,18px) 32px;}
+ .projects-stage,.projects-main,.projects-window,.projects-rail {display:block;height:auto;overflow:visible;}
+ .project-panel {display:flex;flex-direction:column;padding:20px;margin:0 0 24px;border:1px solid #8885;border-radius:18px;gap:18px;}
+ .project-mobile-copy {order:-1;margin:0;}
+ .project-mobile-copy>span {font-size:44px;}
+ .project-mobile-copy h3 {font-size:26px;}
+ .project-mobile-copy p {font-size:14px;}
+ .project-media {width:100%;aspect-ratio:1;flex:none;}
+ .project-mobile-controls {display:flex;align-items:center;gap:14px;width:100%;}
+ .project-thumbs {display:flex;flex-wrap:wrap;gap:7px;flex:1;}
+ .project-thumbs button {width:12px;height:12px;aspect-ratio:1;border-radius:50%;background:#8886;}
+ .project-thumbs button[aria-selected='true'] {background:var(--foreground);}
+ .project-thumbs img {display:none;}
+ .project-mobile-more {display:block;padding:12px;font-size:13px;}
+ .projects-footer,.projects-progress,.projects-guides {display:none;}
+}

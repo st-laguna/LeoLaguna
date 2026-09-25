@@ -18,3 +18,7 @@ html[data-tablet-portrait] .footer__mobile-track {text-shadow:-.7px 0 #e84a78,.7
 html[data-tablet-portrait] .footer__contact-info {margin-inline:var(--page-gap);gap:30px;}
 html[data-tablet-portrait] .footer__contact-info a {font-size:clamp(26px,3.8vw,38px);}
 @media(prefers-reduced-motion:reduce){html[data-tablet-portrait] .workflow__grid {grid-template-columns:repeat(2,minmax(0,1fr));}html[data-tablet-portrait] .project-panel {grid-template-columns:1fr;}}
+
+html[data-tablet-portrait] .hero__mask {-webkit-mask-image:var(--ipad-hero-mask);mask-image:var(--ipad-hero-mask);-webkit-mask-size:contain;mask-size:contain;}
+html[data-tablet-portrait] .hero__mobile-overlay {display:none!important;}
+html[data-tablet-portrait] .hero__ipad-overlay {display:block!important;position:absolute;inset:0;width:100%;height:100%;color:#fff;mix-blend-mode:difference;pointer-events:none;}

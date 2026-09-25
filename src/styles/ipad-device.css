@@ -1,3 +1,5 @@
-html[data-ipad] {overflow-anchor:none;}
-html[data-ipad-rotating]::after {content:'';position:fixed;inset:0;background:#efefef;z-index:2147483647;pointer-events:all;}
-html[data-ipad-rotating] {overflow:hidden;}
+html[data-ios] {overflow-anchor:none;}
+/* Native scrolling, with no document bounce beyond either endpoint. */
+@media (pointer:coarse) {html,body {overscroll-behavior-y:none;}}
+
+html[data-ios], html[data-ios] body {overscroll-behavior-y:none;}

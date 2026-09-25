@@ -1,4 +1,4 @@
-import { isIPadPortrait, isRotating } from './ipad-layout';
+import { isIPadPortrait } from './ipad-layout';
 import { scrollPage } from './smooth-scroll';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
@@ -60,7 +60,7 @@ if(section){
   }
   const motion=matchMedia('(min-width:1001px) and (min-height:681px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1101px) and (min-height:681px) and (prefers-reduced-motion:no-preference)');
   const tabletPortrait=matchMedia('(min-width:701px) and (max-width:1100px) and (orientation:portrait)');
-  const mobileMotion=matchMedia('((max-width:700px) or ((max-width:1000px) and (max-height:500px))) and (prefers-reduced-motion:no-preference)');
+  const mobileMotion=matchMedia('(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)');
   const events=new AbortController();
   const state={position:0,exit:0};
   const brandsLayout =
@@ -172,7 +172,6 @@ if (brandsLayout) {
     renderMobile();ScrollTrigger.refresh();
   }
   function configure(){
-    if (isRotating()) return;
     disposeScroll();pause();closeMenu();
     const videoPanel=panels.find(panel=>panel.classList.contains('project-panel--video'));
     if(videoPanel) {
