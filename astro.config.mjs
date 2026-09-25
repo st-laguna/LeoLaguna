@@ -1,5 +1,4 @@
 import { defineConfig } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ command }) => ({
   output: 'static',
@@ -12,6 +11,6 @@ export default defineConfig(({ command }) => ({
       'three/addons/postprocessing/EffectComposer.js', 'three/addons/postprocessing/RenderPass.js',
       'three/addons/postprocessing/ShaderPass.js', 'three/addons/postprocessing/OutputPass.js',
     ] },
-    plugins: [tailwindcss()],
   },
 }));
+
