@@ -804,4 +804,10 @@ const base = import.meta.env.BASE_URL;
   @media (max-width:700px), (max-width:1000px) and (max-height:500px) {
     .about .about__loading {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);padding:0;border:0;white-space:nowrap;}
   }
+
+  @media (min-width:1001px) and (max-width:1600px), (min-width:1001px) and (max-height:850px) {
+    :global(html:not([data-ipad]):not([data-tablet-portrait])) .box--intro {margin-left:-20px;}
+    :global(html:not([data-ipad]):not([data-tablet-portrait])) .about__loading {top:24px;right:142px;margin-top:0;height:30px;padding:6px 12px;max-width:280px;}
+    :global(html:not([data-ipad]):not([data-tablet-portrait])) .about__loading p {font-size:10px;}
+  }
 </style>

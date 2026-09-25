@@ -46,10 +46,11 @@ if(section){
       const guide=guidePages[i];
       if(!guide)return;
       const gapAbove=(media.offsetTop-bottom)/2;
+      const guideInset=parseFloat(getComputedStyle(section!).getPropertyValue('--project-guide-inset'));
       const values={
-        '--guide-x1':media.offsetLeft/2,
+        '--guide-x1':Number.isFinite(guideInset)?media.offsetLeft-guideInset:media.offsetLeft/2,
         '--guide-x2':(media.offsetLeft+media.offsetWidth+thumbs.offsetLeft)/2,
-        '--guide-x3':(thumbs.offsetLeft+thumbs.offsetWidth+panel.clientWidth)/2,
+        '--guide-x3':Number.isFinite(guideInset)?thumbs.offsetLeft+thumbs.offsetWidth+guideInset:(thumbs.offsetLeft+thumbs.offsetWidth+panel.clientWidth)/2,
         '--guide-y1':top/2,
         '--guide-y2':media.offsetTop-gapAbove,
         '--guide-y3':media.offsetTop+media.offsetHeight+gapAbove,
