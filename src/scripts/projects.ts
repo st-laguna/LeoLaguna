@@ -58,7 +58,7 @@ if(section){
       Object.entries(values).forEach(([key,value])=>guide.style.setProperty(key,`${value}px`));
     });
   }
-  const motion=matchMedia('(min-width:1001px) and (min-height:681px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1101px) and (min-height:681px) and (prefers-reduced-motion:no-preference)');
+  const motion=matchMedia('(min-width:1001px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1101px) and (prefers-reduced-motion:no-preference)');
   const tabletPortrait=matchMedia('(min-width:701px) and (max-width:1100px) and (orientation:portrait)');
   const mobileMotion=matchMedia('(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)');
   const events=new AbortController();

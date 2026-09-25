@@ -118,7 +118,7 @@ if (hero && mask && image) {
   // Mueve únicamente la imagen, respetando movimiento reducido.
   const media = gsap.matchMedia();
 
-  media.add(hero.closest('.home-journey')?'(prefers-reduced-motion: no-preference) and (max-width:1000px), (prefers-reduced-motion: no-preference) and (max-height:680px)':'(prefers-reduced-motion: no-preference)', () => {
+  media.add(hero.closest('.home-journey')?'(prefers-reduced-motion: no-preference) and (max-width:1000px)':'(prefers-reduced-motion: no-preference)', () => {
     if ((phoneMask.matches || isIPadPortrait())) return;
     gsap.fromTo(
       image,

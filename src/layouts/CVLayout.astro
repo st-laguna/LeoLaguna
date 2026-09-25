@@ -114,13 +114,13 @@ const { title = "Leonardo S. Laguna — CV" }: Props = Astro.props;
     .cv-layout {
       grid-template-columns: 100%; /* Toma el 100% estricto */
       height: auto;
-      overflow-x: hidden;
+      overflow: clip visible;
     }
 
     .cv-sidebar,
     .cv-content {
       height: auto;
-      overflow-x: hidden;
+      overflow: clip visible;
     }
 
     /* Reducimos el espacio a los bordes en móviles para que no corte el texto */
@@ -138,7 +138,8 @@ const { title = "Leonardo S. Laguna — CV" }: Props = Astro.props;
       /* Base oscura: Negro en la foto, cayendo a un azul abisal elegante */
       background: var(--cv-sidebar-background);
       position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     /* Ruido (Grain) para unificar la textura y darle un toque premium */

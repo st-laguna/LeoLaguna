@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 const media=gsap.matchMedia();
 media.add('(prefers-reduced-motion: no-preference)',()=>{
-  const portal=matchMedia('(min-width:1001px) and (min-height:681px)').matches;
+  const portal=matchMedia('(min-width:1001px) and (orientation:landscape), (min-width:1101px)').matches && !document.documentElement.hasAttribute('data-tablet-portrait');
   const elements=Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]')).filter(el=>!(portal&&el.closest('.home-journey')));
   const regular=elements.filter(el=>!el.closest('.brands'));
   const reveal=(el:HTMLElement)=>gsap.to(el,{clipPath:'inset(0% 0% 0% 0%)',duration:.85,ease:'power3.inOut',overwrite:true});

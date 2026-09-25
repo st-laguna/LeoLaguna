@@ -56,9 +56,9 @@ export function createAboutScene(section, callbacks = {}) {
   // Keep vertical page scrolling on touch devices; drag to orbit remains desktop-only.
   const coarse = matchMedia('(pointer: coarse)');
   const configureInput = () => {
-    controls.enableRotate = true;
-    controls.enableZoom = true;
-    canvas.style.touchAction = 'none';
+    controls.enableRotate = !coarse.matches;
+    controls.enableZoom = !coarse.matches;
+    canvas.style.touchAction = coarse.matches ? 'pan-y' : 'none';
   };
   configureInput();
   coarse.addEventListener('change', configureInput, { signal: abort.signal });

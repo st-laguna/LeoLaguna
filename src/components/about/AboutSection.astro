@@ -704,6 +704,25 @@ const base = import.meta.env.BASE_URL;
     }
   }
 
+  /* Compact desktop uses its available height, without scaling the scene or UI. */
+  @media (min-width:1001px) and (max-height:850px) {
+    .about {min-height:100svh;}
+    .box--intro {left:5vw;width:42vw;padding:32px 20px 120px;gap:18px;}
+    .intro__hero {gap:12px;}
+    .intro__hero h1 {font-size:clamp(30px,5.6svh,46px);}
+    .intro__hero-name {font-size:clamp(42px,8svh,68px);}
+    .intro__sub {font-size:clamp(18px,3.2svh,26px);max-width:95%;}
+    .intro__body {width:min(100%,420px);}
+    .intro__body p {font-size:13px;line-height:1.4;}
+    .box--clock,.box--links,.box--nav {bottom:16px;padding:12px 16px;}
+    .box--nav {gap:12px;}
+    .site-nav {gap:6px;}
+    .site-nav a:not(.cv-link) {font-size:17px;}
+    .box--nav .cv-link {font-size:13px;padding:11px 16px;}
+    .clock__city,.clock__detail,.clock__detail [data-local-time] {font-size:13px;}
+    .links {gap:16px;font-size:13px;}
+    .about__hint {bottom:86px;}
+  }
   .about__composition {display:contents;}
   .about-mobile-copy,.about-mobile-toggle,.about-mobile-menu {display:none;}
   .box--nav .site-nav a {position:relative;transition:opacity .2s ease,font-weight .2s ease;}

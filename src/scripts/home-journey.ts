@@ -40,7 +40,7 @@ if(root){
   const media=gsap.matchMedia();
   const clamp=(v:number)=>Math.max(0,Math.min(1,v));
   const ease=(v:number)=>{const x=clamp(v);return x*x*(3-2*x);};
-  media.add('(min-width:1001px) and (min-height:681px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1101px) and (min-height:681px) and (prefers-reduced-motion:no-preference)',()=>{
+  media.add('(min-width:1001px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1101px) and (prefers-reduced-motion:no-preference)',()=>{
     if (isIPadPortrait()) return;
     host.setAttribute('data-journey','');
     // Same four apertures, drawn as holes in a path instead of a luminance mask.
@@ -262,7 +262,7 @@ slots.forEach((slot, i) => {
     };
   });
 
-  media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',always:'all'},()=>{
+  media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',reduced:'(prefers-reduced-motion:reduce)',always:'all'},()=>{
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
     if (!isIPadPortrait() && !matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches) return;
     const mobileOverlay=isIPadPortrait()?ipadOverlay:phoneOverlay;
