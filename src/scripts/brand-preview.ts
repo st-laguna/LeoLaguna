@@ -14,7 +14,8 @@ export function initBrandPreview(section:HTMLElement){
   let frame = 0;
   let touch = false;
   let targetX = 0, targetY = 0, x = 0, y = 0;
-  let pointerX = 0, pointerY = 0;
+  let pointerX = 0, pointerY = 0, hasPointer = false;
+  let hoverFrame = 0;
   function load(src:string) {
     if(!cache.has(src)) {
       cache.set(src,new Promise(resolve=>{
@@ -41,8 +42,18 @@ export function initBrandPreview(section:HTMLElement){
     const width=preview.offsetWidth;
     const height=preview.offsetHeight;
     if(touch) {
-      targetX=(window.innerWidth-width)/2;
-      targetY=Math.max(16,window.innerHeight-height-24);
+      const bounds=active!.getBoundingClientRect();
+      const gap=12, edge=16;
+      if(bounds.right+gap+width <= innerWidth-edge) {
+        targetX=bounds.right+gap; targetY=bounds.top+(bounds.height-height)/2;
+      } else if(bounds.left-gap-width >= edge) {
+        targetX=bounds.left-gap-width; targetY=bounds.top+(bounds.height-height)/2;
+      } else {
+        targetX=bounds.left+(bounds.width-width)/2;
+        targetY=bounds.bottom+gap+height <= innerHeight-edge ? bounds.bottom+gap : bounds.top-height-gap;
+      }
+      targetX=Math.max(edge,Math.min(targetX,innerWidth-width-edge));
+      targetY=Math.max(80,Math.min(targetY,innerHeight-height-edge));
     } else {
       targetX=pointerX+24;
       targetY=pointerY-height-20;
@@ -83,7 +94,7 @@ export function initBrandPreview(section:HTMLElement){
   buttons.forEach(button=>{
     button.addEventListener('pointerenter',event=>{
       if(event.pointerType!=='mouse'||!finePointer.matches)return;
-      pointerX=event.clientX;pointerY=event.clientY;
+      hasPointer=true;pointerX=event.clientX;pointerY=event.clientY;
       void show(button);
     },options);
     button.addEventListener('pointermove',event=>{
@@ -120,8 +131,23 @@ export function initBrandPreview(section:HTMLElement){
     const target=event.target as Node;
     if(active&&!active.contains(target)&&!preview.contains(target))hide();
   },options);
-  window.addEventListener('scroll',hide,{passive:true,signal:events.signal});
+  function inspectHover() {
+    hoverFrame=0;
+    if(touch) { if(active && !preview.hidden) position(true); return; }
+    if(!hasPointer || !finePointer.matches)return;
+    const button=document.elementFromPoint(pointerX,pointerY)?.closest<HTMLButtonElement>('[data-brand-preview]');
+    if(button && section.contains(button)) {
+      if(active!==button)void show(button);
+      else if(!preview.hidden)position();
+    } else hide();
+  }
+  function scheduleHover() {if(!hoverFrame)hoverFrame=requestAnimationFrame(inspectHover);}
+  document.addEventListener('pointermove',event=>{
+    if(event.pointerType!=='mouse')return;
+    hasPointer=true;pointerX=event.clientX;pointerY=event.clientY;scheduleHover();
+  },{passive:true,signal:events.signal});
+  window.addEventListener('scroll',scheduleHover,{passive:true,signal:events.signal});
   window.addEventListener('resize',hide,options);
   window.addEventListener('blur',hide,options);
-  return()=>{hide();events.abort();cache.clear();};
+  return()=>{hide();cancelAnimationFrame(hoverFrame);events.abort();cache.clear();};
 }

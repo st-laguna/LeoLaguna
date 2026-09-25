@@ -18,6 +18,7 @@
     const token = ++revision;
     clearTimeout(timer);
     timer = setTimeout(() => {
+      root.setAttribute('data-ipad-settling','');
       apply();
       window.dispatchEvent(new Event('leo:ipad-layout'));
       requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -29,6 +30,7 @@
         }
         window.dispatchEvent(new Event('leo:orientation-ready'));
         root.removeAttribute('data-ipad-rotating');
+        root.removeAttribute('data-ipad-settling');
         rotating = false; anchor = null;
       }));
     }, 320);
@@ -42,6 +44,7 @@
       rotating = true;
       root.setAttribute('data-ipad-rotating','');
     }
+    root.removeAttribute('data-ipad-settling');
     lastOrientation = orientation(); settle();
   }
   window.addEventListener('orientationchange', rotate);

@@ -314,7 +314,6 @@ if (brandsLayout) {
   const controlsElement=document.querySelector<HTMLElement>('.site-controls');
   if(controlsElement)resizeObserver.observe(controlsElement);
   ScrollTrigger.addEventListener('refreshInit',measureLayout);
-  window.addEventListener('leo:orientation-ready', configure, {signal:events.signal});
   window.addEventListener('leo:ipad-layout', configure, {signal:events.signal});
   configure();void document.fonts.ready.then(()=>{if(!events.signal.aborted)ScrollTrigger.refresh();});
   if(import.meta.hot)import.meta.hot.dispose(()=>{events.abort();resizeObserver.disconnect();ScrollTrigger.removeEventListener('refreshInit',measureLayout);disposeScroll();});

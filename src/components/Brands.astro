@@ -20,6 +20,7 @@ const t = en as Record<string,string>;
           aria-controls="brand-preview" aria-expanded="false"
           class="brands-cell"
           style={`--brand-span:${brand.span};--brand-order:${brands.indexOf(brand)}`}
+          data-brand-shape={['ISRA3','WEWHALE3','KA','WWF3','IMA3','EXO3','QW3','RH'].includes(brand.file) ? 'square' : 'wide'}
           data-brand-name={brand.name}
           aria-label={brand.name}
         >

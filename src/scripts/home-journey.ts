@@ -261,8 +261,9 @@ slots.forEach((slot, i) => {
     };
   });
 
-  media.add('((max-width:700px) or ((max-width:1000px) and (max-height:500px))) and (prefers-reduced-motion:no-preference)',()=>{
-    if (isIPadPortrait()) return;
+  media.add({phone:'((max-width:700px) or ((max-width:1000px) and (max-height:500px))) and (prefers-reduced-motion:no-preference)',always:'all'},()=>{
+    if (isRotating() || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    if (!isIPadPortrait() && !matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches) return;
     host.setAttribute('data-mobile-journey','');
     host.removeAttribute('data-journey');
     const stage=host.querySelector<HTMLElement>('.journey-stage')!;
@@ -377,11 +378,9 @@ slots.forEach((slot, i) => {
   });
     const refreshIPadLayout = () => gsap.matchMediaRefresh();
     window.addEventListener('leo:ipad-layout', refreshIPadLayout);
-    window.addEventListener('leo:orientation-ready', refreshIPadLayout);
     if (import.meta.hot) {
       import.meta.hot.dispose(() => {
         window.removeEventListener('leo:ipad-layout', refreshIPadLayout);
-        window.removeEventListener('leo:orientation-ready', refreshIPadLayout);
         media.revert();
         back.remove();
         cover.remove();
