@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="horizontal" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5132.9 2816.14">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="mask_horizontal_h">
+    <polygon id="L_izquierda_h" class="cls-1" points="1242.79 1703.6 717.73 2588.48 2377.31 2588.48 2899.73 1703.6 1242.76 1703.6 2263.63 0 1018.8 0 0 1703.6 1242.79 1703.6"/>
+    <polygon id="L_derecha_h" class="cls-1" points="3890.11 1112.54 4415.17 227.66 2755.58 227.66 2233.17 1112.54 3890.14 1112.54 2869.27 2816.14 4114.1 2816.14 5132.9 1112.54 3890.11 1112.54"/>
+  </g>
+  <g id="horizontal_text_v">
+    <rect id="anchor-leo_h" class="cls-2" x="595.66" y="1214.51" width="1146.84" height="383.58"/>
+    <rect id="anchor-laguna_h" class="cls-2" x="2018.36" y="1214.02" width="2518.87" height="390.73"/>
+    <rect id="anchor-capabilities_h" class="cls-2" x="595.66" y="1799.71" width="464.72" height="139.46"/>
+    <rect id="anchor-location_h" class="cls-2" x="4072.52" y="872.59" width="464.72" height="140.21"/>
+  </g>
+  <g id="references_h">
+    <line id="line_top_h" class="cls-2" x1="2263.63" y1="0" x2="1018.8" y2="0"/>
+    <line id="line_bot_h" class="cls-2" x1="4114.2" y1="2816.14" x2="2869.37" y2="2816.14"/>
+    <circle id="punt_left_h" class="cls-2" cy="1703.6" r="3.15"/>
+    <circle id="punt_right_h" class="cls-2" cx="5132.89" cy="1112.54" r="5.43"/>
+  </g>
+</svg>

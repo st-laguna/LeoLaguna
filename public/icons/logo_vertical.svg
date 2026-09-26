@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="vertical" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2280.13 4152.38">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="mask_vertical">
+    <polygon id="L_superior_v" class="cls-1" points="899.66 1007.06 184 582.41 184 1927.21 899.66 2349.72 899.66 1007.04 2280.13 1834.27 2280.13 825.55 899.66 0 899.66 1007.06"/>
+    <polygon id="L_inferior_v" class="cls-1" points="1380.47 3145.32 2096.13 3569.97 2096.13 2225.17 1380.47 1802.66 1380.47 3145.35 0 2318.11 0 3326.83 1380.47 4152.38 1380.47 3145.32"/>
+  </g>
+  <g id="vertical_text_v">
+    <polygon id="anchor-laguna_v" class="cls-2" points="1908.2 3360.08 302.83 2409.74 454.44 2153.96 2059.28 3105.18 1908.2 3360.08"/>
+    <polygon id="anchor-leo_v" class="cls-2" points="1032.04 2356.68 302.83 1925.66 454.44 1669.88 1183.12 2101.78 1032.04 2356.68"/>
+    <polygon id="anchor-hour_v" class="cls-2" points="697.7 3018.3 303.43 2784.91 341.85 2720.08 735.99 2953.7 697.7 3018.3"/>
+    <polygon id="anchor-lima-peru_v" class="cls-2" points="697.7 2906.2 303.43 2672.8 341.85 2607.98 735.99 2841.6 697.7 2906.2"/>
+    <polygon id="anchor-capabilities_v" class="cls-2" points="2096.73 2159.57 1371.2 1729.99 1428.64 1633.08 2153.97 2063 2096.73 2159.57"/>
+  </g>
+  <g id="references_v">
+    <line id="line_left_v" class="cls-2" x1="184" y1="582.48" x2="184" y2="1927.21"/>
+    <line id="line_right_v" class="cls-2" x1="2096.13" y1="2225.41" x2="2096.13" y2="3570.14"/>
+    <circle id="punt_bot_v" class="cls-2" cx="1380.47" cy="4152.38" r="2.1"/>
+  </g>
+</svg>

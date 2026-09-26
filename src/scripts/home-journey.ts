@@ -1,4 +1,4 @@
-import { isTabletPortrait } from './responsive-layout';
+import { isTabletPortrait, getHeroFrame } from './responsive-layout';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import { scrollPage, isCommittingScrollJump } from './smooth-scroll';
@@ -9,8 +9,8 @@ if(root){
   const hero=host.querySelector<HTMLElement>('.hero')!;
   const mask=host.querySelector<HTMLElement>('.hero__mask')!;
   const fish=host.querySelector<HTMLElement>('.hero__parallax')!;
-  const phoneOverlay=host.querySelector<SVGElement>('.hero__mobile-overlay');
-  const ipadOverlay=host.querySelector<SVGElement>('.hero__ipad-overlay');
+  const masterOverlay=host.querySelector<HTMLElement>('.hero__master');
+  const masters=JSON.parse(hero.dataset.heroMasters!);
   const intermediateImages = [1, 2, 3, 4].map(index => {
   const image = new Image();
 
@@ -33,7 +33,7 @@ if(root){
   const cover=document.createElementNS('http://www.w3.org/2000/svg','svg');
   cover.classList.add('journey-cover');cover.setAttribute('aria-hidden','true');
   cover.setAttribute('preserveAspectRatio','none');
-  cover.innerHTML='<defs><mask id="journey-cutout" maskUnits="userSpaceOnUse" x="0" y="0"><rect width="100%" height="100%" fill="white"/><g fill="black"><polygon/><polygon/><polygon/><polygon/></g></mask></defs><rect width="100%" height="100%" fill="var(--background)" mask="url(#journey-cutout)"/>';
+  cover.innerHTML='<defs><mask id="journey-cutout" maskUnits="userSpaceOnUse" x="0" y="0"><rect width="100%" height="100%" fill="white"/><g fill="black"><polygon/><polygon/></g></mask></defs><rect width="100%" height="100%" fill="var(--background)" mask="url(#journey-cutout)"/>';
   hero.append(cover);
   const cutout=cover.querySelector('g')!;
   const polygons=Array.from(cutout.querySelectorAll('polygon'));
@@ -46,7 +46,7 @@ if(root){
     // Desktop Journey owns the logo immediately, before the first measured render.
     mask.style.maskImage='none';
     mask.style.webkitMaskImage='none';
-    // Same four apertures, drawn as holes in a path instead of a luminance mask.
+    // Authored apertures, drawn as holes in a path instead of a luminance mask.
     // This avoids a full-screen intermediate mask texture on touch tablets.
     const touchTablet=navigator.maxTouchPoints>0 || matchMedia('(any-pointer:coarse)').matches;
     const aperture=document.createElementNS('http://www.w3.org/2000/svg','path');
@@ -69,17 +69,13 @@ if(root){
       if(!active)return;
       const stage=host.querySelector<HTMLElement>('.journey-stage')!.getBoundingClientRect();
       width=stage.width;height=stage.height;
-      const h=height/width*1366,factor=Math.min(1,h/768),offset=(h-768*factor)/2;
-      const y=(v:number)=>v*factor+offset;
-      cover.setAttribute('viewBox',`0 0 1366 ${h}`);
-      cover.querySelector('mask')!.setAttribute('width','1366');
-      cover.querySelector('mask')!.setAttribute('height',String(h));
-      const points=[`262.25,0 0,${y(450.9)} 334.91,${y(450.9)} 597.09,0`,
-        `334.91,${y(450.9)} 196.28,${y(689.77)} 643.29,${y(689.77)} 781.63,${y(450.9)}`,
-        `1031.29,${y(308.79)} 1170.53,${y(69.9)} 723.52,${y(69.9)} 584.97,${y(308.79)}`,
-        `1031.29,${y(308.79)} 761.25,${h} 1096.53,${h} 1366,${y(308.79)}`];
-      polygons.forEach((polygon,i)=>polygon.setAttribute('points',points[i]));
-      aperturePoints=points.map(points=>points.split(' ').map(pair=>pair.split(',').map(Number)));
+      const frame=getHeroFrame(width,height);
+      const master=frame.portrait?masters.v:masters.h;
+      cover.setAttribute('viewBox',`0 0 ${width} ${height}`);
+      cover.querySelector('mask')!.setAttribute('width',String(width));
+      cover.querySelector('mask')!.setAttribute('height',String(height));
+      aperturePoints=master.polygons.map((points:number[][])=>points.map(([x,y])=>[frame.x+x*frame.scale,frame.y+y*frame.scale]));
+      polygons.forEach((polygon,i)=>polygon.setAttribute('points',aperturePoints[i].map(point=>point.join(',')).join(' ')));
       lastAperture='';
       // offsetLeft/Top no incluyen las animaciones aplicadas a cada slot.
       const image=slots[0].querySelector<HTMLImageElement>('.workflow__front img')!;
@@ -129,22 +125,19 @@ if(root){
       const zoom=ease((p-.08)/.34);
       const scale=1+zoom*13;
       // Punto dentro del brazo izquierdo. Al atravesarlo, el vacío sale del encuadre.
-      const svgHeight=height/width*1366;
-      const y450=450.9*Math.min(1,svgHeight/768)+(svgHeight-768*Math.min(1,svgHeight/768))/2;
-      const focalY=y450*.5/svgHeight;
-      const focalX=((262.25*.5)+(334.91+(597.09-334.91)*.5))/2/1366;
-      const px=zoom*(width*.5-focalX*width)-(scale-1)*focalX*width;
-      const py=zoom*(height*.5-focalY*height)-(scale-1)*focalY*height;
+      const frame=getHeroFrame(width,height);
+      const px=zoom*(width*.5-frame.focalX)-(scale-1)*frame.focalX;
+      const py=zoom*(height*.5-frame.focalY)-(scale-1)*frame.focalY;
       // El SVG conserva un buffer del tamaño de la pantalla: solo cambian sus vectores.
       if(touchTablet){
-        const tx=px/width*1366,ty=py/width*1366;
+        const tx=px,ty=py;
         const key=`${tx.toFixed(3)},${ty.toFixed(3)},${scale.toFixed(4)}`;
         if(p<.42&&key!==lastAperture){
           lastAperture=key;
           const holes=aperturePoints.map(points=>'M'+points.map(([x,y])=>`${(x*scale+tx).toFixed(2)},${(y*scale+ty).toFixed(2)}`).join('L')+'Z').join('');
-          aperture.setAttribute('d',`M0,0H1366V${svgHeight}H0Z`+holes);
+          aperture.setAttribute('d',`M0,0H${width}V${height}H0Z`+holes);
         }
-      }else cutout.setAttribute('transform',`translate(${px/width*1366} ${py/width*1366}) scale(${scale})`);
+      }else cutout.setAttribute('transform',`translate(${px} ${py}) scale(${scale})`);
       cover.style.visibility=p<.42?'visible':'hidden';
       mask.style.maskImage='none';
       mask.style.webkitMaskImage='none';
@@ -270,9 +263,7 @@ slots.forEach((slot, i) => {
   media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',tablet:'(min-width:701px) and (max-width:1100px) and (orientation:portrait)',reduced:'(prefers-reduced-motion:reduce)',always:'all'},()=>{
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
     if (!isTabletPortrait() && !matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches) return;
-    const mobileOverlay=isTabletPortrait()?ipadOverlay:phoneOverlay;
-    const ipadSize=(hero.dataset.ipadViewbox || '0 0 2048 2732').split(/\s+/).map(Number);
-    const phoneSize=hero.dataset.phoneViewbox!.split(/\s+/).map(Number);
+    const mobileOverlay=masterOverlay;
     host.setAttribute('data-mobile-journey','');
     host.removeAttribute('data-journey');
     const stage=host.querySelector<HTMLElement>('.journey-stage')!;
@@ -310,16 +301,14 @@ slots.forEach((slot, i) => {
       }
       // Grow only the aperture; the illustration keeps its viewport dimensions.
       const portalScale=1+portal*18;
-      const tablet=isTabletPortrait();
-      const svgW=tablet?ipadSize[2]:phoneSize[2],svgH=tablet?ipadSize[3]:phoneSize[3];
-      const fit=Math.min(width/svgW,height/svgH);
-      const mw=svgW*fit, mh=svgH*fit;
-      const focalX=.3, focalY=.36;
+      const frame=getHeroFrame(width,height);
+      const master=frame.portrait?masters.v:masters.h;
+      const mw=frame.masterWidth*frame.scale,mh=frame.masterHeight*frame.scale;
       mask.style.maskSize=mask.style.webkitMaskSize=`${mw*portalScale}px ${mh*portalScale}px`;
-      mask.style.maskPosition=mask.style.webkitMaskPosition=`${(width-mw)/2-(portalScale-1)*mw*focalX}px ${(height-mh)/2-(portalScale-1)*mh*focalY}px`;
+      mask.style.maskPosition=mask.style.webkitMaskPosition=`${frame.x*portalScale-(portalScale-1)*frame.focalX}px ${frame.y*portalScale-(portalScale-1)*frame.focalY}px`;
       mask.style.transform='none';fish.style.transform=`translate3d(0,${-height*.012*portal}px,0)`;
       if(p>.2){mask.style.maskImage='none';mask.style.webkitMaskImage='none';}
-      else {const url=tablet?hero.dataset.ipadMask!:hero.dataset.phoneMask!;mask.style.maskImage=url;mask.style.webkitMaskImage=url;}
+      else {mask.style.maskImage=master.mask;mask.style.webkitMaskImage=master.mask;}
 
       const imageStarts=[.105,.135,.165,.195];
       intermediateImages.forEach((img,index)=>{

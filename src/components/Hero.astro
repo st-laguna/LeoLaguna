@@ -1,219 +1,117 @@
 ---
-import phoneLogo from '../../public/icons/logo_phn.svg?raw';
-import ipadLogo from '../../public/icons/logo_ipad.svg?raw';
-// The authored iPad artwork uses "tittle" for its title group.
-const ipadViewBox = ipadLogo.match(/viewBox="([^"]+)"/)![1];
-const ipadMaskGroup = ipadLogo.slice(ipadLogo.indexOf('<g id="mask">'), ipadLogo.indexOf('<g id="tittle">')).trim().replaceAll('class="cls-1"', 'fill="#fff"');
-const ipadLabels = ipadLogo.slice(ipadLogo.indexOf('<g id="tittle">'), ipadLogo.lastIndexOf('</svg>')).replaceAll('class="cls-1"', 'fill="#fff"').replace('id="tittle"', 'data-hero-part="title"').replace('id="subtitle"', 'data-hero-part="subtitle"');
-const ipadMask = 'url("data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + ipadViewBox + '">' + ipadMaskGroup + '</svg>') + '")';
-// Derive both layers from the current phone asset, including its exported fill.
-const phoneViewBox = phoneLogo.match(/viewBox="([^"]+)"/)![1];
-const phoneTitleStart = phoneLogo.indexOf('<g id="title">');
-const phoneMaskGroup = phoneLogo.slice(phoneLogo.indexOf('<g id="mask">'), phoneTitleStart).trim().replaceAll('class="st0"', 'fill="#fff"');
-const phoneMask = 'url("data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + phoneViewBox + '">' + phoneMaskGroup + '</svg>') + '")';
-// Inline paths avoid external SVG <use> rendering differences in WebKit.
-const phoneLabels = phoneLogo.slice(phoneTitleStart, phoneLogo.lastIndexOf('</svg>')).replaceAll('class="st0"', 'fill="#fff"').replace('id="title"', 'data-hero-part="title"').replace('id="subtitle"', 'data-hero-part="subtitle"');
+import horizontal from '../../public/icons/logo_horizontal.svg?raw';
+import vertical from '../../public/icons/logo_vertical.svg?raw';
+
+// Read authored metadata at build time only. The browser receives numeric anchors.
+function master(source: string, maskId: string) {
+  const viewBox = source.match(/viewBox="([^"]+)"/)![1];
+  const group = source.match(new RegExp(`<g id="${maskId}">([\\s\\S]*?)</g>`))![1].replaceAll('class="cls-1"', 'fill="white"');
+  const polygons = Array.from(group.matchAll(/points="([^"]+)"/g), match => {
+    const numbers = match[1].trim().split(/[\s,]+/).map(Number);
+    return Array.from({ length: numbers.length / 2 }, (_, i) => [numbers[i * 2], numbers[i * 2 + 1]]);
+  });
+  const anchors = Object.fromEntries(Array.from(source.matchAll(/<(rect|polygon) id="(anchor-[^"]+)"([^>]+)\/>/g), match => {
+    const attributes = Object.fromEntries(Array.from(match[3].matchAll(/([\w-]+)="([^"]*)"/g), a => [a[1], a[2]]));
+    if (match[1] === 'rect') return [match[2], { x: +attributes.x, y: +attributes.y, w: +attributes.width, h: +attributes.height, angle: 0 }];
+    const p = attributes.points.trim().split(/[\s,]+/).map(Number);
+    const dx = p[6] - p[4], dy = p[7] - p[5];
+    return [match[2], { x: p[4], y: p[5], w: Math.hypot(dx, dy), h: Math.hypot(p[2] - p[4], p[3] - p[5]), angle: Math.atan2(dy, dx) * 180 / Math.PI }];
+  }));
+  const mask = 'url("data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">${group}</svg>`) + '")';
+  return { viewBox, mask, polygons, anchors };
+}
+const h = master(horizontal, 'mask_horizontal_h');
+const v = master(vertical, 'mask_vertical');
 ---
-<section id="home" class="hero" style={'--ipad-hero-mask:' + ipadMask + ';--phone-hero-mask:' + phoneMask} data-phone-mask={phoneMask} data-phone-viewbox={phoneViewBox} data-ipad-mask={ipadMask} data-ipad-viewbox={ipadViewBox} aria-label="Leo Laguna — presentación">
+<section id="home" class="hero" data-hero-masters={JSON.stringify({ h, v })} data-phone-mask={v.mask} data-ipad-mask={v.mask} aria-label="Leo Laguna — presentación">
   <div class="hero__mask" aria-hidden="true">
     <div class="hero__parallax">
-      <picture>
-      <source media="(max-width: 1000px), (min-width:701px) and (max-width:1100px) and (orientation:portrait)" srcset="/imgs/hero/3H.webp" />
-      <img
-        class="hero__image hero__image--light"
-        src="/imgs/hero/1H.webp"
-        alt=""
-        loading="eager"
-        fetchpriority="high"
-      /></picture>
-      <picture>
-      <source media="(max-width: 1000px), (min-width:701px) and (max-width:1100px) and (orientation:portrait)" srcset="/imgs/hero/4H.webp" />
-      <img
-        class="hero__image hero__image--dark"
-        src="/imgs/hero/2H.webp"
-        alt=""
-        loading="eager"
-        decoding="async"
-      /></picture>
+      <picture><source media="(orientation:portrait), (max-width:1000px)" srcset="/imgs/hero/3H.webp" /><img class="hero__image hero__image--light" src="/imgs/hero/1H.webp" alt="" loading="eager" fetchpriority="high" /></picture>
+      <picture><source media="(orientation:portrait), (max-width:1000px)" srcset="/imgs/hero/4H.webp" /><img class="hero__image hero__image--dark" src="/imgs/hero/2H.webp" alt="" loading="eager" decoding="async" /></picture>
     </div>
   </div>
-
-  <svg class="hero__mobile-overlay hero__blend" viewBox={phoneViewBox} preserveAspectRatio="xMidYMid meet" aria-hidden="true" set:html={phoneLabels}></svg>
-  <svg class="hero__ipad-overlay hero__blend" viewBox={ipadViewBox} preserveAspectRatio="xMidYMid meet" aria-hidden="true" set:html={ipadLabels}></svg>
-
-  <div class="hero__location hero__blend" data-transition-enter>
-    <span>LIMA, PERU</span>
-    <span>GMT−5 <span data-lima-clock></span></span>
+  <div class="hero__master hero__blend">
+    <div class="hero__composition">
+      <h1 class="hero__artwork" data-hero-part="title" aria-label="Leo Laguna">
+        <img data-hero-anchor="leo" src="/icons/leo.svg" alt="" />
+        <img data-hero-anchor="laguna" src="/icons/laguna.svg" alt="" />
+      </h1>
+      <div class="hero__details" data-hero-part="subtitle">
+        <div data-hero-anchor="capabilities" class="hero__capabilities" aria-label="Scientific illustration, 3D visualization, visual communication">
+          <div class="hero__reel" aria-hidden="true"><span>SCIENTIFIC ILLUSTRATION</span><span>3D VISUALIZATION</span><span>VISUAL COMMUNICATION</span><span>SCIENTIFIC ILLUSTRATION</span></div>
+        </div>
+        <div data-hero-anchor="location" class="hero__place">LIMA, PERU</div>
+        <div data-hero-anchor="hour" class="hero__place">GMT−5 <span data-lima-clock></span></div>
+      </div>
+    </div>
   </div>
-
-  <h1 class="hero__title hero__blend"><span class="hero__word hero__word--leo">LEO</span> <span class="hero__word hero__word--laguna">LAGUNA</span></h1>
-
-  <p class="hero__subtitle hero__blend" data-transition-enter>
-    <span data-i18n="hero.location">Based In Lima, Peru</span>
-    <br />
-    <span data-i18n="hero.tagline">Creating For Everyone</span>
-  </p>
-
-  <a
-    class="hero__scroll hero__blend"
-    href="#workflow"
-    data-transition-enter
-  >
-    <span data-i18n="hero.scroll">SCROLL TO EXPLORE</span>
-    <span aria-hidden="true">↓</span>
-  </a>
+  <a class="hero__scroll hero__blend" href="#workflow"><span data-i18n="hero.scroll">SCROLL TO EXPLORE</span><span aria-hidden="true">↓</span></a>
 </section>
 
+<script>
+  import { getHeroFrame } from '../scripts/responsive-layout';
+  const hero = document.querySelector<HTMLElement>('.hero')!;
+  const stage = hero.closest('.journey-stage') || hero;
+  const composition = hero.querySelector<HTMLElement>('.hero__composition')!;
+  const masters = JSON.parse(hero.dataset.heroMasters!);
+  const anchors = Array.from(hero.querySelectorAll<HTMLElement>('[data-hero-anchor]'));
+  function layout() {
+    const { width, height } = stage.getBoundingClientRect();
+    if (!width || !height) return;
+    const f = getHeroFrame(width, height);
+    const m = f.portrait ? masters.v : masters.h;
+    hero.dataset.heroFrame = f.mode;
+    hero.style.setProperty('--hero-mask', m.mask);
+    hero.style.setProperty('--hero-mask-size', `${f.masterWidth * f.scale}px ${f.masterHeight * f.scale}px`);
+    hero.style.setProperty('--hero-mask-position', `${f.x}px ${f.y}px`);
+    composition.style.width = `${f.masterWidth}px`;
+    composition.style.height = `${f.masterHeight}px`;
+    composition.style.transform = `translate(${f.x}px,${f.y}px) scale(${f.scale})`;
+    anchors.forEach(element => {
+      const name = element.dataset.heroAnchor!;
+      const id = f.portrait ? `anchor-${name === 'location' ? 'lima-peru' : name}_v` : `anchor-${name === 'hour' ? 'location' : name}_h`;
+      const a = { ...m.anchors[id] };
+      if (!f.portrait && (name === 'location' || name === 'hour')) {
+        a.h /= 2;
+        if (name === 'hour') a.y += a.h;
+      }
+      element.dataset.anchorId = id;
+      Object.assign(element.style, { left: `${a.x}px`, top: `${a.y}px`, width: `${a.w}px`, height: `${a.h}px`, transform: `rotate(${a.angle}deg)`, fontSize: `${name === 'capabilities' ? a.w / 13 : a.w / 11}px`, lineHeight: `${a.h}px` });
+    });
+  }
+  const observer = new ResizeObserver(layout);
+  observer.observe(stage);
+  layout();
+  if (import.meta.hot) import.meta.hot.dispose(() => observer.disconnect());
+</script>
+
 <style>
-  .hero {
-    /* Controles para ajustar la composición */
-    --image-position: 50% 50%;
-
-    position: relative;
-    isolation: isolate;
-    width: 100%;
-    height: 100svh;
-    overflow: hidden;
-    background: var(--background);
+  .hero {--image-position:50% 50%;position:relative;isolation:isolate;width:100%;height:100dvh;overflow:hidden;background:var(--background);}
+  .hero__mask {position:absolute;inset:0;pointer-events:none;mask-image:var(--hero-mask);-webkit-mask-image:var(--hero-mask);mask-size:var(--hero-mask-size);-webkit-mask-size:var(--hero-mask-size);mask-position:var(--hero-mask-position);-webkit-mask-position:var(--hero-mask-position);mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat;mask-mode:alpha;}
+  /* The static/reduced-motion Hero supersedes main.ts's legacy mask. Animated Journey retains ownership. */
+  :global(.home-journey:not([data-journey]):not([data-mobile-journey])) .hero__mask {mask-image:var(--hero-mask)!important;-webkit-mask-image:var(--hero-mask)!important;mask-size:var(--hero-mask-size)!important;-webkit-mask-size:var(--hero-mask-size)!important;mask-position:var(--hero-mask-position)!important;-webkit-mask-position:var(--hero-mask-position)!important;}
+  .hero__parallax {position:absolute;top:-20%;left:0;width:100%;height:140%;}
+  .hero__parallax picture {position:absolute;inset:0;}
+  .hero__image {position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:var(--image-position);filter:grayscale(1);}
+  .hero__image--dark {clip-path:inset(100% 0 0);transition:clip-path 450ms cubic-bezier(.76,0,.24,1);}
+  :global(html[data-theme="dark"]) .hero__image--dark {clip-path:inset(0);}
+  .hero__blend {position:absolute;z-index:1;color:#fff;mix-blend-mode:difference;}
+  .hero__master {inset:0;pointer-events:none;}
+  .hero__composition {position:absolute;left:0;top:0;transform-origin:0 0;}
+  .hero__artwork,.hero__details {position:absolute;inset:0;margin:0;}
+  [data-hero-anchor] {position:absolute;max-width:none;transform-origin:0 0;}
+  img[data-hero-anchor] {object-fit:contain;}
+  .hero__capabilities {overflow:hidden;white-space:nowrap;font-weight:500;}
+  .hero__reel {height:100%;animation:hero-reel 9s infinite cubic-bezier(.76,0,.24,1);}
+  .hero__reel span {display:block;height:100%;}
+  .hero__place {white-space:nowrap;font-weight:500;}
+  .hero__scroll {right:3.2%;bottom:4.5%;display:flex;align-items:center;gap:14px;font-size:clamp(10px,.75vw,14px);text-decoration:none;color:#fff;}
+  .hero__scroll > span[aria-hidden] {font-size:20px;}
+  @keyframes hero-reel {0%,23%{transform:translateY(0);}33%,56%{transform:translateY(-100%);}66%,89%{transform:translateY(-200%);}100%{transform:translateY(-300%);}}
+  @media (orientation:portrait), (max-width:1000px) and (max-height:500px) {
+    .hero__parallax {top:0;height:100%;}
+    .hero__image {filter:none;}
+    .hero__scroll {display:none;}
   }
-
-  .hero__mask {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-
-    /* Amplía ligeramente el logo para eliminar márgenes mínimos */
-    
-
-    -webkit-mask-image: url("/icons/logo_w.svg");
-    mask-image: url("/icons/logo_w.svg");
-
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-
-    -webkit-mask-position: center;
-    mask-position: center;
-
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-
-    mask-mode: alpha;
-  }
-
- .hero__parallax {position:absolute;top:-20%;left:0;width:100%;height:140%;}
- .hero__image {position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:var(--image-position);filter:grayscale(1);}
- .hero__parallax picture {position:absolute;inset:0;}
- .hero__image--dark {clip-path:inset(100% 0 0);transition:clip-path 450ms cubic-bezier(.76,0,.24,1);}
- :global(html[data-theme="dark"]) .hero__image--dark {clip-path:inset(0);}
-  .hero__blend {
-    position: absolute;
-    z-index: 1;
-    color: #ffffff;
-    mix-blend-mode: difference;
-  }
-
-  .hero__ipad-overlay,.hero__mobile-overlay {display:none!important;}
-
-  .hero a {
-    color: #fff;
-    text-decoration: none;
-  }
-
-  .hero__location {
-    top: 34.5%;
-    right: 6.3%;
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-    font-size: clamp(10px, 0.7vw, 13px);
-    line-height: 1.15;
-  }
-
-  .hero__title {
-    top: 49.5%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    width: max-content;
-    white-space: nowrap;
-    font-family: "Archivo", sans-serif;
-    font-size: min(12.2vw, 234.24px);
-    font-weight: 800;
-    word-spacing: 0.08em;
-    line-height: 0.9;
-    letter-spacing: 0.015em;
-  }
-
-  .hero__subtitle {
-    top: 61.5%;
-    left: 3.2%;
-    margin: 0;
-    font-size: clamp(10px, 0.75vw, 14px);
-    line-height: 1.2;
-  }
-
-  .hero__scroll {
-    right: 3.2%;
-    bottom: 4.5%;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    font-size: clamp(10px, 0.75vw, 14px);
-  }
-
-  .hero__scroll > span[aria-hidden] {
-    font-size: 20px;
-  }
-
-  @media (max-width: 640px) {
-    .hero__nav {
-      top: 20px;
-      gap: 32px;
-      font-size: 12px;
-    }
-
-    .hero__location {
-      top: 36%;
-      right: 6%;
-    }
-
-    .hero__subtitle {
-      top: 60%;
-      left: 6%;
-      font-size: 11px;
-    }
-
-    .hero__scroll {
-      right: 6%;
-      bottom: 28px;
-      font-size: 11px;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero__image--dark {transition:none;}
-    .hero__nav a::after {
-      transition: none;
-    }
-  }
-  
-  @media (max-width: 900px) {
-  .hero__nav {
-    top: 76px;
-  }
-}
-
-@media (max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait) {
-  .hero {height:100svh;min-height:100svh;}
-  .hero__mask {
-    -webkit-mask-image:var(--phone-hero-mask);mask-image:var(--phone-hero-mask);
-    -webkit-mask-size:contain;mask-size:contain;-webkit-mask-position:center;mask-position:center;
-  }
-  .hero__parallax {top:0;height:100%;}
-  .hero__image {object-position:center;filter:none;}
-  .hero__mobile-overlay {display:block!important;position:absolute;inset:0;width:100%;height:100%;color:#fff;mix-blend-mode:difference;pointer-events:none;}
-  .hero__title,.hero__subtitle {display:none!important;}
-  .hero__location,.hero__scroll {display:none;}
-}
-@media (max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait) {.hero {height:100dvh;min-height:100dvh;}}
+  @media (prefers-reduced-motion:reduce) {.hero__reel{animation:none;}.hero__image--dark{transition:none;}}
 </style>
