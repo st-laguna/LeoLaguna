@@ -6,13 +6,17 @@ export function getHeroFrame(width: number, height: number) {
   const portrait = height > width;
   const mode = portrait ? 'portrait' : width / height >= 1.55 ? 'landscape-width' : 'landscape-height';
   const masterWidth = portrait ? 2280.13 : 5132.9;
-  const masterHeight = portrait ? 4152.38 : 2816.14;
-  // Portrait fits the short-L reference frame, deliberately not the whole SVG.
-  const scale = portrait ? Math.min(width / (2096.13 - 184), height / (3570.14 - 582.48))
-    : mode === 'landscape-width' ? width / 5132.89 : height / 2816.14;
-  // punt_top_v is missing in the export; (899.66, 0) is the approved approximation.
-  const centerX = portrait ? (899.66 + 1380.47) / 2 : 5132.89 / 2;
-  const centerY = portrait ? (0 + 4152.38) / 2 : 2816.14 / 2;
+  const masterHeight = portrait ? 4152.38 : 3331.5;
+  // Portrait uses line_left_v / line_right_v; landscape uses punt_left_h / punt_right_h.
+  const left = portrait ? 184 : -43.1;
+  const right = portrait ? 2096.13 : 5089.8;
+  // line_top_h is y=0; use line_bot_h's y2 at the bottom edge of the artwork.
+  const top = 0, bottom = 3331.5;
+  // Width-driven frames intentionally allow vertical cropping.
+  const scale = mode === 'landscape-height' ? height / (bottom - top) : width / (right - left);
+  const centerX = (left + right) / 2;
+  // Preserve portrait's vertical framing; landscape centers the current height references.
+  const centerY = portrait ? 4152.38 / 2 : (top + bottom) / 2;
   const x = width / 2 - centerX * scale;
   const y = height / 2 - centerY * scale;
   return { portrait, mode, masterWidth, masterHeight, scale, x, y,
