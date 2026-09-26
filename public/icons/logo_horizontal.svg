@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="horizontal" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5132.9 2816.14">
+<svg id="horizontal" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 5132.9 3331.5">
+  <!-- Generator: Adobe Illustrator 30.4.0, SVG Export Plug-In . SVG Version: 2.1.4 Build 226)  -->
   <defs>
     <style>
-      .cls-1 {
+      .st0 {
         fill: #fff;
       }
 
-      .cls-2 {
+      .st1 {
         fill: none;
       }
     </style>
   </defs>
   <g id="mask_horizontal_h">
-    <polygon id="L_izquierda_h" class="cls-1" points="1242.79 1703.6 717.73 2588.48 2377.31 2588.48 2899.73 1703.6 1242.76 1703.6 2263.63 0 1018.8 0 0 1703.6 1242.79 1703.6"/>
-    <polygon id="L_derecha_h" class="cls-1" points="3890.11 1112.54 4415.17 227.66 2755.58 227.66 2233.17 1112.54 3890.14 1112.54 2869.27 2816.14 4114.1 2816.14 5132.9 1112.54 3890.11 1112.54"/>
+    <polygon id="L_izquierda_h" class="st0" points="1242.8 1961.3 717.7 2846.1 2377.3 2846.1 2899.7 1961.3 1242.8 1961.3 2418 0 1172.9 0 0 1961.3 1242.8 1961.3"/>
+    <polygon id="L_derecha_h" class="st0" points="3890.1 1370.2 4415.2 485.3 2755.6 485.3 2233.2 1370.2 3890.1 1370.2 2714.9 3331.5 3960 3331.5 5132.9 1370.2 3890.1 1370.2"/>
   </g>
   <g id="horizontal_text_v">
-    <rect id="anchor-leo_h" class="cls-2" x="595.66" y="1214.51" width="1146.84" height="383.58"/>
-    <rect id="anchor-laguna_h" class="cls-2" x="2018.36" y="1214.02" width="2518.87" height="390.73"/>
-    <rect id="anchor-capabilities_h" class="cls-2" x="595.66" y="1799.71" width="464.72" height="139.46"/>
-    <rect id="anchor-location_h" class="cls-2" x="4072.52" y="872.59" width="464.72" height="140.21"/>
+    <rect id="anchor-leo_h" class="st1" x="595.7" y="1472.2" width="1146.8" height="383.6"/>
+    <rect id="anchor-laguna_h" class="st1" x="2018.4" y="1471.7" width="2518.9" height="390.7"/>
+    <rect id="anchor-capabilities_h" class="st1" x="595.7" y="2057.4" width="464.7" height="139.5"/>
+    <rect id="anchor-location_h" class="st1" x="4072.5" y="1130.3" width="464.7" height="140.2"/>
   </g>
   <g id="references_h">
-    <line id="line_top_h" class="cls-2" x1="2263.63" y1="0" x2="1018.8" y2="0"/>
-    <line id="line_bot_h" class="cls-2" x1="4114.2" y1="2816.14" x2="2869.37" y2="2816.14"/>
-    <circle id="punt_left_h" class="cls-2" cy="1703.6" r="3.15"/>
-    <circle id="punt_right_h" class="cls-2" cx="5132.89" cy="1112.54" r="5.43"/>
+    <line id="line_top_h" class="st1" x1="2263.6" y1="257.7" x2="1018.8" y2="257.7"/>
+    <line id="line_bot_h" class="st1" x1="4114.2" y1="3073.8" x2="2869.4" y2="3073.8"/>
+    <circle id="punt_left_h" class="st1" cy="1961.3" r="3.2"/>
+    <circle id="punt_right_h" class="st1" cx="5132.9" cy="1370.2" r="5.4"/>
   </g>
 </svg>
