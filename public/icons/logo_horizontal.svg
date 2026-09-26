@@ -23,9 +23,9 @@
     <rect id="anchor-location_h" class="st1" x="4072.5" y="1130.3" width="464.7" height="140.2"/>
   </g>
   <g id="references_h">
-    <line id="line_top_h" class="st1" x1="2263.6" y1="257.7" x2="1018.8" y2="257.7"/>
-    <line id="line_bot_h" class="st1" x1="4114.2" y1="3073.8" x2="2869.4" y2="3073.8"/>
-    <circle id="punt_left_h" class="st1" cy="1961.3" r="3.2"/>
-    <circle id="punt_right_h" class="st1" cx="5132.9" cy="1370.2" r="5.4"/>
+    <line id="line_top_h" class="st1" x1="2413.9" x2="1169.1"/>
+    <line id="line_bot_h" class="st1" x1="3960" y1="3332.3" x2="2714.9" y2="3331.5"/>
+    <circle id="punt_left_h" class="st1" cx="-43.1" cy="2219" r="3.2"/>
+    <circle id="punt_right_h" class="st1" cx="5089.8" cy="1627.9" r="5.4"/>
   </g>
 </svg>
