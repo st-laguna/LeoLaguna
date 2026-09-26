@@ -1,5 +1,4 @@
-export const isTabletPortrait = () => matchMedia('(min-width:701px) and (max-width:1100px) and (orientation:portrait)').matches;
-
+export const isTabletPortrait = () => document.documentElement.hasAttribute('data-tablet-portrait');
 // Hero-only camera: keep the responsive behavior of the other sections intact.
 // References are authored in logo_horizontal.svg and logo_vertical.svg.
 export function getHeroFrame(width: number, height: number) {
