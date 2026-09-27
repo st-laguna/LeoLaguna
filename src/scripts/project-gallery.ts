@@ -47,7 +47,10 @@ if(gallery&&lightbox&&section){
     if(galleryBusy||g.open)return;
     galleryBusy=true;galleryOpener=button;pause(s);
     const index=button.dataset.open==='current'?Number(s.dataset.current||0):Number(button.dataset.open);
-    g.querySelectorAll<HTMLElement>('[data-gallery]').forEach((grid,i)=>grid.hidden=i!==index);
+    g.querySelectorAll<HTMLElement>('[data-gallery]').forEach((grid,i)=>{
+      grid.hidden=i!==index;
+      if(i===index)grid.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>img.src=img.dataset.src!);
+    });
     gsap.set(shell,{yPercent:reduced.matches?0:100});
     lock();g.showModal();scroller.scrollTop=0;
     window.scrollTo({top:scroll,behavior:'instant'});

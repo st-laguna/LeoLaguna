@@ -30,7 +30,7 @@ const t = en as Record<string,string>;
                 {project.assets.map((asset,j) => (
                   <figure class="project-slide" data-slide={j} hidden={j!==0}>
                     {asset.kind === 'image' ? (
-                      <button class="project-enlarge" type="button" data-zoom-src={asset.src} data-zoom-alt={asset.client || project.id} aria-label={`Ampliar / Enlarge: ${asset.client || project.id}`}><img src={asset.src} alt={asset.client || `${project.id} — ${j+1}`} loading="lazy" decoding="async" /></button>
+                      <button class="project-enlarge" type="button" data-zoom-src={asset.src} data-zoom-alt={asset.client || project.id} aria-label={`Ampliar / Enlarge: ${asset.client || project.id}`}><img src={index===0 && j===0 ? asset.src : undefined} data-src={asset.src} alt={asset.client || `${project.id} — ${j+1}`} loading="lazy" decoding="async" /></button>
                     ) : (
                       <video data-auto-video src={asset.src} poster={asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={asset.client || 'Video del proyecto'} ></video>
                     )}
@@ -41,7 +41,7 @@ const t = en as Record<string,string>;
                 <div class="project-thumbs" role="tablist" aria-label={`Gallery ${project.id}`}>
                   {project.assets.map((asset,j) => (
                     <button type="button" role="tab" data-select={j} data-index={j} aria-selected={j===0} aria-pressed={j===0} tabindex={j===0 ? 0 : -1} aria-label={`${project.id} — ${asset.client || j+1}`}>
-                      <img src={asset.kind === 'video' ? asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp') : asset.src} alt="" loading="lazy" decoding="async" />
+                      <img data-src={asset.kind === 'video' ? asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp') : asset.src} alt="" loading="lazy" decoding="async" />
                     </button>
                   ))}
                 </div>
@@ -91,7 +91,7 @@ const t = en as Record<string,string>;
             <figure class="gallery-item">
               {asset.kind==='image' ? (
                 <button type="button" data-zoom-src={asset.src} data-zoom-alt={asset.client || project.id} aria-label={`Ampliar / Enlarge: ${asset.client || project.id}`}>
-                  <img src={asset.src} alt={asset.client || project.id} loading="lazy" decoding="async" />
+                  <img data-src={asset.src} alt={asset.client || project.id} loading="lazy" decoding="async" />
                 </button>
               ) : <video data-auto-video src={asset.src} poster={asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={asset.client || 'Video del proyecto'} ></video>}
               {asset.client && <figcaption>{asset.client}</figcaption>}

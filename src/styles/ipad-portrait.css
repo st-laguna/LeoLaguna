@@ -81,11 +81,11 @@
   html[data-tablet-portrait] .home-journey[data-mobile-journey] {height:1050svh;position:relative;}
   html[data-tablet-portrait] .home-journey[data-mobile-journey] .journey-stage {position:sticky;top:0;height:100svh;overflow:hidden;background:var(--background);perspective:1200px;}
   html[data-tablet-portrait] .home-journey[data-mobile-journey] .hero {position:absolute;inset:0;z-index:2;transform-origin:center;}
-  html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow {position:absolute;inset:0;height:100%;min-height:0;padding:76px 6vw 20px;overflow:hidden;}
+  html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow { position:absolute; inset:0; height:100%; min-height:0; padding:16svh 6vw 20px; overflow:hidden; }
   html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__heading {position:relative;z-index:6;margin:0 auto 18px;max-width:28ch;font-size:clamp(17px,5vw,23px);line-height:1.05;text-align:center;}
-  html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__grid {position:absolute;inset:190px 7vw 34px;display:block;padding:0;border:0;}
+  html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__grid {position:absolute;inset:34svh 7vw 6svh;display:block;padding:0;border:0;}
   html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__slot {position:absolute;inset:0;display:grid;place-items:center;margin:0!important;visibility:hidden;perspective:1100px;}
-  html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__card {width:min(100%,360px);max-width:none;aspect-ratio:.84;margin:0;pointer-events:none;}
+  html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__card {width:min(100%,760px,calc((100svh - 34svh - 6svh)*.84));max-width:none;aspect-ratio:.84;margin:0;pointer-events:none;}
   html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__track {display:none;}
   html[data-tablet-portrait] .home-journey[data-mobile-journey] .journey-cover {display:none;}
  html[data-tablet-portrait] .home-journey[data-mobile-journey] .journey-stage {height:100dvh;}
