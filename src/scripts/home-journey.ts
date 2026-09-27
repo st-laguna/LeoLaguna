@@ -11,18 +11,14 @@ if(root){
   const fish=host.querySelector<HTMLElement>('.hero__parallax')!;
   const masterOverlay=host.querySelector<HTMLElement>('.hero__master');
   const masters=JSON.parse(hero.dataset.heroMasters!);
-  const intermediateImages = [1, 2, 3, 4].map(index => {
-  const image = new Image();
 
-  image.src = `/imgs/hero/in_${index}.webp`;
-  image.alt = '';
-  image.decoding = 'async';
-  image.draggable = false;
-  image.className = 'journey-intermediate-image';
+  const intermediateImages=[1,2,3,4].map(index=>{const image=new Image();image.dataset.src=`/imgs/hero/in_${index}.webp`;image.alt='';image.decoding='async';image.draggable=false;image.className='journey-intermediate-image';fish.append(image);return image;});
+  let intermediatesLoaded=false;
+  const loadIntermediateImages=()=>{if(intermediatesLoaded)return;intermediatesLoaded=true;intermediateImages.forEach(img=>img.src=img.dataset.src!);};
+  window.addEventListener('wheel',loadIntermediateImages,{once:true,passive:true});
+  window.addEventListener('touchmove',loadIntermediateImages,{once:true,passive:true});
+  window.addEventListener('keydown',e=>{if(['ArrowDown','PageDown',' ','End'].includes(e.key))loadIntermediateImages();});
 
-  fish.append(image);
-  return image;
-});
   const workflow=host.querySelector<HTMLElement>('.workflow')!;
   const heading=workflow.querySelector<HTMLElement>('.workflow__heading')!;
   const grid=workflow.querySelector<HTMLElement>('.workflow__grid')!;
@@ -108,14 +104,15 @@ if(root){
         const imageStarts = [.47, .53, .59, .65];
         const saturations = [.25, .50, .75, 1];
 
-        intermediateImages.forEach((image, index) => {
-          const ready = image.complete && image.naturalWidth > 0;
-          const progress = ease((p - imageStarts[index]) / .04);
+      if(p>.30)loadIntermediateImages();
 
-          image.style.opacity = ready ? String(progress) : '0';
-          image.style.visibility=ready&&progress>0&&(index===3||p<imageStarts[index+1]+.04)?'visible':'hidden';
-          image.style.filter = `saturate(${saturations[index]})`;
-        });
+      intermediateImages.forEach((image,index)=>{
+        const ready=image.complete&&image.naturalWidth>0;
+        const progress=ease((p-imageStarts[index])/.04);
+        image.style.opacity=ready?String(progress):'0';
+        image.style.visibility=ready&&progress>0&&(index===3||p<imageStarts[index+1]+.04)?'visible':'hidden';
+        image.style.filter=`saturate(${saturations[index]})`;
+      });
       const staggerStep=.025,exitDuration=.09;
     texts.forEach((text,i)=>{
       const local=ease(clamp((p-i*staggerStep)/exitDuration));
@@ -285,6 +282,7 @@ slots.forEach((slot, i) => {
     function render(){
       if(!width)return;
       const p=clamp(state.p);
+      if(p>.02)loadIntermediateImages();
       const portal=ease(p/.2);
       texts.filter(text=>text!==mobileOverlay).forEach((text,i)=>{
         const out=ease((p-i*.012)/.075);
