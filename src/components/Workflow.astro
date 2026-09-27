@@ -32,15 +32,7 @@ const steps = [1, 2, 3, 4];
         >
           <span class="workflow__turn">
             <span class="workflow__front">
-              <img
-                src={`/imgs/workflow/${step}.webp`}
-                alt=""
-                loading="lazy"
-                decoding="async"
-                draggable="false"
-                width="600"
-                height="600"
-              />
+              <img data-src={`/imgs/workflow/${step}.webp`} alt="" decoding="async" draggable="false" width="600" height="600"/>
               <strong
                 id={`workflow-title-${step}`}
                 data-i18n={`workflow.${step}.title`}

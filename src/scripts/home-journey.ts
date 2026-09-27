@@ -20,12 +20,14 @@ if(root){
   window.addEventListener('keydown',e=>{if(['ArrowDown','PageDown',' ','End'].includes(e.key))loadIntermediateImages();});
 
   const workflow=host.querySelector<HTMLElement>('.workflow')!;
+  const workflowImages=Array.from(workflow.querySelectorAll<HTMLImageElement>('.workflow__front img'));
+  let workflowImagesLoaded=false;
+  const loadWorkflowImages=()=>{if(workflowImagesLoaded)return;workflowImagesLoaded=true;workflowImages.forEach(img=>{if(img.dataset.src)img.src=img.dataset.src;});};
   const heading=workflow.querySelector<HTMLElement>('.workflow__heading')!;
   const grid=workflow.querySelector<HTMLElement>('.workflow__grid')!;
   const slots=Array.from(workflow.querySelectorAll<HTMLElement>('.workflow__slot'));
   const track=workflow.querySelector<HTMLElement>('.workflow__track')!;
   const texts=Array.from(hero.querySelectorAll<HTMLElement>('.hero__blend'));
-  const back=new Image();back.className='journey-card-image';back.src='/imgs/workflow/1.webp';back.alt='';back.setAttribute('aria-hidden','true');mask.append(back);
   const cover=document.createElementNS('http://www.w3.org/2000/svg','svg');
   cover.classList.add('journey-cover');cover.setAttribute('aria-hidden','true');
   cover.setAttribute('preserveAspectRatio','none');
@@ -105,6 +107,7 @@ if(root){
         const saturations = [.25, .50, .75, 1];
 
       if(p>.30)loadIntermediateImages();
+      if(p>.55)loadWorkflowImages();
 
       intermediateImages.forEach((image,index)=>{
         const ready=image.complete&&image.naturalWidth>0;
@@ -166,7 +169,6 @@ fish.style.opacity = String(1 - blackout);
 fish.style.visibility = blackout < 1 ? 'visible' : 'hidden';
 
 // No mostrar una copia de la primera imagen durante el giro.
-back.style.visibility = 'hidden';
 
 // Entregar el lugar a la carta real al terminar el giro.
 const handoff = .84;
@@ -283,6 +285,7 @@ slots.forEach((slot, i) => {
       if(!width)return;
       const p=clamp(state.p);
       if(p>.02)loadIntermediateImages();
+      if(p>.18)loadWorkflowImages();
       const portal=ease(p/.2);
       texts.filter(text=>text!==mobileOverlay).forEach((text,i)=>{
         const out=ease((p-i*.012)/.075);
@@ -375,7 +378,6 @@ slots.forEach((slot, i) => {
     if (import.meta.hot) {
       import.meta.hot.dispose(() => {
         media.revert();
-        back.remove();
         cover.remove();
         intermediateImages.forEach(image => image.remove());
       });
