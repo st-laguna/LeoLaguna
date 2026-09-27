@@ -26,8 +26,8 @@ const v = master(vertical, 'mask_vertical');
 <section id="home" class="hero" data-hero-masters={JSON.stringify({ h, v })} data-phone-mask={v.mask} data-ipad-mask={v.mask} aria-label="Leo Laguna — presentación">
   <div class="hero__mask" aria-hidden="true">
     <div class="hero__parallax">
-      <picture><source media="(orientation:portrait), (max-width:1000px)" srcset="/imgs/hero/3H.webp" /><img class="hero__image hero__image--light" src="/imgs/hero/1H.webp" alt="" loading="eager" fetchpriority="high" /></picture>
-      <picture><source media="(orientation:portrait), (max-width:1000px)" srcset="/imgs/hero/4H.webp" /><img class="hero__image hero__image--dark" src="/imgs/hero/2H.webp" alt="" loading="eager" decoding="async" /></picture>
+      <picture data-hero-theme-image="light"><source media="(orientation:portrait), (max-width:1000px)" data-srcset="/imgs/hero/3H.webp"/><img class="hero__image hero__image--light" data-src="/imgs/hero/1H.webp" alt="" decoding="async"/></picture>
+      <picture data-hero-theme-image="dark"><source media="(orientation:portrait), (max-width:1000px)" data-srcset="/imgs/hero/4H.webp"/><img class="hero__image hero__image--dark" data-src="/imgs/hero/2H.webp" alt="" decoding="async"/></picture>
     </div>
   </div>
   <div class="hero__master hero__blend">
@@ -47,8 +47,11 @@ const v = master(vertical, 'mask_vertical');
   </div>
   <a class="hero__scroll hero__blend" href="#workflow"><span data-i18n="hero.scroll">SCROLL TO EXPLORE</span><span aria-hidden="true">↓</span></a>
 </section>
-
+<script is:inline>
+(()=>{const r=document.documentElement,h=document.getElementById('home');if(!h||h.dataset.themeImagesInit)return;h.dataset.themeImagesInit='1';const l=h.querySelector('[data-hero-theme-image="light"]'),d=h.querySelector('[data-hero-theme-image="dark"]'),di=h.querySelector('.hero__image--dark'),t=document.querySelector('[data-theme-toggle]');function load(p,priority='auto'){if(!p)return Promise.resolve();const s=p.querySelector('source'),i=p.querySelector('img');if(!i)return Promise.resolve();if(!p.dataset.loaded){p.dataset.loaded='1';i.fetchPriority=priority;i.loading='eager';if(s?.dataset.srcset)s.srcset=s.dataset.srcset;if(i.dataset.src)i.src=i.dataset.src}if(i.complete&&i.naturalWidth)return Promise.resolve();return i.decode?.().catch(()=>{})??Promise.resolve()}const current=()=>r.dataset.theme==='dark'?d:l,other=()=>r.dataset.theme==='dark'?l:d;load(current(),'high');const warm=()=>load(other());t?.addEventListener('pointerenter',warm,{once:true,passive:true});t?.addEventListener('pointerdown',warm,{once:true,passive:true});t?.addEventListener('focus',warm,{once:true});let id=0;new MutationObserver(async()=>{const n=++id,goDark=r.dataset.theme==='dark';di.style.clipPath=goDark?'inset(100% 0 0)':'inset(0)';await load(current(),'high');if(n!==id)return;void di.offsetWidth;requestAnimationFrame(()=>di.style.removeProperty('clip-path'))}).observe(r,{attributes:true,attributeFilter:['data-theme']})})();
+</script>
 <script>
+
   import { getHeroFrame } from '../scripts/responsive-layout';
   const hero = document.querySelector<HTMLElement>('.hero')!;
   const stage = hero.closest('.journey-stage') || hero;
