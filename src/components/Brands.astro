@@ -73,6 +73,34 @@ const t = en as Record<string,string>;
       text-align:left;
     }
   }
+  :global(html[data-tablet-portrait]) .brands-layout {
+    grid-template-columns:minmax(0,12fr) minmax(0,76fr) minmax(0,12fr);
+    gap:clamp(16px,2vw,24px);
+  }
+  :global(html[data-tablet-portrait]) .brands-stats {
+    justify-self:end;
+    align-self:center;
+    text-align:right;
+  }
+  :global(html[data-tablet-portrait]) .brands-stats dd {
+    font-size:clamp(62px,8.5vw,120px);
+  }
+  :global(html[data-tablet-portrait]) .brands-stats dt {
+    font-size:clamp(13px,1.7vw,17px);
+  }
+  :global(html[data-tablet-portrait]) .brands-statement {
+    grid-column:3;
+    justify-self:start;
+    align-self:center;
+    text-align:left;
+    width:100%;
+    max-width:100%;
+    min-width:0;
+  }
+  :global(html[data-tablet-portrait]) .brands-cell img {
+    transform:scale(var(--brand-scale,1));
+    transform-origin:center;
+  }
 </style>
 <script>
   import '../scripts/brands';

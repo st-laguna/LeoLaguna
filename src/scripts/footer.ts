@@ -8,8 +8,10 @@ export function initFooter() {
   if(!footer)return ()=>{};
   const entranceMedia=gsap.matchMedia();
   entranceMedia.add('(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',()=>{
-    footer.querySelectorAll<HTMLElement>('.footer__mobile-row').forEach((row,i)=>{
-      gsap.fromTo(row,{xPercent:i%2?100:-100},{xPercent:0,ease:'none',scrollTrigger:{trigger:row,start:'top bottom',end:'top 65%',scrub:.8}});
+    footer.querySelectorAll<HTMLElement>('.footer__marquee > .footer__mobile-message > .footer__mobile-row').forEach((row,i)=>{
+      gsap.fromTo(row,{xPercent:i%2?100:-100},{xPercent:0,ease:'none',scrollTrigger:{trigger:row,start:'top bottom',end:'top 65%',scrub:.8},onUpdate:()=>{
+        footer.querySelectorAll<HTMLElement>(`.footer-glass-source > .footer__mobile-row:nth-child(${i+1})`).forEach(copy=>copy.style.transform=row.style.transform);
+      }});
     });
     const brands=document.querySelector('.brands-layout');
     if(brands)gsap.fromTo(brands,{clipPath:'inset(100% 0 0)'},{clipPath:'inset(0% 0 0)',ease:'none',scrollTrigger:{trigger:brands,start:'top 95%',end:'top 35%',scrub:.8}});
@@ -251,7 +253,10 @@ window.addEventListener('resize', schedule, {
   signal,
 });
 
-const resizeObserver = new ResizeObserver(() => {
+function updateGlass() {
+  const compactPortrait=matchMedia('(orientation:portrait)').matches && (root.hasAttribute('data-tablet-portrait') || matchMedia('(max-width:700px)').matches);
+  footer!.toggleAttribute('data-compact-portrait',compactPortrait);
+  const message=marquee.querySelector<HTMLElement>(':scope > .footer__mobile-message');
   footer!
     .querySelectorAll<HTMLElement>('[data-footer-glass]')
     .forEach(edge => {
@@ -261,18 +266,39 @@ const resizeObserver = new ResizeObserver(() => {
 
       if (!filter) return;
 
+      // Empty strips were geometry probes for the desktop SVG. In portrait,
+      // give each strip a clipped, synchronized source for that same filter.
+      let source=edge.querySelector<HTMLElement>('.footer-glass-source');
+      if(compactPortrait && message){
+        if(!source){
+          source=message.cloneNode(true) as HTMLElement;
+          source.classList.add('footer-glass-source');
+          source.inert=true;
+          edge.append(source);
+        }
+        source.style.width=`${marquee.clientWidth}px`;
+        const tracks=message.querySelectorAll<HTMLElement>('.footer__mobile-track');
+        source.querySelectorAll<HTMLElement>('.footer__mobile-track').forEach((track,index)=>{
+          const original=tracks[index].getAnimations()[0];
+          const copy=track.getAnimations()[0];
+          if(!original || !copy)return;
+          if(original.playState==='running' && original.startTime!==null)copy.startTime=original.startTime;
+          else copy.currentTime=original.currentTime;
+        });
+      }else source?.remove();
+
       const height = Math.max(1, marquee.clientHeight);
 
       const viewWidth =
-        (marquee.clientWidth / height) * MARQUEE_VIEW.height;
+        compactPortrait ? marquee.clientWidth : (marquee.clientWidth / height) * MARQUEE_VIEW.height;
 
       const edgeWidth =
-        (edge.clientWidth / height) * MARQUEE_VIEW.height;
+        compactPortrait ? edge.clientWidth : (edge.clientWidth / height) * MARQUEE_VIEW.height;
 
       // Amplía el filtro y sus mapas por arriba y por abajo.
       const paddingY = 70;
-      const mapTop = MARQUEE_VIEW.top - paddingY;
-      const mapHeight = MARQUEE_VIEW.height + paddingY * 2;
+      const mapTop = (compactPortrait ? 0 : MARQUEE_VIEW.top) - paddingY;
+      const mapHeight = (compactPortrait ? height : MARQUEE_VIEW.height) + paddingY * 2;
 
       filter.setAttribute('width', String(viewWidth + 300));
       filter.setAttribute('y', String(mapTop));
@@ -294,15 +320,19 @@ const resizeObserver = new ResizeObserver(() => {
     });
 
   schedule();
-});
-
+}
+const resizeObserver = new ResizeObserver(updateGlass);
 resizeObserver.observe(marquee);
+const glassLayoutObserver=new MutationObserver(updateGlass);
+glassLayoutObserver.observe(root,{attributes:true,attributeFilter:['data-tablet-portrait']});
+void document.fonts.ready.then(()=>{if(!signal.aborted)updateGlass();});
 position();
 
 return () => {
   entranceObserver.disconnect();
   animations.forEach(animation=>animation.cancel());
   footer.removeAttribute('data-entrance-ready');
+  footer.removeAttribute('data-compact-portrait');
   entranceElements.forEach(element=>element.removeAttribute('data-entered'));
 
   cancelAnimationFrame(cursorFrame);
@@ -312,6 +342,8 @@ return () => {
   clearInterval(timer);
   cancelAnimationFrame(scheduled);
   resizeObserver.disconnect();
+  glassLayoutObserver.disconnect();
+  marquee.querySelectorAll('.footer-glass-source').forEach(source=>source.remove());
   disposeMarquee();
   setOpen(false);
   root.classList.remove('footer-active');

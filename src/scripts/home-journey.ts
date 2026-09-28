@@ -306,7 +306,7 @@ slots.forEach((slot, i) => {
       const master=frame.portrait?masters.v:masters.h;
       const mw=frame.masterWidth*frame.scale,mh=frame.masterHeight*frame.scale;
       mask.style.maskSize=mask.style.webkitMaskSize=`${mw*portalScale}px ${mh*portalScale}px`;
-      mask.style.maskPosition=mask.style.webkitMaskPosition=`${frame.x*portalScale-(portalScale-1)*frame.focalX}px ${frame.y*portalScale-(portalScale-1)*frame.focalY}px`;
+      mask.style.maskPosition=mask.style.webkitMaskPosition=`${frame.x*portalScale-(portalScale-1)*frame.focalX}px ${frame.y*portalScale-(portalScale-1)*frame.focalY-(isTabletPortrait()?Math.min(32,height*.02)*(1-portal):0)}px`;
       mask.style.transform='none';fish.style.transform=`translate3d(0,${-height*.012*portal}px,0)`;
       if(p>.2){mask.style.maskImage='none';mask.style.webkitMaskImage='none';}
       else {mask.style.maskImage=master.mask;mask.style.webkitMaskImage=master.mask;}

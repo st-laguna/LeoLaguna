@@ -27,9 +27,15 @@ if(section){
     });
   },{threshold:.5});
   counters.forEach(el=>countObserver.observe(el));
-  const media=gsap.matchMedia();
-  media.add('(min-width:1001px), (min-width:701px) and (min-height:501px)',()=>initBrandPreview(section));
-  media.add('(max-width:700px), (max-width:1000px) and (max-height:500px)',()=>{
+  let media: ReturnType<typeof gsap.matchMedia>;
+  function configureLayout(){
+    media?.revert();
+    media=gsap.matchMedia();
+    const tabletPortrait=document.documentElement.hasAttribute('data-tablet-portrait');
+    media.add('(min-width:1001px), (min-width:701px) and (min-height:501px)',()=>{
+      if(!tabletPortrait)return initBrandPreview(section);
+    });
+    media.add(tabletPortrait?'all':'(max-width:700px), (max-width:1000px) and (max-height:500px)',()=>{
     section.setAttribute('data-mobile-streams','');
     const cells=Array.from(section.querySelectorAll<HTMLButtonElement>('.brands-cell'));
     cells.forEach(cell=>{cell.disabled=true;});
@@ -41,6 +47,10 @@ if(section){
     const tweens=reduced?[]:columns.map((column,index)=>gsap.fromTo(column,{yPercent:index===0?0:-50},{yPercent:index===0?-50:0,ease:'none',duration:28,repeat:-1}));
     const observer=new IntersectionObserver(([entry])=>tweens.forEach(t=>t.paused(!entry.isIntersecting)));observer.observe(section);
     return()=>{cells.forEach(cell=>{cell.disabled=false;});observer.disconnect();tweens.forEach(t=>t.kill());clones.forEach(c=>c.remove());columns.forEach(c=>c.style.removeProperty('transform'));section.removeAttribute('data-mobile-streams');};
-  });
-  if(import.meta.hot)import.meta.hot.dispose(()=>{media.revert();themeObserver.disconnect();countObserver.disconnect();countTweens.forEach(t=>t.kill());});
+    });
+  }
+  configureLayout();
+  const layoutObserver=new MutationObserver(configureLayout);
+  layoutObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-tablet-portrait']});
+  if(import.meta.hot)import.meta.hot.dispose(()=>{layoutObserver.disconnect();media.revert();themeObserver.disconnect();countObserver.disconnect();countTweens.forEach(t=>t.kill());});
 }

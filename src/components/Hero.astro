@@ -52,7 +52,7 @@ const v = master(vertical, 'mask_vertical');
 </script>
 <script>
 
-  import { getHeroFrame } from '../scripts/responsive-layout';
+  import { getHeroFrame, isTabletPortrait } from '../scripts/responsive-layout';
   const hero = document.querySelector<HTMLElement>('.hero')!;
   const stage = hero.closest('.journey-stage') || hero;
   const composition = hero.querySelector<HTMLElement>('.hero__composition')!;
@@ -62,14 +62,15 @@ const v = master(vertical, 'mask_vertical');
     const { width, height } = stage.getBoundingClientRect();
     if (!width || !height) return;
     const f = getHeroFrame(width, height);
+    const portraitOffset = isTabletPortrait() ? Math.min(32, height * .02) : 0;
     const m = f.portrait ? masters.v : masters.h;
     hero.dataset.heroFrame = f.mode;
     hero.style.setProperty('--hero-mask', m.mask);
     hero.style.setProperty('--hero-mask-size', `${f.masterWidth * f.scale}px ${f.masterHeight * f.scale}px`);
-    hero.style.setProperty('--hero-mask-position', `${f.x}px ${f.y}px`);
+    hero.style.setProperty('--hero-mask-position', `${f.x}px ${f.y - portraitOffset}px`);
     composition.style.width = `${f.masterWidth}px`;
     composition.style.height = `${f.masterHeight}px`;
-    composition.style.transform = `translate(${f.x}px,${f.y}px) scale(${f.scale})`;
+    composition.style.transform = `translate(${f.x}px,${f.y - portraitOffset}px) scale(${f.scale})`;
     anchors.forEach(element => {
       const name = element.dataset.heroAnchor!;
       const id = f.portrait ? `anchor-${name === 'location' ? 'lima-peru' : name}_v` : `anchor-${name === 'hour' ? 'location' : name}_h`;

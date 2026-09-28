@@ -71,3 +71,7 @@
  .home-journey[data-journey] .workflow__heading {font-size:24px;margin-bottom:14px;}
  .home-journey[data-journey] .workflow__grid {padding-block:14px;}
 }
+
+@media (hover:hover) and (pointer:fine) {
+  .home-journey[data-journey] .workflow__turn {transition:transform 650ms cubic-bezier(.22,1,.36,1);}
+}

@@ -167,6 +167,11 @@ const steps = [1, 2, 3, 4];
     }
   }
 
+  @media (any-pointer: coarse) {
+    :global(html) .workflow .workflow__slot { perspective: 4400px; }
+    :global(html) .workflow .workflow__card { perspective: 4800px; }
+  }
+
   .workflow__card[data-dragging] {
     transition: none;
   }

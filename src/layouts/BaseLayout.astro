@@ -110,7 +110,7 @@ const {
       const tabletMedia = matchMedia('(min-width:701px) and (max-width:1100px) and (orientation:portrait)');
       const controls = header?.querySelector<HTMLElement>('.site-controls');
       function placeControls() {
-        if (controls && header && menuPanel) ((tabletMedia.matches || isTabletPortrait()) ? header : menuPanel).append(controls);
+        if (controls && header && menuPanel) menuPanel.append(controls);
       }
       tabletMedia.addEventListener('change', placeControls);
       placeControls();

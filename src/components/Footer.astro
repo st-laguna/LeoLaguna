@@ -62,6 +62,100 @@ import '../styles/footer.css';
     </div>
   </div>
 </footer>
+<style>
+  @media (orientation:portrait) {
+    :global(html) .footer[data-compact-portrait] {
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(0,var(--footer-logo-width,18vw)) minmax(0,var(--footer-contact-width,38vw)) minmax(0,1fr);
+      grid-template-rows:minmax(0,1fr) auto;
+      column-gap:4vw;
+      row-gap:6svh;
+      height:100svh;
+      min-height:0;
+      padding:12svh 0 6svh;
+    }
+    :global(html) .footer[data-compact-portrait] .footer__marquee {
+      grid-column:1/-1;
+      grid-row:1;
+      position:relative;
+      inset:auto;
+      transform:none;
+      height:100%;
+      min-height:0;
+      overflow:hidden;
+      clip-path:none;
+    }
+    :global(html) .footer[data-compact-portrait] .footer__mobile-message {
+      height:100%;
+      justify-content:space-between;
+      gap:0;
+      font-size:var(--footer-portrait-type,clamp(128px,20vw,240px));
+      line-height:1;
+    }
+    :global(html) .footer[data-compact-portrait] .footer__mobile-track {text-shadow:none;}
+    :global(html) .footer[data-compact-portrait] .footer__heading {
+      grid-column:2;
+      grid-row:2;
+      position:relative;
+      inset:auto;
+      align-self:center;
+      height:auto;
+      margin:0;
+    }
+    :global(html) .footer[data-compact-portrait] .footer__name {display:none;}
+    :global(html) .footer[data-compact-portrait] .footer__mark {
+      display:block;
+      position:relative;
+      inset:auto;
+      transform:none;
+      width:100%;
+      height:auto;
+      aspect-ratio:494.6 / 277.66;
+    }
+    :global(html) .footer[data-compact-portrait] .footer__contact-info {
+      grid-column:3;
+      grid-row:2;
+      position:relative;
+      inset:auto;
+      align-self:center;
+      min-width:0;
+      margin:0;
+      gap:clamp(14px,2svh,28px);
+    }
+    :global(html) .footer[data-compact-portrait] .footer__contact-info span {font-size:var(--footer-portrait-label,clamp(11px,1.3vw,17px));}
+    :global(html) .footer[data-compact-portrait] .footer__contact-info a {font-size:var(--footer-portrait-contact,clamp(15px,2vw,26px));overflow-wrap:anywhere;}
+    :global(html) .footer[data-compact-portrait] .footer__marquee > :global(svg:not([data-marquee-svg])) {display:block!important;}
+    :global(html) .footer[data-compact-portrait] .footer__marquee > :global([data-footer-glass]) {
+      display:block!important;
+      visibility:visible;
+      z-index:1;
+      width:clamp(40px,7vw,100px);
+      overflow:hidden;
+      background:var(--background);
+    }
+    :global(html) .footer[data-compact-portrait] :global(.footer-glass-source) {
+      position:absolute;
+      top:0;
+      left:0;
+      pointer-events:none;
+    }
+    :global(html) .footer[data-compact-portrait] :global(.footer-glass--left .footer-glass-source) {filter:url(#footer-refraction-left);}
+    :global(html) .footer[data-compact-portrait] :global(.footer-glass--right .footer-glass-source) {
+      left:auto;
+      right:0;
+      filter:url(#footer-refraction-right);
+    }
+  }
+  @media (max-width:700px) and (orientation:portrait) {
+    .footer {
+      --footer-logo-width:22vw;
+      --footer-contact-width:56vw;
+      --footer-portrait-type:clamp(78px,29vw,140px);
+      --footer-portrait-label:clamp(10px,2.6vw,12px);
+      --footer-portrait-contact:clamp(12px,3.2vw,18px);
+    }
+  }
+</style>
 <script>
   import { initFooter } from '../scripts/footer';
   let dispose: (()=>void)|undefined;
