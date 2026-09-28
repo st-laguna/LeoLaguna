@@ -2,6 +2,7 @@ import { isTabletPortrait, getHeroFrame } from './responsive-layout';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import { scrollPage, isCommittingScrollJump } from './smooth-scroll';
+import { registerScrollStops } from './scroll-pacing';
 gsap.registerPlugin(ScrollTrigger);
 const root=document.querySelector<HTMLElement>('.home-journey');
 if(root){
@@ -47,6 +48,8 @@ if(root){
   window.addEventListener('keydown',e=>{if(['ArrowDown','PageDown',' ','End'].includes(e.key))loadIntermediateImages();});
 
   const workflow=host.querySelector<HTMLElement>('.workflow')!;
+  const removeStaticStop=registerScrollStops(workflow,()=>
+    host.hasAttribute('data-journey')||host.hasAttribute('data-mobile-journey')?[]:[0]);
   const workflowImages=Array.from(workflow.querySelectorAll<HTMLImageElement>('.workflow__front img'));
   let workflowImagesLoaded=false;
   const loadWorkflowImages=()=>{if(workflowImagesLoaded)return;workflowImagesLoaded=true;if(ipad){queueImages(workflowImages);return;}workflowImages.forEach(img=>{if(img.dataset.src)img.src=img.dataset.src;});};
@@ -273,12 +276,17 @@ slots.forEach((slot, i) => {
     intermediateImages.forEach(image=>image.addEventListener('load',render));
     const animation=gsap.to(state,{p:1,ease:'none',scrollTrigger:{trigger:host,start:'top top',end:()=>`+=${host.querySelector<HTMLElement>('.journey-stage')!.offsetHeight*3.2}`,scrub:1,invalidateOnRefresh:true,onRefresh:measure},onUpdate:render});
     const resize=new ResizeObserver(measure);resize.observe(host.querySelector('.journey-stage')!);
+    const removeStops=registerScrollStops(host,()=>{
+      const trigger=animation.scrollTrigger;
+      return trigger?[trigger.end-trigger.start]:[];
+    });
     void document.fonts.ready.then(measure);
     const jump = (event: Event) => { event.preventDefault(); const trigger = animation.scrollTrigger; if (trigger) { scrollPage(trigger.end, true); } };
     hero.querySelector('a[href="#workflow"]')?.addEventListener('click',jump);
     measure();ScrollTrigger.refresh();
     return()=>{
       active=false;
+      removeStops();
       intermediateImages.forEach(image=>image.removeEventListener('load',render));
       returning?.kill();
       workflow.dispatchEvent(new Event('workflow:reset'));
@@ -320,6 +328,8 @@ slots.forEach((slot, i) => {
     const cards=slots.map(slot=>slot.querySelector<HTMLButtonElement>('.workflow__card')!);
     const state={p:0};
     let width=0,height=0,target={x:0,y:0,w:0,h:0};
+    const cardsStart=.29,cardsEnd=.97,overlap=1.12;
+    const span=(cardsEnd-cardsStart)/slots.length;
     const clamp=(v:number)=>Math.max(0,Math.min(1,v));
     const ease=(v:number)=>{const x=clamp(v);return x*x*(3-2*x);};
 
@@ -402,11 +412,8 @@ slots.forEach((slot, i) => {
       heading.style.opacity='1';
       heading.style.clipPath=`inset(${(1-headingIn)*100}% 0 ${headingOut*100}% 0)`;
 
-      const cardsStart=.29;
-      const cardsEnd=.97;
-      const span=(cardsEnd-cardsStart)/slots.length;
       slots.forEach((slot,i)=>{
-        const local=(p-(cardsStart+i*span))/(span*1.12);
+        const local=(p-(cardsStart+i*span))/(span*overlap);
         const enter=ease(local/(i===0?.16:.22));
         const flip=ease((local-.28)/.28);
         const leave=ease((local-.68)/.32);
@@ -425,8 +432,14 @@ slots.forEach((slot, i) => {
 
     const animation=gsap.to(state,{p:1,ease:'none',scrollTrigger:{trigger:host,start:'top top',end:'bottom bottom',scrub:.45,invalidateOnRefresh:true,onRefresh:measure},onUpdate:render});
     const resize=new ResizeObserver(measure);resize.observe(stage);
+    const removeStops=registerScrollStops(host,()=>{
+      const trigger=animation.scrollTrigger;
+      // Full front face: after entrance, before the existing scroll-driven flip.
+      return trigger?slots.map((_,i)=>(trigger.end-trigger.start)*(cardsStart+(i+.24*overlap)*span)):[];
+    });
     measure();ScrollTrigger.refresh();
     return()=>{
+      removeStops();
       animation.scrollTrigger?.kill();animation.kill();resize.disconnect();
       aperture.remove();maskedCover.style.removeProperty('display');cover.style.removeProperty('display');cover.style.removeProperty('visibility');
       host.removeAttribute('data-mobile-journey');hero.inert=false;workflow.inert=false;
@@ -441,6 +454,7 @@ slots.forEach((slot, i) => {
   });
     if (import.meta.hot) {
       import.meta.hot.dispose(() => {
+        removeStaticStop();
         disposed=true;clearTimeout(warmupTimer);clearTimeout(imageQueueTimer);imageQueue.length=0;
         media.revert();
         cover.remove();

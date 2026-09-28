@@ -5,3 +5,11 @@
 html[data-ipad] { overscroll-behavior-y:none; overflow-anchor:none; }
 /* Keep document height stable when Safari's toolbar returns near the footer. */
 html[data-ipad][data-tablet-portrait] .brands[data-mobile-streams] { min-height:100svh; }
+
+/* The browser handles touch inertia; there is no scroll-correction loop. */
+[data-scroll-stop] { position:absolute;left:50%;width:1px;height:1px;opacity:0;pointer-events:none; }
+@media (prefers-reduced-motion:no-preference) {
+  html[data-scroll-pacing="native"] { scroll-snap-type:y proximity; }
+  html[data-scroll-pacing="native"] [data-scroll-stop] { scroll-snap-align:start;scroll-snap-stop:always; }
+  html[data-scroll-pacing="native"].mobile-menu-open { scroll-snap-type:none; }
+}

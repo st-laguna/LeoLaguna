@@ -2,6 +2,7 @@ import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { createScrollPacing } from './scroll-pacing';
 
 gsap.registerPlugin(ScrollTrigger);
 // Toolbar height changes do not require rebuilding responsive animations.
@@ -39,12 +40,14 @@ if (ipad) {
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const media = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
 const tick = (seconds: number) => lenis?.raf(seconds * 1000);
+const pacing = createScrollPacing(() => locked || transitioning || committing);
 
 export function isScrollLocked() { return locked || transitioning; }
 export function isCommittingScrollJump() { return committing; }
 export function beginScrollTransition() {
   if (isScrollLocked()) return false;
   transitioning = true;
+  pacing.suspend();
   lenis?.stop();
   window.addEventListener('wheel', preventScroll, { passive: false, capture: true, signal });
   window.addEventListener('touchmove', preventScroll, { passive: false, capture: true, signal });
@@ -74,6 +77,7 @@ export function commitScrollJump(changePosition: () => void) {
 // Existing callers (project arrows, galleries, etc.) keep their current API.
 export function scrollPage( top: number, smooth = true, duration?: number ) {
   if (locked || (transitioning && !committing)) return;
+  pacing.suspend();
   const immediate = committing || !smooth || reduced.matches;
   const max = Math.max(0, document.documentElement.scrollHeight - innerHeight);
   const destination = Math.max(0, Math.min(top, max));
@@ -90,6 +94,7 @@ function configure() {
   gsap.ticker.remove(tick);
   lenis?.destroy();
   lenis = null;
+  pacing.setNative(true);
   if (!media.matches || ipad) return;
   lenis = new Lenis({
     autoRaf: false,
@@ -97,15 +102,23 @@ function configure() {
     syncTouch: false,
     lerp: 0.1,
     anchors: false,
+    virtualScroll: data => {
+      if (data.event.type === 'wheel' && !data.event.ctrlKey && Math.abs(data.deltaY) >= Math.abs(data.deltaX)) {
+        data.deltaY = pacing.wheel(lenis?.targetScroll ?? window.scrollY, data.deltaY);
+      }
+      return true;
+    },
     prevent: element => Boolean(element.closest('dialog')),
   });
   lenis.on('scroll', ScrollTrigger.update);
+  pacing.setNative(false);
   gsap.ticker.add(tick);
   if (locked || transitioning) lenis.stop();
 }
 
 window.addEventListener('leo:gallery-lock', () => {
   locked = true;
+  pacing.suspend();
   lenis?.stop();
 }, { signal });
 window.addEventListener('leo:gallery-unlock', (event) => {
@@ -140,6 +153,7 @@ configure();
 if (import.meta.hot) {
   import.meta.hot.dispose(() => {
     clearTimeout(viewportRefresh);
+    pacing.dispose();
     events.abort(); gsap.ticker.remove(tick); lenis?.destroy(); lenis = null;
   });
 }
