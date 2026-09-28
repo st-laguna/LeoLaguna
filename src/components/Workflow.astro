@@ -172,6 +172,10 @@ const steps = [1, 2, 3, 4];
     :global(html) .workflow .workflow__card { perspective: 4800px; }
   }
 
+  @media (min-width:1001px) and (orientation:landscape) and (any-pointer:coarse) {
+    .workflow .workflow__card { max-height:52svh; }
+  }
+
   .workflow__card[data-dragging] {
     transition: none;
   }

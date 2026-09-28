@@ -55,6 +55,7 @@ if(section){
   }
   // Solo medimos al cambiar la geometría, nunca en cada fotograma de scroll.
   function measureLayout() {
+    if(!layoutMatchesViewport())return;
     sidebarTravel=sidebar.offsetLeft+sidebar.offsetWidth+16;
     if(!(motion.matches && !isTabletPortrait()))return;
     const height=main.clientHeight;
@@ -88,6 +89,13 @@ if(section){
   const motion=matchMedia('(min-width:1001px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1101px) and (prefers-reduced-motion:no-preference)');
   const tabletPortrait=matchMedia('(min-width:701px) and (max-width:1100px) and (orientation:portrait)');
   const mobileMotion=matchMedia('(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)');
+  const orientation=matchMedia('(orientation:portrait)');
+  let configuredPortrait=orientation.matches;
+  function layoutMatchesViewport(){
+    const horizontal=motion.matches && !isTabletPortrait();
+    const mobile=!horizontal && (mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches));
+    return configuredPortrait===orientation.matches && section!.hasAttribute('data-horizontal')===horizontal && section!.hasAttribute('data-mobile-stack')===mobile;
+  }
   const events=new AbortController();
   const state={position:0,exit:0};
   const brandsLayout =
@@ -104,7 +112,7 @@ if(section){
   const total = 7.5;
   function pause(){section!.querySelectorAll('video').forEach(video=>video.pause());}
   function render(){
-    if(frozen)return;
+    if(frozen || !layoutMatchesViewport())return;
     [Math.floor(state.position),Math.ceil(state.position)].forEach(i=>{if(panels[i])hydratePanel(panels[i]);});
     const rounded=Math.max(0,Math.min(3,Math.round(state.position)));
     if(rounded!==current)pause();current=rounded;
@@ -154,13 +162,15 @@ if (brandsLayout) {
     entry?.kill();entry=undefined;timeline?.scrollTrigger?.kill();timeline?.kill();timeline=undefined;
     mobileTimeline?.scrollTrigger?.kill();mobileTimeline?.kill();mobileTimeline=undefined;
     section!.removeAttribute('data-mobile-stack');
+    section!.removeAttribute('data-horizontal');
+    section!.style.removeProperty('--project-top');
     panels.forEach(panel=>{['top','height','left','width','visibility','--compression'].forEach(p=>panel.style.removeProperty(p));panel.removeAttribute('data-compressed');panel.removeAttribute('data-overview');});
     if(brandsLayout){brandsLayout.style.removeProperty('clip-path');brandsLayout.inert=false;}
     document.documentElement.classList.remove('projects-active');if(nav)nav.inert=false;
   }
   const mobileState={p:0};
   function renderMobile(){
-    if(frozen)return;
+    if(frozen || !layoutMatchesViewport())return;
     const landscape=matchMedia('(max-width:1000px) and (max-height:500px) and (orientation:landscape)').matches;
     const height=landscape?main.clientWidth:main.clientHeight;
     const strip=landscape?48:Math.max(62,Math.min(82,height*.09));
@@ -202,6 +212,7 @@ if (brandsLayout) {
   }
   function configure(){
     disposeScroll();pause();closeMenu();checkedThumbs.clear();
+    configuredPortrait=orientation.matches;
     const videoPanel=panels.find(panel=>panel.classList.contains('project-panel--video'));
     if(videoPanel) {
       const selected=Number(videoPanel.querySelector<HTMLElement>('[aria-selected="true"]')?.dataset.select || 0);
@@ -337,11 +348,12 @@ if (brandsLayout) {
     }
   },{signal:events.signal});
   let configureTimer: ReturnType<typeof setTimeout>;
-  const scheduleConfigure = () => { clearTimeout(configureTimer); configureTimer = setTimeout(configure, 180); };
+  const scheduleConfigure = () => { clearTimeout(configureTimer); if(configuredPortrait===orientation.matches)configureTimer = setTimeout(configure, 180); };
   motion.addEventListener('change',scheduleConfigure,{signal:events.signal});
   mobileMotion.addEventListener('change',scheduleConfigure,{signal:events.signal});
-  tabletPortrait.addEventListener('change',configure,{signal:events.signal});
-  const resizeObserver=new ResizeObserver(()=>{checkedThumbs.clear();hydrateStaticPanels();measureLayout();if((motion.matches && !isTabletPortrait()))render();else if((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))renderMobile();});
+  tabletPortrait.addEventListener('change',scheduleConfigure,{signal:events.signal});
+  window.addEventListener('leo:orientation-ready',()=>{clearTimeout(configureTimer);configure();},{signal:events.signal});
+  const resizeObserver=new ResizeObserver(()=>{if(!layoutMatchesViewport())return;checkedThumbs.clear();hydrateStaticPanels();measureLayout();if((motion.matches && !isTabletPortrait()))render();else if((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))renderMobile();});
   resizeObserver.observe(stage);
   const controlsElement=document.querySelector<HTMLElement>('.site-controls');
   if(controlsElement)resizeObserver.observe(controlsElement);

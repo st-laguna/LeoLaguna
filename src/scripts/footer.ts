@@ -257,6 +257,11 @@ function updateGlass() {
   const compactPortrait=matchMedia('(orientation:portrait)').matches && (root.hasAttribute('data-tablet-portrait') || matchMedia('(max-width:700px)').matches);
   footer!.toggleAttribute('data-compact-portrait',compactPortrait);
   const message=marquee.querySelector<HTMLElement>(':scope > .footer__mobile-message');
+  const landscapeGlass=matchMedia('(orientation:landscape)').matches && (matchMedia('(any-pointer:coarse)').matches || matchMedia('(max-width:1000px) and (max-height:500px)').matches);
+  const glassActive=compactPortrait || landscapeGlass;
+  const htmlSource=glassActive && !!message && getComputedStyle(message).display!=='none';
+  if(glassActive)footer!.setAttribute('data-footer-refraction',htmlSource?'html':'svg');
+  else footer!.removeAttribute('data-footer-refraction');
   footer!
     .querySelectorAll<HTMLElement>('[data-footer-glass]')
     .forEach(edge => {
@@ -266,10 +271,10 @@ function updateGlass() {
 
       if (!filter) return;
 
-      // Empty strips were geometry probes for the desktop SVG. In portrait,
+      // Empty strips are geometry probes for the SVG. In the mobile layout,
       // give each strip a clipped, synchronized source for that same filter.
       let source=edge.querySelector<HTMLElement>('.footer-glass-source');
-      if(compactPortrait && message){
+      if(htmlSource && message){
         if(!source){
           source=message.cloneNode(true) as HTMLElement;
           source.classList.add('footer-glass-source');
@@ -290,15 +295,15 @@ function updateGlass() {
       const height = Math.max(1, marquee.clientHeight);
 
       const viewWidth =
-        compactPortrait ? marquee.clientWidth : (marquee.clientWidth / height) * MARQUEE_VIEW.height;
+        htmlSource ? marquee.clientWidth : (marquee.clientWidth / height) * MARQUEE_VIEW.height;
 
       const edgeWidth =
-        compactPortrait ? edge.clientWidth : (edge.clientWidth / height) * MARQUEE_VIEW.height;
+        htmlSource ? edge.clientWidth : (edge.clientWidth / height) * MARQUEE_VIEW.height;
 
       // Amplía el filtro y sus mapas por arriba y por abajo.
       const paddingY = 70;
-      const mapTop = (compactPortrait ? 0 : MARQUEE_VIEW.top) - paddingY;
-      const mapHeight = (compactPortrait ? height : MARQUEE_VIEW.height) + paddingY * 2;
+      const mapTop = (htmlSource ? 0 : MARQUEE_VIEW.top) - paddingY;
+      const mapHeight = (htmlSource ? height : MARQUEE_VIEW.height) + paddingY * 2;
 
       filter.setAttribute('width', String(viewWidth + 300));
       filter.setAttribute('y', String(mapTop));
@@ -321,6 +326,7 @@ function updateGlass() {
 
   schedule();
 }
+window.addEventListener('leo:orientation-ready',updateGlass,{signal});
 const resizeObserver = new ResizeObserver(updateGlass);
 resizeObserver.observe(marquee);
 const glassLayoutObserver=new MutationObserver(updateGlass);
@@ -333,6 +339,7 @@ return () => {
   animations.forEach(animation=>animation.cancel());
   footer.removeAttribute('data-entrance-ready');
   footer.removeAttribute('data-compact-portrait');
+  footer.removeAttribute('data-footer-refraction');
   entranceElements.forEach(element=>element.removeAttribute('data-entered'));
 
   cancelAnimationFrame(cursorFrame);
