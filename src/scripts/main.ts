@@ -21,7 +21,8 @@ if (clock) {
   });
 
   const updateClock = () => {
-    clock.textContent = formatter.format(new Date());
+    const time = formatter.format(new Date());
+    if (clock.textContent !== time) clock.textContent = time;
   };
 
   updateClock();
@@ -35,6 +36,8 @@ if (hero && mask && image) {
   const phoneMask = window.matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait)');
   // Ajusta la geometría del logo al tamaño real de la portada.
   function updateMask() {
+    // Hero.astro owns master geometry; native picture media already covers portrait.
+    if (hero?.hasAttribute('data-hero-masters')) return;
     hero?.querySelectorAll<HTMLSourceElement>('picture source').forEach(source => {
       source.dataset.originalMedia ||= source.media;
       source.media = isTabletPortrait() ? 'all' : source.dataset.originalMedia;
@@ -108,12 +111,13 @@ if (hero && mask && image) {
 
   }
 
-  updateMask();
-
-  const observer = new ResizeObserver(updateMask);
-  observer.observe(hero);
-  phoneMask.addEventListener('change', updateMask);
-  window.addEventListener('leo:orientation-ready', updateMask);
+  const observer = hero.hasAttribute('data-hero-masters') ? null : new ResizeObserver(updateMask);
+  if (observer) {
+    updateMask();
+    observer.observe(hero);
+    phoneMask.addEventListener('change', updateMask);
+    window.addEventListener('leo:orientation-ready', updateMask);
+  }
 
   // Mueve únicamente la imagen, respetando movimiento reducido.
   const media = gsap.matchMedia();
@@ -140,7 +144,7 @@ if (hero && mask && image) {
   // Limpieza cuando Vite actualiza este módulo durante el desarrollo.
   if (import.meta.hot) {
     import.meta.hot.dispose(() => {
-      observer.disconnect();
+      observer?.disconnect();
       phoneMask.removeEventListener('change', updateMask);
       window.removeEventListener('leo:orientation-ready', updateMask);
       media.revert();

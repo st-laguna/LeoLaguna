@@ -12,7 +12,30 @@ let transitioning = false;
 let committing = false;
 const events = new AbortController();
 const signal = events.signal;
-window.addEventListener('leo:orientation-ready', () => ScrollTrigger.refresh(), {signal});
+const ipad = document.documentElement.hasAttribute('data-ipad');
+let viewportRefresh: ReturnType<typeof setTimeout> | undefined;
+if (ipad) {
+  // ignoreMobileResize does not cover GSAP's mixed touch/mouse detection.
+  // Toolbar-only height changes must not refresh and restore the scroll position.
+  ScrollTrigger.config({ autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load' });
+  let width = innerWidth, height = innerHeight;
+  let portrait = matchMedia('(orientation:portrait)').matches;
+  const refreshViewport = () => {
+    clearTimeout(viewportRefresh);
+    viewportRefresh = setTimeout(() => {
+      width = innerWidth; height = innerHeight;
+      portrait = matchMedia('(orientation:portrait)').matches;
+      ScrollTrigger.refresh(true);
+    }, 220);
+  };
+  window.addEventListener('resize', () => {
+    if (innerWidth !== width || matchMedia('(orientation:portrait)').matches !== portrait ||
+        Math.abs(innerHeight - height) > height * .25) refreshViewport();
+  }, { passive: true, signal });
+  window.addEventListener('leo:orientation-ready', refreshViewport, { signal });
+} else {
+  window.addEventListener('leo:orientation-ready', () => ScrollTrigger.refresh(), {signal});
+}
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const media = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
 const tick = (seconds: number) => lenis?.raf(seconds * 1000);
@@ -23,10 +46,14 @@ export function beginScrollTransition() {
   if (isScrollLocked()) return false;
   transitioning = true;
   lenis?.stop();
+  window.addEventListener('wheel', preventScroll, { passive: false, capture: true, signal });
+  window.addEventListener('touchmove', preventScroll, { passive: false, capture: true, signal });
   return true;
 }
 export function endScrollTransition() {
   transitioning = false;
+  window.removeEventListener('wheel', preventScroll, true);
+  window.removeEventListener('touchmove', preventScroll, true);
   if (!locked) lenis?.start();
 }
 export function commitScrollJump(changePosition: () => void) {
@@ -63,7 +90,7 @@ function configure() {
   gsap.ticker.remove(tick);
   lenis?.destroy();
   lenis = null;
-  if (!media.matches) return;
+  if (!media.matches || ipad) return;
   lenis = new Lenis({
     autoRaf: false,
     smoothWheel: true,
@@ -105,8 +132,6 @@ document.addEventListener('click', event => {
 }, { signal });
 
 const preventScroll = (event: Event) => { if (transitioning) event.preventDefault(); };
-window.addEventListener('wheel', preventScroll, { passive: false, capture: true, signal });
-window.addEventListener('touchmove', preventScroll, { passive: false, capture: true, signal });
 document.addEventListener('keydown', event => {
   if (transitioning && ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' ', 'Tab', 'Enter'].includes(event.key)) event.preventDefault();
 }, { capture: true, signal });
@@ -114,6 +139,7 @@ media.addEventListener('change', configure, { signal });
 configure();
 if (import.meta.hot) {
   import.meta.hot.dispose(() => {
+    clearTimeout(viewportRefresh);
     events.abort(); gsap.ticker.remove(tick); lenis?.destroy(); lenis = null;
   });
 }

@@ -15,8 +15,12 @@
     clearTimeout(timer);
     timer = setTimeout(() => {
       window.dispatchEvent(new Event('leo:ipad-layout'));
-      window.dispatchEvent(new Event('leo:orientation-ready'));
     }, 150);
+    // Both inline initializers may run; share one orientation notification timer.
+    clearTimeout(window.__leoOrientationReadyTimer);
+    window.__leoOrientationReadyTimer = setTimeout(() => {
+      window.dispatchEvent(new Event('leo:orientation-ready'));
+    }, 180);
   }
   apply();
   portrait.addEventListener('change', resize);

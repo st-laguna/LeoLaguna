@@ -1,7 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
-import { initFooterMarquee, MARQUEE_VIEW } from './footer-marquee';
+import { initFooterMarquee } from './footer-marquee';
 import { scrollPage } from './smooth-scroll';
 export function initFooter() {
   const footer=document.querySelector<HTMLElement>('.footer');
@@ -9,9 +9,7 @@ export function initFooter() {
   const entranceMedia=gsap.matchMedia();
   entranceMedia.add('(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',()=>{
     footer.querySelectorAll<HTMLElement>('.footer__marquee > .footer__mobile-message > .footer__mobile-row').forEach((row,i)=>{
-      gsap.fromTo(row,{xPercent:i%2?100:-100},{xPercent:0,ease:'none',scrollTrigger:{trigger:row,start:'top bottom',end:'top 65%',scrub:.8},onUpdate:()=>{
-        footer.querySelectorAll<HTMLElement>(`.footer-glass-source > .footer__mobile-row:nth-child(${i+1})`).forEach(copy=>copy.style.transform=row.style.transform);
-      }});
+      gsap.fromTo(row,{xPercent:i%2?100:-100},{xPercent:0,ease:'none',scrollTrigger:{trigger:row,start:'top bottom',end:'top 65%',scrub:.8}});
     });
     const brands=document.querySelector('.brands-layout');
     if(brands)gsap.fromTo(brands,{clipPath:'inset(100% 0 0)'},{clipPath:'inset(0% 0 0)',ease:'none',scrollTrigger:{trigger:brands,start:'top 95%',end:'top 35%',scrub:.8}});
@@ -34,7 +32,7 @@ export function initFooter() {
     }, { signal });
 
   const marquee=footer.querySelector<HTMLElement>('[data-footer-marquee]')!;
-  const disposeMarquee=initFooterMarquee(marquee);
+  const marqueeRenderer=initFooterMarquee(marquee);
 
   const clickTarget=footer.querySelector<HTMLElement>('[data-footer-click-target]');
 const clickCursor=footer.querySelector<HTMLElement>('[data-footer-click-cursor]');
@@ -257,72 +255,9 @@ function updateGlass() {
   const compactPortrait=matchMedia('(orientation:portrait)').matches && (root.hasAttribute('data-tablet-portrait') || matchMedia('(max-width:700px)').matches);
   footer!.toggleAttribute('data-compact-portrait',compactPortrait);
   const message=marquee.querySelector<HTMLElement>(':scope > .footer__mobile-message');
-  const landscapeGlass=matchMedia('(orientation:landscape)').matches && (matchMedia('(any-pointer:coarse)').matches || matchMedia('(max-width:1000px) and (max-height:500px)').matches);
-  const glassActive=compactPortrait || landscapeGlass;
-  const htmlSource=glassActive && !!message && getComputedStyle(message).display!=='none';
-  if(glassActive)footer!.setAttribute('data-footer-refraction',htmlSource?'html':'svg');
-  else footer!.removeAttribute('data-footer-refraction');
-  footer!
-    .querySelectorAll<HTMLElement>('[data-footer-glass]')
-    .forEach(edge => {
-      const filter = footer!.querySelector<SVGFilterElement>(
-        `#footer-refraction-${edge.dataset.footerGlass}`
-      );
-
-      if (!filter) return;
-
-      // Empty strips are geometry probes for the SVG. In the mobile layout,
-      // give each strip a clipped, synchronized source for that same filter.
-      let source=edge.querySelector<HTMLElement>('.footer-glass-source');
-      if(htmlSource && message){
-        if(!source){
-          source=message.cloneNode(true) as HTMLElement;
-          source.classList.add('footer-glass-source');
-          source.inert=true;
-          edge.append(source);
-        }
-        source.style.width=`${marquee.clientWidth}px`;
-        const tracks=message.querySelectorAll<HTMLElement>('.footer__mobile-track');
-        source.querySelectorAll<HTMLElement>('.footer__mobile-track').forEach((track,index)=>{
-          const original=tracks[index].getAnimations()[0];
-          const copy=track.getAnimations()[0];
-          if(!original || !copy)return;
-          if(original.playState==='running' && original.startTime!==null)copy.startTime=original.startTime;
-          else copy.currentTime=original.currentTime;
-        });
-      }else source?.remove();
-
-      const height = Math.max(1, marquee.clientHeight);
-
-      const viewWidth =
-        htmlSource ? marquee.clientWidth : (marquee.clientWidth / height) * MARQUEE_VIEW.height;
-
-      const edgeWidth =
-        htmlSource ? edge.clientWidth : (edge.clientWidth / height) * MARQUEE_VIEW.height;
-
-      // Amplía el filtro y sus mapas por arriba y por abajo.
-      const paddingY = 70;
-      const mapTop = (htmlSource ? 0 : MARQUEE_VIEW.top) - paddingY;
-      const mapHeight = (htmlSource ? height : MARQUEE_VIEW.height) + paddingY * 2;
-
-      filter.setAttribute('width', String(viewWidth + 300));
-      filter.setAttribute('y', String(mapTop));
-      filter.setAttribute('height', String(mapHeight));
-
-      filter
-        .querySelectorAll('[data-footer-lens-map]')
-        .forEach(map => {
-          const x =
-            edge.dataset.footerGlass === 'right'
-              ? viewWidth - edgeWidth
-              : 0;
-
-          map.setAttribute('x', String(x));
-          map.setAttribute('y', String(mapTop));
-          map.setAttribute('width', String(edgeWidth));
-          map.setAttribute('height', String(mapHeight));
-        });
-    });
+  const htmlSource=!!message && getComputedStyle(message).display!=='none';
+  footer!.setAttribute('data-footer-refraction',htmlSource?'html':'svg');
+  marqueeRenderer.resize();
 
   schedule();
 }
@@ -350,8 +285,7 @@ return () => {
   cancelAnimationFrame(scheduled);
   resizeObserver.disconnect();
   glassLayoutObserver.disconnect();
-  marquee.querySelectorAll('.footer-glass-source').forEach(source=>source.remove());
-  disposeMarquee();
+  marqueeRenderer.dispose();
   setOpen(false);
   root.classList.remove('footer-active');
   root.style.removeProperty('--footer-header-y');

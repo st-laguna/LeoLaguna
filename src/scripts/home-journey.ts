@@ -11,10 +11,37 @@ if(root){
   const fish=host.querySelector<HTMLElement>('.hero__parallax')!;
   const masterOverlay=host.querySelector<HTMLElement>('.hero__master');
   const masters=JSON.parse(hero.dataset.heroMasters!);
+  const ipad=document.documentElement.hasAttribute('data-ipad');
+  let disposed=false;
+  const imageQueue:HTMLImageElement[]=[];
+  const queuedImages=new Set<HTMLImageElement>();
+  let decodingImage=false;
+  let imageQueueTimer:ReturnType<typeof setTimeout>|undefined;
+  function pumpImages(){
+    clearTimeout(imageQueueTimer);
+    imageQueueTimer=undefined;
+    if(disposed||decodingImage||!imageQueue.length)return;
+    // Leave the initial snapshot/entrance its CPU and texture-upload budget.
+    if(document.documentElement.hasAttribute('data-hero-intro') ||
+       document.documentElement.hasAttribute('data-section-transition')){
+      imageQueueTimer=setTimeout(pumpImages,100);return;
+    }
+    const img=imageQueue.shift()!;
+    decodingImage=true;
+    if(img.dataset.src&&!img.hasAttribute('src'))img.src=img.dataset.src;
+    void img.decode().catch(()=>{}).finally(()=>{
+      decodingImage=false;
+      if(!disposed)imageQueueTimer=setTimeout(pumpImages,32);
+    });
+  }
+  function queueImages(images:HTMLImageElement[]){
+    images.forEach(img=>{if(!queuedImages.has(img)){queuedImages.add(img);imageQueue.push(img);}});
+    pumpImages();
+  }
 
   const intermediateImages=[1,2,3,4].map(index=>{const image=new Image();image.dataset.src=`/imgs/hero/in_${index}.webp`;image.alt='';image.decoding='async';image.draggable=false;image.className='journey-intermediate-image';fish.append(image);return image;});
   let intermediatesLoaded=false;
-  const loadIntermediateImages=()=>{if(intermediatesLoaded)return;intermediatesLoaded=true;intermediateImages.forEach(img=>img.src=img.dataset.src!);};
+  const loadIntermediateImages=()=>{if(intermediatesLoaded)return;intermediatesLoaded=true;if(ipad){queueImages(intermediateImages);return;}intermediateImages.forEach(img=>img.src=img.dataset.src!);};
   window.addEventListener('wheel',loadIntermediateImages,{once:true,passive:true});
   window.addEventListener('touchmove',loadIntermediateImages,{once:true,passive:true});
   window.addEventListener('keydown',e=>{if(['ArrowDown','PageDown',' ','End'].includes(e.key))loadIntermediateImages();});
@@ -22,7 +49,19 @@ if(root){
   const workflow=host.querySelector<HTMLElement>('.workflow')!;
   const workflowImages=Array.from(workflow.querySelectorAll<HTMLImageElement>('.workflow__front img'));
   let workflowImagesLoaded=false;
-  const loadWorkflowImages=()=>{if(workflowImagesLoaded)return;workflowImagesLoaded=true;workflowImages.forEach(img=>{if(img.dataset.src)img.src=img.dataset.src;});};
+  const loadWorkflowImages=()=>{if(workflowImagesLoaded)return;workflowImagesLoaded=true;if(ipad){queueImages(workflowImages);return;}workflowImages.forEach(img=>{if(img.dataset.src)img.src=img.dataset.src;});};
+  let warmupTimer:ReturnType<typeof setTimeout>|undefined;
+  const warmupHero=hero.querySelector<HTMLImageElement>('picture[data-loaded] img');
+  if(navigator.maxTouchPoints>0 && Math.min(innerWidth,innerHeight)>700){
+    void (warmupHero?.decode().catch(()=>{})??Promise.resolve()).then(()=>{
+      if(disposed)return;
+      warmupTimer=setTimeout(()=>{
+        if(disposed)return;
+        loadIntermediateImages();loadWorkflowImages();
+        if(!ipad)[...intermediateImages,...workflowImages].forEach(img=>void img.decode().catch(()=>{}));
+      },250);
+    });
+  }
   const heading=workflow.querySelector<HTMLElement>('.workflow__heading')!;
   const grid=workflow.querySelector<HTMLElement>('.workflow__grid')!;
   const slots=Array.from(workflow.querySelectorAll<HTMLElement>('.workflow__slot'));
@@ -265,6 +304,13 @@ slots.forEach((slot, i) => {
   media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',tablet:'(min-width:701px) and (max-width:1400px) and (orientation:portrait)',reduced:'(prefers-reduced-motion:reduce)',always:'all'},context=>{
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
     if (!context.conditions?.phone && !context.conditions?.tablet) return;
+    // Reuse the landscape tablet's viewport-sized vector aperture, avoiding a 19x CSS mask.
+    const tablet=isTabletPortrait();
+    const aperture=document.createElementNS('http://www.w3.org/2000/svg','path');
+    aperture.setAttribute('fill','var(--background)');
+    aperture.setAttribute('fill-rule','evenodd');
+    const maskedCover=cover.lastElementChild as SVGElement;
+    if(tablet){maskedCover.style.display='none';cover.append(aperture);cover.style.display='block';}
     const mobileOverlay=masterOverlay;
     host.setAttribute('data-mobile-journey','');
     host.removeAttribute('data-journey');
@@ -279,6 +325,7 @@ slots.forEach((slot, i) => {
 
     function measure(){
       const rect=stage.getBoundingClientRect();width=rect.width;height=rect.height;
+      if(tablet)cover.setAttribute('viewBox',`0 0 ${width} ${height}`);
       const w=cards[0].offsetWidth,h=cards[0].offsetHeight;
       target={x:grid.offsetLeft+(grid.clientWidth-w)/2,y:grid.offsetTop+(grid.clientHeight-h)/2,w,h};
       render();
@@ -308,11 +355,24 @@ slots.forEach((slot, i) => {
       const frame=getHeroFrame(width,height);
       const master=frame.portrait?masters.v:masters.h;
       const mw=frame.masterWidth*frame.scale,mh=frame.masterHeight*frame.scale;
+      if(tablet){
+        if(p<=.2){
+          const tx=frame.x*portalScale-(portalScale-1)*frame.focalX;
+          const ty=frame.y*portalScale-(portalScale-1)*frame.focalY-Math.min(32,height*.02)*(1-portal);
+          const holes=master.polygons.map((points:number[][])=>'M'+points.map(([x,y])=>
+            `${(x*frame.scale*portalScale+tx).toFixed(2)},${(y*frame.scale*portalScale+ty).toFixed(2)}`).join('L')+'Z').join('');
+          aperture.setAttribute('d',`M0,0H${width}V${height}H0Z`+holes);
+        }
+        cover.style.visibility=p<=.2?'visible':'hidden';
+        mask.style.maskImage=mask.style.webkitMaskImage='none';
+        mask.style.transform='none';fish.style.transform=`translate3d(0,${-height*.012*portal}px,0)`;
+      }else{
       mask.style.maskSize=mask.style.webkitMaskSize=`${mw*portalScale}px ${mh*portalScale}px`;
       mask.style.maskPosition=mask.style.webkitMaskPosition=`${frame.x*portalScale-(portalScale-1)*frame.focalX}px ${frame.y*portalScale-(portalScale-1)*frame.focalY-(isTabletPortrait()?Math.min(32,height*.02)*(1-portal):0)}px`;
       mask.style.transform='none';fish.style.transform=`translate3d(0,${-height*.012*portal}px,0)`;
       if(p>.2){mask.style.maskImage='none';mask.style.webkitMaskImage='none';}
       else {mask.style.maskImage=master.mask;mask.style.webkitMaskImage=master.mask;}
+      }
 
       const imageStarts=[.105,.135,.165,.195];
       intermediateImages.forEach((img,index)=>{
@@ -368,6 +428,7 @@ slots.forEach((slot, i) => {
     measure();ScrollTrigger.refresh();
     return()=>{
       animation.scrollTrigger?.kill();animation.kill();resize.disconnect();
+      aperture.remove();maskedCover.style.removeProperty('display');cover.style.removeProperty('display');cover.style.removeProperty('visibility');
       host.removeAttribute('data-mobile-journey');hero.inert=false;workflow.inert=false;
       workflow.dispatchEvent(new Event('workflow:reset'));
       [hero,mask,fish,workflow,heading,...texts,...slots,...turns,...(mobileOverlay?[mobileOverlay]:[])].forEach(el=>{
@@ -380,6 +441,7 @@ slots.forEach((slot, i) => {
   });
     if (import.meta.hot) {
       import.meta.hot.dispose(() => {
+        disposed=true;clearTimeout(warmupTimer);clearTimeout(imageQueueTimer);imageQueue.length=0;
         media.revert();
         cover.remove();
         intermediateImages.forEach(image => image.remove());

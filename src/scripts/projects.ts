@@ -29,9 +29,11 @@ if(section){
       img.src=img.dataset.src!;
     });
   }
+  const panelSlides=new Map(panels.map(panel=>[panel,Array.from(panel.querySelectorAll<HTMLElement>('[data-slide]'))]));
   function hydratePanel(panel:HTMLElement){
-    panel.querySelectorAll<HTMLElement>('[data-slide]:not([hidden])').forEach(hydrateImages);
+    panelSlides.get(panel)?.forEach(slide=>{if(!slide.hidden)hydrateImages(slide);});
     if(checkedThumbs.has(panel))return;
+    if(getComputedStyle(panel).visibility==='hidden')return;
     panel.querySelectorAll<HTMLImageElement>('.project-thumbs img[data-src]:not([src])').forEach(img=>{
       if(img.getClientRects().length && getComputedStyle(img).visibility==='visible')img.src=img.dataset.src!;
     });
@@ -44,7 +46,17 @@ if(section){
       if(rect.bottom>0 && rect.top<innerHeight)hydratePanel(panel);
     });
   }
-  const imageObserver=new IntersectionObserver(hydrateStaticPanels);
+  const warmTabletImages=navigator.maxTouchPoints>0 && Math.min(innerWidth,innerHeight)>700;
+  const imageObserver=new IntersectionObserver(entries=>{
+    if(warmTabletImages)entries.forEach(entry=>{
+      if(!entry.isIntersecting)return;
+      const slide=entry.target.querySelector<HTMLElement>('[data-slide]:not([hidden])');
+      if(!slide)return;
+      hydrateImages(slide);
+      slide.querySelectorAll<HTMLImageElement>('img').forEach(img=>void img.decode().catch(()=>{}));
+    });
+    hydrateStaticPanels();
+  },{rootMargin:warmTabletImages?'100% 100%':'0px'});
   panels.forEach(panel=>imageObserver.observe(panel));
   let sidebarTravel=200;
   function closeMenu() {
@@ -177,6 +189,11 @@ if (brandsLayout) {
     const p=clamp(mobileState.p);
     const position=Math.min(3,p/.86*3);
     const active=Math.min(3,Math.floor(position));
+    panels.forEach((panel,i)=>{
+      const enter=i===0?1:ease(position-(i-1));
+      const compress=i===3?0:ease(position-i);
+      if(enter>0 && compress<1)hydratePanel(panel);
+    });
     current=active;section!.dataset.current=String(current);
     panels.forEach((panel,i)=>{
       const enter=i===0?1:ease(position-(i-1));
@@ -189,7 +206,7 @@ if (brandsLayout) {
       panel.style.width=landscape?extent:'100%';
       panel.style.setProperty('--compression',String(compress));
       panel.style.visibility=enter>0?'visible':'hidden';
-      if(enter>0 && compress<1)hydratePanel(panel);
+
       panel.toggleAttribute('data-compressed',compress>.99);
       const back=panel.querySelector<HTMLButtonElement>('[data-panel-back]');
       if(back){back.disabled=compress<=.99;back.tabIndex=compress>.99?0:-1;}

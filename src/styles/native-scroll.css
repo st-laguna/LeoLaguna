@@ -1,2 +1,7 @@
 /* Touch scrolling uses the document without chaining past its endpoints. */
 @media (pointer: coarse) { html { overscroll-behavior-y: none; overflow-anchor: none; } }
+
+/* Also applies when iPadOS advertises a trackpad/mixed pointer. */
+html[data-ipad] { overscroll-behavior-y:none; overflow-anchor:none; }
+/* Keep document height stable when Safari's toolbar returns near the footer. */
+html[data-ipad][data-tablet-portrait] .brands[data-mobile-streams] { min-height:100svh; }

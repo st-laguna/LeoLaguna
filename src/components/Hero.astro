@@ -58,19 +58,29 @@ const v = master(vertical, 'mask_vertical');
   const composition = hero.querySelector<HTMLElement>('.hero__composition')!;
   const masters = JSON.parse(hero.dataset.heroMasters!);
   const anchors = Array.from(hero.querySelectorAll<HTMLElement>('[data-hero-anchor]'));
-  function layout() {
-    const { width, height } = stage.getBoundingClientRect();
+  let lastWidth = 0, lastHeight = 0;
+  let lastTabletPortrait: boolean | undefined;
+  let lastPortrait: boolean | undefined;
+  function layout(width: number, height: number) {
     if (!width || !height) return;
+    const tabletPortrait = isTabletPortrait();
+    if (width === lastWidth && height === lastHeight && tabletPortrait === lastTabletPortrait) return;
+    lastWidth = width;
+    lastHeight = height;
+    lastTabletPortrait = tabletPortrait;
     const f = getHeroFrame(width, height);
-    const portraitOffset = isTabletPortrait() ? Math.min(32, height * .02) : 0;
+    const portraitOffset = tabletPortrait ? Math.min(32, height * .02) : 0;
     const m = f.portrait ? masters.v : masters.h;
-    hero.dataset.heroFrame = f.mode;
-    hero.style.setProperty('--hero-mask', m.mask);
+    if (hero.dataset.heroFrame !== f.mode) hero.dataset.heroFrame = f.mode;
     hero.style.setProperty('--hero-mask-size', `${f.masterWidth * f.scale}px ${f.masterHeight * f.scale}px`);
     hero.style.setProperty('--hero-mask-position', `${f.x}px ${f.y - portraitOffset}px`);
+    composition.style.transform = `translate(${f.x}px,${f.y - portraitOffset}px) scale(${f.scale})`;
+    // Authored anchors and the mask source only change with the artwork master.
+    if (lastPortrait === f.portrait) return;
+    lastPortrait = f.portrait;
+    hero.style.setProperty('--hero-mask', m.mask);
     composition.style.width = `${f.masterWidth}px`;
     composition.style.height = `${f.masterHeight}px`;
-    composition.style.transform = `translate(${f.x}px,${f.y - portraitOffset}px) scale(${f.scale})`;
     anchors.forEach(element => {
       const name = element.dataset.heroAnchor!;
       const id = f.portrait ? `anchor-${name === 'location' ? 'lima-peru' : name}_v` : `anchor-${name === 'hour' ? 'location' : name}_h`;
@@ -83,10 +93,24 @@ const v = master(vertical, 'mask_vertical');
       Object.assign(element.style, { left: `${a.x}px`, top: `${a.y}px`, width: `${a.w}px`, height: `${a.h}px`, transform: `rotate(${a.angle}deg)`, fontSize: `${name === 'capabilities' ? a.w / 13 : a.w / 11}px`, lineHeight: `${a.h}px` });
     });
   }
-  const observer = new ResizeObserver(layout);
-  observer.observe(stage);
-  layout();
-  if (import.meta.hot) import.meta.hot.dispose(() => observer.disconnect());
+  const measure = () => {
+    const { width, height } = stage.getBoundingClientRect();
+    layout(width, height);
+  };
+  const observer = new ResizeObserver(([entry]) => {
+    // Reuse the browser's completed layout instead of measuring after DOM writes.
+    const box = entry.borderBoxSize?.[0];
+    if (box) layout(box.inlineSize, box.blockSize);
+    else measure();
+  });
+  observer.observe(stage, { box: 'border-box' });
+  measure();
+  // Also covers a responsive attribute change without a stage-size change.
+  window.addEventListener('leo:orientation-ready', measure);
+  if (import.meta.hot) import.meta.hot.dispose(() => {
+    observer.disconnect();
+    window.removeEventListener('leo:orientation-ready', measure);
+  });
 </script>
 
 <style>

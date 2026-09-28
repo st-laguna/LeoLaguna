@@ -75,3 +75,21 @@
 @media (hover:hover) and (pointer:fine) {
   .home-journey[data-journey] .workflow__turn {transition:transform 650ms cubic-bezier(.22,1,.36,1);}
 }
+
+/* iPad only: explicit card height keeps percentage-sized faces inside the stage. */
+@media (min-width:1001px) and (orientation:landscape) {
+  html[data-ipad] .workflow .workflow__card {
+    height:min(46svh,420px);
+    max-height:46svh;
+    aspect-ratio:auto;
+  }
+}
+@media (prefers-reduced-motion:no-preference) {
+  html[data-ipad] .home-journey[data-journey] .workflow__turn {
+    transition:transform 650ms cubic-bezier(.22,1,.36,1);
+  }
+}
+/* Safari's toolbar must not resize the portrait animation stage on every scroll. */
+html[data-ipad][data-tablet-portrait] .home-journey[data-mobile-journey] .journey-stage {
+  height:100svh;
+}

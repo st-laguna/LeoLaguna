@@ -1,3 +1,4 @@
+import { createFooterRefraction } from './footer-refraction';
 import { glyphs } from './footer-glyphs';
 
 export const MARQUEE_VIEW = { height: 200, top: -32 };
@@ -11,48 +12,92 @@ export function initFooterMarquee(host: HTMLElement) {
   const abort = new AbortController();
   const signal = abort.signal;
 
-function updateGlassColors() {
-  const dark = document.documentElement.dataset.theme === 'dark';
-
-  const colors = dark
-    ? [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-    : [[0, 1, 1], [1, 0, 1], [1, 1, 0]];
-
-  host.querySelectorAll<SVGFilterElement>(
-    'filter[id^="footer-refraction-"]'
-  ).forEach(filter => {
-    ['r', 'g', 'b'].forEach((channel, index) => {
-      const [r, g, b] = colors[index];
-
-      filter.querySelector(`[result="${channel}"]`)?.setAttribute(
-        'values',
-        `0 0 0 ${r} 0
-         0 0 0 ${g} 0
-         0 0 0 ${b} 0
-         0 0 0 1 0`
-      );
-    });
-
-    filter.querySelectorAll('feBlend').forEach(blend => {
-      blend.setAttribute('mode', dark ? 'screen' : 'multiply');
-    });
-  });
-}
-
-const glassThemeObserver = new MutationObserver(updateGlassColors);
-
-glassThemeObserver.observe(document.documentElement, {
-  attributes: true,
-  attributeFilter: ['data-theme'],
-});
-
-updateGlassColors();
+  const ipad=document.documentElement.hasAttribute('data-ipad');
+  // Do not compile shaders or allocate footer textures during the iPad Hero intro.
+  let glass=ipad?null:createFooterRefraction(host);
+  let glassInitialized=!ipad;
+  const glassThemeObserver=new MutationObserver(()=>{resize();});
+  glassThemeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 
   const period = 1242.8 + FOOTER_MOTION.gap;
   let viewWidth = 1400, phase = -35, velocity = 1, active = -1, hovered = false;
   let visible = false, raf = 0, previous = 0, anchor = 0;
   const amounts = glyphs.map(() => 0);
   const copies: {group: SVGGElement; paths: SVGPathElement[]}[] = [];
+  const message=host.querySelector<HTMLElement>(':scope > .footer__mobile-message')!;
+  let htmlSource=false;
+  const mobileRows=Array.from(message.querySelectorAll<HTMLElement>('.footer__mobile-row')).map(row=>{
+    const moving=row.querySelector<HTMLElement>('.footer__mobile-track')!;
+    const spans=Array.from(moving.children) as HTMLElement[];
+    const bitmap=document.createElement('canvas');
+    // A zero-size inline box exposes the actual HTML baseline, including this font's metrics.
+    const baseline=document.createElement('span');
+    baseline.setAttribute('aria-hidden','true');
+    baseline.style.cssText='display:inline-block;width:0;height:0;vertical-align:baseline;';
+    spans[0].append(baseline);
+    return {row,moving,spans,bitmap,baseline,x:0,y:0,px:0,py:0,spanWidth:0,bitmapScale:1,bitmapBaseline:0,bitmapKey:''};
+  });
+  function translation(element:Element){
+    const transform=getComputedStyle(element).transform;
+    return new DOMMatrixReadOnly(transform==='none'?undefined:transform);
+  }
+  function measureMobile(){
+    const bounds=host.getBoundingClientRect();
+    mobileRows.forEach(item=>{
+      const style=getComputedStyle(item.moving), transform=translation(item.row);
+      item.x=item.row.getBoundingClientRect().left-bounds.left-transform.e;
+      item.y=item.baseline.getBoundingClientRect().top-bounds.top-transform.f;
+      item.spanWidth=item.spans[0].getBoundingClientRect().width;
+      const text=item.spans[0].textContent||'';
+      const bitmapKey=[item.spanWidth,style.fontSize,style.fontFamily,style.fontWeight,style.letterSpacing,text,devicePixelRatio].join('|');
+      if(bitmapKey===item.bitmapKey)return;
+      item.bitmapKey=bitmapKey;
+      const size=parseFloat(style.fontSize);
+      item.bitmapBaseline=size*1.3;
+      item.bitmapScale=Math.min(devicePixelRatio||1,1.5,2048/Math.max(1,item.spanWidth));
+      item.bitmap.width=Math.max(1,Math.ceil(item.spanWidth*item.bitmapScale));
+      item.bitmap.height=Math.max(1,Math.ceil(size*1.8*item.bitmapScale));
+      const ctx=item.bitmap.getContext('2d')!;
+      ctx.scale(item.bitmapScale,item.bitmapScale);
+      ctx.font=style.fontWeight+' '+style.fontSize+' '+style.fontFamily;
+      ctx.letterSpacing=style.letterSpacing;
+      ctx.fillStyle='#fff';
+      const measured=ctx.measureText(text).width;
+      ctx.save();ctx.scale(item.spanWidth/Math.max(1,measured),1);
+      ctx.fillText(text,0,item.bitmapBaseline);ctx.restore();
+    });
+  }
+  function drawMobile(){
+    if(!glass?.available)return;
+    // These six transform reads synchronize the existing CSS loop and GSAP entrance.
+    // Glyph bitmaps and all layout measurements are cached outside the frame loop.
+    for(const item of mobileRows){
+      const row=translation(item.row),moving=translation(item.moving);
+      item.px=item.x+row.e+moving.e;item.py=item.y+row.f+moving.f;
+    }
+    renderGlass();
+  }
+  let canvasPaths:Path2D[]=[], opticalScale=1;
+  function paintGlass(ctx:CanvasRenderingContext2D){
+    if(htmlSource){
+      for(const item of mobileRows)for(let i=0;i<item.spans.length;i++){
+        ctx.drawImage(item.bitmap,item.px+i*item.spanWidth,item.py-item.bitmapBaseline,
+          item.bitmap.width/item.bitmapScale,item.bitmap.height/item.bitmapScale);
+      }
+      return;
+    }
+    ctx.scale(opticalScale,opticalScale);ctx.translate(0,-MARQUEE_VIEW.top);
+    const total=amounts.reduce((a,b)=>a+b,0),cycle=period+total;
+    for(let k=0;k<copies.length;k++){
+      ctx.save();ctx.translate(phase+(k-1)*cycle-total/2,0);
+      let offset=0;
+      for(let i=0;i<canvasPaths.length;i++){
+        ctx.save();ctx.translate(offset+amounts[i]/2,0);ctx.fill(canvasPaths[i]);ctx.restore();offset+=amounts[i];
+      }
+      ctx.restore();
+    }
+  }
+  function renderGlass(){if(visible&&!document.hidden)glass?.render(paintGlass);}
   function pathData(index: number, amount: number) {
     const g = glyphs[index];
     if (g.id === 'N') {
@@ -70,6 +115,12 @@ updateGlassColors();
     }).join('');
   }
   function resize() {
+    if(ipad&&!visible)return;
+    if(!glassInitialized){glassInitialized=true;glass=createFooterRefraction(host);}
+    htmlSource=getComputedStyle(message).display!=='none';
+    opticalScale=host.clientHeight/MARQUEE_VIEW.height;
+    glass?.resize(htmlSource);
+    if(htmlSource){measureMobile();drawMobile();return;}
     const height=Math.max(1,host.clientHeight);
     viewWidth=host.clientWidth/height*MARQUEE_VIEW.height;
     svg.setAttribute('viewBox',`0 ${MARQUEE_VIEW.top} ${viewWidth} ${MARQUEE_VIEW.height}`);
@@ -86,11 +137,13 @@ updateGlassColors();
   }
   let shapeKey='';
   function draw() {
+    if(htmlSource){drawMobile();return;}
     const total=amounts.reduce((a,b)=>a+b,0), cycle=period+total;
 
     const key=amounts.map(a=>a.toFixed(3)).join(',')+':'+copies.length;
     const changed=key!==shapeKey;shapeKey=key;
     const paths=changed?glyphs.map((_,i)=>pathData(i,amounts[i])):[];
+    if(changed)canvasPaths=paths.map(d=>new Path2D(d));
     for(let k=0;k<copies.length;k++){
       copies[k].group.setAttribute('transform',`translate(${phase+(k-1)*cycle-total/2} 0)`);
       let offset=0;
@@ -101,9 +154,11 @@ updateGlassColors();
         offset+=a;
       });
     }
+    renderGlass();
   }
   function frame(now:number){
     raf=0;if(!visible||document.hidden||reduced.matches)return;
+    if(htmlSource){if(!glass?.available)return;drawMobile();raf=requestAnimationFrame(frame);return;}
     const dt=Math.min((now-(previous||now))/1000,.04);previous=now;
     const ease=1-Math.exp(-FOOTER_MOTION.response*dt);
     velocity+=((hovered?0:1)-velocity)*ease;
@@ -119,7 +174,7 @@ updateGlassColors();
   function start(){if(!raf&&visible&&!document.hidden&&!reduced.matches){previous=0;raf=requestAnimationFrame(frame);}}
   function stop(){cancelAnimationFrame(raf);raf=0;previous=0;}
   host.addEventListener('pointermove',event=>{
-    if(!fine.matches||reduced.matches)return;
+    if(htmlSource||!fine.matches||reduced.matches)return;
     hovered=true;
     // Bounding boxes include the inner voids (the O is interactive in its centre).
     if(active>=0){
@@ -135,8 +190,13 @@ updateGlassColors();
   host.addEventListener('focusout',()=>{hovered=false;active=-1;},{signal});
   reduced.addEventListener('change',()=>{stop();amounts.fill(0);active=-1;draw();start();},{signal});
   document.addEventListener('visibilitychange',()=>{stop();start();},{signal});
-  const resizeObserver=new ResizeObserver(resize);resizeObserver.observe(host);
-  const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)start();else stop();});observer.observe(host);
+
+  const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;host.toggleAttribute('data-optics-visible',visible);if(visible){if(ipad)resize();draw();start();}else stop();});observer.observe(host);
   resize();
-  return () => { stop(); abort.abort(); glassThemeObserver.disconnect(); resizeObserver.disconnect(); observer.disconnect(); track.replaceChildren(); };
+  return {resize,dispose:()=>{
+    stop();abort.abort();glassThemeObserver.disconnect();observer.disconnect();
+    host.removeAttribute('data-optics-visible');
+    track.replaceChildren();glass?.dispose();
+    mobileRows.forEach(item=>item.baseline.remove());
+  }};
 }
