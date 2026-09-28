@@ -149,6 +149,24 @@ const steps = [1, 2, 3, 4];
     transition: transform 350ms ease;
   }
 
+  @media (min-width: 1001px) and (orientation: landscape) {
+    :global(.home-journey[data-journey]) .workflow {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 35px;
+      padding-bottom: 35px;
+    }
+
+    .workflow__heading {
+      max-width: 720px;
+    }
+
+    .workflow__card {
+      aspect-ratio: .38 / 1;
+    }
+  }
+
   .workflow__card[data-dragging] {
     transition: none;
   }

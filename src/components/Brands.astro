@@ -19,7 +19,7 @@ const t = en as Record<string,string>;
           data-brand-preview={`/imgs/brands/previews/${brand.file}.webp`}
           aria-controls="brand-preview" aria-expanded="false"
           class="brands-cell"
-          style={`--brand-span:${brand.span};--brand-order:${brands.indexOf(brand)}`}
+          style={`--brand-span:${brand.span};--brand-order:${brands.indexOf(brand)};--brand-scale:${brand.scale ?? 1}`}
           data-brand-shape={['ISRA3','WEWHALE3','KA','WWF3','IMA3','EXO3','QW3','RH'].includes(brand.file) ? 'square' : 'wide'}
           data-brand-name={brand.name}
           aria-label={brand.name}
@@ -37,6 +37,43 @@ const t = en as Record<string,string>;
 
   <div id="brand-preview" class="brand-preview" hidden><figure><div class="brand-preview-image"></div><figcaption></figcaption></figure><button type="button" class="brand-preview-close" data-i18n="brands.close">{t['brands.close']}</button></div>
 </section>
+<style>
+  @media (min-width:1001px) {
+    :global(html:not([data-tablet-portrait])) .brands-layout {
+      max-width:2000px;
+      grid-template-columns:minmax(0,14fr) minmax(0,72fr) minmax(0,14fr);
+      gap:clamp(20px,1.3vw,30px);
+    }
+    :global(html:not([data-tablet-portrait])) .brands-grid {
+      grid-template-rows:repeat(4,clamp(125px,14svh,190px));
+    }
+    :global(html:not([data-tablet-portrait])) .brands-cell img {
+      transform:scale(var(--brand-scale,1));
+      transform-origin:center;
+    }
+    :global(html:not([data-tablet-portrait])) .brands-cell[data-brand-shape="square"] img {
+      max-width:clamp(80px,7.5vw,150px);
+      max-height:clamp(80px,7.5vw,150px);
+    }
+    :global(html:not([data-tablet-portrait])) .brands-stats {
+      justify-self:end;
+      align-self:center;
+      text-align:right;
+    }
+    :global(html:not([data-tablet-portrait])) .brands-stats dd {
+      font-size:clamp(48px,4vw,76px);
+    }
+    :global(html:not([data-tablet-portrait])) .brands-stats dt {
+      font-size:clamp(14px,1.1vw,20px);
+    }
+    :global(html:not([data-tablet-portrait])) .brands-statement {
+      grid-column:3;
+      justify-self:start;
+      align-self:center;
+      text-align:left;
+    }
+  }
+</style>
 <script>
   import '../scripts/brands';
 </script>
