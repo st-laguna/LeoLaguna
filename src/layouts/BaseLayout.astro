@@ -46,7 +46,14 @@ const {
           preload.imageSizes = '100vw';
           preload.href = `/imgs/hero/${name}-960.webp`;
         } else {
-          preload.href = `/imgs/hero/${portrait ? (dark ? '4H' : '3H') : (dark ? '2H' : '1H')}.webp`;
+          if (portrait) {
+            preload.href = `/imgs/hero/${dark ? '4H' : '3H'}.webp`;
+          } else {
+            const name = dark ? '2H' : '1H';
+            preload.imageSrcset = [960, 1440, 1920].map(width => `/imgs/hero/${name}-${width}.webp ${width}w`).join(', ');
+            preload.imageSizes = '100vw';
+            preload.href = `/imgs/hero/${name}-1920.webp`;
+          }
         }
         document.head.append(preload);
       })();

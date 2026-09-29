@@ -19,7 +19,7 @@
 .project-slide figcaption span {display:block;font-size:10px;line-height:1.3;margin-top:4px;}
 .project-thumbs {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(7px,1vw,16px);align-content:start;min-width:0;}
 .project-thumbs button {display:block;aspect-ratio:1;min-width:0;width:100%;padding:0;border:0;background:var(--surface);border-radius:6px;overflow:hidden;transition:translate 300ms ease;}
-.project-thumbs button[aria-pressed="true"] {outline:2px solid currentColor;outline-offset:3px;}
+.project-thumbs button[aria-selected="true"] {outline:2px solid currentColor;outline-offset:3px;}
 .project-thumbs button:hover:not(:disabled) {translate:0 -4px;}
 .project-thumbs img {display:block;width:100%;height:100%;object-fit:cover;}
 .project-mobile-controls {display:contents;}
@@ -29,7 +29,7 @@
 .project-thumbs button:disabled {cursor:default;border:1px dashed #8886;color:#888;}
 .project-mobile-copy {grid-column:1/-1;margin:15px 0 55px;}
 .project-mobile-copy>span {font-size:65px;font-weight:800;}
-.project-mobile-copy h3 {max-width:480px;margin:10px 0;font-size:32px;line-height:1.05;}
+.project-mobile-copy h2 {max-width:480px;margin:10px 0;font-size:32px;line-height:1.05;}
 .project-mobile-copy p {max-width:500px;font-size:13px;line-height:1.4;text-transform:uppercase;}
 .project-mobile-copy button {border:0;background:none;padding:16px 0;font-weight:700;}
 .projects-footer,.projects-progress {display:none;}
@@ -155,7 +155,7 @@
  .projects[data-mobile-stack] .project-panel{position:absolute;inset:0;display:grid;grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) 48px;grid-template-areas:'copy' 'media' 'controls';gap:10px;width:100%;height:100%;padding:18px 16px 14px;border:1px solid #8888;border-radius:18px;background:var(--background);overflow:hidden;will-change:top,height;transition:border-radius .35s cubic-bezier(.22,1,.36,1),padding .35s cubic-bezier(.22,1,.36,1);}
  .projects[data-mobile-stack] .project-mobile-copy{grid-area:copy;display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-items:start;column-gap:12px;margin:0;min-height:72px;}
  .projects[data-mobile-stack] .project-mobile-copy>span{grid-row:1/3;font-family:'Archivo',sans-serif;font-size:clamp(58px,19vw,82px);line-height:.78;letter-spacing:-.09em;}
- .projects[data-mobile-stack] .project-mobile-copy h3{margin:2px 0 4px;font-size:clamp(19px,5.8vw,28px);line-height:.94;}
+ .projects[data-mobile-stack] .project-mobile-copy h2{margin:2px 0 4px;font-size:clamp(19px,5.8vw,28px);line-height:.94;}
  .projects[data-mobile-stack] .project-mobile-copy p{grid-column:2;margin:0;font-size:8px;line-height:1.15;}
  .projects[data-mobile-stack] .project-media{grid-area:media;width:100%;height:100%;aspect-ratio:auto;border-radius:8px;touch-action:pan-y;}
  .projects[data-mobile-stack] .project-mobile-controls{grid-area:controls;display:flex;align-items:center;justify-content:center;gap:10px;min-width:0;}
@@ -170,7 +170,7 @@
  .projects[data-mobile-stack] .project-panel {padding-block:calc(18px - 10px * var(--compression,0));grid-template-rows:calc(66px - 24px * var(--compression,0)) minmax(0,1fr) calc(48px * (1 - var(--compression,0)));gap:calc(10px * (1 - var(--compression,0)));}
  .projects[data-mobile-stack] .project-mobile-copy {grid-template-columns:calc(76px - 10px * var(--compression,0)) minmax(0,1fr);grid-template-rows:auto auto;min-height:0;height:100%;align-items:center;align-content:center;}
  .projects[data-mobile-stack] .project-mobile-copy>span {font-size:calc(66px - 23px * var(--compression,0));line-height:1;align-self:stretch;display:flex;align-items:center;}
- .projects[data-mobile-stack] .project-mobile-copy h3 {font-size:calc(clamp(18px,5.1vw,26px) - 2px * var(--compression,0));line-height:1;margin:0 0 4px;align-self:end;}
+ .projects[data-mobile-stack] .project-mobile-copy h2 {font-size:calc(clamp(18px,5.1vw,26px) - 2px * var(--compression,0));line-height:1;margin:0 0 4px;align-self:end;}
  .projects[data-mobile-stack] .project-mobile-copy p {font-size:clamp(8px,2.1vw,10px);line-height:1.2;align-self:start;opacity:calc(1 - var(--compression,0));max-height:calc(48px * (1 - var(--compression,0)));overflow:hidden;}
  .projects[data-mobile-stack] .project-media,.projects[data-mobile-stack] .project-mobile-controls {opacity:calc(1 - var(--compression,0));min-height:0;}
  .projects[data-mobile-stack] .project-mobile-more {margin-left:auto;box-shadow:none;position:relative;}
@@ -187,12 +187,12 @@
  .projects[data-mobile-stack] .project-panel {padding:18px 14px;grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr);grid-template-rows:minmax(0,1fr) 38px;grid-template-areas:'copy media' 'copy controls';gap:10px;will-change:left,width;}
  .projects[data-mobile-stack] .project-mobile-copy {display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:8px;height:100%;overflow:hidden;}
  .projects[data-mobile-stack] .project-mobile-copy>span {flex:none;align-self:auto;display:block;font-size:clamp(38px,12svh,56px);line-height:1;letter-spacing:-.065em;}
- .projects[data-mobile-stack] .project-mobile-copy h3 {flex:none;align-self:auto;max-width:12ch;margin:0;font-size:clamp(19px,5.8svh,27px);line-height:1;opacity:calc(1 - var(--compression,0));}
+ .projects[data-mobile-stack] .project-mobile-copy h2 {flex:none;align-self:auto;max-width:12ch;margin:0;font-size:clamp(19px,5.8svh,27px);line-height:1;opacity:calc(1 - var(--compression,0));}
  .projects[data-mobile-stack] .project-mobile-copy p {flex:none;font-size:clamp(10px,2.7svh,12px);line-height:1.25;max-height:none;max-width:26ch;}
  .projects[data-mobile-stack] .project-panel[data-compressed] {padding:18px 4px;display:block;}
  .projects[data-mobile-stack] .project-panel[data-compressed] .project-mobile-copy {justify-content:flex-start;align-items:center;}
  .projects[data-mobile-stack] .project-panel[data-compressed] .project-mobile-copy>span {font-size:30px;}
- .projects[data-mobile-stack] .project-panel[data-compressed] :is(h3,p,.project-media,.project-mobile-controls) {display:none;}
+ .projects[data-mobile-stack] .project-panel[data-compressed] :is(h2,p,.project-media,.project-mobile-controls) {display:none;}
  .projects[data-mobile-stack] .project-mobile-more {width:36px;height:36px;flex-basis:36px;}
  .gallery-header {padding:16px 24px;flex-direction:row;align-items:center;}
 }
@@ -210,7 +210,7 @@
  .project-panel {display:flex;flex-direction:column;padding:20px;margin:0 0 24px;border:1px solid #8885;border-radius:18px;gap:18px;}
  .project-mobile-copy {order:-1;margin:0;}
  .project-mobile-copy>span {font-size:44px;}
- .project-mobile-copy h3 {font-size:26px;}
+ .project-mobile-copy h2 {font-size:26px;}
  .project-mobile-copy p {font-size:14px;}
  .project-media {width:100%;aspect-ratio:1;flex:none;}
  .project-mobile-controls {display:flex;align-items:center;gap:14px;width:100%;}

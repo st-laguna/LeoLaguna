@@ -106,6 +106,12 @@
   font-size: 15px;
   padding-right: 10px;
 }
+/* Expand social hit areas while preserving text position and flex spacing. */
+.footer__social > .hover-option {
+  min-width: 24px;
+  padding-block: 12px;
+  margin-block: -12px;
+}
 .footer__contact-info{display:none;}
 
 /* Hover por grupos */

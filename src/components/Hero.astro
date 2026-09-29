@@ -28,8 +28,8 @@ const v = master(vertical, 'mask_vertical');
 <section id="home" class="hero" data-hero-masters={JSON.stringify({ h, v })} data-phone-mask={v.mask} data-ipad-mask={v.mask} aria-label="Leo Laguna — presentación">
   <div class="hero__mask" aria-hidden="true">
     <div class="hero__parallax">
-      <picture data-hero-theme-image="light"><source media="(max-width:700px), (max-width:1000px) and (max-height:500px)" data-srcset="/imgs/hero/3H-480.webp 480w, /imgs/hero/3H-720.webp 720w, /imgs/hero/3H-960.webp 960w" sizes="100vw"/><source media="(orientation:portrait), (max-width:1000px)" data-srcset="/imgs/hero/3H.webp"/><img class="hero__image hero__image--light" data-src="/imgs/hero/1H.webp" alt="" decoding="async"/></picture>
-      <picture data-hero-theme-image="dark"><source media="(max-width:700px), (max-width:1000px) and (max-height:500px)" data-srcset="/imgs/hero/4H-480.webp 480w, /imgs/hero/4H-720.webp 720w, /imgs/hero/4H-960.webp 960w" sizes="100vw"/><source media="(orientation:portrait), (max-width:1000px)" data-srcset="/imgs/hero/4H.webp"/><img class="hero__image hero__image--dark" data-src="/imgs/hero/2H.webp" alt="" decoding="async"/></picture>
+      <picture data-hero-theme-image="light"><source media="(max-width:700px), (max-width:1000px) and (max-height:500px)" data-srcset="/imgs/hero/3H-480.webp 480w, /imgs/hero/3H-720.webp 720w, /imgs/hero/3H-960.webp 960w" sizes="100vw"/><source media="(orientation:portrait), (max-width:1000px)" data-srcset="/imgs/hero/3H.webp"/><source data-srcset="/imgs/hero/1H-960.webp 960w, /imgs/hero/1H-1440.webp 1440w, /imgs/hero/1H-1920.webp 1920w" sizes="100vw"/><img class="hero__image hero__image--light" data-src="/imgs/hero/1H.webp" alt="" decoding="async"/></picture>
+      <picture data-hero-theme-image="dark"><source media="(max-width:700px), (max-width:1000px) and (max-height:500px)" data-srcset="/imgs/hero/4H-480.webp 480w, /imgs/hero/4H-720.webp 720w, /imgs/hero/4H-960.webp 960w" sizes="100vw"/><source media="(orientation:portrait), (max-width:1000px)" data-srcset="/imgs/hero/4H.webp"/><source data-srcset="/imgs/hero/2H-960.webp 960w, /imgs/hero/2H-1440.webp 1440w, /imgs/hero/2H-1920.webp 1920w" sizes="100vw"/><img class="hero__image hero__image--dark" data-src="/imgs/hero/2H.webp" alt="" decoding="async"/></picture>
     </div>
   </div>
   <div class="hero__master hero__blend">
@@ -39,7 +39,7 @@ const v = master(vertical, 'mask_vertical');
         <img data-hero-anchor="laguna" src="/icons/laguna.svg" alt="" />
       </h1>
       <div class="hero__details" data-hero-part="subtitle">
-        <div data-hero-anchor="capabilities" class="hero__capabilities" aria-label="Scientific illustration, 3D visualization, visual communication">
+        <div data-hero-anchor="capabilities" class="hero__capabilities" role="group" aria-label="Scientific illustration, 3D visualization, visual communication">
           <div class="hero__reel" aria-hidden="true"><span>SCIENTIFIC ILLUSTRATION</span><span>3D VISUALIZATION</span><span>VISUAL COMMUNICATION</span><span>SCIENTIFIC ILLUSTRATION</span></div>
         </div>
         <div data-hero-anchor="location" class="hero__place">LIMA, PERU</div>

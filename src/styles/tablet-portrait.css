@@ -11,7 +11,7 @@ html[data-tablet-portrait] .home-journey[data-mobile-journey] .workflow__back {p
 
 html[data-tablet-portrait] .projects[data-mobile-stack] .projects-stage {height:100svh;min-height:100svh;padding:80px var(--page-gap) 24px;}
 html[data-tablet-portrait] .projects[data-mobile-stack] .project-panel {padding-inline:24px;grid-template-rows:calc(96px - 34px * var(--compression,0)) minmax(0,1fr) calc(48px * (1 - var(--compression,0)));}
-html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-copy h3 {font-size:calc(32px - 7px * var(--compression,0));}
+html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-copy h2 {font-size:calc(32px - 7px * var(--compression,0));}
 html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-copy p {font-size:13px;max-width:48ch;}
 html[data-tablet-portrait] .projects[data-mobile-stack] .project-thumbs {gap:10px;}
 html[data-tablet-portrait] .footer {padding:120px 0 40px;gap:60px;}

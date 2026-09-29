@@ -325,7 +325,7 @@ if (brandsLayout) {
         gsap.to(slide,{xPercent:-direction*100,duration:.55,ease:'power3.inOut',onComplete:()=>{slide.hidden=true;delete slide.dataset.leaving;}});
       }else slide.hidden=true;
     });
-    panel.querySelectorAll<HTMLElement>('[data-select]').forEach(button=>{const selected=Number(button.dataset.select)===index;button.setAttribute('aria-pressed',String(selected));button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1;});
+    panel.querySelectorAll<HTMLElement>('[data-select]').forEach(button=>{const selected=Number(button.dataset.select)===index;if(button.getAttribute('role')!=='tab')button.setAttribute('aria-pressed',String(selected));button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1;});
   }
   section.addEventListener('click',event=>{
     const button=(event.target as Element).closest<HTMLElement>('button');if(!button)return;
