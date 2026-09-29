@@ -59,7 +59,7 @@ const {
     // Evita restaurar una posición anterior al recargar el inicio.
     history.scrollRestoration = 'manual';
 
-    // Si el script principal falla o tarda demasiado, mostrar la página.
+    // Release the initial flag if the inline Hero presentation cannot start.
     setTimeout(() => {
       document.documentElement.removeAttribute('data-hero-intro');
       history.scrollRestoration = 'auto';
@@ -67,16 +67,7 @@ const {
   })();
 </script>
 
-<style is:global>
-  html[data-hero-intro] {
-    background: #000 !important;
-  }
 
-  html[data-hero-intro] body {
-    opacity: 0 !important;
-    pointer-events: none;
-  }
-</style>
 
   </head>
   <body>

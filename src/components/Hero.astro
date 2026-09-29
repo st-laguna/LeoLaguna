@@ -1,6 +1,8 @@
 ---
 import horizontal from '../../public/icons/logo_horizontal.svg?raw';
 import vertical from '../../public/icons/logo_vertical.svg?raw';
+import { getHeroFrame } from '../scripts/responsive-layout';
+import presentation from '../scripts/hero-presentation.js?raw';
 
 // Read authored metadata at build time only. The browser receives numeric anchors.
 function master(source: string, maskId: string) {
@@ -50,71 +52,16 @@ const v = master(vertical, 'mask_vertical');
 <script is:inline>
 (()=>{const r=document.documentElement,h=document.getElementById('home');if(!h||h.dataset.themeImagesInit)return;h.dataset.themeImagesInit='1';const l=h.querySelector('[data-hero-theme-image="light"]'),d=h.querySelector('[data-hero-theme-image="dark"]'),di=h.querySelector('.hero__image--dark'),t=document.querySelector('[data-theme-toggle]');function load(p,priority='auto'){if(!p)return Promise.resolve();const s=p.querySelector('source'),i=p.querySelector('img');if(!i)return Promise.resolve();if(!p.dataset.loaded){p.dataset.loaded='1';i.fetchPriority=priority;i.loading='eager';if(s?.dataset.srcset)s.srcset=s.dataset.srcset;if(i.dataset.src)i.src=i.dataset.src}if(i.complete&&i.naturalWidth)return Promise.resolve();return i.decode?.().catch(()=>{})??Promise.resolve()}const current=()=>r.dataset.theme==='dark'?d:l,other=()=>r.dataset.theme==='dark'?l:d;load(current(),'high');const warm=()=>load(other());t?.addEventListener('pointerenter',warm,{once:true,passive:true});t?.addEventListener('pointerdown',warm,{once:true,passive:true});t?.addEventListener('focus',warm,{once:true});let id=0;new MutationObserver(async()=>{const n=++id,goDark=r.dataset.theme==='dark';di.style.clipPath=goDark?'inset(100% 0 0)':'inset(0)';await load(current(),'high');if(n!==id)return;void di.offsetWidth;requestAnimationFrame(()=>di.style.removeProperty('clip-path'))}).observe(r,{attributes:true,attributeFilter:['data-theme']})})();
 </script>
-<script>
-
-  import { getHeroFrame, isTabletPortrait } from '../scripts/responsive-layout';
-  const hero = document.querySelector<HTMLElement>('.hero')!;
-  const stage = hero.closest('.journey-stage') || hero;
-  const composition = hero.querySelector<HTMLElement>('.hero__composition')!;
-  const masters = JSON.parse(hero.dataset.heroMasters!);
-  const anchors = Array.from(hero.querySelectorAll<HTMLElement>('[data-hero-anchor]'));
-  let lastWidth = 0, lastHeight = 0;
-  let lastTabletPortrait: boolean | undefined;
-  let lastPortrait: boolean | undefined;
-  function layout(width: number, height: number) {
-    if (!width || !height) return;
-    const tabletPortrait = isTabletPortrait();
-    if (width === lastWidth && height === lastHeight && tabletPortrait === lastTabletPortrait) return;
-    lastWidth = width;
-    lastHeight = height;
-    lastTabletPortrait = tabletPortrait;
-    const f = getHeroFrame(width, height);
-    const portraitOffset = tabletPortrait ? Math.min(32, height * .02) : 0;
-    const m = f.portrait ? masters.v : masters.h;
-    if (hero.dataset.heroFrame !== f.mode) hero.dataset.heroFrame = f.mode;
-    hero.style.setProperty('--hero-mask-size', `${f.masterWidth * f.scale}px ${f.masterHeight * f.scale}px`);
-    hero.style.setProperty('--hero-mask-position', `${f.x}px ${f.y - portraitOffset}px`);
-    composition.style.transform = `translate(${f.x}px,${f.y - portraitOffset}px) scale(${f.scale})`;
-    // Authored anchors and the mask source only change with the artwork master.
-    if (lastPortrait === f.portrait) return;
-    lastPortrait = f.portrait;
-    hero.style.setProperty('--hero-mask', m.mask);
-    composition.style.width = `${f.masterWidth}px`;
-    composition.style.height = `${f.masterHeight}px`;
-    anchors.forEach(element => {
-      const name = element.dataset.heroAnchor!;
-      const id = f.portrait ? `anchor-${name === 'location' ? 'lima-peru' : name}_v` : `anchor-${name === 'hour' ? 'location' : name}_h`;
-      const a = { ...m.anchors[id] };
-      if (!f.portrait && (name === 'location' || name === 'hour')) {
-        a.h /= 2;
-        if (name === 'hour') a.y += a.h;
-      }
-      element.dataset.anchorId = id;
-      Object.assign(element.style, { left: `${a.x}px`, top: `${a.y}px`, width: `${a.w}px`, height: `${a.h}px`, transform: `rotate(${a.angle}deg)`, fontSize: `${name === 'capabilities' ? a.w / 13 : a.w / 11}px`, lineHeight: `${a.h}px` });
-    });
-  }
-  const measure = () => {
-    const { width, height } = stage.getBoundingClientRect();
-    layout(width, height);
-  };
-  const observer = new ResizeObserver(([entry]) => {
-    // Reuse the browser's completed layout instead of measuring after DOM writes.
-    const box = entry.borderBoxSize?.[0];
-    if (box) layout(box.inlineSize, box.blockSize);
-    else measure();
-  });
-  observer.observe(stage, { box: 'border-box' });
-  measure();
-  // Also covers a responsive attribute change without a stage-size change.
-  window.addEventListener('leo:orientation-ready', measure);
-  if (import.meta.hot) import.meta.hot.dispose(() => {
-    observer.disconnect();
-    window.removeEventListener('leo:orientation-ready', measure);
-  });
-</script>
+<script is:inline set:html={`${presentation}\ninitHeroPresentation(${getHeroFrame.toString()});`}></script>
 
 <style>
   .hero {--image-position:50% 50%;position:relative;isolation:isolate;width:100%;height:100dvh;overflow:hidden;background:var(--background);}
+  /* Geometry is committed synchronously before any artwork is exposed. */
+  .hero:not([data-hero-layout-ready]) :is(.hero__composition, .hero__mask) {visibility:hidden;}
+  :global(html[data-hero-intro]) .hero :is(.hero__mask, .hero__artwork),
+  .hero[data-hero-pending] :is(.hero__mask, .hero__artwork) {opacity:0;}
+  :global(html[data-hero-intro]) .hero__reel,
+  .hero[data-hero-pending] .hero__reel {animation-play-state:paused;}
   .hero__mask {position:absolute;inset:0;pointer-events:none;mask-image:var(--hero-mask);-webkit-mask-image:var(--hero-mask);mask-size:var(--hero-mask-size);-webkit-mask-size:var(--hero-mask-size);mask-position:var(--hero-mask-position);-webkit-mask-position:var(--hero-mask-position);mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat;mask-mode:alpha;}
   /* The static/reduced-motion Hero supersedes main.ts's legacy mask. Animated Journey retains ownership. */
   :global(.home-journey:not([data-journey]):not([data-mobile-journey])) .hero__mask {mask-image:var(--hero-mask)!important;-webkit-mask-image:var(--hero-mask)!important;mask-size:var(--hero-mask-size)!important;-webkit-mask-size:var(--hero-mask-size)!important;mask-position:var(--hero-mask-position)!important;-webkit-mask-position:var(--hero-mask-position)!important;}
