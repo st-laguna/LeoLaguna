@@ -27,6 +27,21 @@ const {
     <meta name="description" content={description} />
     <title>{title}</title>
     <PageNavigation />
+    <script is:inline>
+      (() => {
+        if (!['/', '/index.html'].includes(location.pathname)) return;
+        // PageNavigation has already restored the theme. Match Hero's picture
+        // selection so its later request reuses this one, without warming both themes.
+        const portrait = matchMedia('(orientation:portrait), (max-width:1000px)').matches;
+        const dark = document.documentElement.dataset.theme === 'dark';
+        const preload = document.createElement('link');
+        preload.rel = 'preload';
+        preload.as = 'image';
+        preload.fetchPriority = 'high';
+        preload.href = `/imgs/hero/${portrait ? (dark ? '4H' : '3H') : (dark ? '2H' : '1H')}.webp`;
+        document.head.append(preload);
+      })();
+    </script>
 
 <script is:inline>
   (() => {
