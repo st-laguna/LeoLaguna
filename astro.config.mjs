@@ -2,6 +2,9 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   output: 'static',
+  build: {
+    inlineStylesheets: 'always',
+  },
   vite: {
     // Builds must not invalidate the running dev server's optimized 3D modules.
     cacheDir: process.argv.includes('build') ? 'node_modules/.vite-build' : 'node_modules/.vite-dev',
