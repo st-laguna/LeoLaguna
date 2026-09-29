@@ -4,6 +4,8 @@ function initHeroPresentation(getHeroFrame) {
   const isTabletPortrait = () => document.documentElement.hasAttribute('data-tablet-portrait');
   const hero = document.querySelector('.hero');
   const stage = hero.closest('.journey-stage') || hero;
+  const journey = hero.closest('.home-journey');
+  const journeyReady = () => !journey || journey.hasAttribute('data-journey') || journey.hasAttribute('data-mobile-journey');
   const composition = hero.querySelector('.hero__composition');
   const masters = JSON.parse(hero.dataset.heroMasters);
   const anchors = Array.from(hero.querySelectorAll('[data-hero-anchor]'));
@@ -44,10 +46,12 @@ function initHeroPresentation(getHeroFrame) {
     hero.setAttribute('data-hero-layout-ready', '');
   }
   const measure = () => {
-    const { width, height } = stage.getBoundingClientRect();
+    const { width, height } = (journeyReady() ? stage : hero).getBoundingClientRect();
     layout(width, height);
   };
   const observer = new ResizeObserver(([entry]) => {
+    // Before Journey initializes, the stage includes other content in normal flow.
+    if (!journeyReady()) { measure(); return; }
     // Reuse the browser's completed layout instead of measuring after DOM writes.
     const box = entry.borderBoxSize?.[0];
     if (box) layout(box.inlineSize, box.blockSize);
