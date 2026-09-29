@@ -62,15 +62,21 @@ function initHeroPresentation(getHeroFrame) {
   if (!root.hasAttribute('data-hero-intro')) return;
   // Consume initial entry before deferred navigation modules run; navigation is unchanged.
   hero.setAttribute('data-hero-pending', '');
+  hero.setAttribute('data-hero-artwork-pending', '');
+  hero.setAttribute('data-hero-media-pending', '');
   root.removeAttribute('data-hero-intro');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const events = new AbortController();
   const animations = [];
-  let timer, finished = false;
+  const timers = new Set();
+  let finished = false;
   function finish() {
     if (finished) return;
     finished = true;
-    clearTimeout(timer);
+    timers.forEach(timer => clearTimeout(timer));
+    timers.clear();
+    hero.removeAttribute('data-hero-artwork-pending');
+    hero.removeAttribute('data-hero-media-pending');
     hero.removeAttribute('data-hero-pending');
     history.scrollRestoration = 'auto';
     animations.forEach(animation => animation.cancel());
@@ -82,22 +88,34 @@ function initHeroPresentation(getHeroFrame) {
   window.addEventListener('pagehide', finish, options);
   if (reduced.matches || document.hidden) { finish(); return; }
   const activeImage = hero.querySelector(root.dataset.theme === 'dark' ? '.hero__image--dark' : '.hero__image--light');
-  const images = [activeImage, ...hero.querySelectorAll('.hero__artwork img')].filter(Boolean);
-  // Readiness gates only the media reveal, never the capability text.
-  const ready = Promise.allSettled(images.map(image => Promise.resolve().then(() => image.decode())));
-  const timeout = new Promise(resolve => { timer = setTimeout(resolve, 800); });
-  void Promise.race([ready, timeout]).then(async () => {
-    clearTimeout(timer);
-    if (finished) return;
+  const artworkImages = [...hero.querySelectorAll('.hero__artwork img')];
+  const artworkReady = Promise.allSettled(artworkImages.map(image => Promise.resolve().then(() => image.decode())));
+  const mediaReady = Promise.resolve().then(() => activeImage?.decode()).catch(() => {});
+  async function reveal(selector, pending, ready) {
+    let timer, animation;
     try {
-      for (const element of hero.querySelectorAll('.hero__mask, .hero__artwork')) {
-        animations.push(element.animate([{ opacity: 0 }, { opacity: 1 }], {
-          duration: 700, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both',
-        }));
-      }
-      await Promise.allSettled(animations.map(animation => animation.finished));
+      const timeout = new Promise(resolve => { timer = setTimeout(resolve, 800); });
+      timers.add(timer);
+      await Promise.race([ready, timeout]);
+      clearTimeout(timer);
+      timers.delete(timer);
+      if (finished) return;
+      const element = hero.querySelector(selector);
+      if (!element) return;
+      animation = element.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 700, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both',
+      });
+      animations.push(animation);
+      await animation.finished;
     } finally {
-      finish();
+      clearTimeout(timer);
+      timers.delete(timer);
+      hero.removeAttribute(pending);
+      animation?.cancel();
     }
-  }).catch(finish);
+  }
+  void Promise.allSettled([
+    reveal('.hero__artwork', 'data-hero-artwork-pending', artworkReady),
+    reveal('.hero__mask', 'data-hero-media-pending', mediaReady),
+  ]).then(finish).catch(finish);
 }

@@ -59,7 +59,8 @@ const v = master(vertical, 'mask_vertical');
   /* Geometry is committed synchronously before any artwork is exposed. */
   .hero:not([data-hero-layout-ready]) :is(.hero__composition, .hero__mask) {visibility:hidden;}
   :global(html[data-hero-intro]) .hero :is(.hero__mask, .hero__artwork),
-  .hero[data-hero-pending] :is(.hero__mask, .hero__artwork) {opacity:0;}
+  .hero[data-hero-artwork-pending] .hero__artwork,
+  .hero[data-hero-media-pending] .hero__mask {opacity:0;}
   :global(html[data-hero-intro]) .hero__reel,
   .hero[data-hero-pending] .hero__reel {animation-play-state:paused;}
   .hero__mask {position:absolute;inset:0;pointer-events:none;mask-image:var(--hero-mask);-webkit-mask-image:var(--hero-mask);mask-size:var(--hero-mask-size);-webkit-mask-size:var(--hero-mask-size);mask-position:var(--hero-mask-position);-webkit-mask-position:var(--hero-mask-position);mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat;mask-mode:alpha;}
