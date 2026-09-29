@@ -41,7 +41,10 @@ const t = en as Record<string,string>;
                 <div class="project-thumbs" role="tablist" aria-label={`Gallery ${project.id}`}>
                   {project.assets.map((asset,j) => (
                     <button type="button" role="tab" data-select={j} data-index={j} aria-selected={j===0} aria-pressed={j===0} tabindex={j===0 ? 0 : -1} aria-label={`${project.id} — ${asset.client || j+1}`}>
-                      <img data-src={asset.kind === 'video' ? asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp') : asset.src} alt="" loading="lazy" decoding="async" />
+                      {/* Beyond these desktop limits, controls only appear as image-free mobile dots. */}
+                      {j < (asset.kind === 'video' ? 8 : 9) && (
+                        <img data-src={asset.kind === 'video' ? asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp') : asset.src} alt="" loading="lazy" decoding="async" />
+                      )}
                     </button>
                   ))}
                 </div>

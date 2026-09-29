@@ -16,6 +16,19 @@ export function initBrandPreview(section:HTMLElement){
   let targetX = 0, targetY = 0, x = 0, y = 0;
   let pointerX = 0, pointerY = 0, hasPointer = false;
   let hoverFrame = 0;
+  let width = 0, height = 0;
+  function measurePreview() {
+    width=preview.offsetWidth;
+    height=preview.offsetHeight;
+  }
+  // Transforms do not change these dimensions. Remeasure only real size changes.
+  const sizeObserver = new ResizeObserver(()=>{
+    if(preview.hidden)return;
+    const previousWidth=width, previousHeight=height;
+    measurePreview();
+    if(width!==previousWidth || height!==previousHeight)position(touch);
+  });
+  sizeObserver.observe(preview);
   function load(src:string) {
     if(!cache.has(src)) {
       cache.set(src,new Promise(resolve=>{
@@ -39,8 +52,6 @@ export function initBrandPreview(section:HTMLElement){
   }
 
   function position(immediate=false) {
-    const width=preview.offsetWidth;
-    const height=preview.offsetHeight;
     if(touch) {
       const bounds=active!.getBoundingClientRect();
       const gap=12, edge=16;
@@ -67,6 +78,7 @@ export function initBrandPreview(section:HTMLElement){
   }
 
   function hide() {
+    if(!active && preview.hidden)return;
     request++;
     active?.setAttribute('aria-expanded','false');
     active=null;
@@ -88,6 +100,7 @@ export function initBrandPreview(section:HTMLElement){
     preview.hidden=false;
     if(!reduced.matches)preview.querySelector('figure')?.animate([{clipPath:'inset(100% 0 0)'},{clipPath:'inset(0% 0 0)'}],{duration:450,easing:'cubic-bezier(.76,0,.24,1)'});
     button.setAttribute('aria-expanded','true');
+    measurePreview();
     position(true);
   }
 
@@ -149,5 +162,5 @@ export function initBrandPreview(section:HTMLElement){
   window.addEventListener('scroll',scheduleHover,{passive:true,signal:events.signal});
   window.addEventListener('resize',hide,options);
   window.addEventListener('blur',hide,options);
-  return()=>{hide();cancelAnimationFrame(hoverFrame);events.abort();cache.clear();};
+  return()=>{hide();cancelAnimationFrame(hoverFrame);events.abort();sizeObserver.disconnect();cache.clear();};
 }

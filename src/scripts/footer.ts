@@ -85,6 +85,11 @@ const navItems = Array.from(
 );
 
 function setFooterNavigation(active: boolean) {
+  // Reduced motion only needs the final layout, not FLIP geometry.
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    root.classList.toggle('footer-active', active);
+    return;
+  }
   const previousPositions = navItems.map(
     item => item.getBoundingClientRect()
   );
@@ -94,10 +99,6 @@ function setFooterNavigation(active: boolean) {
   const nextPositions = navItems.map(
     item => item.getBoundingClientRect()
   );
-
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return;
-  }
 
   navItems.forEach((item, index) => {
     const previous = previousPositions[index];
@@ -192,6 +193,8 @@ function setFooterNavigation(active: boolean) {
     const viewportTop=viewport?.offsetTop ?? 0;
     const scroller=document.scrollingElement || document.documentElement;
     const remaining=Math.max(0,scroller.scrollHeight-scroller.clientHeight-scroller.scrollTop);
+    // Read before reveal() changes attributes and starts entrance animations.
+    const rect=footer!.getBoundingClientRect();
 
       if (remaining <= 4) {
         const name = footer?.querySelector<HTMLElement>('.footer__name');
@@ -206,7 +209,6 @@ function setFooterNavigation(active: boolean) {
         }
       }
     
-    const rect=footer!.getBoundingClientRect();
     // A short footer can finish below the top edge when browser chrome retracts.
     const finalTop=viewportTop+Math.max(0,visibleHeight-rect.height);
     const inView=rect.top<viewportTop+visibleHeight && rect.bottom>viewportTop+100;
@@ -224,10 +226,10 @@ if (!active && wasActive) {
 
 wasActive = active;
 
-root.style.setProperty(
-  '--footer-header-y',
-  `${Math.max(16, rect.top + 24)}px`
-);
+const headerY = `${Math.max(16, rect.top + 24)}px`;
+if (root.style.getPropertyValue('--footer-header-y') !== headerY) {
+  root.style.setProperty('--footer-header-y', headerY);
+}
 
 if (active && nav && !root.classList.contains('projects-active')) {
   nav.inert = false;

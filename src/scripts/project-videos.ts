@@ -10,7 +10,9 @@ function updatePlayback() {
   videos.forEach(video => {
     const visible = (visibility.get(video) ?? 0) > 0.5;
     const allowed = !modal || modal.contains(video);
-    const shouldPlay = visible && allowed && !document.hidden;
+    // Keep the gallery's existing pause in force throughout its exit animation.
+    const closing = !!video.closest('[data-media-closing]');
+    const shouldPlay = visible && allowed && !closing && !document.hidden;
 
     if (shouldPlay) {
       video.muted = true;
@@ -44,7 +46,7 @@ const dialogs = new MutationObserver(updatePlayback);
 document.querySelectorAll('dialog').forEach(dialog => {
   dialogs.observe(dialog, {
     attributes: true,
-    attributeFilter: ['open'],
+    attributeFilter: ['open', 'data-media-closing'],
   });
 });
 

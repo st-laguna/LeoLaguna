@@ -152,7 +152,7 @@ export function createFooterRefraction(host: HTMLElement) {
     for(let side=0;side<2;side++){
       gl!.viewport(side?canvas.width-bw:0,0,bw,canvas.height);gl!.uniform1f(uniforms.side,side);gl!.drawArrays(gl!.TRIANGLE_STRIP,0,4);
     }
-    host.setAttribute('data-glass-gpu','');
+    if(!host.hasAttribute('data-glass-gpu'))host.setAttribute('data-glass-gpu','');
   }
   return {get available(){return !lost;},resize,render,dispose(){events.abort();host.removeAttribute('data-glass-gpu');release();gl.getExtension('WEBGL_lose_context')?.loseContext();canvas.width=canvas.height=input.width=input.height=1;canvas.replaceWith(canvas.cloneNode(false));}};
 }

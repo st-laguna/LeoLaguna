@@ -100,6 +100,7 @@ if(root){
     [mask,...texts,heading,track,...slots].forEach(el=>el.style.clipPath='none');
     let active=true;
     let width=0,height=0,target={x:0,y:0,w:0,h:0},offsets:number[]=[];
+    let frame:ReturnType<typeof getHeroFrame>;
     const state={p:0};
     // Keep the original 320svh entrance; the remaining 120svh is exploration.
     const returnFloor={p:0};
@@ -108,20 +109,18 @@ if(root){
       if(!active)return;
       const stage=host.querySelector<HTMLElement>('.journey-stage')!.getBoundingClientRect();
       width=stage.width;height=stage.height;
-      const frame=getHeroFrame(width,height);
+      frame=getHeroFrame(width,height);
       const master=frame.portrait?masters.v:masters.h;
+      // Read layout before updating SVG attributes. Slot offsets exclude transforms.
+      const image=slots[0].querySelector<HTMLImageElement>('.workflow__front img')!;
+      target={x:slots[0].offsetLeft,y:slots[0].offsetTop,w:image.offsetWidth,h:image.offsetHeight};
+      offsets=slots.map(slot=>slot.offsetLeft-target.x);
       cover.setAttribute('viewBox',`0 0 ${width} ${height}`);
       cover.querySelector('mask')!.setAttribute('width',String(width));
       cover.querySelector('mask')!.setAttribute('height',String(height));
       aperturePoints=master.polygons.map((points:number[][])=>points.map(([x,y])=>[frame.x+x*frame.scale,frame.y+y*frame.scale]));
       polygons.forEach((polygon,i)=>polygon.setAttribute('points',aperturePoints[i].map(point=>point.join(',')).join(' ')));
       lastAperture='';
-      // offsetLeft/Top no incluyen las animaciones aplicadas a cada slot.
-      const image=slots[0].querySelector<HTMLImageElement>('.workflow__front img')!;
-      target={x:grid.offsetLeft+slots[0].offsetLeft,y:grid.offsetTop+slots[0].offsetTop,w:image.offsetWidth,h:image.offsetHeight};
-      // Los slots tienen como offsetParent workflow (el grid no tiene position).
-      target.x=slots[0].offsetLeft;target.y=slots[0].offsetTop;
-      offsets=slots.map(slot=>slot.offsetLeft-slots[0].offsetLeft);
       render();
     }
 
@@ -166,7 +165,6 @@ if(root){
       const zoom=ease((p-.08)/.34);
       const scale=1+zoom*13;
       // Punto dentro del brazo izquierdo. Al atravesarlo, el vacío sale del encuadre.
-      const frame=getHeroFrame(width,height);
       const px=zoom*(width*.5-frame.focalX)-(scale-1)*frame.focalX;
       const py=zoom*(height*.5-frame.focalY)-(scale-1)*frame.focalY;
       // El SVG conserva un buffer del tamaño de la pantalla: solo cambian sus vectores.
@@ -178,7 +176,10 @@ if(root){
           const holes=aperturePoints.map(points=>'M'+points.map(([x,y])=>`${(x*scale+tx).toFixed(2)},${(y*scale+ty).toFixed(2)}`).join('L')+'Z').join('');
           aperture.setAttribute('d',`M0,0H${width}V${height}H0Z`+holes);
         }
-      }else cutout.setAttribute('transform',`translate(${px} ${py}) scale(${scale})`);
+      }else {
+        const transform=`translate(${px} ${py}) scale(${scale})`;
+        if(cutout.getAttribute('transform')!==transform)cutout.setAttribute('transform',transform);
+      }
       cover.style.visibility=p<.42?'visible':'hidden';
       mask.style.maskImage='none';
       mask.style.webkitMaskImage='none';
@@ -328,6 +329,8 @@ slots.forEach((slot, i) => {
     const cards=slots.map(slot=>slot.querySelector<HTMLButtonElement>('.workflow__card')!);
     const state={p:0};
     let width=0,height=0,target={x:0,y:0,w:0,h:0};
+    let frame:ReturnType<typeof getHeroFrame>;
+    let lastPortal:number|undefined;
     const cardsStart=.29,cardsEnd=.97,overlap=1.12;
     const span=(cardsEnd-cardsStart)/slots.length;
     const clamp=(v:number)=>Math.max(0,Math.min(1,v));
@@ -335,9 +338,11 @@ slots.forEach((slot, i) => {
 
     function measure(){
       const rect=stage.getBoundingClientRect();width=rect.width;height=rect.height;
-      if(tablet)cover.setAttribute('viewBox',`0 0 ${width} ${height}`);
+      frame=getHeroFrame(width,height);
+      lastPortal=undefined; // A resize changes the path even at the same progress.
       const w=cards[0].offsetWidth,h=cards[0].offsetHeight;
       target={x:grid.offsetLeft+(grid.clientWidth-w)/2,y:grid.offsetTop+(grid.clientHeight-h)/2,w,h};
+      if(tablet)cover.setAttribute('viewBox',`0 0 ${width} ${height}`);
       render();
     }
 
@@ -362,11 +367,11 @@ slots.forEach((slot, i) => {
       }
       // Grow only the aperture; the illustration keeps its viewport dimensions.
       const portalScale=1+portal*18;
-      const frame=getHeroFrame(width,height);
       const master=frame.portrait?masters.v:masters.h;
       const mw=frame.masterWidth*frame.scale,mh=frame.masterHeight*frame.scale;
       if(tablet){
-        if(p<=.2){
+        if(p<=.2 && portal!==lastPortal){
+          lastPortal=portal;
           const tx=frame.x*portalScale-(portalScale-1)*frame.focalX;
           const ty=frame.y*portalScale-(portalScale-1)*frame.focalY-Math.min(32,height*.02)*(1-portal);
           const holes=master.polygons.map((points:number[][])=>'M'+points.map(([x,y])=>

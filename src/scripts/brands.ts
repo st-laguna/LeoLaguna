@@ -26,7 +26,11 @@ if(section){
       countObserver.unobserve(el);
       if(matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=String(goal);return;}
       const value={n:0};
-      countTweens.push(gsap.to(value,{n:goal,duration:1.5,ease:'power2.out',onUpdate:()=>{el.textContent=String(Math.round(value.n));}}));
+      let displayed=el.textContent;
+      countTweens.push(gsap.to(value,{n:goal,duration:1.5,ease:'power2.out',onUpdate:()=>{
+        const next=String(Math.round(value.n));
+        if(next!==displayed){el.textContent=next;displayed=next;}
+      }}));
     });
   },{threshold:.5});
   counters.forEach(el=>countObserver.observe(el));

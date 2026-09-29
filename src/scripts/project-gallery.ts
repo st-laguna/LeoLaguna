@@ -33,8 +33,14 @@ if(gallery&&lightbox&&section){
     }
   }
   function pause(root:Element){root.querySelectorAll('video').forEach(video=>video.pause());}
+  function disconnectItems(){
+    observer?.disconnect();observer=undefined;
+  }
+  function clearItemAnimations(){
+    gsap.killTweensOf(Array.from(g.querySelectorAll('[data-gallery] .gallery-item')).map(item=>item.firstElementChild));
+  }
   function animateItems(){
-    observer?.disconnect();
+    disconnectItems();
     const items=Array.from(g.querySelectorAll<HTMLElement>('[data-gallery]:not([hidden]) .gallery-item'));
     gsap.set(items.map(item=>item.firstElementChild),{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)'});
     if(reduced.matches)return;
@@ -52,6 +58,7 @@ if(gallery&&lightbox&&section){
       if(i===index)grid.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>img.src=img.dataset.src!);
     });
     gsap.set(shell,{yPercent:reduced.matches?0:100});
+    g.removeAttribute('data-media-closing');
     lock();g.showModal();scroller.scrollTop=0;
     window.scrollTo({top:scroll,behavior:'instant'});
     animateItems();
@@ -62,11 +69,11 @@ if(gallery&&lightbox&&section){
   }
   async function closeGallery(){
     if(galleryBusy||!g.open||l.open)return;
-    galleryBusy=true;pause(g);observer?.disconnect();
+    galleryBusy=true;g.setAttribute('data-media-closing','');pause(g);disconnectItems();
     await gsap.to(shell,{yPercent:reduced.matches?0:100,duration:reduced.matches?0:.65,ease:'power3.inOut'});
-    g.close();unlock();
+    g.close();clearItemAnimations();unlock();
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','false'));
-    galleryOpener?.focus({preventScroll:true});galleryBusy=false;
+    galleryOpener?.focus({preventScroll:true});galleryOpener=null;galleryBusy=false;
   }
   async function openImage(button:HTMLElement){
     if(lightboxBusy||l.open)return;lightboxBusy=true;lightboxOpener=button;
@@ -81,7 +88,7 @@ if(gallery&&lightbox&&section){
   async function closeImage(){
     if(lightboxBusy||!l.open)return;lightboxBusy=true;
     await gsap.to(figure,{clipPath:reduced.matches?'inset(0)':'inset(0 0 100%)',y:reduced.matches?0:-30,duration:reduced.matches?0:.45,ease:'power3.inOut'});
-    l.close();unlock();lightboxOpener?.focus({preventScroll:true});lightboxBusy=false;
+    l.close();unlock();lightboxOpener?.focus({preventScroll:true});lightboxOpener=null;lightboxBusy=false;
   }
   document.addEventListener('click',event=>{
     const button=(event.target as Element).closest<HTMLElement>('button');
@@ -95,7 +102,7 @@ if(gallery&&lightbox&&section){
   l.addEventListener('cancel',event=>{event.preventDefault();event.stopPropagation();void closeImage();},{signal:events.signal});
   l.addEventListener('click',event=>{if(event.target===l)void closeImage();},{signal:events.signal});
   if(import.meta.hot)import.meta.hot.dispose(()=>{
-    events.abort();observer?.disconnect();gsap.killTweensOf([shell,figure]);pause(g);
+    events.abort();disconnectItems();clearItemAnimations();gsap.killTweensOf([shell,figure]);pause(g);
     if(l.open)l.close();if(g.open)g.close();while(locks)unlock();
   });
 }

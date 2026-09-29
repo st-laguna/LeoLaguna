@@ -73,19 +73,24 @@ if(section){
     const height=main.clientHeight;
     const controls=document.querySelector<HTMLElement>('.site-controls');
     const rect=controls?.getBoundingClientRect();
-    const controlsVisible=!!rect && rect.height>0 && rect.top>=0 && rect.bottom-(parseFloat(getComputedStyle(stage).top)||0)<height*.25;
     const stageTop=parseFloat(getComputedStyle(stage).top)||0;
+    const controlsVisible=!!rect && rect.height>0 && rect.top>=0 && rect.bottom-stageTop<height*.25;
     const top=controlsVisible?rect!.top-stageTop:height*.018;
     const bottom=controlsVisible?rect!.bottom-stageTop:height*.045;
     const mediaTop=Math.max(68,Math.min(100,height*.059),bottom+24);
-    section!.style.setProperty('--project-top',`${mediaTop}px`);
-    panels.forEach((panel,i)=>{
+    const projectTop=`${mediaTop}px`;
+    if(section!.style.getPropertyValue('--project-top')!==projectTop) {
+      section!.style.setProperty('--project-top',projectTop);
+    }
+    // Media geometry depends on --project-top. Read all panels after that
+    // update, then write all guides without interleaving further layout reads.
+    const guideInset=parseFloat(getComputedStyle(section!).getPropertyValue('--project-guide-inset'));
+    const measurements=panels.map((panel,i)=>{
       const media=panel.querySelector<HTMLElement>('.project-media')!;
       const thumbs=panel.querySelector<HTMLElement>('.project-thumbs')!;
       const guide=guidePages[i];
       if(!guide)return;
       const gapAbove=(media.offsetTop-bottom)/2;
-      const guideInset=parseFloat(getComputedStyle(section!).getPropertyValue('--project-guide-inset'));
       const values={
         '--guide-x1':Number.isFinite(guideInset)?media.offsetLeft-guideInset:media.offsetLeft/2,
         '--guide-x2':(media.offsetLeft+media.offsetWidth+thumbs.offsetLeft)/2,
@@ -95,7 +100,15 @@ if(section){
         '--guide-y3':media.offsetTop+media.offsetHeight+gapAbove,
         '--guide-y4':height*.9556,
       };
-      Object.entries(values).forEach(([key,value])=>guide.style.setProperty(key,`${value}px`));
+      return {guide,values};
+    });
+    measurements.forEach(measurement=>{
+      if(!measurement)return;
+      const {guide,values}=measurement;
+      Object.entries(values).forEach(([key,value])=>{
+        const next=`${value}px`;
+        if(guide.style.getPropertyValue(key)!==next)guide.style.setProperty(key,next);
+      });
     });
   }
   const motion=matchMedia('(min-width:1001px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1101px) and (prefers-reduced-motion:no-preference)');
@@ -122,22 +135,34 @@ if(section){
   // Segundos virtuales: cada unidad equivale a una altura de pantalla de scroll.
   const stops = [.45, 2.25, 4.05, 5.95];
   const total = 7.5;
-  function pause(){section!.querySelectorAll('video').forEach(video=>video.pause());}
+  // Project videos are authored in the existing panels; switching Works does
+  // not add/remove them. Avoid querying the subtree and pausing idle videos
+  // at every active-panel boundary. Playback scheduling remains unchanged.
+  const projectVideos=Array.from(section.querySelectorAll<HTMLVideoElement>('video'));
+  function pause(){projectVideos.forEach(video=>{if(!video.paused)video.pause();});}
   function render(){
     if(frozen || !layoutMatchesViewport())return;
     [Math.floor(state.position),Math.ceil(state.position)].forEach(i=>{if(panels[i])hydratePanel(panels[i]);});
     const rounded=Math.max(0,Math.min(3,Math.round(state.position)));
     if(rounded!==current)pause();current=rounded;
-    section!.dataset.current=String(current);
+    if(section!.dataset.current!==String(current))section!.dataset.current=String(current);
     rail.style.transform=`translate3d(${-state.position*100}%,0,0)`;
     guidesRail.style.transform=rail.style.transform;
     digits.style.transform=`translateY(${-state.position*25}%)`;
     bar.style.transform=`scaleX(${state.position/3})`;
     copies.forEach((copy,i)=>{
       copy.style.transform=`translateY(${(i-state.position)*115}%)`;
-      copy.setAttribute('aria-hidden',String(i!==current));
+      const hidden=String(i!==current);
+      if(copy.getAttribute('aria-hidden')!==hidden)copy.setAttribute('aria-hidden',hidden);
     });
-    panels.forEach((panel,i)=>{panel.inert=i!==current;panel.setAttribute('aria-hidden',String(i!==current));});
+    // Read the live state so resize/reconfiguration and other handlers can
+    // still restore it; unchanged frames do not mutate panel attributes.
+    panels.forEach((panel,i)=>{
+      const inactive=i!==current;
+      if(panel.inert!==inactive)panel.inert=inactive;
+      const hidden=String(inactive);
+      if(panel.getAttribute('aria-hidden')!==hidden)panel.setAttribute('aria-hidden',hidden);
+    });
     const incoming=ease(entrance/.90);
     const outgoing=ease((state.exit-.3)/.7);
     // Marcas empieza a revelarse cuando la salida visual llega a la mitad.
@@ -147,16 +172,17 @@ if (brandsLayout) {
   brandsLayout.style.clipPath =
     `inset(${(1 - brandsReveal) * 100}% 0 0 0)`;
 
-  brandsLayout.inert = brandsReveal < .01;
+  if(brandsLayout.inert !== (brandsReveal < .01))brandsLayout.inert = brandsReveal < .01;
 }
     main.style.clipPath=`inset(${(1-incoming)*100}% 0% ${outgoing*100}% 0%)`;
     const sideIn=ease((entrance-.82)/.18);
     const sideOut=ease(state.exit/.3);
     sidebar.style.transform=`translateX(${-sidebarTravel*(1-sideIn+sideOut)}px)`;
-    sidebar.inert=sideIn<.95||sideOut>.05;
+    const sidebarInactive=sideIn<.95||sideOut>.05;
+    if(sidebar.inert!==sidebarInactive)sidebar.inert=sidebarInactive;
     if(menuToggle){
       menuToggle.style.transform=`${sidebar.style.transform} translateY(-50%)`;
-      menuToggle.disabled=sidebar.inert;
+      if(menuToggle.disabled!==sidebar.inert)menuToggle.disabled=sidebar.inert;
     }
     if(sidebar.inert && menu?.hasAttribute('data-open'))closeMenu();
     menuLinks.forEach((link,index)=>{
@@ -165,9 +191,13 @@ if (brandsLayout) {
       link.style.clipPath=`inset(0 ${100*(1-progress)}% 0 0)`;
     });
     const away = entrance > .12 && outgoing < .5;
-    document.documentElement.classList.toggle('projects-active',away);
-    if(nav)nav.inert=away;
-    stepButtons.forEach(button=>button.disabled=Number(button.dataset.step)<0?current===0:current===3);
+    const root=document.documentElement;
+    if(root.classList.contains('projects-active')!==away)root.classList.toggle('projects-active',away);
+    if(nav && nav.inert!==away)nav.inert=away;
+    stepButtons.forEach(button=>{
+      const disabled=Number(button.dataset.step)<0?current===0:current===3;
+      if(button.disabled!==disabled)button.disabled=disabled;
+    });
   }
   function disposeScroll(){
     mobileTweens.forEach(t=>{t.scrollTrigger?.kill();t.kill();});mobileTweens=[];

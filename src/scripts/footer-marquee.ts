@@ -68,7 +68,7 @@ export function initFooterMarquee(host: HTMLElement) {
     });
   }
   function drawMobile(){
-    if(!glass?.available)return;
+    if(!visible||document.hidden||!glass?.available)return;
     // These six transform reads synchronize the existing CSS loop and GSAP entrance.
     // Glyph bitmaps and all layout measurements are cached outside the frame loop.
     for(const item of mobileRows){
