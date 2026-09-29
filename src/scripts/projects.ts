@@ -369,7 +369,12 @@ if (brandsLayout) {
   motion.addEventListener('change',scheduleConfigure,{signal:events.signal});
   mobileMotion.addEventListener('change',scheduleConfigure,{signal:events.signal});
   tabletPortrait.addEventListener('change',scheduleConfigure,{signal:events.signal});
-  window.addEventListener('leo:orientation-ready',()=>{clearTimeout(configureTimer);configure();},{signal:events.signal});
+  window.addEventListener('leo:orientation-ready',()=>{
+    clearTimeout(configureTimer);
+    // Do not collapse/recreate the scroll runway for an unchanged iPad mode.
+    if(document.documentElement.hasAttribute('data-ipad') && layoutMatchesViewport())return;
+    configure();
+  },{signal:events.signal});
   const resizeObserver=new ResizeObserver(()=>{if(!layoutMatchesViewport())return;checkedThumbs.clear();hydrateStaticPanels();measureLayout();if((motion.matches && !isTabletPortrait()))render();else if((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))renderMobile();});
   resizeObserver.observe(stage);
   const controlsElement=document.querySelector<HTMLElement>('.site-controls');

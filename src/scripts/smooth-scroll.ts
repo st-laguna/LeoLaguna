@@ -19,21 +19,15 @@ if (ipad) {
   // ignoreMobileResize does not cover GSAP's mixed touch/mouse detection.
   // Toolbar-only height changes must not refresh and restore the scroll position.
   ScrollTrigger.config({ autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load' });
-  let width = innerWidth, height = innerHeight;
-  let portrait = matchMedia('(orientation:portrait)').matches;
   const refreshViewport = () => {
     clearTimeout(viewportRefresh);
     viewportRefresh = setTimeout(() => {
-      width = innerWidth; height = innerHeight;
-      portrait = matchMedia('(orientation:portrait)').matches;
       ScrollTrigger.refresh(true);
     }, 220);
   };
-  window.addEventListener('resize', () => {
-    if (innerWidth !== width || matchMedia('(orientation:portrait)').matches !== portrait ||
-        Math.abs(innerHeight - height) > height * .25) refreshViewport();
-  }, { passive: true, signal });
-  window.addEventListener('leo:orientation-ready', refreshViewport, { signal });
+  // The inline initializer emits this only after changing the stable layout
+  // height. Toolbar/keyboard/visualViewport changes never enter this path.
+  window.addEventListener('leo:ipad-viewport-ready', refreshViewport, { signal });
 } else {
   window.addEventListener('leo:orientation-ready', () => ScrollTrigger.refresh(), {signal});
 }

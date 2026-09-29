@@ -3,8 +3,42 @@
 
 /* Also applies when iPadOS advertises a trackpad/mixed pointer. */
 html[data-ipad] { overscroll-behavior-y:none; overflow-anchor:none; }
-/* Keep document height stable when Safari's toolbar returns near the footer. */
-html[data-ipad][data-tablet-portrait] .brands[data-mobile-streams] { min-height:100svh; }
+/* iPad scroll geometry uses the small viewport captured before first paint.
+   responsive-init updates it for a changed window width, never browser chrome.
+   Keep the authored scroll distances; do not compensate with scrollTo(). */
+html[data-ipad] body .home-journey[data-journey] { height:calc(540 * var(--ipad-svh, 1svh)); }
+html[data-ipad] body .home-journey[data-mobile-journey] { height:calc(1050 * var(--ipad-svh, 1svh)); }
+html[data-ipad] body .home-journey:is([data-journey], [data-mobile-journey]) .journey-stage,
+html[data-ipad][data-tablet-portrait] body .home-journey[data-mobile-journey] .journey-stage {
+  height:calc(100 * var(--ipad-svh, 1svh));
+}
+html[data-ipad] body .projects[data-horizontal] { height:calc(750 * var(--ipad-svh, 1svh)); }
+html[data-ipad] body .projects[data-mobile-stack] {
+  height:calc(620 * var(--ipad-svh, 1svh));
+  margin-block:calc(8 * var(--ipad-svh, 1svh)) calc(12 * var(--ipad-svh, 1svh));
+}
+html[data-ipad] body .projects:is([data-horizontal], [data-mobile-stack]) .projects-stage {
+  height:calc(100 * var(--ipad-svh, 1svh));
+}
+html[data-ipad] body .projects[data-mobile-stack] .projects-stage {
+  min-height:calc(100 * var(--ipad-svh, 1svh));
+}
+html[data-ipad] .brands { min-height:calc(100 * var(--ipad-svh, 1svh)); }
+html[data-ipad][data-tablet-portrait] .brands[data-mobile-streams] {
+  min-height:calc(100 * var(--ipad-svh, 1svh));
+  margin-block:calc(10 * var(--ipad-svh, 1svh));
+}
+@media (prefers-reduced-motion:no-preference) {
+  html[data-ipad][data-tablet-portrait] .brands[data-mobile-streams] {
+    height:calc(100 * var(--ipad-svh, 1svh));
+  }
+}
+html[data-ipad] body .footer { height:calc(100 * var(--ipad-svh, 1svh)); }
+html[data-ipad] body .footer[data-compact-portrait] {
+  height:calc(100 * var(--ipad-svh, 1svh));
+  row-gap:calc(6 * var(--ipad-svh, 1svh));
+  padding-block:calc(12 * var(--ipad-svh, 1svh)) calc(6 * var(--ipad-svh, 1svh));
+}
 
 /* The browser handles touch inertia; there is no scroll-correction loop. */
 [data-scroll-stop] { position:absolute;left:50%;width:1px;height:1px;opacity:0;pointer-events:none; }
