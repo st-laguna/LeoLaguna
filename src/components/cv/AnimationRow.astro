@@ -26,7 +26,7 @@ const count = items.length;
               <h3 class="card-company">{item.company}</h3>
               <span class="card-dates" {...bilingual(item.dates)}>{item.dates}</span>
             </div>
-            <button class="card-toggle" type="button" aria-label="Expand / Ampliar">
+            <button class="card-toggle" type="button" aria-expanded="false" aria-label="Expand / Ampliar">
               <span class="plus-icon" aria-hidden="true"></span>
             </button>
           </div>
@@ -308,11 +308,15 @@ const count = items.length;
         const isOpen = card.classList.contains("expanded");
         
         // Cerramos todas las cartas
-        row.querySelectorAll(".animation-card").forEach((c) => c.classList.remove("expanded"));
+        row.querySelectorAll(".animation-card").forEach((c) => {
+          c.classList.remove("expanded");
+          c.querySelector(".card-toggle")?.setAttribute("aria-expanded", "false");
+        });
         
         // Abrimos la que recibió el clic
         if (!isOpen) {
           card.classList.add("expanded");
+          card.querySelector(".card-toggle")?.setAttribute("aria-expanded", "true");
         }
       }
     });

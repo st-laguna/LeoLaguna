@@ -14,7 +14,7 @@ const { company, dates, description, images = [], variant = "standard" }: Props 
 <div class="accordion-item">
   <span class="hover-dot" aria-hidden="true"></span>
 
-  <button class="accordion-header" type="button">
+  <button class="accordion-header" type="button" aria-expanded="false">
     <div class="accordion-title-block">
       <h3 class="company">{company}</h3>
       {variant === "standard" && <p class="description" {...bilingual(description)}>{description}</p>}
@@ -378,7 +378,7 @@ const { company, dates, description, images = [], variant = "standard" }: Props 
   document.querySelectorAll(".accordion-header").forEach((header) => {
     header.addEventListener("click", () => {
       const item = header.closest(".accordion-item");
-      item?.classList.toggle("open");
+      if (item) header.setAttribute("aria-expanded", String(item.classList.toggle("open")));
     });
   });
 
