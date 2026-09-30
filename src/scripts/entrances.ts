@@ -13,30 +13,6 @@ media.add({motion:'(prefers-reduced-motion: no-preference)',portal:'(min-width:1
     if(el.closest('.hero')||el.closest('.site-header'))gsap.to(el,{clipPath:'inset(0% 0% 0% 0%)',duration:1.1,delay:index*.06,ease:'power3.inOut'});
     else gsap.to(el,{clipPath:'inset(0% 0% 0% 0%)',duration:.85,ease:'power3.inOut',scrollTrigger:{trigger:el,start:'top 90%',once:true}});
   });
-  const brands=document.querySelector('.brands');
-if (brands) {
-  const content = brands.querySelectorAll('[data-reveal]');
-
-  gsap.fromTo(
-    content,
-    {
-      y: 28,
-      clipPath: 'inset(100% 0% 0% 0%)',
-    },
-    {
-      y: 0,
-      clipPath: 'inset(0% 0% 0% 0%)',
-      duration: 1,
-      stagger: 0.09,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: brands,
-        start: 'top 80%',
-        toggleActions: 'play none none reverse',
-      },
-    }
-  );
-}
   const focus=(event:FocusEvent)=>{
     const element=(event.target as HTMLElement)?.closest<HTMLElement>('[data-reveal]');
     if(element)reveal(element);

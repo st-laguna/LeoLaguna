@@ -23,6 +23,28 @@ if(section){
   const stepButtons=Array.from(section.querySelectorAll<HTMLButtonElement>('[data-step]'));
   // Sources follow the existing presentation state; CSS remains the authority for thumbnails.
   const checkedThumbs=new Set<HTMLElement>();
+  const slideReveals=new Map<HTMLElement,gsap.Context>();
+  const enteredSlides=new Set<HTMLElement>();
+  function revealSlide(slide:HTMLElement,direction=1,manual=false){
+    slideReveals.get(slide)?.revert();slideReveals.delete(slide);
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    const image=slide.querySelector<HTMLElement>('.project-enlarge img,video');
+    const compact=isTabletPortrait() || matchMedia('(any-pointer:coarse)').matches;
+    const duration=manual?.55:.7;
+    const context=gsap.context(()=>{
+      const reveal=gsap.timeline({onComplete:()=>{
+        slideReveals.get(slide)?.revert();slideReveals.delete(slide);
+      }});
+      if(manual)reveal.fromTo(slide,{xPercent:direction*100},{xPercent:0,duration,ease:'power3.inOut'},0);
+      if(image)reveal.fromTo(image,{xPercent:-direction*(compact?1.5:3),scale:compact?1.025:1.045},{xPercent:0,scale:1,duration,ease:'power3.out'},0);
+    });
+    slideReveals.set(slide,context);
+  }
+  function revealPanel(panel:HTMLElement){
+    const slide=panel.querySelector<HTMLElement>('[data-slide]:not([hidden])');
+    if(!slide || enteredSlides.has(slide))return;
+    enteredSlides.add(slide);revealSlide(slide);
+  }
   function hydrateImages(root:Element){
     root.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>{
       img.loading='eager';
@@ -43,7 +65,7 @@ if(section){
     if(section!.hasAttribute('data-horizontal') || section!.hasAttribute('data-mobile-stack'))return;
     panels.forEach(panel=>{
       const rect=panel.getBoundingClientRect();
-      if(rect.bottom>0 && rect.top<innerHeight)hydratePanel(panel);
+      if(rect.bottom>0 && rect.top<innerHeight){hydratePanel(panel);revealPanel(panel);}
     });
   }
   const warmTabletImages=navigator.maxTouchPoints>0 && Math.min(innerWidth,innerHeight)>700;
@@ -163,6 +185,7 @@ if(section){
       const hidden=String(inactive);
       if(panel.getAttribute('aria-hidden')!==hidden)panel.setAttribute('aria-hidden',hidden);
     });
+    if(entrance>.1 && state.exit<.3)revealPanel(panels[current]);
     const incoming=ease(entrance/.90);
     const outgoing=ease((state.exit-.3)/.7);
     // Marcas empieza a revelarse cuando la salida visual llega a la mitad.
@@ -200,6 +223,14 @@ if (brandsLayout) {
     });
   }
   function disposeScroll(){
+    slideReveals.forEach(context=>context.revert());slideReveals.clear();enteredSlides.clear();
+    panels.forEach(panel=>{
+      const selected=Number(panel.querySelector<HTMLElement>('[aria-selected="true"]')?.dataset.select || 0);
+      panelSlides.get(panel)?.forEach((slide,index)=>{
+        gsap.killTweensOf(slide);gsap.set(slide,{clearProps:'transform,clipPath'});
+        delete slide.dataset.leaving;slide.hidden=index!==selected;
+      });
+    });
     mobileTweens.forEach(t=>{t.scrollTrigger?.kill();t.kill();});mobileTweens=[];
     entry?.kill();entry=undefined;timeline?.scrollTrigger?.kill();timeline?.kill();timeline=undefined;
     mobileTimeline?.scrollTrigger?.kill();mobileTimeline?.kill();mobileTimeline=undefined;
@@ -224,6 +255,7 @@ if (brandsLayout) {
       const compress=i===3?0:ease(position-i);
       if(enter>0 && compress<1)hydratePanel(panel);
     });
+    if(mobileTimeline?.scrollTrigger?.isActive)revealPanel(panels[active]);
     current=active;section!.dataset.current=String(current);
     panels.forEach((panel,i)=>{
       const enter=i===0?1:ease(position-(i-1));
@@ -312,6 +344,7 @@ if (brandsLayout) {
     if(slides[index])hydrateImages(slides[index]);
     const direction=index>previous?1:-1;
     const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    slides.forEach(slide=>{slideReveals.get(slide)?.revert();slideReveals.delete(slide);});
     slides.forEach((slide,i)=>{
       gsap.killTweensOf(slide);delete slide.dataset.leaving;
       slide.querySelector('video')?.pause();
@@ -319,10 +352,10 @@ if (brandsLayout) {
       if(i===index){
         slide.hidden=false;
         if(reduced)gsap.set(slide,{xPercent:0});
-        else gsap.fromTo(slide,{xPercent:direction*100},{xPercent:0,duration:.55,ease:'power3.inOut'});
+        else {enteredSlides.add(slide);revealSlide(slide,direction,true);}
       }else if(i===previous&&!reduced){
         slide.dataset.leaving='true';
-        gsap.to(slide,{xPercent:-direction*100,duration:.55,ease:'power3.inOut',onComplete:()=>{slide.hidden=true;delete slide.dataset.leaving;}});
+        gsap.to(slide,{xPercent:-direction*100,duration:.55,ease:'power3.inOut',onComplete:()=>{slide.hidden=true;delete slide.dataset.leaving;gsap.set(slide,{clearProps:"transform,clipPath"});}});
       }else slide.hidden=true;
     });
     panel.querySelectorAll<HTMLElement>('[data-select]').forEach(button=>{const selected=Number(button.dataset.select)===index;if(button.getAttribute('role')!=='tab')button.setAttribute('aria-pressed',String(selected));button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1;});

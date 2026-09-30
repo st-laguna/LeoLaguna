@@ -276,6 +276,10 @@ slots.forEach((slot, i) => {
     }
     intermediateImages.forEach(image=>image.addEventListener('load',render));
     const animation=gsap.to(state,{p:1,ease:'none',scrollTrigger:{trigger:host,start:'top top',end:()=>`+=${host.querySelector<HTMLElement>('.journey-stage')!.offsetHeight*3.2}`,scrub:1,invalidateOnRefresh:true,onRefresh:measure},onUpdate:render});
+    // Separate from card turns/drag: only the heading and grid collect on exit.
+    const exit = gsap.timeline({scrollTrigger:{id:'workflow-exit',trigger:host,start:'bottom bottom',end:'bottom 35%',scrub:true,invalidateOnRefresh:true}})
+      .to(heading,{y:touchTablet?-22:-38,scale:.98,ease:'none'},0)
+      .to(grid,{y:touchTablet?-16:-28,scale:touchTablet?.98:.96,ease:'none'},0);
     const resize=new ResizeObserver(measure);resize.observe(host.querySelector('.journey-stage')!);
     const removeStops=registerScrollStops(host,()=>{
       const trigger=animation.scrollTrigger;
@@ -287,6 +291,7 @@ slots.forEach((slot, i) => {
     measure();ScrollTrigger.refresh();
     return()=>{
       active=false;
+      exit.scrollTrigger?.kill();exit.revert();
       removeStops();
       intermediateImages.forEach(image=>image.removeEventListener('load',render));
       returning?.kill();

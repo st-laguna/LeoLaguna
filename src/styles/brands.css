@@ -179,3 +179,7 @@ html body .brands .brands-info .brands-statement {display:block;align-self:start
 html[data-tablet-portrait] body .brands .brands-layout {grid-template-columns:minmax(0,1fr) minmax(0,2fr);column-gap:28px;}
 html[data-tablet-portrait] body .brands .brands-info {grid-column:1;padding:20px 0 28px 20px;}
 html[data-tablet-portrait] body .brands .brands-grid {grid-column:2;}
+
+/* Static mobile columns retain their cell sizes; overflow remains accessible. */
+html .brands[data-mobile-streams] .brands-grid {overflow-y:auto;overflow-x:hidden;}
+html .brands[data-mobile-streams] .brands-column {will-change:auto;}

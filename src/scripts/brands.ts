@@ -29,14 +29,17 @@ if(section){
     section.setAttribute('data-mobile-streams','');
     const cells=Array.from(section.querySelectorAll<HTMLButtonElement>('.brands-cell'));
     cells.forEach(cell=>{cell.disabled=true;});
-    const columns=Array.from(section.querySelectorAll<HTMLElement>('[data-brand-column]'));
-    const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
-    const clones=columns.flatMap(column=>Array.from(column.children).map(child=>{
-      const clone=child.cloneNode(true) as HTMLElement;clone.setAttribute('aria-hidden','true');clone.inert=true;clone.removeAttribute('data-reveal');column.append(clone);return clone;
-    }));
-    const tweens=reduced?[]:columns.map((column,index)=>gsap.fromTo(column,{yPercent:index===0?0:-50},{yPercent:index===0?-50:0,ease:'none',duration:28,repeat:-1}));
-    const observer=new IntersectionObserver(([entry])=>tweens.forEach(t=>t.paused(!entry.isIntersecting)));observer.observe(section);
-    return()=>{cells.forEach(cell=>{cell.disabled=false;});observer.disconnect();tweens.forEach(t=>t.kill());clones.forEach(c=>c.remove());columns.forEach(c=>c.style.removeProperty('transform'));section.removeAttribute('data-mobile-streams');};
+    return()=>{cells.forEach(cell=>{cell.disabled=false;});section.removeAttribute('data-mobile-streams');};
+    });
+    media.add('(prefers-reduced-motion:no-preference)',()=>{
+      const logos=Array.from(section!.querySelectorAll<HTMLElement>('.brands-cell img'));
+      const compact=tabletPortrait || matchMedia('(any-pointer:coarse)').matches;
+      // One finite stagger, replayed/reversed at the section boundary; no scrub.
+      gsap.fromTo(logos,{translate:compact?'0 12px':'0 22px',clipPath:'inset(100% 0 0)'},{
+        translate:'0 0',clipPath:'inset(0% 0 0)',duration:compact?.42:.6,
+        stagger:compact?.025:.045,ease:'power2.out',
+        scrollTrigger:{id:'brands-logos',trigger:section!.querySelector('.brands-layout')!,start:()=>matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches?'top 30%':section!.hasAttribute('data-mobile-streams')?'top 75%':'top 85%',toggleActions:'play none none reverse'},
+      });
     });
   }
   configureLayout();
