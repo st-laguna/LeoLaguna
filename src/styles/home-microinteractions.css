@@ -1,0 +1,17 @@
+[data-home-curtain] {display:none;}
+html[data-home-entry] [data-home-curtain] {display:block;position:fixed;inset:0;background:#000;z-index:2147483647;pointer-events:none;}
+.hover-arrow-motion {display:inline-block;}
+@media (hover:hover) and (pointer:fine) {
+  .arrow-hover:hover .hover-arrow-motion {animation:home-arrow-corner 1.1s cubic-bezier(.4,0,.2,1) infinite;}
+  .projects .projects-paging button {transition:background-color 160ms ease,color 160ms ease,border-color 160ms ease;}
+  .projects .projects-paging button:hover:not(:disabled) {background:var(--accent,#ff6b00);border-color:var(--accent,#ff6b00);color:#fff;}
+}
+@keyframes home-arrow-corner {
+  0%,100% {transform:translate(0,0);}
+  35%,60% {transform:translate(3px,-3px);}
+}
+@media(prefers-reduced-motion:reduce) {
+  html[data-home-entry] [data-home-curtain] {display:none;}
+  .arrow-hover:hover .hover-arrow-motion {animation:none;}
+  .projects .projects-paging button {transition:none;}
+}

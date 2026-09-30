@@ -4,12 +4,13 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 function restorePreferences() {
   try {
     const saved=localStorage.getItem('leo-theme');
-    root.dataset.theme = saved==='light'||saved==='dark'?saved:matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches?'dark':'light';
+    root.dataset.theme = saved==='light'||saved==='dark'?saved:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
     root.lang = localStorage.getItem('leo-language') === 'es' ? 'es' : 'en';
   } catch {
-    root.dataset.theme = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches?'dark':'light';
+    root.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
     root.lang = 'en';
   }
+  document.getElementById('site-favicon')?.setAttribute('href', `/favicon-${root.dataset.theme}.svg`);
 }
 restorePreferences();
 // Prepare only the destination document on explicit pointer/keyboard intent.

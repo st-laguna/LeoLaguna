@@ -2,12 +2,13 @@
 import responsiveInit from '../scripts/responsive-init.js?raw';
 import '../styles/native-scroll.css';
 import motion from '../scripts/transition-motion.js?raw';
+import homeEntrance from '../scripts/home-entrance.js?raw';
 import navigation from '../scripts/document-navigation.js?raw';
 import '../styles/page-navigation.css';
 // Run before the first render: a deferred module can miss pagereveal.
-const source = `(() => {\n${motion.replace(/^export /gm, '')}\n${navigation}\n})();`;
+const source = `(() => {\n${homeEntrance.replace(/^export /gm, '')}\n${motion.replace(/^import .*home-entrance.*;$/gm, '').replace(/^export /gm, '')}\n${navigation}\n})();`;
 ---
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" href="/favicon.ico" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link id="site-favicon" rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <script is:inline set:html={responsiveInit}></script>
 <script is:inline set:html={source}></script>

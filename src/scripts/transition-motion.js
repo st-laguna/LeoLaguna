@@ -1,3 +1,4 @@
+import { prepareHomeEntrance } from './home-entrance.js';
 // All timings are seconds. Insets are percentages of the viewport.
 export const SECTION_TRANSITION = {
   width: 80,
@@ -41,6 +42,7 @@ function entranceDelay(element) {
 
 
 export function prepareEntrances(section) {
+  if (section?.matches('.hero')) return prepareHomeEntrance(section, { delay: 950 });
   const restores = [];
   const animations = [];
   const scope = section ?? document.querySelector('.hero, #home');

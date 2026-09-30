@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+  <style>.logo {fill:#fff;}</style>
+
+  <g transform="translate(8.7 117.17)">
+    <polygon class="logo"
+      points="373.41 111.59 423.82 25.1 261.97 25.1 211.8 111.6 373.41 111.59 275.63 277.66 397.03 277.66 494.6 111.6 373.41 111.59"/>
+
+    <polygon class="logo"
+      points="94.96 0 0 163.05 121.26 163.05 216.19 0 94.96 0"/>
+
+    <polygon class="logo"
+      points="121.26 163.05 71.07 249.54 232.92 249.54 283.01 163.05 121.26 163.05"/>
+  </g>
+
+</svg>

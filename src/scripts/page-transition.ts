@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { prepareHomeEntrance } from './home-entrance.js';
 import { scrollPage, isScrollLocked, beginScrollTransition, endScrollTransition, commitScrollJump } from './smooth-scroll';
 
 import { SECTION_TRANSITION, smoothPulse, openingClip, prepareEntrances, snapshotFrames } from './transition-motion.js';
@@ -202,7 +203,14 @@ function transitionTo(changePosition: () => void, focus?: HTMLElement | null) {
       // Exact full coverage before changing scroll position; no intermediate
       // sections can flash through rounding gaps or a partly open mask.
       panel.style.clipPath = 'inset(0% 0% 0% 0%)';
-      try { commit(); }
+      try {
+        commit();
+        if (focus?.matches('.hero')) {
+          const entrance = prepareHomeEntrance(focus);
+          cleanupEntrance = entrance.clean;
+          entrance.play();
+        }
+      }
       catch (error) {
         console.error('Section transition failed:', error);
         timeline?.kill(); timeline = null; release();

@@ -17,23 +17,6 @@ if(section){
   const themeObserver=new MutationObserver(updateLogos);
   themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   updateLogos();
-  const counters=Array.from(section.querySelectorAll<HTMLElement>('[data-count-to]'));
-  const countTweens:gsap.core.Tween[]=[];
-  const countObserver=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(!entry.isIntersecting)return;
-      const el=entry.target as HTMLElement,goal=Number(el.dataset.countTo);
-      countObserver.unobserve(el);
-      if(matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=String(goal);return;}
-      const value={n:0};
-      let displayed=el.textContent;
-      countTweens.push(gsap.to(value,{n:goal,duration:1.5,ease:'power2.out',onUpdate:()=>{
-        const next=String(Math.round(value.n));
-        if(next!==displayed){el.textContent=next;displayed=next;}
-      }}));
-    });
-  },{threshold:.5});
-  counters.forEach(el=>countObserver.observe(el));
   let media: ReturnType<typeof gsap.matchMedia>;
   function configureLayout(){
     media?.revert();
@@ -59,5 +42,5 @@ if(section){
   configureLayout();
   const layoutObserver=new MutationObserver(configureLayout);
   layoutObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-tablet-portrait']});
-  if(import.meta.hot)import.meta.hot.dispose(()=>{layoutObserver.disconnect();media.revert();themeObserver.disconnect();countObserver.disconnect();countTweens.forEach(t=>t.kill());});
+  if(import.meta.hot)import.meta.hot.dispose(()=>{layoutObserver.disconnect();media.revert();themeObserver.disconnect();});
 }

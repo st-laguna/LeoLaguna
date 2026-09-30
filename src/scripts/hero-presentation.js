@@ -1,5 +1,5 @@
 // Inline presentation: reuse authored geometry without waiting for module downloads.
-function initHeroPresentation(getHeroFrame) {
+function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
 
   const isTabletPortrait = () => document.documentElement.hasAttribute('data-tablet-portrait');
   const hero = document.querySelector('.hero');
@@ -64,26 +64,25 @@ function initHeroPresentation(getHeroFrame) {
 
   const root = document.documentElement;
   if (!root.hasAttribute('data-hero-intro')) return;
-  // Consume initial entry before deferred navigation modules run; navigation is unchanged.
-  hero.setAttribute('data-hero-pending', '');
-  hero.setAttribute('data-hero-artwork-pending', '');
-  hero.setAttribute('data-hero-media-pending', '');
+  // Consume the flag before deferred navigation runs: only one initial entrance.
   root.removeAttribute('data-hero-intro');
+  hero.setAttribute('data-hero-pending', '');
+  const curtain = document.querySelector('[data-home-curtain]');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const events = new AbortController();
-  const animations = [];
-  const timers = new Set();
-  let finished = false;
+  const phone = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches;
+  const duration = phone ? 380 : 500;
+  const entrance = prepareHomeEntrance(hero, { delay: duration * .7 });
+  let wipe, timeout, finished = false;
   function finish() {
     if (finished) return;
     finished = true;
-    timers.forEach(timer => clearTimeout(timer));
-    timers.clear();
-    hero.removeAttribute('data-hero-artwork-pending');
-    hero.removeAttribute('data-hero-media-pending');
+    clearTimeout(timeout);
+    entrance.clean();
+    wipe?.cancel();
+    root.removeAttribute('data-home-entry');
     hero.removeAttribute('data-hero-pending');
     history.scrollRestoration = 'auto';
-    animations.forEach(animation => animation.cancel());
     events.abort();
   }
   const options = { signal: events.signal };
@@ -92,34 +91,15 @@ function initHeroPresentation(getHeroFrame) {
   window.addEventListener('pagehide', finish, options);
   if (reduced.matches || document.hidden) { finish(); return; }
   const activeImage = hero.querySelector(root.dataset.theme === 'dark' ? '.hero__image--dark' : '.hero__image--light');
-  const artworkImages = [...hero.querySelectorAll('.hero__artwork img')];
-  const artworkReady = Promise.allSettled(artworkImages.map(image => Promise.resolve().then(() => image.decode())));
-  const mediaReady = Promise.resolve().then(() => activeImage?.decode()).catch(() => {});
-  async function reveal(selector, pending, ready) {
-    let timer, animation;
-    try {
-      const timeout = new Promise(resolve => { timer = setTimeout(resolve, 800); });
-      timers.add(timer);
-      await Promise.race([ready, timeout]);
-      clearTimeout(timer);
-      timers.delete(timer);
-      if (finished) return;
-      const element = hero.querySelector(selector);
-      if (!element) return;
-      animation = element.animate([{ opacity: 0 }, { opacity: 1 }], {
-        duration: 700, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both',
-      });
-      animations.push(animation);
-      await animation.finished;
-    } finally {
-      clearTimeout(timer);
-      timers.delete(timer);
-      hero.removeAttribute(pending);
-      animation?.cancel();
-    }
-  }
-  void Promise.allSettled([
-    reveal('.hero__artwork', 'data-hero-artwork-pending', artworkReady),
-    reveal('.hero__mask', 'data-hero-media-pending', mediaReady),
-  ]).then(finish).catch(finish);
+  const critical = [...hero.querySelectorAll('.hero__artwork img'), activeImage].filter(Boolean);
+  const ready = Promise.allSettled(critical.map(image => Promise.resolve().then(() => image.decode())));
+  const deadline = new Promise(resolve => { timeout = setTimeout(resolve, 450); });
+  void Promise.race([ready, deadline]).then(async () => {
+    clearTimeout(timeout);
+    if (finished) return;
+    wipe = curtain?.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-100%)' }],
+      { duration, easing: 'cubic-bezier(.76,0,.24,1)', fill: 'both' });
+    entrance.play();
+    await Promise.all([entrance.finished(), wipe?.finished.catch(() => {})]);
+  }).then(finish).catch(finish);
 }

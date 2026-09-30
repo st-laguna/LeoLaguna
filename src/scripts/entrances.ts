@@ -5,7 +5,7 @@ const media=gsap.matchMedia();
 media.add({motion:'(prefers-reduced-motion: no-preference)',portal:'(min-width:1001px) and (orientation:landscape), (min-width:1101px)'},context=>{
   if (!context.conditions?.motion) return;
   const portal=matchMedia('(min-width:1001px) and (orientation:landscape), (min-width:1101px)').matches && !document.documentElement.hasAttribute('data-tablet-portrait');
-  const elements=Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]')).filter(el=>!(portal&&el.closest('.home-journey')));
+  const elements=Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]')).filter(el=>!(portal&&el.closest('.home-journey')) && !(document.querySelector('.hero') && el.closest('.site-header')));
   const regular=elements.filter(el=>!el.closest('.brands'));
   const reveal=(el:HTMLElement)=>gsap.to(el,{clipPath:'inset(0% 0% 0% 0%)',duration:.85,ease:'power3.inOut',overwrite:true});
   gsap.set(elements,{clipPath:'inset(100% 0% 0% 0%)'});

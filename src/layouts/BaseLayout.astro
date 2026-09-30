@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import '../styles/tablet-portrait.css';
 import '../styles/ipad-portrait.css';
+import '../styles/header-persistent.css';
+import '../styles/home-microinteractions.css';
 import PageNavigation from '../components/PageNavigation.astro';
 import SiteControls from '../components/SiteControls.astro';
 interface Props {
@@ -23,8 +25,6 @@ const {
     <meta charset="UTF-8" />
     <link rel="preload" href="/fonts/HostGrotesk.woff2" as="font" type="font/woff2" crossorigin />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
     <meta name="description" content={description} />
     <title>{title}</title>
     <PageNavigation />
@@ -71,6 +71,7 @@ const {
     history.replaceState(null, '', location.pathname + location.search);
 
     document.documentElement.setAttribute('data-hero-intro', '');
+    document.documentElement.setAttribute('data-home-entry', '');
 
     // Evita restaurar una posición anterior al recargar el inicio.
     history.scrollRestoration = 'manual';
@@ -78,6 +79,7 @@ const {
     // Release the initial flag if the inline Hero presentation cannot start.
     setTimeout(() => {
       document.documentElement.removeAttribute('data-hero-intro');
+      document.documentElement.removeAttribute('data-home-entry');
       history.scrollRestoration = 'auto';
     }, 3500);
   })();
@@ -87,6 +89,7 @@ const {
 
   </head>
   <body>
+    <div data-home-curtain aria-hidden="true"></div>
     <header class="site-header" data-site-header>
   <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-navigation" aria-label="Open menu / Abrir menú">
     <span></span><span></span><span></span>
@@ -101,10 +104,10 @@ const {
       <a class="hover-option" href="#contact" data-i18n="nav.contact">CONTACT</a>
     </div>
     <div class="site-nav__submenu hover-group" id="site-work-options" hidden>
-      <a class="hover-option" href="#work" data-project-jump="0" data-i18n="projects.01.title">TECHNICAL VISUALS</a>
-      <a class="hover-option" href="#work" data-project-jump="1" data-i18n="projects.02.title">SCIENTIFIC ILLUSTRATION</a>
-      <a class="hover-option" href="#work" data-project-jump="2" data-i18n="projects.03.title">EDUCATIONAL VISUALS</a>
-      <a class="hover-option" href="#work" data-project-jump="3" data-i18n="projects.04.title">ANIMATION &amp; VIDEO</a>
+      <a class="hover-option" href="#work" data-project-jump="0" >01 Technical Visuals</a>
+      <a class="hover-option" href="#work" data-project-jump="1" >02 Scientific Illustration</a>
+      <a class="hover-option" href="#work" data-project-jump="2" >03 Educational Visuals</a>
+      <a class="hover-option" href="#work" data-project-jump="3" >04 Animation and Video</a>
     </div>
   </nav>
 
@@ -140,11 +143,12 @@ const {
 
       function setMobileMenu(open: boolean) {
         if (!header || !menuButton || !menuPanel) return;
-        const active = open && (menuMedia.matches || isTabletPortrait());
+        const phoneMenu = menuMedia.matches && !document.documentElement.hasAttribute('data-ipad') && !document.documentElement.hasAttribute('data-tablet-portrait');
+        const active = open && phoneMenu;
         header.toggleAttribute('data-menu-open', active);
         menuButton.setAttribute('aria-expanded', String(active));
         menuButton.setAttribute('aria-label', active ? 'Close menu / Cerrar menú' : 'Open menu / Abrir menú');
-        menuPanel.inert = (menuMedia.matches || isTabletPortrait()) ? !active : false;
+        menuPanel.inert = phoneMenu ? !active : false;
         document.documentElement.classList.toggle('mobile-menu-open', active);
       }
 

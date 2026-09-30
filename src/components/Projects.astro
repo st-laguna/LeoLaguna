@@ -74,7 +74,7 @@ const t = en as Record<string,string>;
             <button type="button" data-step="-1" aria-label="Previous / Anterior">←</button>
             <button type="button" data-step="1" aria-label="Next / Siguiente">→</button>
           </div>
-          <button type="button" class="projects-view-all" data-open="current" aria-controls="projects-expanded" aria-expanded="false"><span data-i18n="projects.viewAll">{t['projects.viewAll']}</span> ↴</button>
+          <button type="button" class="projects-view-all arrow-hover" data-open="current" aria-controls="projects-expanded" aria-expanded="false"><span data-i18n="projects.viewAll">{t['projects.viewAll']}</span> <span class="hover-arrow-motion" aria-hidden="true">↴</span></button>
         </div>
       </div>
       <div class="projects-progress" aria-hidden="true"><span></span></div>

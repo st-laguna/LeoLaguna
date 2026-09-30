@@ -36,10 +36,11 @@
 
   function initialTheme(): Theme {
     const saved=readPreference('leo-theme');
-    return saved==='dark'||saved==='light'?saved:matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches?'dark':'light';
+    return saved==='dark'||saved==='light'?saved:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
   }
   function applyTheme(theme: Theme) {
     root.dataset.theme = theme;
+    document.querySelector<HTMLLinkElement>('#site-favicon')?.setAttribute('href', `/favicon-${theme}.svg`);
 
     themeButton?.setAttribute(
       'aria-checked',

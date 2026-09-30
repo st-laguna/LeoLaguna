@@ -6,10 +6,15 @@ const t = en as Record<string,string>;
 ---
 <section id="brands" class="brands" data-brands aria-labelledby="brands-statement">
   <div class="brands-layout">
+    <div class="brands-info">
     <dl class="brands-stats">
-      <div data-reveal><dt data-i18n="brands.years">{t['brands.years']}</dt><dd><span data-count-to="5">5</span></dd></div>
-      <div data-reveal><dt data-i18n="brands.count">{t['brands.count']}</dt><dd><span data-count-to="15">15</span>+</dd></div>
+      <div><dt>YEARS</dt><dd>5</dd></div>
+      <div><dt>BRANDS</dt><dd>15+</dd></div>
+      <div><dt>PROJECTS</dt><dd>+80</dd></div>
+      <div><dt>COUNTRIES</dt><dd>+20</dd></div>
     </dl>
+    <h2 id="brands-statement" class="brands-statement" data-i18n="brands.statement">{t['brands.statement']}</h2>
+    </div>
 
     <div class="brands-grid">
       {[0,1].map(column=><div class="brands-column" data-brand-column={column}>
@@ -30,9 +35,6 @@ const t = en as Record<string,string>;
       </div>)}
     </div>
 
-    <h2 id="brands-statement" class="brands-statement" data-reveal data-i18n="brands.statement">
-      {t['brands.statement']}
-    </h2>
   </div>
 
   <div id="brand-preview" class="brand-preview" hidden><figure><div class="brand-preview-image"></div><figcaption></figcaption></figure><button type="button" class="brand-preview-close" data-i18n="brands.close">{t['brands.close']}</button></div>
@@ -41,8 +43,8 @@ const t = en as Record<string,string>;
   @media (min-width:1001px) {
     :global(html:not([data-tablet-portrait])) .brands-layout {
       max-width:2000px;
-      grid-template-columns:minmax(0,14fr) minmax(0,72fr) minmax(0,14fr);
-      gap:clamp(20px,1.3vw,30px);
+      grid-template-columns:minmax(0,72fr) minmax(150px,28fr);
+      gap:clamp(32px,5vw,88px);
     }
     :global(html:not([data-tablet-portrait])) .brands-grid {
       grid-template-rows:repeat(4,clamp(125px,14svh,190px));
@@ -74,8 +76,8 @@ const t = en as Record<string,string>;
     }
   }
   :global(html[data-tablet-portrait]) .brands-layout {
-    grid-template-columns:minmax(0,12fr) minmax(0,76fr) minmax(0,12fr);
-    gap:clamp(16px,2vw,24px);
+    grid-template-columns:minmax(0,1fr) minmax(0,2fr);
+    gap:28px;
   }
   :global(html[data-tablet-portrait]) .brands-stats {
     justify-self:end;
