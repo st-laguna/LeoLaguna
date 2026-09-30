@@ -143,7 +143,7 @@ const {
 
       function setMobileMenu(open: boolean) {
         if (!header || !menuButton || !menuPanel) return;
-        const phoneMenu = menuMedia.matches && !document.documentElement.hasAttribute('data-ipad') && !document.documentElement.hasAttribute('data-tablet-portrait');
+        const phoneMenu = menuMedia.matches || isTabletPortrait();
         const active = open && phoneMenu;
         header.toggleAttribute('data-menu-open', active);
         menuButton.setAttribute('aria-expanded', String(active));

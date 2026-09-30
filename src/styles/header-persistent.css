@@ -1,14 +1,19 @@
 /* Reuse the existing navigation; phone menu rules remain in force. */
 @media (min-width:701px) and (min-height:501px) {
-  html body .site-header .mobile-menu-toggle {display:none!important;}
-  html body .site-header .mobile-menu-panel {display:contents;visibility:visible;clip-path:none;pointer-events:auto;}
-  html body .site-header .mobile-menu-panel .site-nav {position:fixed;top:24px;left:var(--page-gap);right:auto;width:max-content;transform:none;display:flex;color:#fff;mix-blend-mode:difference;pointer-events:auto;z-index:103;}
-  html body .site-header .mobile-menu-panel .site-nav__items {display:flex!important;flex-direction:row;align-items:center!important;justify-content:flex-start;gap:clamp(22px,3vw,48px)!important;width:auto;}
-  html body .site-header .mobile-menu-panel .site-nav__items>.hover-option {width:auto;padding:8px 0;border:0;background:none;color:inherit;font:inherit;font-size:clamp(12px,.95vw,15px);visibility:visible;pointer-events:auto;}
-  html body .site-header .mobile-menu-panel .site-nav__items>.mobile-only {display:none;}
-  html body .site-header .mobile-menu-panel [data-footer-work] {display:block!important;}
-  html body .site-header .mobile-menu-panel .site-nav__submenu {display:flex!important;left:0;right:auto;top:100%;bottom:auto;}
-  html body .site-header .mobile-menu-panel .site-nav__submenu[hidden] {display:none!important;}
-  html body .site-header .mobile-menu-panel .site-controls {position:fixed!important;top:24px;right:var(--page-gap);width:auto;z-index:103;}
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-toggle {display:none!important;}
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel {display:contents;visibility:visible;clip-path:none;pointer-events:auto;}
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav {position:fixed;top:24px;left:50%;right:auto;width:max-content;transform:translateX(-50%);display:flex;color:#fff;mix-blend-mode:difference;pointer-events:auto;z-index:50;}
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items {display:flex!important;flex-direction:row;align-items:center!important;justify-content:flex-start;gap:clamp(28px,6vw,100px)!important;width:auto;}
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items>.hover-option {width:auto;padding:8px 0;border:0;background:none;color:inherit;font:inherit;font-size:clamp(11px,.95vw,15px);visibility:visible;pointer-events:auto;}
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items>.mobile-only {display:none;}
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel [data-footer-work] {display:block!important;}
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__submenu {display:flex!important;left:0;right:auto;top:100%;bottom:auto;}
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__submenu[hidden] {display:none!important;}
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-controls {position:fixed!important;top:24px;right:var(--page-gap);width:auto;z-index:103;}
+  /* Reuse Footer's existing intersection state; hidden links cannot intercept clicks. */
+  html:not([data-tablet-portrait]):has(.footer[data-mobile-visible]) body .site-header .mobile-menu-panel .site-nav {display:none;}
 }
-html body .site-header .mobile-menu-panel .site-nav__submenu a {text-transform:none;}
+@media (min-width:701px) and (max-width:900px) and (min-height:501px) {
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav {top:70px;}
+}
+html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__submenu a {text-transform:none;}

@@ -216,7 +216,7 @@ if (brandsLayout) {
     const away = entrance > .12 && outgoing < .5;
     const root=document.documentElement;
     if(root.classList.contains('projects-active')!==away)root.classList.toggle('projects-active',away);
-    if(nav && nav.inert!==away)nav.inert=away;
+    // The persistent header remains interactive above Work.
     stepButtons.forEach(button=>{
       const disabled=Number(button.dataset.step)<0?current===0:current===3;
       if(button.disabled!==disabled)button.disabled=disabled;
