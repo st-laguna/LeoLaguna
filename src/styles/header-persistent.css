@@ -10,8 +10,10 @@
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__submenu {display:flex!important;left:0;right:auto;top:100%;bottom:auto;}
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__submenu[hidden] {display:none!important;}
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-controls {position:fixed!important;top:24px;right:var(--page-gap);width:auto;z-index:103;}
-  /* Reuse Footer's existing intersection state; hidden links cannot intercept clicks. */
-  html:not([data-tablet-portrait]):has(.footer[data-mobile-visible]) body .site-header .mobile-menu-panel .site-nav {display:none;}
+  /* Footer keeps Work/About between its central mark and the right controls. */
+  html.footer-active:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav {left:var(--footer-nav-center,70%);right:auto;width:max-content;transform:translateX(-50%);transition:none;}
+  html.footer-active:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items {gap:clamp(28px,3vw,58px)!important;}
+  html.footer-active:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items>a[href="#contact"] {display:none;}
 }
 @media (min-width:701px) and (max-width:900px) and (min-height:501px) {
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav {top:70px;}

@@ -84,7 +84,16 @@ const navItems = Array.from(
   )
 );
 
+let navigationWidth=0;
 function setFooterNavigation(active: boolean) {
+  navigationWidth=innerWidth;
+  const controls=document.querySelector<HTMLElement>('.site-header .site-controls');
+  const mark=footer?.querySelector<HTMLElement>('.footer__mark');
+  if(controls && mark) {
+    const left=mark.getBoundingClientRect().right;
+    const right=controls.getBoundingClientRect().left;
+    root.style.setProperty('--footer-nav-center',((left+right)/2)+'px');
+  }
   // Reduced motion only needs the final layout, not FLIP geometry.
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
     root.classList.toggle('footer-active', active);
@@ -103,6 +112,7 @@ function setFooterNavigation(active: boolean) {
   navItems.forEach((item, index) => {
     const previous = previousPositions[index];
     const next = nextPositions[index];
+    if(!previous.width || !next.width)return;
 
     item.animate(
       [
@@ -212,12 +222,13 @@ function setFooterNavigation(active: boolean) {
     // A short footer can finish below the top edge when browser chrome retracts.
     const finalTop=viewportTop+Math.max(0,visibleHeight-rect.height);
     const inView=rect.top<viewportTop+visibleHeight && rect.bottom>viewportTop+100;
-    const active=inView&&(rect.top<=finalTop+24||remaining<=8);
+    const directMenu=nav && getComputedStyle(nav).position==='fixed' && !root.hasAttribute('data-tablet-portrait');
+    const active=directMenu ? inView : inView&&(rect.top<=finalTop+24||remaining<=8);
     if((rect.top>innerHeight+40||rect.bottom<0)&&!reduced.matches){
       animations.forEach(a=>a.cancel());animations.clear();
       entranceElements.forEach(el=>el.removeAttribute('data-entered'));
     }
-      if (active !== wasActive) {
+      if (active !== wasActive || (active && navigationWidth!==innerWidth)) {
     setFooterNavigation(active);
 }
 if (!active && wasActive) {
@@ -291,6 +302,7 @@ return () => {
   setOpen(false);
   root.classList.remove('footer-active');
   root.style.removeProperty('--footer-header-y');
+  root.style.removeProperty('--footer-nav-center');
 };
 
 }
