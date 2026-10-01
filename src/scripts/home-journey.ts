@@ -48,6 +48,29 @@ if(root){
   window.addEventListener('keydown',e=>{if(['ArrowDown','PageDown',' ','End'].includes(e.key))loadIntermediateImages();});
 
   const workflow=host.querySelector<HTMLElement>('.workflow')!;
+  const headerLogo=document.querySelector<HTMLElement>('.site-header__footer-logo');
+  let headerLogoActive=false;
+  let headerLogoMotion:gsap.core.Tween|undefined;
+  function showWorkflowLogo(active:boolean){
+    if(active===headerLogoActive)return;
+    headerLogoActive=active;
+    headerLogoMotion?.kill();
+    if(!headerLogo)return;
+    const root=document.documentElement;
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches){
+      root.toggleAttribute('data-workflow-header',active);
+      gsap.set(headerLogo,{clearProps:'transform'});
+      return;
+    }
+    const offscreenY=-(parseFloat(getComputedStyle(headerLogo).top)+headerLogo.offsetHeight+8);
+    if(active){
+      gsap.set(headerLogo,{y:offscreenY});
+      root.setAttribute('data-workflow-header','');
+      headerLogoMotion=gsap.to(headerLogo,{y:0,duration:1,ease:'power3.inOut'});
+    }else{
+      headerLogoMotion=gsap.to(headerLogo,{y:offscreenY,duration:1,ease:'power3.inOut',onComplete:()=>{if(!headerLogoActive)root.removeAttribute('data-workflow-header');}});
+    }
+  }
   const removeStaticStop=registerScrollStops(workflow,()=>
     host.hasAttribute('data-journey')||host.hasAttribute('data-mobile-journey')?[]:[0]);
   const workflowImages=Array.from(workflow.querySelectorAll<HTMLImageElement>('.workflow__front img'));
@@ -220,6 +243,7 @@ hero.style.opacity = p < handoff ? '1' : '0';
 hero.inert = p > .15;
 
 workflow.style.visibility = p >= .42 ? 'visible' : 'hidden';
+showWorkflowLogo(p>=.90);
 workflow.inert = requested < .995 || returning !== null;
 
 heading.style.clipPath =
@@ -316,7 +340,12 @@ slots.forEach((slot, i) => {
   });
 
   media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',tablet:'(min-width:701px) and (max-width:1400px) and (orientation:portrait)',reduced:'(prefers-reduced-motion:reduce)',always:'all'},context=>{
-    if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    if (matchMedia('(prefers-reduced-motion:reduce)').matches) {
+      headerLogoMotion?.kill();
+      headerLogo?.style.removeProperty('transform');
+      const state=ScrollTrigger.create({trigger:workflow,start:'top bottom',end:'max',onToggle:self=>showWorkflowLogo(self.isActive),onRefresh:self=>showWorkflowLogo(self.isActive)});
+      return()=>state.kill();
+    }
     if (!context.conditions?.phone && !context.conditions?.tablet) return;
     // Reuse the landscape tablet's viewport-sized vector aperture, avoiding a 19x CSS mask.
     const tablet=isTabletPortrait();
@@ -417,6 +446,7 @@ slots.forEach((slot, i) => {
       hero.style.opacity=String(1-crossfade);
       hero.inert=p>.03;
       workflow.style.visibility=p>.22?'visible':'hidden';
+      showWorkflowLogo(p>=cardsStart+.16*span*overlap);
       workflow.inert=true;
       const headingIn=ease((p-.23)/.07),headingOut=ease((p-.94)/.04);
       heading.style.opacity='1';
@@ -464,6 +494,9 @@ slots.forEach((slot, i) => {
   });
     if (import.meta.hot) {
       import.meta.hot.dispose(() => {
+        headerLogoMotion?.kill();
+        headerLogo?.style.removeProperty('transform');
+        document.documentElement.removeAttribute('data-workflow-header');
         removeStaticStop();
         disposed=true;clearTimeout(warmupTimer);clearTimeout(imageQueueTimer);imageQueue.length=0;
         media.revert();

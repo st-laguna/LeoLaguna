@@ -13,6 +13,13 @@
 }
 
 :root[data-theme="dark"] {
+  --dark-base: #1C1C1C;
+  --dark-coral: #EF6C65;
+  --dark-service-light: #D1D1D1;
+  --dark-featured: #78848C;
+  --dark-featured-blend: #CCCCCC;
+  --dark-white: #FFFFFF;
+  --dark-black: #000000;
   color-scheme: dark;
   --background: #000000;
   --foreground: #f7f7f7;
@@ -194,3 +201,81 @@ html.footer-active .site-nav a[href="#contact"] {
 
 /* Clip horizontal animated entrances without creating a sticky scroll container. */
 html, body {overflow-x:clip;}
+
+/* Theme wipe uses the top layer; its only animated property is transform. */
+.theme-wipe {
+  --theme-wipe-angle:-30deg;
+  position:fixed;
+  inset:-2px calc(-24px - 30vh);
+  width:auto;
+  height:auto;
+  max-width:none;
+  max-height:none;
+  margin:0;
+  padding:0;
+  border:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:10000;
+  transform:translate3d(-100%,0,0) skewX(var(--theme-wipe-angle));
+}
+.theme-wipe[hidden] {display:none;}
+.theme-wipe::backdrop {background:transparent;pointer-events:none;}
+/* Applied only while the opaque wipe fully covers the viewport. */
+html[data-theme-switching],
+html[data-theme-switching] *,
+html[data-theme-switching] *::before,
+html[data-theme-switching] *::after {transition:none!important;}
+
+/* Section palette: dark mode only; shared theme defaults stay unchanged. */
+html[data-theme="dark"] :is(.hero,.journey-stage,.workflow) {background-color:var(--dark-base);}
+html[data-theme="dark"] .workflow {--back-background:var(--dark-featured);--back-text:var(--dark-white);}
+html[data-theme="dark"] .workflow .workflow__front {background-color:var(--dark-base)!important;}
+html[data-theme="dark"] .workflow .workflow__heading em {color:var(--dark-coral);}
+html[data-theme="dark"] :is(.services-transition,.services-intro) {background-color:var(--dark-black);color:var(--dark-white);}
+html[data-theme="dark"] :is(.projects,.projects-stage,.project-panel,.project-media) {background-color:var(--dark-base);}
+html[data-theme="dark"] .projects[data-horizontal] .project-thumbs button {background-color:var(--dark-base);}
+html[data-theme="dark"] .projects-footer,
+html[data-theme="dark"] .project-mobile-copy {background-color:var(--dark-service-light);color:var(--dark-base);}
+html[data-theme="dark"] .projects-footer button {color:var(--dark-base);}
+html[data-theme="dark"] .projects-paging button:hover:not(:disabled),
+html[data-theme="dark"] .projects-view-all:hover .hover-arrow-motion {color:var(--dark-coral);}
+html[data-theme="dark"] .project-mobile-more:hover::before {background-color:var(--dark-coral);}
+html[data-theme="dark"] .projects[data-horizontal] .projects-guides {mix-blend-mode:difference;}
+html[data-theme="dark"] .projects[data-horizontal] .project-guide {background-color:var(--dark-white);}
+html[data-theme="dark"] .featured-works {background-color:var(--dark-featured);color:var(--dark-white);}
+html[data-theme="dark"] .brands,
+html[data-theme="dark"] .brands[data-mobile-streams] .brands-cell {background-color:var(--dark-base);}
+html[data-theme="dark"] .footer {background-color:var(--dark-base);}
+html[data-theme="dark"] .footer .footer__strip-window::before {background-color:var(--dark-base);}
+html[data-theme="dark"] .hero {background-color:var(--dark-base)!important;}
+html[data-theme="dark"] .hero .journey-cover > :is(rect,path) {fill:var(--dark-base);}
+html[data-theme="dark"] .workflow .workflow__back {background-color:var(--dark-featured);color:var(--dark-white);}
+
+/* Local polish: retain the existing layout and animation owners. */
+.workflow .workflow__back .workflow__step {position:absolute;top:clamp(16px,3svh,32px);left:0;right:0;max-width:none;width:auto;margin:0;text-align:center;font-size:12px;line-height:1;}
+.workflow .workflow__back {padding-top:clamp(48px,7svh,72px);}
+.workflow .workflow__cursor {width:44px;height:44px;border:0;border-radius:0;background:none;font-size:22px;}
+html[data-theme="dark"] .projects .projects-paging button:hover:not(:disabled) {background-color:var(--dark-coral);border-color:var(--dark-coral);color:var(--dark-base);}
+html[data-theme="dark"] .footer {--footer-optics-background:var(--dark-base);}
+html[data-theme="dark"][data-featured-header] body .site-header .site-nav {color:var(--dark-featured-blend);}
+html[data-theme="dark"][data-featured-header] .site-header__footer-logo {background-color:var(--dark-featured-blend);}
+html[data-ipad] body .site-header .mobile-menu-toggle {display:none!important;}
+@media(min-width:701px) and (min-height:501px) {
+  html body .site-header .mobile-menu-toggle {display:none!important;}
+}
+/* iPad retains the same navigation links rather than an inaccessible hidden menu. */
+html[data-ipad] body .site-header .mobile-menu-panel {display:contents;visibility:visible;clip-path:none;pointer-events:auto;}
+html[data-ipad] body .site-header .mobile-menu-panel .site-nav {position:fixed;top:24px;left:50vw;transform:translateX(-50%);width:max-content;display:flex;mix-blend-mode:difference;color:var(--dark-white,#fff);}
+html[data-ipad] body .site-header .mobile-menu-panel .site-nav__items {display:flex!important;flex-direction:row;gap:clamp(12px,2vw,24px)!important;width:auto;}
+html[data-ipad] body .site-header .mobile-menu-panel .site-nav__items>.hover-option {width:auto;padding:8px 0;border:0;background:none;color:inherit;font:inherit;font-size:11px;}
+html[data-ipad] body .site-header .mobile-menu-panel .site-nav__items>.mobile-only {display:none;}
+html[data-ipad] body .site-header .mobile-menu-panel .site-controls {display:none!important;}
+html[data-theme="dark"][data-featured-header] body .site-header .mobile-menu-panel .site-nav {color:var(--dark-featured-blend)!important;}
+html[data-theme="dark"] .footer .footer__bottom {background-color:var(--dark-white);color:var(--dark-base);}
+html[data-theme="dark"] .footer .footer__strip-window,
+html[data-theme="dark"] .footer .footer__contact-info::before {background-color:var(--dark-white);}
+html[data-theme="dark"] .footer .footer__strip-window::before {box-shadow:0 clamp(32px,4.5vw,90px) 0 clamp(32px,4.5vw,90px) var(--dark-white);}
+html[data-ipad] body .site-header > .site-controls {display:flex!important;position:fixed;top:24px;right:var(--page-gap);z-index:103;}
+
+html body .projects[data-horizontal] .glass-toggle {display:none!important;}

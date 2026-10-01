@@ -35,15 +35,49 @@ if(section){
       const logos=Array.from(section!.querySelectorAll<HTMLElement>('.brands-cell img'));
       const compact=tabletPortrait || matchMedia('(any-pointer:coarse)').matches;
       const counters=Array.from(section!.querySelectorAll<HTMLElement>('[data-count-to]'));
-      const presentation=gsap.timeline({scrollTrigger:{id:'brands-logos',trigger:section!.querySelector('.brands-layout')!,start:()=>matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches?'top 30%':section!.hasAttribute('data-mobile-streams')?'top 75%':'top 85%',toggleActions:'play none none reverse'}});
-      presentation.fromTo(logos,{translate:compact?'0 12px':'0 22px',clipPath:'inset(100% 0 0)'},{translate:'0 0',clipPath:'inset(0% 0 0)',duration:compact?.8:.9,stagger:compact?.09:.11,ease:'power2.out'},0);
-      presentation.fromTo(section!.querySelectorAll('.brands-stats > div, .brands-statement'),{translate:'0 12px',clipPath:'inset(100% 0 0)'},{translate:'0 0',clipPath:'inset(0% 0 0)',duration:.85,stagger:.14,ease:'power2.out'},0);
+      const featured=section!.parentElement?.querySelector<HTMLElement>('[data-featured-works]');
+      const presentation=gsap.timeline({paused:true});
+      presentation.fromTo(logos,{translate:compact?'0 12px':'0 22px',clipPath:'inset(100% 0 0)'},{translate:'0 0',clipPath:'inset(0% 0 0)',duration:compact?.9:1,stagger:compact?.09:.11,ease:'power3.inOut'},0);
+      const informationStart=presentation.duration();
+      const informationTweens: Array<{tween:gsap.core.Animation;offset:number}> = [];
+      presentation.addLabel('information',informationStart);
+      // Pause the existing presentation between phases until the cover is 70% gone.
+      presentation.addPause(informationStart);
+      presentation.fromTo(section!.querySelectorAll('.brands-stats > div, .brands-statement'),{translate:'0 12px',clipPath:'inset(100% 0 0)'},{translate:'0 0',clipPath:'inset(0% 0 0)',duration:1,stagger:.14,ease:'power3.inOut'},informationStart);
+      informationTweens.push({tween:presentation.recent(),offset:0});
       counters.forEach((element,index)=>{
         const state={value:0},goal=Number(element.dataset.countTo);
-        presentation.fromTo(state,{value:0},{value:goal,duration:1.6,ease:'none',onUpdate:()=>{
+        presentation.fromTo(state,{value:0},{value:goal,duration:1.6,ease:'power2.inOut',onUpdate:()=>{
           const text=String(Math.round(state.value));
           if(element.textContent!==text)element.textContent=text;
-        }},index*.12);
+        }},informationStart+index*.12);
+        informationTweens.push({tween:presentation.recent(),offset:index*.12});
+      });
+      let phase=0;
+      function reveal(progress:number){
+        if(progress<=0){
+          if(phase===0)return;
+          // Reset only once WORKS has completely covered Brands again.
+          presentation.removePause(informationStart);
+          informationTweens.forEach(({tween,offset})=>tween.startTime(informationStart+offset));
+          presentation.addPause(informationStart).pause(0);
+          counters.forEach(element=>{element.textContent='0';});
+          phase=0;
+          return;
+        }
+        if(phase===0){phase=1;presentation.play(0);}
+        if(progress>=.7 && phase===1){
+          phase=2;
+          // Schedule the information at the current clock time, never seek past logos.
+          const now=presentation.time();
+          presentation.removePause(informationStart);
+          informationTweens.forEach(({tween,offset})=>tween.startTime(now+.08+offset));
+          presentation.play();
+        }
+      }
+      ScrollTrigger.create({id:'brands-logos',trigger:featured ?? section!.querySelector('.brands-layout')!,
+        start:featured?'bottom bottom':'top 85%',end:'bottom top',
+        onUpdate:self=>reveal(self.progress),onRefresh:self=>reveal(self.progress),
       });
       // Text mutations are not CSS properties: restore them explicitly on teardown.
       return()=>counters.forEach(element=>{element.textContent=element.dataset.countTo!;});

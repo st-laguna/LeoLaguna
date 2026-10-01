@@ -14,6 +14,29 @@ export function initFooter() {
     const brands=document.querySelector('.brands-layout');
     if(brands)gsap.fromTo(brands,{clipPath:'inset(100% 0 0)'},{clipPath:'inset(0% 0 0)',ease:'none',scrollTrigger:{trigger:brands,start:'top 95%',end:'top 35%',scrub:.8}});
   });
+  // One reversible reveal; measure the stationary seam only on refresh.
+  entranceMedia.add('(prefers-reduced-motion: no-preference)', () => {
+    const pieces = footer.querySelectorAll<HTMLElement>('.footer__bottom, .footer__compact-piece');
+    const desktopSeam = footer.querySelector<HTMLElement>('.footer__strip-window')!;
+    const compactSeam = footer.querySelector<HTMLElement>('.footer__compact-window')!;
+    gsap.fromTo(pieces, {yPercent:-35}, {
+      yPercent:0,
+      ease:'none',
+      force3D:true,
+      scrollTrigger:{
+        id:'footer-strip-reveal',
+        trigger:footer,
+        start:() => {
+          const seam = getComputedStyle(desktopSeam).display === 'none' ? compactSeam : desktopSeam;
+          const top = seam.getBoundingClientRect().top + window.scrollY;
+          return Math.min(top - innerHeight * 1.1, ScrollTrigger.maxScroll(window) - 1);
+        },
+        end:() => ScrollTrigger.maxScroll(window),
+        scrub:.65,
+        invalidateOnRefresh:true,
+      },
+    });
+  });
   const mobileVisibility=new IntersectionObserver(([entry])=>footer.toggleAttribute('data-mobile-visible',entry.isIntersecting));
   mobileVisibility.observe(footer);
 
@@ -36,6 +59,9 @@ export function initFooter() {
 
   const clickTarget=footer.querySelector<HTMLElement>('[data-footer-click-target]');
 const clickCursor=footer.querySelector<HTMLElement>('[data-footer-click-cursor]');
+const cursorHome=clickCursor?.parentElement;
+const cursorLabel=clickCursor?.querySelector('span');
+const cursorArrow=clickCursor?.querySelector<HTMLElement>('.footer__click-arrow');
 const finePointer=matchMedia('(hover:hover) and (pointer:fine)');
 
 let px=0,py=0,cx=0,cy=0,hasPointer=false,cursorFrame=0,scrollTimer=0,isScrolling=false;
@@ -48,7 +74,14 @@ function setCursor(show:boolean){
 function checkCursor(){
   if(!clickTarget||!hasPointer)return;
   const el=document.elementFromPoint(px,py);
-  setCursor(!!el&&clickTarget.contains(el));
+  const zoom=!!el?.closest('.projects .project-media .project-enlarge');
+  const label=zoom?'ZOOM':'CLICK';
+  if(cursorLabel&&cursorLabel.textContent!==label)cursorLabel.textContent=label;
+  if(cursorArrow)cursorArrow.style.display=zoom?'none':'';
+  // Reuse the same circle inside an open native dialog's top layer.
+  const cursorParent=el?.closest('dialog[open]')||document.body;
+  if(clickCursor&&cursorParent&&clickCursor.parentElement!==cursorParent)cursorParent.append(clickCursor);
+  setCursor(!!el&&(clickTarget.contains(el)||!!el.closest('.workflow__card, .project-enlarge:not(:disabled), .gallery-item button, .featured-work__cover, .featured-work a[href]')));
 }
 
 function animateCursor(){
@@ -165,12 +198,14 @@ function setFooterNavigation(active: boolean) {
     animations.forEach(a=>a.cancel());animations.clear();
     entranceElements.forEach(el=>el.setAttribute('data-entered',''));
   },{signal});
-  const formatter=new Intl.DateTimeFormat('es-PE',{timeZone:'America/Lima',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+  const formatter=new Intl.DateTimeFormat('en-US',{timeZone:'America/Lima',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
+  const dateFormatter=new Intl.DateTimeFormat('en-US',{timeZone:'America/Lima',weekday:'long',month:'short',day:'numeric',year:'numeric'});
   const clock=footer.querySelector<HTMLElement>('[data-footer-clock]');
+  const date=footer.querySelector<HTMLElement>('[data-footer-date]');
   const year=footer.querySelector<HTMLElement>('[data-footer-year]');
   if(year)year.textContent=String(new Date().getFullYear());
-  function updateClock(){if(clock)clock.textContent=formatter.format(new Date());}
-  updateClock();const timer=setInterval(updateClock,15000);
+  function updateClock(){const now=new Date();if(clock)clock.textContent=formatter.format(now);if(date)date.textContent=dateFormatter.format(now);}
+  updateClock();const timer=setInterval(updateClock,1000);
   function setOpen(open:boolean){
     work?.setAttribute('aria-expanded',String(open));
     if(submenu){
@@ -195,9 +230,12 @@ function setFooterNavigation(active: boolean) {
       window.dispatchEvent(new CustomEvent('leo:project-jump',{detail:Number(link.dataset.projectJump)}));
     }
   },{signal});
+  const featured=document.querySelector<HTMLElement>('[data-featured-works]');
   let scheduled=0,wasActive=false;
   function position(){
     scheduled=0;
+    const featuredRect=featured?.getBoundingClientRect();
+    root.toggleAttribute('data-featured-header',!!featuredRect && featuredRect.top<=60 && featuredRect.bottom>60);
     const viewport=window.visualViewport;
     const visibleHeight=viewport?.height ?? innerHeight;
     const viewportTop=viewport?.offsetTop ?? 0;
@@ -206,7 +244,7 @@ function setFooterNavigation(active: boolean) {
     // Read before reveal() changes attributes and starts entrance animations.
     const rect=footer!.getBoundingClientRect();
 
-      if (remaining <= 4) {
+      if (remaining <= 4 && getComputedStyle(footer!.querySelector('.footer__compact-piece')!).display === 'contents') {
         const name = footer?.querySelector<HTMLElement>('.footer__name');
         const logo = footer?.querySelector<HTMLElement>('.footer__mark');
 
@@ -292,6 +330,7 @@ return () => {
 
   cancelAnimationFrame(cursorFrame);
   clickCursor?.classList.remove('is-visible');
+  if(clickCursor&&cursorHome)cursorHome.append(clickCursor);
 
   abort.abort();
   clearInterval(timer);
@@ -301,6 +340,7 @@ return () => {
   marqueeRenderer.dispose();
   setOpen(false);
   root.classList.remove('footer-active');
+  root.removeAttribute('data-featured-header');
   root.style.removeProperty('--footer-header-y');
   root.style.removeProperty('--footer-nav-center');
 };

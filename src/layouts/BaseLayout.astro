@@ -6,6 +6,23 @@ import '../styles/header-persistent.css';
 import '../styles/home-microinteractions.css';
 import PageNavigation from '../components/PageNavigation.astro';
 import SiteControls from '../components/SiteControls.astro';
+import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+const headerSource=readFileSync(resolve('public/icons/logo_horizontal.svg'),'utf8');
+const [,,blueprintWidth,blueprintHeight]=headerSource.match(/viewBox="([^"]+)"/)![1].split(/\s+/).map(Number);
+const headerAnchors=Object.fromEntries(['services','about','works','contact','bot1','bo2','bo3','logo'].map(id=>{
+  const rect=headerSource.match(new RegExp('<rect[^>]*id="'+id+'"[^>]*>'))![0];
+  const values=Object.fromEntries(Array.from(rect.matchAll(/(x|y|width|height)="([^"]+)"/g),m=>[m[1],Number(m[2])]));
+  return [id,values];
+}));
+const headerBlueprint=Object.entries(headerAnchors).flatMap(([id,a])=>[
+  '--header-'+id+'-x:'+a.x/blueprintWidth*100+'vw',
+  '--header-'+id+'-y:'+a.y/blueprintHeight*100+'svh',
+  '--header-'+id+'-w:'+a.width/blueprintWidth*100+'vw',
+]).concat([
+  '--header-control-gap-1:'+(headerAnchors.bo2.x-headerAnchors.bot1.x-headerAnchors.bot1.width)/blueprintWidth*100+'vw',
+  '--header-control-gap-2:'+(headerAnchors.bo3.x-headerAnchors.bo2.x-headerAnchors.bo2.width)/blueprintWidth*100+'vw',
+]).join(';');
 interface Props {
   title?: string;
   description?: string;
@@ -89,19 +106,20 @@ const {
 
   </head>
   <body>
+    <div class="theme-wipe" data-theme-wipe popover="manual" hidden aria-hidden="true"></div>
     <div data-home-curtain aria-hidden="true"></div>
-    <header class="site-header" data-site-header>
+    <header class="site-header" data-site-header style={headerBlueprint}>
+      <a class="site-header__footer-logo" href="#home" aria-label="Leo Laguna — Home"></a>
   <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-navigation" aria-label="Open menu / Abrir menú">
     <span></span><span></span><span></span>
   </button>
   <div class="mobile-menu-panel" id="mobile-navigation" data-mobile-menu inert>
   <nav class="site-nav" aria-label="Navegación principal">
     <div class="site-nav__items hover-group">
-      <a class="hover-option mobile-only" href="#home" data-i18n="nav.home">HOME</a>
-      <a class="hover-option mobile-only" href="#work" data-i18n="nav.work">WORK</a>
-      <button class="hover-option" type="button" data-footer-work aria-expanded="false" aria-controls="site-work-options" data-i18n="nav.work">WORK</button>
-      <a class="hover-option" href="/about/" data-i18n="nav.about">ABOUT</a>
-      <a class="hover-option" href="#contact" data-i18n="nav.contact">CONTACT</a>
+      <a class="hover-option" href="#work"><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.services">Service</span></a>
+      <a class="hover-option" href="/about/"><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.about">About</span></a>
+      <a class="hover-option" href={Astro.url.pathname === '/' ? '#featured-works' : '/#featured-works'}><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.works">Works</span></a>
+      <a class="hover-option" href="#contact"><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.contact">Contact</span></a>
     </div>
     <div class="site-nav__submenu hover-group" id="site-work-options" hidden>
       <a class="hover-option" href="#work" data-project-jump="0" >01 Technical Visuals</a>
@@ -118,6 +136,7 @@ const {
 
     <script>
       import '../scripts/main';
+      import '../scripts/action-buttons';
       import { isTabletPortrait } from '../scripts/responsive-layout';
 
       document.addEventListener('contextmenu', e => {

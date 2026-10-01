@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeJourney from '../components/HomeJourney.astro';
 import Projects from '../components/Projects.astro';
+import ServicesIntro from '../components/ServicesIntro.astro';
+import FeaturedWorks from '../components/FeaturedWorks.astro';
 import Brands from '../components/Brands.astro';
 import Footer from '../components/Footer.astro';
 ---
@@ -9,8 +11,14 @@ import Footer from '../components/Footer.astro';
 <BaseLayout>
   <main>
     <HomeJourney />
-    <Projects />
-    <Brands />
+    <div class="services-transition">
+      <ServicesIntro />
+      <Projects />
+    </div>
+    <div class="featured-brands" data-featured-brands>
+      <FeaturedWorks />
+      <Brands />
+    </div>
     <Footer />
   </main>
 </BaseLayout>

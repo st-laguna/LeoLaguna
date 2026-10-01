@@ -93,12 +93,13 @@ if(section){
     sidebarTravel=sidebar.offsetLeft+sidebar.offsetWidth+16;
     if(!(motion.matches && !isTabletPortrait()))return;
     const height=main.clientHeight;
-    const controls=document.querySelector<HTMLElement>('.site-controls');
-    const rect=controls?.getBoundingClientRect();
     const stageTop=parseFloat(getComputedStyle(stage).top)||0;
-    const controlsVisible=!!rect && rect.height>0 && rect.top>=0 && rect.bottom-stageTop<height*.25;
-    const top=controlsVisible?rect!.top-stageTop:height*.018;
-    const bottom=controlsVisible?rect!.bottom-stageTop:height*.045;
+    // Frame the entire header row, including the logo and tallest control.
+    const headerRects=Array.from(document.querySelectorAll<HTMLElement>('.site-header .site-controls, .site-header .site-nav, .site-header__footer-logo'))
+      .map(element=>element.getBoundingClientRect())
+      .filter(rect=>rect.width>0&&rect.height>0&&rect.top>=0&&rect.bottom-stageTop<height*.25);
+    const top=headerRects.length?Math.min(...headerRects.map(rect=>rect.top))-stageTop:height*.018;
+    const bottom=headerRects.length?Math.max(...headerRects.map(rect=>rect.bottom))-stageTop:height*.045;
     const mediaTop=Math.max(68,Math.min(100,height*.059),bottom+24);
     const projectTop=`${mediaTop}px`;
     if(section!.style.getPropertyValue('--project-top')!==projectTop) {
@@ -117,8 +118,8 @@ if(section){
         '--guide-x1':Number.isFinite(guideInset)?media.offsetLeft-guideInset:media.offsetLeft/2,
         '--guide-x2':(media.offsetLeft+media.offsetWidth+thumbs.offsetLeft)/2,
         '--guide-x3':Number.isFinite(guideInset)?thumbs.offsetLeft+thumbs.offsetWidth+guideInset:(thumbs.offsetLeft+thumbs.offsetWidth+panel.clientWidth)/2,
-        '--guide-y1':top/2,
-        '--guide-y2':media.offsetTop-gapAbove,
+        '--guide-y1':Math.max(2,top-8),
+        '--guide-y2':bottom+8,
         '--guide-y3':media.offsetTop+media.offsetHeight+gapAbove,
         '--guide-y4':height*.9556,
       };
@@ -137,6 +138,7 @@ if(section){
   const tabletPortrait=matchMedia('(min-width:701px) and (max-width:1100px) and (orientation:portrait)');
   const mobileMotion=matchMedia('(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)');
   const orientation=matchMedia('(orientation:portrait)');
+  const reducedMotion=matchMedia('(prefers-reduced-motion:reduce)');
   let configuredPortrait=orientation.matches;
   function layoutMatchesViewport(){
     const horizontal=motion.matches && !isTabletPortrait();
@@ -145,6 +147,7 @@ if(section){
   }
   const events=new AbortController();
   const state={position:0,exit:0};
+  const featured = document.querySelector<HTMLElement>('[data-featured-works]');
   const brandsLayout =
   section?.nextElementSibling?.querySelector<HTMLElement>('.brands-layout');
   let entrance=0,current=0,frozen=false;
@@ -197,7 +200,7 @@ if (brandsLayout) {
 
   if(brandsLayout.inert !== (brandsReveal < .01))brandsLayout.inert = brandsReveal < .01;
 }
-    main.style.clipPath=`inset(${(1-incoming)*100}% 0% ${outgoing*100}% 0%)`;
+    main.style.clipPath=`inset(${(1-incoming)*100}% 0% ${featured ? 0 : outgoing*100}% 0%)`;
     const sideIn=ease((entrance-.82)/.18);
     const sideOut=ease(state.exit/.3);
     sidebar.style.transform=`translateX(${-sidebarTravel*(1-sideIn+sideOut)}px)`;
@@ -213,7 +216,7 @@ if (brandsLayout) {
       link.style.translate=`${-25*(1-progress)}px 0`;
       link.style.clipPath=`inset(0 ${100*(1-progress)}% 0 0)`;
     });
-    const away = entrance > .12 && outgoing < .5;
+    const away = entrance > .12 && (featured ? state.exit === 0 : outgoing < .5);
     const root=document.documentElement;
     if(root.classList.contains('projects-active')!==away)root.classList.toggle('projects-active',away);
     // The persistent header remains interactive above Work.
@@ -286,7 +289,7 @@ if (brandsLayout) {
     sidebar.inert=true;
     gsap.set(section!.querySelectorAll('.project-media,.project-thumbs,.project-mobile-copy'),{clearProps:'clipPath'});
     mobileState.p=0;
-    mobileTimeline=gsap.to(mobileState,{p:1,ease:'none',scrollTrigger:{trigger:section,start:'top top',end:'bottom bottom',scrub:.35,invalidateOnRefresh:true,onRefresh:renderMobile},onUpdate:renderMobile});
+    mobileTimeline=gsap.to(mobileState,{p:1,ease:'none',scrollTrigger:{trigger:section,start:'top top',end:featured ? 'bottom 200%' : 'bottom bottom',scrub:.35,invalidateOnRefresh:true,onRefresh:renderMobile},onUpdate:renderMobile});
     renderMobile();ScrollTrigger.refresh();
   }
   function configure(){
@@ -326,7 +329,7 @@ if (brandsLayout) {
     measureLayout();
     state.position=0;state.exit=0;entrance=0;
     entry=ScrollTrigger.create({trigger:section,start:'top 100%',end:'top top',onUpdate:self=>{entrance=self.progress;render();},onRefresh:self=>{entrance=self.progress;render();}});
-    timeline=gsap.timeline({onUpdate:render,scrollTrigger:{trigger:section,start:'top top',end:'bottom top',scrub:.7,invalidateOnRefresh:true}});
+    timeline=gsap.timeline({onUpdate:render,scrollTrigger:{trigger:section,start:'top top',end:featured ? 'bottom bottom' : 'bottom top',scrub:.7,invalidateOnRefresh:true}});
     timeline.to(state,{position:.035,duration:.9,ease:'none'},0)
       .to(state,{position:.965,duration:.9,ease:'power3.inOut'},.9)
       .to(state,{position:1.035,duration:.9,ease:'none'},1.8)
@@ -432,6 +435,7 @@ if (brandsLayout) {
   motion.addEventListener('change',scheduleConfigure,{signal:events.signal});
   mobileMotion.addEventListener('change',scheduleConfigure,{signal:events.signal});
   tabletPortrait.addEventListener('change',scheduleConfigure,{signal:events.signal});
+  reducedMotion.addEventListener('change',scheduleConfigure,{signal:events.signal});
   window.addEventListener('leo:orientation-ready',()=>{
     clearTimeout(configureTimer);
     // Do not collapse/recreate the scroll runway for an unchanged iPad mode.

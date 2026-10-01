@@ -122,7 +122,7 @@ export function createFooterRefraction(host: HTMLElement) {
     gl!.uniform1f(uniforms.band,band);gl!.uniform1f(uniforms.padding,padding);
     gl!.uniform1f(uniforms.height,height);gl!.uniform1f(uniforms.scale,scale);
     const style=getComputedStyle(host);
-    const bg=color(style.getPropertyValue('--background').trim());const fg=color(style.getPropertyValue('--foreground').trim()||style.color);
+    const bg=color((style.getPropertyValue('--footer-optics-background')||style.getPropertyValue('--background')).trim());const fg=color(style.getPropertyValue('--foreground').trim()||style.color);
     gl!.uniform3f(uniforms.background,bg[0],bg[1],bg[2]);gl!.uniform3f(uniforms.foreground,fg[0],fg[1],fg[2]);
   }
   function render(paint:(ctx:CanvasRenderingContext2D)=>void){

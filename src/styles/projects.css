@@ -71,7 +71,7 @@
 .projects[data-horizontal] .projects-footer {
   display:grid;grid-template-columns:auto minmax(0,1fr) auto;
   gap:clamp(24px,2.5vw,64px);align-items:center;min-width:0;min-height:0;
-  padding:clamp(12px,1.4svh,22px) var(--project-right) clamp(24px,4.4svh,64px) var(--project-left);
+  padding:clamp(12px,1.4svh,22px) var(--project-right) calc(clamp(24px,4.4svh,64px) + 12px) var(--project-left);
 }
 /* Cada página de guías se desplaza; nunca se fija a la ventana. */
 .projects-guides {display:none;}
@@ -241,3 +241,11 @@
 
 /* Static/reduced-motion cards keep access to every gallery at every width. */
 .projects:not([data-horizontal]):not([data-mobile-stack]) .project-mobile-more {display:block;}
+
+/* Retain the existing sticky stage for one viewport while Featured covers 04. */
+.projects[data-featured-handoff][data-horizontal] {height:850svh;}
+.projects[data-featured-handoff][data-mobile-stack] {height:720svh;margin-bottom:0;}
+html[data-tablet-portrait] .projects[data-featured-handoff][data-mobile-stack] {height:720svh;margin-bottom:0;}
+@media(hover:hover) and (pointer:fine) {
+  .projects .project-media .project-enlarge {cursor:none;}
+}

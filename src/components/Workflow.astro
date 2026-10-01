@@ -42,6 +42,7 @@ const steps = [1, 2, 3, 4];
             </span>
 
             <span class="workflow__back" aria-hidden="true">
+              <span class="workflow__step">Step {step}</span>
               <span data-i18n={`workflow.${step}.body`}>
                 {dictionary[`workflow.${step}.body`]}
               </span>
@@ -61,7 +62,7 @@ const steps = [1, 2, 3, 4];
   </p>
 
   <div class="workflow__cursor" aria-hidden="true">
-    <span data-i18n="workflow.drag">{dictionary['workflow.drag']}</span>
+    <span>[×]</span>
   </div>
 </section>
 

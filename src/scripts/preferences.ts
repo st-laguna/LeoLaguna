@@ -100,15 +100,68 @@
     applyLanguage(readPreference('leo-language') === 'es' ? 'es' : 'en');
   });
 
-  // Cambia entre modo claro y oscuro.
+  const themeWipe = document.querySelector<HTMLElement>('[data-theme-wipe]');
+  let themeTransitioning = false;
+
+  async function transitionTheme(theme: Theme) {
+    if (themeTransitioning) return;
+    const commit = () => { applyTheme(theme); savePreference('leo-theme', theme); };
+    if (!themeWipe || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      commit();
+      return;
+    }
+
+    themeTransitioning = true;
+    let animation: Animation | undefined;
+    let committed = false;
+    const transform = (x: string) => `translate3d(${x},0,0) skewX(var(--theme-wipe-angle))`;
+    try {
+      // Read the destination palette already defined in global.css.
+      themeWipe.style.backgroundColor = theme === 'dark'
+        ? '#000000' : '#f7f7f7';
+      themeWipe.hidden = false;
+      themeWipe.showPopover?.();
+      themeWipe.style.willChange = 'transform';
+      animation = themeWipe.animate(
+        [{transform:transform('-100%')}, {transform:transform('0%')}],
+        {duration:500, easing:'cubic-bezier(.76,0,1,1)', fill:'forwards'}
+      );
+      await animation.finished;
+      // The completed entry is held at zero: all four corners are covered.
+      root.setAttribute('data-theme-switching', '');
+      commit();
+      committed = true;
+      await new Promise<void>(resolve => requestAnimationFrame(() => {
+        // Resolve theme styles under cover before restoring transitions.
+        void getComputedStyle(root).backgroundColor;
+        void getComputedStyle(document.body).backgroundColor;
+        requestAnimationFrame(() => resolve());
+      }));
+      root.removeAttribute('data-theme-switching');
+      animation.cancel();
+      animation = themeWipe.animate(
+        [{transform:transform('0%')}, {transform:transform('100%')}],
+        {duration:550, easing:'cubic-bezier(0,0,.24,1)', fill:'forwards'}
+      );
+      await animation.finished;
+    } catch {
+      if (!committed) commit();
+    } finally {
+      themeWipe.hidePopover?.();
+      themeWipe.hidden = true;
+      animation?.cancel();
+      themeWipe.style.removeProperty('will-change');
+      themeWipe.style.removeProperty('background-color');
+      root.removeAttribute('data-theme-switching');
+      themeTransitioning = false;
+    }
+  }
+
+  // Keep one wipe in flight; all theme side effects still live in applyTheme.
   themeButton?.addEventListener('click', () => {
-    const theme: Theme =
-      root.dataset.theme === 'dark' ? 'light' : 'dark';
-
-    applyTheme(theme);
-    savePreference('leo-theme', theme);
+    if (themeTransitioning) return;
+    void transitionTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
   });
-
   // Cambia entre inglés y español.
   languageButtons.forEach((button) => {
     button.addEventListener('click', () => {

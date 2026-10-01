@@ -6,13 +6,13 @@ export function getHeroFrame(width: number, height: number) {
   const mode = portrait ? 'portrait' : width / height >= 1.55 ? 'landscape-width' : 'landscape-height';
   const masterWidth = portrait ? 2280.13 : 5132.9;
   const masterHeight = portrait ? 4152.38 : 3331.5;
-  // Portrait uses line_left_v / line_right_v; landscape uses punt_left_h / punt_right_h.
-  const left = portrait ? 184 : -43.1;
-  const right = portrait ? 2096.13 : 5089.8;
+  // Portrait retains its authored crop; landscape fits the actual SVG outer edges.
+  const left = portrait ? 184 : 0;
+  const right = portrait ? 2096.13 : masterWidth;
   // line_top_h is y=0; use line_bot_h's y2 at the bottom edge of the artwork.
   const top = 0, bottom = 3331.5;
   // Width-driven frames intentionally allow vertical cropping.
-  const scale = mode === 'landscape-height' ? height / (bottom - top) : width / (right - left);
+  const scale = width / (right - left);
   const centerX = (left + right) / 2;
   // Preserve portrait's vertical framing; landscape centers the current height references.
   const centerY = portrait ? 4152.38 / 2 : (top + bottom) / 2;

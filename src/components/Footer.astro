@@ -3,11 +3,6 @@ import FooterGlass from './FooterGlass.astro';
 import '../styles/footer.css';
 ---
 <footer id="contact" class="footer" aria-label="Leo Laguna — Contact">
-  <div class="footer__heading">
-    <span class="footer__name" data-footer-enter="0">LEO LAGUNA<sup>©</sup></span>
-    <a href="/" class="footer__mark" data-footer-enter="140" aria-label="Leo Laguna — Home"></a>
-  </div>
-
       <a
         class="footer__marquee"
         data-footer-marquee
@@ -45,19 +40,37 @@ import '../styles/footer.css';
         <img src="/icons/arrow.svg" alt="" class="footer__click-arrow" />
       </div>
 
+  <div class="footer__compact-window"><div class="footer__compact-piece">
+  <div class="footer__heading">
+    <span class="footer__name" data-footer-enter="0">LEO LAGUNA<sup>©</sup></span>
+    <a href="/" class="footer__mark" data-footer-enter="140" aria-label="Leo Laguna — Home"></a>
+  </div>
   <div class="footer__contact-info">
-    <div><span>socials</span><a href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
-    <div><span>contact</span><a href="mailto:hello@leolaguna.com">hello@leolaguna.com</a></div>
+    <div><span>Connect</span><a href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div>
+    <div><span>Contact</span><a href="mailto:hello@leolaguna.com">hello@leolaguna.com</a></div>
   </div>
+  </div></div>
 
-  <div class="footer__bottom" data-footer-enter="0">
-    <p class="footer__meta" data-footer-enter="140">LIMA, PERU © <span data-footer-year></span><br/><span data-footer-clock></span> (UTC−5)</p>
-    <a class="footer__email" href="mailto:hello@leolaguna.com">hello@leolaguna.com</a>
-    <div class="footer__social hover-group">
-      <a class="hover-option" data-footer-enter="240" href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer">Instagram</a>
-      <a class="hover-option" data-footer-enter="340" href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  <div class="footer__strip-window"><div class="footer__strip-clip">
+  <div class="footer__bottom">
+    <p class="footer__meta"><span class="footer__meta-line">Lima, Perú <span data-footer-clock></span></span><br/><span class="footer__meta-line"><span data-footer-date></span> (UTC−5)</span></p>
+    <p class="footer__copyright">©<span data-footer-year></span> Leo Laguna</p>
+    <div class="footer__center-group">
+      <a class="footer__center-logo" href="#home" aria-label="Leo Laguna — Home"></a>
+      <div class="footer__contact-block">
+        <span class="footer__label">Contact</span>
+        <a class="footer__contact-email" href="mailto:hello@leolaguna.com">hello@leolaguna.com</a>
+        <p>Based in Lima, Perú<br/>Working Worldwide.</p>
+      </div>
     </div>
+    <div class="footer__social hover-group">
+      <span class="footer__label">Connect</span>
+      <a class="hover-option" href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+      <a class="hover-option" href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </div>
+    <a class="footer__back-top action-pill" href="#home"><span data-roll-label>Back to top</span><span class="action-arrow" data-direction="up" aria-hidden="true"><span data-arrow="↑">↑</span></span></a>
   </div>
+  </div></div>
 </footer>
 <style>
   @media (orientation:portrait) {
@@ -204,3 +217,26 @@ import '../styles/footer.css';
   document.addEventListener('astro:before-swap',cleanup);
   if(import.meta.hot)import.meta.hot.dispose(()=>{dispose?.();document.removeEventListener('astro:page-load',setup);document.removeEventListener('astro:before-swap',cleanup);});
 </script>
+<style>
+  .footer__compact-window, .footer__compact-piece {display:contents;}
+  @media (max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait) {
+    .footer__compact-window {display:block;position:relative;order:1;clip-path:inset(-20px -100vw -100svh);}
+    .footer__compact-piece {display:flex;flex-direction:column;gap:7svh;}
+    .footer__compact-piece [data-footer-enter] {opacity:1!important;}
+  }
+  @media (orientation:portrait) {
+    :global(html) .footer[data-compact-portrait] .footer__compact-window {
+      display:grid;position:relative;grid-column:1/-1;grid-row:2;grid-template-columns:subgrid;column-gap:inherit;row-gap:0;clip-path:inset(-20px -100vw -100svh);
+    }
+    :global(html) .footer[data-compact-portrait] .footer__compact-piece [data-footer-enter] {opacity:1!important;}
+    :global(html) .footer[data-compact-portrait] .footer__compact-piece {display:grid;grid-column:1/-1;grid-template-columns:subgrid;column-gap:inherit;row-gap:0;}
+    :global(html) .footer[data-compact-portrait] .footer__compact-piece .footer__heading,
+    :global(html) .footer[data-compact-portrait] .footer__compact-piece .footer__contact-info {grid-row:1;}
+  }
+  @media (max-width:1000px) and (max-height:500px) and (orientation:landscape) and (any-pointer:coarse) {
+    :global(html:not([data-ipad])) .footer .footer__compact-window {display:grid;grid-column:1/-1;grid-row:2;grid-template-columns:subgrid;column-gap:inherit;row-gap:0;}
+    :global(html:not([data-ipad])) .footer .footer__compact-piece {display:grid;grid-column:1/-1;grid-template-columns:subgrid;column-gap:inherit;row-gap:0;}
+    :global(html:not([data-ipad])) .footer .footer__compact-piece .footer__heading,
+    :global(html:not([data-ipad])) .footer .footer__compact-piece .footer__contact-info {grid-row:1;}
+  }
+</style>

@@ -7,7 +7,7 @@ import GlassSidebar from './GlassSidebar.astro';
 
 const t = en as Record<string,string>;
 ---
-<section id="work" class="projects" aria-label="Projects" data-projects>
+<section id="work" class="projects" aria-label="Projects" data-projects data-featured-handoff>
   <div class="projects-stage">
   <GlassSidebar />
     <div class="projects-main">
@@ -48,7 +48,7 @@ const t = en as Record<string,string>;
                     </button>
                   ))}
                 </div>
-                <button type="button" class="project-mobile-more" data-open={index} aria-label={t['projects.viewAll']}><span data-i18n="projects.viewAll">{t['projects.viewAll']}</span></button>
+                <button type="button" class="project-mobile-more" data-open={index} aria-label={t['projects.viewAll']}><span data-roll-label data-i18n="projects.viewAll">{t['projects.viewAll']}</span></button>
               </div>
               <div class="project-mobile-copy">
                 <span><button type="button" class="project-panel-back" data-panel-back disabled tabindex="-1" aria-label={`Volver / Back to project ${project.id}`}>{project.id}</button></span>
@@ -71,10 +71,10 @@ const t = en as Record<string,string>;
         </div>
         <div class="projects-actions">
           <div class="projects-paging">
-            <button type="button" data-step="-1" aria-label="Previous / Anterior">←</button>
-            <button type="button" data-step="1" aria-label="Next / Siguiente">→</button>
+            <button type="button" data-step="-1" aria-label="Previous / Anterior"><span class="action-arrow" data-direction="left" aria-hidden="true"><span data-arrow="←">←</span></span></button>
+            <button type="button" data-step="1" aria-label="Next / Siguiente"><span class="action-arrow" data-direction="right" aria-hidden="true"><span data-arrow="→">→</span></span></button>
           </div>
-          <button type="button" class="projects-view-all arrow-hover" data-open="current" aria-controls="projects-expanded" aria-expanded="false"><span data-i18n="projects.viewAll">{t['projects.viewAll']}</span> <span class="hover-arrow-motion" aria-hidden="true">↴</span></button>
+          <button type="button" class="projects-view-all action-pill" data-open="current" aria-controls="projects-expanded" aria-expanded="false"><span data-roll-label data-i18n="projects.viewAll">{t['projects.viewAll']}</span> <span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></button>
         </div>
       </div>
       <div class="projects-progress" aria-hidden="true"><span></span></div>
@@ -85,7 +85,7 @@ const t = en as Record<string,string>;
   <div class="gallery-shell">
     <header class="gallery-header">
       <h2 id="gallery-heading" data-i18n="projects.gallery">{t['projects.gallery']}</h2>
-      <button type="button" data-gallery-close><span data-i18n="projects.close">{t['projects.close']}</span> ↑</button>
+      <button type="button" class="action-pill" data-gallery-close><span data-roll-label data-i18n="projects.close">{t['projects.close']}</span> <span class="action-arrow" data-direction="up" aria-hidden="true"><span data-arrow="↑">↑</span></span></button>
     </header>
     <div class="gallery-scroll">
       {projects.map((project,index)=>(

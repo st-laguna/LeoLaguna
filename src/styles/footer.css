@@ -532,3 +532,91 @@ html.footer-active .site-nav__items {
 
 .footer__email {position:absolute;left:50%;transform:translateX(-50%);font-size:clamp(13px,1.2vw,18px);text-align:center;}
 @media(min-width:701px) and (max-width:1100px) {.footer__email {position:static;transform:none;margin-inline:auto;}}
+
+/* Closing strip: the center pair is independent of both side blocks. */
+.footer .footer__bottom {
+  --strip-height:clamp(180px,22svh,270px);
+  isolation:isolate;
+  inset:auto 0 0;
+  height:var(--strip-height);
+  min-height:180px;
+  padding:clamp(24px,2.6vw,52px) var(--page-gap) 20px;
+  box-sizing:border-box;
+  border:0;
+  background:var(--foreground);
+  color:var(--background);
+  display:block;
+}
+/* Paint the two lower corners behind the existing GET IN TOUCH surface. */
+.footer .footer__strip-window::before {
+  content:'';
+  position:absolute;
+  inset:auto 0 100%;
+  height:clamp(32px,4.5vw,90px);
+  z-index:-1;
+  background:var(--background);
+  border-radius:0 0 clamp(32px,4.5vw,90px) clamp(32px,4.5vw,90px);
+  box-shadow:0 clamp(32px,4.5vw,90px) 0 clamp(32px,4.5vw,90px) var(--foreground);
+  pointer-events:none;
+}
+.footer .footer__meta {max-width:24%;font-size:clamp(10px,.65vw,13px);font-weight:400;}
+.footer .footer__copyright {position:absolute;left:var(--page-gap);bottom:20px;margin:0;font-size:clamp(11px,.8vw,16px);font-weight:400;}
+.footer .footer__center-group {
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  display:flex;
+  align-items:center;
+  gap:clamp(20px,2vw,40px);
+  width:max-content;
+}
+.footer .footer__center-logo {
+  display:block;
+  flex:none;
+  width:clamp(115px,10vw,210px);
+  aspect-ratio:494.6 / 277.66;
+  background:currentColor;
+  mask:url('/icons/logo_w.svg') center / contain no-repeat;
+  -webkit-mask:url('/icons/logo_w.svg') center / contain no-repeat;
+}
+.footer .footer__contact-block {font-size:clamp(15px,1.05vw,22px);line-height:1.25;font-weight:400;}
+.footer .footer__label {display:block;font-size:clamp(12px,.75vw,16px);font-weight:400;opacity:.5;}
+.footer .footer__contact-email {display:block;font-weight:600;white-space:nowrap;}
+.footer .footer__contact-block p {margin:clamp(16px,1.3vw,26px) 0 0;}
+.footer .footer__social {position:absolute;top:clamp(24px,2.6vw,52px);left:75%;right:var(--page-gap);display:flex;flex-direction:column;align-items:start;gap:5px;padding:0;font-size:clamp(18px,1.4vw,28px);font-weight:600;}
+.footer .footer__back-top {position:absolute;right:var(--page-gap);bottom:20px;font-size:clamp(13px,.95vw,19px);font-weight:600;}
+/* Preserve the existing compact composition; only its information surface changes theme. */
+@media(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait) {
+  .footer .footer__bottom {display:none;}
+  .footer .footer__contact-info {color:var(--background);}
+  .footer .footer__contact-info span {color:inherit;opacity:.5;font-weight:400;}
+  .footer .footer__contact-info a {font-weight:600;}
+}
+html[data-tablet-portrait] .footer .footer__bottom {display:none;}
+html[data-tablet-portrait] .footer .footer__contact-info {color:var(--background);}
+html[data-tablet-portrait] .footer .footer__contact-info span {color:inherit;opacity:.5;font-weight:400;}
+html[data-tablet-portrait] .footer .footer__contact-info a {font-weight:600;}
+
+/* A full-width backing keeps the compact row's original spacing and logo. */
+@media(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait) {
+  .footer .footer__contact-info::before {content:'';position:absolute;inset:-20px -100vw -100svh;background:var(--foreground);z-index:-1;pointer-events:none;}
+  .footer .footer__heading {color:var(--background);z-index:3;}
+}
+html[data-tablet-portrait] .footer .footer__contact-info::before {content:'';position:absolute;inset:-20px -100vw -100svh;background:var(--foreground);z-index:-1;pointer-events:none;}
+html[data-tablet-portrait] .footer .footer__heading {color:var(--background);z-index:3;}
+/* Center the giant lettering within its own area, above the closing strip. */
+@media (min-width:701px) and (min-height:501px) and (orientation:landscape), (min-width:1101px) {
+  html:not([data-tablet-portrait]) .footer__marquee {
+    top:calc((100% - clamp(180px,22svh,270px)) / 2);
+  }
+}
+.footer .footer__meta-line {white-space:nowrap;}
+/* Stationary seam and curves; only the existing closing row moves behind it. */
+.footer__strip-window {position:absolute;inset:auto 0 0;height:clamp(180px,22svh,270px);background:var(--foreground);isolation:isolate;}
+.footer__strip-clip {position:absolute;inset:0;overflow:hidden;}
+.footer .footer__strip-window .footer__bottom {height:100%;min-height:0;}
+@media(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait) {
+  .footer__strip-window {display:none;}
+}
+html[data-tablet-portrait] .footer__strip-window {display:none;}

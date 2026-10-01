@@ -1,0 +1,49 @@
+---
+import sharp from 'sharp';
+import { resolve } from 'node:path';
+import '../styles/featured-works.css';
+import en from '../i18n/en.json';
+
+const categoryKeys = { technical: 'projects.01.title', scientific: 'projects.02.title', educational: 'projects.03.title' } as const;
+const labels = en as Record<string, string>;
+
+// Keep futureHref inactive until the project pages are ready.
+const featuredWorks = [
+  { number:'05', client:'WeWhale', categoryId:'educational' as const, image:'/img/FWWW.webp', year:'2025-2026', slug:'wewhale', futureHref:'/work/wewhale/', layout:'lead' },
+  { number:'01', client:'GroAqua', categoryId:'technical' as const, image:'/img/FWGRO.webp', year:'2024-2026', slug:'groaqua', futureHref:'/work/groaqua/', layout:'offset' },
+  { number:'03', client:'EXO Environmental', categoryId:'technical' as const, image:'/img/FWEXO.webp', year:'2025', slug:'exo-environmental', futureHref:'/work/exo-environmental/', layout:'small' },
+  { number:'02', client:'WWF', categoryId:'educational' as const, image:'/img/FWWWF.webp', year:'2026', slug:'wwf', futureHref:'/work/wwf/', layout:'wide' },
+  { number:'04', client:'Sperm Whales of Dominica', categoryId:'scientific' as const, image:'/img/FWSPM.webp', year:'2022-2025', slug:'sperm-whales-of-dominica', futureHref:'/work/sperm-whales-of-dominica/', layout:'closing' },
+];
+// Read original dimensions at build time; replacing a cover updates its ratio.
+const covers = await Promise.all(featuredWorks.map(async work => {
+  const { width, height } = await sharp(resolve('public', work.image.slice(1))).metadata();
+  return { ...work, width, height };
+}));
+---
+<section id="featured-works" class="featured-works" data-featured-works aria-labelledby="featured-works-heading">
+  <h2 id="featured-works-heading">Featured Works <span class="featured-works__arrow" aria-hidden="true">↗</span></h2>
+  <div class="featured-works__composition">
+    {[[covers[1], covers[2], covers[0]], [covers[3], covers[4]]].map((column, columnIndex) => (
+      <div class={`featured-works__column featured-works__column--${columnIndex === 0 ? 'left' : 'right'}`}>
+        {column.map(work => (
+          <div class={`featured-work featured-work--${work.slug}`} data-future-href={work.futureHref}>
+            <figure class="featured-work__content arrow-hover">
+              <figcaption>
+                <span>[{work.number}] {work.client.toUpperCase()}</span>
+                <span class="featured-work__category" data-i18n={categoryKeys[work.categoryId]}>{labels[categoryKeys[work.categoryId]]}</span>
+                <span class="featured-work__action">
+                  <span class="featured-work__year">{work.year}</span>
+                  <span class="featured-work__view" aria-hidden="true">View Project <span class="hover-arrow-motion">↗</span></span>
+                </span>
+              </figcaption>
+              <div class="featured-work__cover"><img src={work.image} alt={work.client} width={work.width} height={work.height} loading={work.slug === 'groaqua' ? 'eager' : 'lazy'} decoding="async" /></div>
+            </figure>
+          </div>
+        ))}
+        {columnIndex === 1 && <p class="featured-works__closing"><span>Science is</span><span>complex.</span><span>Visuals</span><span>shouldn’t be.</span></p>}
+      </div>
+    ))}
+  </div>
+</section>
+<script>import '../scripts/featured-works';</script>
