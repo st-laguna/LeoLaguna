@@ -48,7 +48,7 @@ const t = en as Record<string,string>;
                     </button>
                   ))}
                 </div>
-                <button type="button" class="project-mobile-more" data-open={index} aria-label={t['projects.viewAll']}><span data-roll-label data-i18n="projects.viewAll">{t['projects.viewAll']}</span></button>
+                <button type="button" class="project-mobile-more" data-open={index} aria-label={t['projects.viewAll']}><span data-roll-label data-i18n="projects.viewAll">{t['projects.viewAll']}</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></button>
               </div>
               <div class="project-mobile-copy">
                 <span><button type="button" class="project-panel-back" data-panel-back disabled tabindex="-1" aria-label={`Volver / Back to project ${project.id}`}>{project.id}</button></span>

@@ -16,7 +16,7 @@ export function initFooter() {
   });
   // One reversible reveal; measure the stationary seam only on refresh.
   entranceMedia.add('(prefers-reduced-motion: no-preference)', () => {
-    const pieces = footer.querySelectorAll<HTMLElement>('.footer__bottom, .footer__compact-piece');
+    const pieces = footer.querySelectorAll<HTMLElement>('.footer__bottom');
     const desktopSeam = footer.querySelector<HTMLElement>('.footer__strip-window')!;
     const compactSeam = footer.querySelector<HTMLElement>('.footer__compact-window')!;
     gsap.fromTo(pieces, {yPercent:-35}, {
@@ -214,12 +214,13 @@ function setFooterNavigation(active: boolean) {
     entranceElements.forEach(el=>el.setAttribute('data-entered',''));
   },{signal});
   const formatter=new Intl.DateTimeFormat('en-US',{timeZone:'America/Lima',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
-  const dateFormatter=new Intl.DateTimeFormat('en-US',{timeZone:'America/Lima',weekday:'long',month:'short',day:'numeric',year:'numeric'});
+  let dateLocale=document.documentElement.lang==='es'?'es-PE':'en-US';
+  let dateFormatter=new Intl.DateTimeFormat(dateLocale,{timeZone:'America/Lima',weekday:'long',month:'short',day:'numeric',year:'numeric'});
   const clock=footer.querySelector<HTMLElement>('[data-footer-clock]');
   const date=footer.querySelector<HTMLElement>('[data-footer-date]');
   const year=footer.querySelector<HTMLElement>('[data-footer-year]');
   if(year)year.textContent=String(new Date().getFullYear());
-  function updateClock(){const now=new Date();if(clock)clock.textContent=formatter.format(now);if(date)date.textContent=dateFormatter.format(now);}
+  function updateClock(){const locale=document.documentElement.lang==='es'?'es-PE':'en-US';if(locale!==dateLocale){dateLocale=locale;dateFormatter=new Intl.DateTimeFormat(locale,{timeZone:'America/Lima',weekday:'long',month:'short',day:'numeric',year:'numeric'});}const now=new Date();if(clock)clock.textContent=formatter.format(now);if(date)date.textContent=dateFormatter.format(now);}
   updateClock();const timer=setInterval(updateClock,1000);
   function setOpen(open:boolean){
     work?.setAttribute('aria-expanded',String(open));
@@ -263,15 +264,13 @@ function setFooterNavigation(active: boolean) {
 
       if (remaining <= 4 && getComputedStyle(footer!.querySelector('.footer__compact-piece')!).display === 'contents') {
         const name = footer?.querySelector<HTMLElement>('.footer__name');
-        const logo = footer?.querySelector<HTMLElement>('.footer__mark');
+
 
         if (name && !name.hasAttribute('data-entered')) {
           reveal(name, 0);
         }
 
-        if (logo && !logo.hasAttribute('data-entered')) {
-          reveal(logo, 160);
-        }
+
       }
     
     // A short footer can finish below the top edge when browser chrome retracts.
@@ -320,6 +319,11 @@ window.addEventListener('resize', schedule, {
 });
 
 function updateGlass() {
+  const compact= root.hasAttribute('data-ipad') || root.hasAttribute('data-tablet-portrait') || matchMedia('(max-width:700px), (any-pointer:coarse) and (max-width:1366px), (max-width:1000px) and (max-height:500px)').matches;
+  footer!.toggleAttribute('data-compact-layout',compact);
+  const phoneLandscape=!root.hasAttribute('data-ipad') && matchMedia('(orientation:landscape) and (max-width:1000px) and (max-height:500px) and (any-pointer:coarse)').matches;
+  footer!.toggleAttribute('data-phone-landscape',phoneLandscape);
+  if(compact){const info=footer!.querySelector<HTMLElement>('.footer__contact-info')!;const height=info.getBoundingClientRect().height+'px';if(footer!.style.getPropertyValue('--footer-contact-height')!==height)footer!.style.setProperty('--footer-contact-height',height);}
   const compactPortrait=matchMedia('(orientation:portrait)').matches && (root.hasAttribute('data-tablet-portrait') || matchMedia('(max-width:700px)').matches);
   footer!.toggleAttribute('data-compact-portrait',compactPortrait);
   const message=marquee.querySelector<HTMLElement>(':scope > .footer__mobile-message');
@@ -332,6 +336,7 @@ function updateGlass() {
 window.addEventListener('leo:orientation-ready',updateGlass,{signal});
 const resizeObserver = new ResizeObserver(updateGlass);
 resizeObserver.observe(marquee);
+resizeObserver.observe(footer.querySelector('.footer__contact-info')!);
 const glassLayoutObserver=new MutationObserver(updateGlass);
 glassLayoutObserver.observe(root,{attributes:true,attributeFilter:['data-tablet-portrait']});
 void document.fonts.ready.then(()=>{if(!signal.aborted)updateGlass();});
@@ -342,6 +347,9 @@ return () => {
   animations.forEach(animation=>animation.cancel());
   footer.removeAttribute('data-entrance-ready');
   footer.removeAttribute('data-compact-portrait');
+  footer.removeAttribute('data-compact-layout');
+  footer.removeAttribute('data-phone-landscape');
+  footer.style.removeProperty('--footer-contact-height');
   footer.removeAttribute('data-footer-refraction');
   entranceElements.forEach(element=>element.removeAttribute('data-entered'));
 

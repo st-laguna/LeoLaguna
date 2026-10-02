@@ -22,24 +22,24 @@ const previewSize=await dimensions(preview);
   <div class="case-study__stage">
     <div class="case-study__rail" data-case-rail>
       <section class="case-study__intro">
-        <h1 id="case-title">{project.title}</h1>
+        <div class="case-study__intro-title"><h1 id="case-title" data-i18n={"case."+project.slug+".title"}>{labels["case."+project.slug+".title"]||project.title}</h1><span class="case-study__intro-direction" aria-hidden="true">→</span></div>
         <dl class="case-study__metadata">
-          <div><dt>Client</dt><dd>{project.client}</dd></div>
-          <div><dt>Service</dt><dd data-i18n={categoryKeys[project.categoryId]}>{labels[categoryKeys[project.categoryId]]}</dd></div>
-          <div><dt>Location</dt><dd>{project.location||'—'}</dd></div>
-          <div><dt>Date</dt><dd>{project.year}</dd></div>
+          <div><dt data-i18n="case.client">Client</dt><dd>{project.client}</dd></div>
+          <div><dt data-i18n="case.service">Service</dt><dd data-i18n={categoryKeys[project.categoryId]}>{labels[categoryKeys[project.categoryId]]}</dd></div>
+          <div><dt data-i18n="case.location">Location</dt><dd data-i18n={'case.'+project.slug+'.location'}>{labels['case.'+project.slug+'.location']||project.location||'—'}</dd></div>
+          <div><dt data-i18n="case.date">Date</dt><dd>{project.year}</dd></div>
         </dl>
       </section>
       {project.model && <section class="case-study__model" data-case-model data-model={project.model} aria-label="Interactive 3D model">
-        <span data-model-status role="status">Loading 3D model…</span>
+        <span data-model-status role="status" data-i18n="model.loading">Loading 3D model…</span>
         <div class="case-study__model-controls">
-          <span class="case-study__model-hint">Drag to rotate</span>
-          <div class="case-study__zoom" role="group" aria-label="Model zoom">
-            <button data-zoom-step="-1" disabled type="button" aria-label="Decrease zoom">−</button>
-            <input data-model-zoom disabled type="range" min="0" max="100" step="1" value="0" aria-label="Model zoom" aria-orientation="horizontal" />
-            <button data-zoom-step="1" disabled type="button" aria-label="Increase zoom">+</button>
+          <span class="case-study__model-hint" data-i18n="model.drag">Drag to rotate</span>
+          <div class="case-study__zoom" role="group" aria-label="Model zoom" data-i18n-aria-label="model.zoom">
+            <button data-zoom-step="-1" disabled type="button" aria-label="Decrease zoom" data-i18n-aria-label="model.zoomOut">−</button>
+            <input data-model-zoom disabled type="range" min="0" max="100" step="1" value="0" aria-label="Model zoom" data-i18n-aria-label="model.zoom" aria-orientation="horizontal" />
+            <button data-zoom-step="1" disabled type="button" aria-label="Increase zoom" data-i18n-aria-label="model.zoomIn">+</button>
           </div>
-          <button class="case-study__explode" data-explode disabled type="button" aria-label="Explode model" aria-pressed="false"><span aria-hidden="true"></span></button>
+          <button class="case-study__explode" data-explode disabled type="button" aria-label="Explode model" data-i18n-aria-label="model.explode" aria-pressed="false"><span aria-hidden="true"></span></button>
         </div>
       </section>}
       <div class="case-study__images">
@@ -55,10 +55,10 @@ const previewSize=await dimensions(preview);
         ))}
       </div>
       <section class="case-study__end" aria-label="More case studies">
-        <nav class="case-study__others" aria-label="Other Cases"><span>Other Cases</span>{others.map(item=><a href={'/work/'+item.slug+'/'}><span>{item.title} — {item.client}</span><span class="case-study__other-arrow" aria-hidden="true"><span class="action-arrow" data-direction="diagonal"><span data-arrow="↗">↗</span></span></span></a>)}</nav>
-      <a class="case-study__next" href={'/work/'+next.slug+'/'} aria-label={'Next Case Study: '+next.title}>
-        <span class="case-study__next-label">Next Case Study ↗</span>
-        <div class="case-study__next-heading"><h2>{next.title}</h2><span>{next.client}</span></div>
+        <nav class="case-study__others" aria-label="Other Cases"><span data-i18n="case.other">Other Cases</span>{others.map(item=><a href={'/work/'+item.slug+'/'}><span><span data-i18n={'case.'+item.slug+'.title'}>{labels['case.'+item.slug+'.title']||item.title}</span> — {item.client}</span><span class="case-study__other-arrow" aria-hidden="true"><span class="action-arrow" data-direction="diagonal"><span data-arrow="↗">↗</span></span></span></a>)}</nav>
+      <a class="case-study__next" href={'/work/'+next.slug+'/'} aria-label={'Next Case Study: '+next.title} data-i18n-aria-label={'case.'+next.slug+'.title'}>
+        <span class="case-study__next-label"><span data-i18n="case.next">Next Case Study</span> <span aria-hidden="true">↗</span></span>
+        <div class="case-study__next-heading"><h2 data-i18n={'case.'+next.slug+'.title'}>{labels['case.'+next.slug+'.title']||next.title}</h2><span>{next.client}</span></div>
         <div class="case-study__preview">
           <img src={preview} width={previewSize.width} height={previewSize.height} alt={next.client} loading="eager" fetchpriority="low" decoding="async" />
           <div class="case-study__next-meta"><span data-i18n={categoryKeys[next.categoryId]}>{labels[categoryKeys[next.categoryId]]}</span><span>{next.year}</span></div>

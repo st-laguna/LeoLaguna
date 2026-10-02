@@ -87,3 +87,7 @@ html[data-contact-hidden] body .site-header .site-nav__items > a[href="#contact"
   .site-header .site-nav__items > a[href="#contact"],
   html[data-contact-hidden] body .site-header .site-nav__items > a[href="#contact"] {transition:none;}
 }
+
+/* The header mark belongs to earlier sections, never GET IN TOUCH. */
+html.footer-active body .site-header .site-header__footer-logo,
+html[data-contact-hidden] body .site-header .site-header__footer-logo {visibility:hidden!important;pointer-events:none!important;}

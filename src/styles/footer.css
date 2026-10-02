@@ -605,3 +605,10 @@ html[data-tablet-portrait] .footer__strip-window {display:none;}
 /* Social glyphs retain the link typography, not the compact row's metadata style. */
 .footer .footer__contact-info a[data-roll-link] span {color:inherit;opacity:1;font-size:inherit;font-weight:inherit;}
 .footer .footer__contact-info a[data-roll-link] > .link-state {font-size:13px;font-weight:500;}
+
+@media(max-width:700px) and (orientation:portrait) {
+ html .footer[data-compact-portrait] {--footer-logo-width:23vw;--footer-contact-width:55vw;}
+ html .footer[data-compact-portrait] .footer__contact-info a {min-height:36px;display:flex;align-items:center;gap:4px;}
+}
+
+html.footer-active body .footer .footer__compact-piece .footer__heading {visibility:visible!important;}

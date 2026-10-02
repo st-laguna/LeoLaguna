@@ -42,7 +42,7 @@ const steps = [1, 2, 3, 4];
             </span>
 
             <span class="workflow__back" aria-hidden="true">
-              <span class="workflow__step">Step {step}</span>
+              <span class="workflow__step" data-i18n={`workflow.${step}.step`}>Step {step}</span>
               <span data-i18n={`workflow.${step}.body`}>
                 {dictionary[`workflow.${step}.body`]}
               </span>

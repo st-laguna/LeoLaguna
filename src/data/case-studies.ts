@@ -9,7 +9,8 @@ export interface CaseStudy {
 }
 // Replace the five null entries with confirmed public image paths for each project.
 export const caseStudies:CaseStudy[] = [
-  {slug:'wewhale',client:'WeWhale',title:'WeWhale',categoryId:'educational',location:null,year:'2025-2026',cover:'/img/FWWW.webp',images:[null,null,null,null,null],nextProject:'groaqua'},
+  {slug:'wewhale',client:'WeWhale',title:'Whale Watching Education',categoryId:'educational',location:'Spain',year:'2025-2026',cover:'/img/FWWW.webp',images:[null,null,null,null,null],
+    media:[1,2,3,4,5,6].map(number=>({kind:'image' as const,src:'/img/FW/04/'+number+'.webp'})),nextProject:'groaqua'},
   {slug:'groaqua',client:'GroAqua',title:'Visualizing Aquaculture Engineering',categoryId:'technical',location:'Islas Feroe',year:'2024-2026',cover:'/img/FWGRO.webp',
     images:['/img/FW/01/1.webp','/img/FW/01/2.webp','/img/FW/01/3.webp','/img/FW/01/4.webp','/img/FW/01/5.webp'],
     nextProject:'exo-environmental',nextPreview:'/img/FW/01/06.webp'},

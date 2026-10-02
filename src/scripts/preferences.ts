@@ -1,4 +1,5 @@
 
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
   import en from '../i18n/en.json';
   import es from '../i18n/es.json';
 
@@ -70,6 +71,10 @@
       element.textContent = element.dataset[language] ?? '';
     });
 
+    document.querySelectorAll<HTMLElement>('[data-i18n-aria-label]').forEach(element=>{
+      const text=dictionary[element.dataset.i18nAriaLabel!];
+      if(text!==undefined)element.setAttribute('aria-label',text);
+    });
     languageButtons.forEach((button) => {
       button.setAttribute(
         'aria-pressed',
@@ -77,6 +82,8 @@
       );
     });
     window.dispatchEvent(new CustomEvent('leo:language-change', {detail:language}));
+    // Translated headings and labels can change the existing scroll geometry.
+    if(ScrollTrigger.getAll().length)ScrollTrigger.refresh();
   }
 
   // Recupera las preferencias guardadas.

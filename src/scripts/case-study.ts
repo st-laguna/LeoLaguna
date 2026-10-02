@@ -12,7 +12,7 @@ if(host&&rail){
     const items=endPanel.querySelectorAll<HTMLElement>('.case-study__others > span, .case-study__others > a > span:first-child, .case-study__next-label, .case-study__next-heading > *, .case-study__preview > img, .case-study__next-meta');
     return gsap.timeline({paused:true}).fromTo(items,{y:28,clipPath:'inset(100% 0 0 0)'},{y:0,clipPath:'inset(0% 0 0 0)',duration:.9,stagger:.12,ease:'power3.inOut'});
   }
-  media.add('(min-width:701px) and (orientation:landscape) and (prefers-reduced-motion:no-preference)',()=>{
+  media.add('(min-width:701px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (max-width:700px) and (prefers-reduced-motion:no-preference)',()=>{
     host.setAttribute('data-horizontal','');
     const distance=()=>Math.max(0,rail.scrollWidth-innerWidth);
     const measure=()=>host.style.setProperty('--case-scroll-height',(innerHeight+distance())+'px');
@@ -42,7 +42,7 @@ if(host&&rail){
     rail.addEventListener('focusin',focus);
     return()=>{entrance?.revert();rail.removeEventListener('focusin',focus);host.removeAttribute('data-horizontal');host.style.removeProperty('--case-scroll-height');};
   });
-  media.add('(max-width:700px) and (prefers-reduced-motion:no-preference), (orientation:portrait) and (prefers-reduced-motion:no-preference)',()=>{
+  media.add('(min-width:701px) and (orientation:portrait) and (prefers-reduced-motion:no-preference)',()=>{
     const entrance=endEntrance();
     if(!endPanel||!entrance)return;
     const trigger=ScrollTrigger.create({id:'case-end-entry',trigger:endPanel,start:'top 90%',end:'bottom top',onEnter:()=>entrance.play(),onLeave:()=>entrance.reverse(),onEnterBack:()=>entrance.play(),onLeaveBack:()=>entrance.reverse()});

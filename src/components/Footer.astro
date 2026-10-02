@@ -42,12 +42,11 @@ import '../styles/footer.css';
 
   <div class="footer__compact-window"><div class="footer__compact-piece">
   <div class="footer__heading">
-    <span class="footer__name" data-footer-enter="0">LEO LAGUNA<sup>©</sup></span>
-    <a href="/" class="footer__mark" data-footer-enter="140" aria-label="Leo Laguna — Home"></a>
+    <a href="/" class="footer__mark" aria-label="Leo Laguna — Home"></a>
   </div>
   <div class="footer__contact-info">
-    <div><span>Connect</span><a data-roll-link href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer"><span class="link-state" aria-hidden="true">[<span class="link-plus">+</span>]</span><span data-roll-label>Instagram</span> <span aria-hidden="true">↗</span></a><a data-roll-link href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer"><span class="link-state" aria-hidden="true">[<span class="link-plus">+</span>]</span><span data-roll-label>LinkedIn</span> <span aria-hidden="true">↗</span></a></div>
-    <div><span>Contact</span><a href="mailto:hello@leolaguna.com">hello@leolaguna.com</a></div>
+    <div><span data-i18n="footer.connect">Connect</span><a data-roll-link href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer"><span data-roll-label>Instagram</span> <span aria-hidden="true">↗</span></a><a data-roll-link href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer"><span data-roll-label>LinkedIn</span> <span aria-hidden="true">↗</span></a></div>
+    <div><span data-i18n="footer.contact">Contact</span><a href="mailto:hello@leolaguna.com">hello@leolaguna.com</a></div>
   </div>
   </div></div>
 
@@ -58,17 +57,17 @@ import '../styles/footer.css';
     <div class="footer__center-group">
       <a class="footer__center-logo" href="#home" aria-label="Leo Laguna — Home"></a>
       <div class="footer__contact-block">
-        <span class="footer__label">Contact</span>
+        <span class="footer__label" data-i18n="footer.contact">Contact</span>
         <a class="footer__contact-email" href="mailto:hello@leolaguna.com">hello@leolaguna.com</a>
-        <p>Based in Lima, Perú<br/>Working Worldwide.</p>
+        <p><span data-i18n="footer.based">Based in Lima, Peru</span><br/><span data-i18n="footer.worldwide">Working Worldwide.</span></p>
       </div>
     </div>
     <div class="footer__social hover-group">
-      <span class="footer__label">Connect</span>
-      <a data-roll-link class="hover-option" href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer"><span class="link-state" aria-hidden="true">[<span class="link-plus">+</span>]</span><span data-roll-label>Instagram</span> <span aria-hidden="true">↗</span></a>
-      <a data-roll-link class="hover-option" href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer"><span class="link-state" aria-hidden="true">[<span class="link-plus">+</span>]</span><span data-roll-label>LinkedIn</span> <span aria-hidden="true">↗</span></a>
+      <span class="footer__label" data-i18n="footer.connect">Connect</span>
+      <a data-roll-link class="hover-option" href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer"><span data-roll-label>Instagram</span> <span aria-hidden="true">↗</span></a>
+      <a data-roll-link class="hover-option" href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer"><span data-roll-label>LinkedIn</span> <span aria-hidden="true">↗</span></a>
     </div>
-    <a class="footer__back-top action-pill" href="#home"><span data-roll-label>Back to top</span><span class="action-arrow" data-direction="up" aria-hidden="true"><span data-arrow="↑">↑</span></span></a>
+    <a class="footer__back-top action-pill" href="#home"><span data-roll-label data-i18n="footer.top">Back to top</span><span class="action-arrow" data-direction="up" aria-hidden="true"><span data-arrow="↑">↑</span></span></a>
   </div>
   </div></div>
 </footer>
@@ -154,7 +153,7 @@ import '../styles/footer.css';
       --footer-contact-width:56vw;
       --footer-portrait-type:clamp(78px,29vw,140px);
       --footer-portrait-label:clamp(10px,2.6vw,12px);
-      --footer-portrait-contact:clamp(12px,3.2vw,18px);
+      --footer-portrait-contact:clamp(15px,4vw,19px);
     }
   }
 </style>
@@ -239,4 +238,99 @@ import '../styles/footer.css';
     :global(html:not([data-ipad])) .footer .footer__compact-piece .footer__heading,
     :global(html:not([data-ipad])) .footer .footer__compact-piece .footer__contact-info {grid-row:1;}
   }
+</style>
+<style>
+  /* The compact closing strip centers one logo/contact unit in both axes. */
+  :global(html) .footer:not([data-compact-layout]) .footer__compact-window {display:none!important;}
+  :global(html) .footer[data-compact-layout] {
+    display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:minmax(0,1fr) clamp(180px,28svh,300px)!important;
+    height:100svh!important;min-height:0!important;padding:0!important;gap:0!important;
+    background:var(--footer-compact-surface,var(--foreground))!important;
+  }
+  :global(html) .footer[data-compact-layout] .footer__marquee {
+    grid-column:1!important;grid-row:1!important;position:relative!important;inset:auto!important;
+    transform:none!important;width:100%!important;height:100%!important;margin:0!important;
+    padding:clamp(44px,8svh,90px) 0 clamp(20px,3svh,32px);box-sizing:border-box;
+    overflow:hidden!important;border-radius:0 0 clamp(24px,5vw,64px) clamp(24px,5vw,64px);
+    background:var(--background);color:var(--foreground);
+  }
+  :global(html) .footer[data-compact-layout] .footer__marquee > svg[data-marquee-svg] {display:none!important;}
+  :global(html) .footer[data-compact-layout] .footer__mobile-message {
+    display:flex!important;flex-direction:column;justify-content:space-between;gap:0!important;height:100%;
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:min(clamp(78px,20vw,240px),calc((100svh - clamp(180px,28svh,300px) - clamp(44px,8svh,90px) - clamp(20px,3svh,32px)) / 3));line-height:1;
+    letter-spacing:-.065em;color:var(--foreground);
+  }
+  :global(html) .footer[data-compact-layout] .footer__mobile-row {display:block;overflow:hidden;white-space:nowrap;font-size:inherit;line-height:1;padding:0!important;flex:none;text-align:left;}
+  :global(html) .footer[data-compact-layout] .footer__mobile-track {display:flex;width:max-content;animation:footer-mobile-flow 22s linear infinite reverse;}
+  :global(html) .footer[data-compact-layout] .footer__mobile-track>span {display:block;flex:none;white-space:pre;}
+  :global(html) .footer[data-compact-layout] .footer__mobile-row:nth-child(2) .footer__mobile-track {animation-direction:normal;}
+  :global(html) .footer[data-compact-layout]:not([data-mobile-visible]) .footer__mobile-track {animation-play-state:paused;}
+  :global(html) .footer[data-compact-layout] .footer__compact-window {
+    display:flex!important;grid-column:1!important;grid-row:2!important;position:relative!important;
+    align-items:center;justify-content:center;padding:20px 16px;box-sizing:border-box;
+    width:100%;height:100%;clip-path:none!important;color:var(--footer-compact-ink,var(--background));
+  }
+  :global(html) .footer[data-compact-layout] .footer__compact-piece {
+    display:flex!important;flex-direction:row;align-items:center;justify-content:center;
+    gap:clamp(18px,4vw,36px)!important;width:max-content;max-width:100%;transform:none!important;
+  }
+  :global(html) .footer[data-compact-layout] .footer__heading {
+    position:relative!important;inset:auto!important;margin:0!important;flex:0 0 clamp(56px,15vw,120px);
+    width:clamp(56px,15vw,120px);height:auto!important;visibility:visible!important;color:inherit;order:0!important;
+  }
+  :global(html) .footer[data-compact-layout] .footer__mark {
+    display:block!important;position:relative!important;inset:auto!important;transform:none!important;
+    width:100%!important;height:auto!important;aspect-ratio:494.6 / 277.66;visibility:visible;
+  }
+  :global(html) .footer[data-compact-layout] .footer__contact-info {
+    display:flex!important;flex-direction:column;gap:clamp(12px,2svh,24px)!important;
+    position:relative!important;inset:auto!important;margin:0!important;min-width:0;color:inherit;order:1!important;
+  }
+  :global(html) .footer[data-compact-layout] .footer__contact-info::before {content:none!important;}
+  :global(html) .footer[data-compact-layout] .footer__contact-info>div {
+    display:grid;grid-template-columns:auto auto;justify-content:start;column-gap:clamp(12px,2.5vw,24px);row-gap:4px;
+  }
+  :global(html) .footer[data-compact-layout] .footer__contact-info>div>span {grid-column:1/-1;font-size:clamp(11px,1.6vw,16px);}
+  :global(html) .footer[data-compact-layout] .footer__contact-info a {
+    display:flex;align-items:center;gap:4px;min-height:36px;font-size:clamp(13px,3.7vw,23px)!important;
+    font-weight:600;white-space:nowrap;overflow-wrap:normal;
+  }
+  :global(html) .footer[data-compact-layout] .footer__contact-info>div:last-child>a {grid-column:1/-1;}
+  :global(html) .footer[data-compact-layout] .footer__strip-window {display:none!important;}
+  :global(html[data-theme="light"]) .footer[data-compact-layout] {--footer-compact-surface:var(--light-ink);--footer-compact-ink:var(--light-base);}
+  :global(html[data-theme="dark"]) .footer[data-compact-layout] {--footer-compact-surface:var(--dark-white);--footer-compact-ink:var(--dark-base);}
+  :global(html) .footer[data-compact-layout] .footer__contact-info a span {font-size:inherit!important;font-weight:inherit;opacity:1;}
+  @media(max-width:700px) and (orientation:portrait) {
+    :global(html) .footer[data-compact-layout] .footer__mobile-message {font-size:clamp(78px,29vw,140px);}
+  }
+  @media(orientation:landscape) and (max-height:500px) {
+    :global(html) .footer[data-compact-layout] {grid-template-rows:minmax(0,1fr) 140px!important;}
+    :global(html) .footer[data-compact-layout] .footer__marquee {padding:36px 0 12px;}
+    :global(html) .footer[data-compact-layout] .footer__mobile-message {font-size:clamp(38px,14svh,64px);}
+    :global(html) .footer[data-compact-layout] .footer__compact-window {padding:12px 16px;}
+    :global(html) .footer[data-compact-layout] .footer__contact-info {gap:8px!important;}
+    :global(html) .footer[data-compact-layout] .footer__contact-info a {min-height:24px;}
+  }
+</style>
+
+<style>
+ :global(html) .footer[data-compact-layout] .footer__heading {
+   flex-basis:calc(var(--footer-contact-height,96px) * 494.6 / 277.66)!important;
+   width:calc(var(--footer-contact-height,96px) * 494.6 / 277.66)!important;
+ }
+ :global(html) .footer[data-compact-layout] .footer__mark {height:var(--footer-contact-height,96px)!important;}
+ :global(html) .footer[data-compact-layout] .footer__contact-info {gap:clamp(18px,2.5svh,28px)!important;}
+ :global(html) .footer[data-compact-layout] .footer__contact-info>div {row-gap:2px;}
+ :global(html) .footer[data-compact-layout] .footer__contact-info a {min-height:24px;}
+ :global(html) .footer[data-compact-layout][data-phone-landscape] .footer__mobile-message {display:none!important;}
+ :global(html) .footer[data-compact-layout][data-phone-landscape] .footer__marquee>svg[data-marquee-svg] {display:block!important;}
+ :global(html) .footer[data-compact-layout][data-phone-landscape] .footer__marquee {padding:0!important;}
+ @media(max-width:350px) {
+  :global(html) .footer[data-compact-layout] .footer__compact-piece {gap:12px!important;}
+  :global(html) .footer[data-compact-layout] .footer__contact-info {gap:16px!important;}
+  :global(html) .footer[data-compact-layout] .footer__contact-info>div {row-gap:0;}
+  :global(html) .footer[data-compact-layout] .footer__contact-info>div>span {font-size:10px!important;}
+  :global(html) .footer[data-compact-layout] .footer__contact-info a {font-size:12px!important;min-height:20px;}
+ }
 </style>

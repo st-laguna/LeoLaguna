@@ -258,3 +258,5 @@ html[data-tablet-portrait] .projects[data-featured-handoff][data-mobile-stack] {
 .projects .projects-paging .action-arrow > span {width:100%;line-height:1;}
 @media(hover:hover) and (pointer:fine) {.gallery-dialog .gallery-item button {cursor:none;}}
 @media(prefers-reduced-motion:reduce) {.projects .projects-paging button,.projects .projects-paging button:disabled {transition:none;}}
+
+.project-mobile-more>.action-arrow {display:none;}

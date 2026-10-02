@@ -1,3 +1,5 @@
+import en from '../i18n/en.json';
+import es from '../i18n/es.json';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
@@ -8,6 +10,8 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const events=new AbortController(),signal=events.signal;
   const button=viewport.querySelector<HTMLButtonElement>('[data-explode]')!;
   const status=viewport.querySelector<HTMLElement>('[data-model-status]')!;
+  const translated=(key:string)=>(document.documentElement.lang==='es'?es:en)[key as keyof typeof en]||key;
+  function setStatus(key:string){status.dataset.i18n=key;status.textContent=translated(key);}
   const zoom=viewport.querySelector<HTMLInputElement>('[data-model-zoom]')!;
   const zoomSteps=Array.from(viewport.querySelectorAll<HTMLButtonElement>('[data-zoom-step]'));
   const zoomState={amount:0};let zoomMotion:gsap.core.Tween|undefined;
@@ -21,9 +25,9 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const zoomRange=.55;
   let renderer:THREE.WebGLRenderer;
   try{renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'default'});}
-  catch{status.textContent='3D rendering is unavailable.';return()=>events.abort();}
+  catch{setStatus('model.unavailable');return()=>events.abort();}
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;
-  const canvas=renderer.domElement;canvas.tabIndex=0;canvas.setAttribute('aria-label','Drag to rotate the assembled or exploded model. Arrow keys also rotate.');
+  const canvas=renderer.domElement;canvas.tabIndex=0;canvas.dataset.i18nAriaLabel='model.canvas';canvas.setAttribute('aria-label',translated('model.canvas'));
   viewport.prepend(canvas);
   const controls=new OrbitControls(orbitCamera,canvas);
   controls.enablePan=false;controls.enableZoom=false;controls.enableDamping=true;controls.dampingFactor=.09;controls.rotateSpeed=.55;
@@ -123,8 +127,8 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
         const inverseParent=new THREE.Matrix3().setFromMatrix4(object.parent!.matrixWorld.clone().invert());
         parts.push({object,position:object.position.clone(),quaternion:object.quaternion.clone(),scale:object.scale.clone(),offset:new THREE.Vector3(x,y,z).multiplyScalar(distance).applyMatrix3(inverseParent),progress:0,delay,phase:index*2.399,period:22+index*.65});
       });
-      loaded=true;button.disabled=false;zoom.disabled=false;zoomSteps.forEach(step=>step.disabled=false);status.textContent='';viewport.dataset.modelReady='';request();
-    }catch(error){status.textContent='Unable to load the 3D model.';console.error(error);}
+      loaded=true;button.disabled=false;zoom.disabled=false;zoomSteps.forEach(step=>step.disabled=false);delete status.dataset.i18n;status.textContent='';viewport.dataset.modelReady='';request();
+    }catch(error){setStatus('model.error');console.error(error);}
   }
   const proximity=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){void load();proximity.disconnect();}},{rootMargin:'300px'});proximity.observe(viewport);
   let visibleRatio=0,expandedWasInView=false;
@@ -147,7 +151,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   }
   function setExploded(next:boolean){
     if(!loaded||exploded===next)return;
-    exploded=next;expandedWasInView=next&&visibleRatio>=.6;button.setAttribute('aria-pressed',String(exploded));button.setAttribute('aria-label',exploded?'Assemble model':'Explode model');
+    exploded=next;expandedWasInView=next&&visibleRatio>=.6;button.setAttribute('aria-pressed',String(exploded));button.dataset.i18nAriaLabel=exploded?'model.assemble':'model.explode';button.setAttribute('aria-label',translated(button.dataset.i18nAriaLabel));
     if(exploded)bringIntoView();
     motion?.kill();
     if(!exploded&&!visible){restoreAssembly();return;}
