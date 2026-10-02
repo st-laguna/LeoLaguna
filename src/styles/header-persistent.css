@@ -13,7 +13,6 @@
   /* Footer keeps Work/About between its central mark and the right controls. */
   html.footer-active:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav {left:var(--footer-nav-center,70%);right:auto;width:max-content;transform:translateX(-50%);transition:none;}
   html.footer-active:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items {gap:clamp(56px,6vw,116px)!important;}
-  html.footer-active:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items>a[href="#contact"] {display:none;}
 }
 @media (min-width:701px) and (max-width:900px) and (min-height:501px) {
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav {top:70px;}
@@ -24,7 +23,6 @@ html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav_
 .site-header__footer-logo {display:block;visibility:hidden;position:fixed;left:var(--page-gap);top:24px;width:44px;height:34px;z-index:104;background:#fff;mix-blend-mode:difference;mask:url('/icons/logo_w.svg') center/contain no-repeat;-webkit-mask:url('/icons/logo_w.svg') center/contain no-repeat;}
 html[data-workflow-header] .site-header__footer-logo,html.footer-active .site-header__footer-logo {visibility:visible;}
 html.footer-active body .footer .footer__heading {visibility:hidden!important;}
-html.footer-active body .site-header .site-nav a[href="#contact"] {display:none!important;}
 @media (min-width:701px) and (min-height:501px) {
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items {gap:clamp(36px,6vw,112px)!important;}
   html.footer-active:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav {left:50vw;transform:translateX(-50%);}
@@ -72,4 +70,20 @@ html.footer-active body .site-header .site-nav a[href="#contact"] {display:none!
 }
 @media(prefers-reduced-motion:reduce) {
   .site-header .nav-plus {transition:none;}
+}
+
+/* Contact leaves only when GET IN TOUCH reaches the header. */
+.site-header .site-nav__items > a[href="#contact"] {
+  translate:0 0;
+  transition:translate .7s cubic-bezier(.76,0,.24,1), visibility 0s;
+}
+html[data-contact-hidden] body .site-header .site-nav__items > a[href="#contact"] {
+  translate:0 calc(-100% - 80px);
+  visibility:hidden!important;
+  pointer-events:none!important;
+  transition:translate .7s cubic-bezier(.76,0,.24,1), visibility 0s .7s;
+}
+@media(prefers-reduced-motion:reduce) {
+  .site-header .site-nav__items > a[href="#contact"],
+  html[data-contact-hidden] body .site-header .site-nav__items > a[href="#contact"] {transition:none;}
 }

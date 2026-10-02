@@ -5,6 +5,11 @@
 }
 
 :root {
+  --light-base: #D1D1D1;
+  --light-ink: #1C1C1C;
+  --light-coral: #EF6C65;
+  --light-featured: #78848C;
+  --light-white: #FFFFFF;
   color-scheme: light;
   --background: #f7f7f7;
   --foreground: #000000;
@@ -186,8 +191,7 @@ html {scrollbar-gutter:stable;}
 html.projects-active .site-nav {transform:translate(-50%,-160px);pointer-events:none;}
 @media(max-width:640px){:root{--page-gap:6vw;}}
 @media(prefers-reduced-motion:reduce){.site-nav{transition:none;}}
-html.projects-active .site-nav [data-footer-work],
-html.footer-active .site-nav a[href="#contact"] {
+html.projects-active .site-nav [data-footer-work] {
   visibility: hidden;
   pointer-events: none;
 }
@@ -253,7 +257,9 @@ html[data-theme="dark"] .hero .journey-cover > :is(rect,path) {fill:var(--dark-b
 html[data-theme="dark"] .workflow .workflow__back {background-color:var(--dark-featured);color:var(--dark-white);}
 
 /* Local polish: retain the existing layout and animation owners. */
-.workflow .workflow__back .workflow__step {position:absolute;top:clamp(16px,3svh,32px);left:0;right:0;max-width:none;width:auto;margin:0;text-align:center;font-size:12px;line-height:1;}
+html body .workflow .workflow__back {display:grid;grid-template-rows:1fr auto 1fr;justify-items:center;padding-block:0;}
+.workflow .workflow__back::after {content:'';}
+.workflow .workflow__back .workflow__step {position:static;align-self:center;max-width:none;width:auto;margin:0;text-align:center;font-size:14px;line-height:1;}
 .workflow .workflow__back {padding-top:clamp(48px,7svh,72px);}
 .workflow .workflow__cursor {width:44px;height:44px;border:0;border-radius:0;background:none;font-size:22px;}
 html[data-theme="dark"] .projects .projects-paging button:hover:not(:disabled) {background-color:var(--dark-coral);border-color:var(--dark-coral);color:var(--dark-base);}
@@ -279,3 +285,21 @@ html[data-theme="dark"] .footer .footer__strip-window::before {box-shadow:0 clam
 html[data-ipad] body .site-header > .site-controls {display:flex!important;position:fixed;top:24px;right:var(--page-gap);z-index:103;}
 
 html body .projects[data-horizontal] .glass-toggle {display:none!important;}
+
+/* Light palette: section consumers; dark selectors and tokens are unchanged. */
+html[data-theme="light"] :is(.hero,.journey-stage,.workflow,.projects,.brands,.footer,.case-study) {--background:var(--light-base);}
+html[data-theme="light"] :is(.hero,.journey-stage,.workflow,.projects,.projects-stage,.project-panel,.project-media,.brands,.footer) {background-color:var(--light-base);}
+html[data-theme="light"] .workflow {--back-background:var(--light-ink);}
+html[data-theme="light"] .workflow .workflow__back {background-color:var(--light-ink);}
+html[data-theme="light"] .workflow .workflow__heading em {color:var(--light-coral);}
+html[data-theme="light"] :is(.services-transition,.services-intro) {background-color:var(--light-ink);color:var(--light-white);}
+html[data-theme="light"] .projects {--surface:var(--light-base);}
+html[data-theme="light"] :is(.projects-footer,.project-mobile-copy) {--foreground:var(--light-base);background-color:var(--light-ink);color:var(--light-base);}
+html[data-theme="light"] .featured-works {background-color:var(--light-featured);color:var(--light-white);}
+html[data-theme="light"] .case-study {--case-background:var(--light-base);--case-next:var(--light-coral);}
+html[data-theme="light"] .brands[data-mobile-streams] .brands-cell {background-color:var(--light-base);}
+html[data-theme="light"] .footer {--footer-optics-background:var(--light-base);}
+html[data-theme="light"] .footer :is(.footer__bottom,.footer__strip-window) {background-color:var(--light-ink);color:var(--light-base);}
+html[data-theme="light"] .footer .footer__strip-window::before {background-color:var(--light-base);box-shadow:0 clamp(32px,4.5vw,90px) 0 clamp(32px,4.5vw,90px) var(--light-ink);}
+html[data-theme="light"] .footer .footer__contact-info::before {background-color:var(--light-ink);}
+html[data-theme="light"] body .footer .footer__back-top.action-pill {color:var(--light-base)!important;}

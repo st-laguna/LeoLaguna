@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudy from '../../components/CaseStudy.astro';
+import {caseStudies} from '../../data/case-studies';
+export function getStaticPaths(){return caseStudies.map(project=>({params:{slug:project.slug},props:{project}}));}
+const {project}=Astro.props;
+---
+<BaseLayout title={project.title+' — Leo Laguna'} page="case-study" lang="en">
+  <CaseStudy project={project} />
+</BaseLayout>

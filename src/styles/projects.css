@@ -249,3 +249,12 @@ html[data-tablet-portrait] .projects[data-featured-handoff][data-mobile-stack] {
 @media(hover:hover) and (pointer:fine) {
   .projects .project-media .project-enlarge {cursor:none;}
 }
+
+/* Boundary controls leave through motion, while disabled immediately. */
+.projects .projects-paging {overflow:hidden;padding:2px;}
+.projects .projects-paging button {display:grid;place-items:center;padding:0;transform:translateY(0);visibility:visible;transition:transform .9s cubic-bezier(.76,0,.24,1),visibility 0s;}
+.projects .projects-paging button:disabled {transform:translateY(130%);visibility:hidden;transition:transform .9s cubic-bezier(.76,0,.24,1),visibility 0s .9s;}
+.projects .projects-paging .action-arrow {line-height:1;display:grid;place-items:center;}
+.projects .projects-paging .action-arrow > span {width:100%;line-height:1;}
+@media(hover:hover) and (pointer:fine) {.gallery-dialog .gallery-item button {cursor:none;}}
+@media(prefers-reduced-motion:reduce) {.projects .projects-paging button,.projects .projects-paging button:disabled {transition:none;}}

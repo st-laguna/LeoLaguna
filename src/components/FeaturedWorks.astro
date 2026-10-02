@@ -4,10 +4,10 @@ import { resolve } from 'node:path';
 import '../styles/featured-works.css';
 import en from '../i18n/en.json';
 
-const categoryKeys = { technical: 'projects.01.title', scientific: 'projects.02.title', educational: 'projects.03.title' } as const;
+import {categoryKeys} from '../data/work-categories';
 const labels = en as Record<string, string>;
 
-// Keep futureHref inactive until the project pages are ready.
+// All five case-study routes share the same template.
 const featuredWorks = [
   { number:'05', client:'WeWhale', categoryId:'educational' as const, image:'/img/FWWW.webp', year:'2025-2026', slug:'wewhale', futureHref:'/work/wewhale/', layout:'lead' },
   { number:'01', client:'GroAqua', categoryId:'technical' as const, image:'/img/FWGRO.webp', year:'2024-2026', slug:'groaqua', futureHref:'/work/groaqua/', layout:'offset' },
@@ -37,11 +37,11 @@ const covers = await Promise.all(featuredWorks.map(async work => {
                   <span class="featured-work__view" aria-hidden="true">View Project <span class="hover-arrow-motion">↗</span></span>
                 </span>
               </figcaption>
-              <div class="featured-work__cover"><img src={work.image} alt={work.client} width={work.width} height={work.height} loading={work.slug === 'groaqua' ? 'eager' : 'lazy'} decoding="async" /></div>
+              <a class="featured-work__cover" href={work.futureHref} aria-label={"View project: "+work.client} style="display:block;color:inherit;text-decoration:none"><img src={work.image} alt={work.client} width={work.width} height={work.height} loading={work.slug === 'groaqua' ? 'eager' : 'lazy'} decoding="async" /></a>
             </figure>
           </div>
         ))}
-        {columnIndex === 1 && <p class="featured-works__closing"><span>Science is</span><span>complex.</span><span>Visuals</span><span>shouldn’t be.</span></p>}
+        {columnIndex === 1 && <p class="featured-works__closing"><span><span>Science is</span></span><span><span>complex.</span></span><span><span>Visuals</span></span><span><span>shouldn’t be.</span></span></p>}
       </div>
     ))}
   </div>

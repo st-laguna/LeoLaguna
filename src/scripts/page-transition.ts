@@ -27,7 +27,7 @@ function settleEntryAnchor() {
   if (performance.getEntriesByType('navigation').some(entry =>
     (entry as PerformanceNavigationTiming).type === 'back_forward')) return;
   const id = location.hash.slice(1);
-  if (id !== 'work' && id !== 'contact') return;
+  if (id !== 'work' && id !== 'featured-works' && id !== 'contact') return;
   const target = document.getElementById(id);
   if (target) { entryAnchorSettled=true; commitScrollJump(() => scrollPage(target.getBoundingClientRect().top + scrollY, false)); }
 }
@@ -248,7 +248,7 @@ document.addEventListener('click', event => {
   const indexText = link.dataset.projectJump;
   const index = indexText === undefined ? undefined : Number(indexText);
   const category = index !== undefined && Number.isInteger(index) && index >= 0 && index < 4;
-  if (!isHome && !category && hash !== 'work' && hash !== 'contact') return;
+  if (!isHome && !category && hash !== 'work' && hash !== 'featured-works' && hash !== 'contact') return;
   const section = isHome
     ? document.querySelector<HTMLElement>('.hero')
     : category

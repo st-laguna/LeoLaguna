@@ -1,4 +1,5 @@
 ---
+import '../../styles/home-microinteractions.css';
 import { bilingual } from "../../data/cv/translations";
 import { profile } from "../../data/cv/profile.js";
 import { education } from "../../data/cv/education.js";
@@ -135,10 +136,10 @@ const groupedTraining = training.reduce<Record<string, string[]>>((acc, curr) =>
       {profile.socials
         .filter(social => social.name.toLowerCase() !== 'gmail')
         .map((social) => (
-        <a href={social.url} target="_blank" rel="noopener noreferrer" class="social-link hover-arrow">
-          {social.name}
+        <Fragment><a data-roll-link href={social.url} target="_blank" rel="noopener noreferrer" class="social-link hover-arrow">
+          <span data-roll-label>{social.name}</span>
           <svg class="arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-        </a>
+        </a>{social.name.toLowerCase()==='instagram' && <a class="action-pill" href="mailto:hello@leolaguna.com"><span data-roll-label>Start a Project</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></a>}</Fragment>
       ))}
     </div>
 
@@ -147,6 +148,7 @@ const groupedTraining = training.reduce<Record<string, string[]>>((acc, curr) =>
     </p>
   </section>
 </div>
+<script>import "../../scripts/action-buttons";</script>
 
 <style>
   * { box-sizing: border-box; }

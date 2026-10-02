@@ -1,4 +1,5 @@
 ---
+import '../../styles/home-microinteractions.css';
 import PageControls from '../PageControls.astro';
 const base = import.meta.env.BASE_URL;
 ---
@@ -7,9 +8,22 @@ const base = import.meta.env.BASE_URL;
   <div class="about__composition">
   <button class="about-mobile-toggle" type="button" aria-expanded="false" aria-controls="about-mobile-menu" aria-label="Open menu / Abrir menú"><span></span><span></span><span></span></button>
   <div class="about-mobile-menu" id="about-mobile-menu" inert>
-    <nav aria-label="Main navigation"><a href="/" data-en="HOME" data-es="INICIO">HOME</a><a href="/#work" data-en="WORK" data-es="PROYECTOS">WORK</a><a href="/#contact" data-en="CONTACT" data-es="CONTACTO">CONTACT</a></nav>
+    <nav aria-label="Main navigation"><a href="/"><span class="about-nav-marker" aria-hidden="true">[<i>+</i>]</span><span data-en="HOME" data-es="INICIO">HOME</span></a><a href="/#work"><span class="about-nav-marker" aria-hidden="true">[<i>+</i>]</span><span data-en="WORK" data-es="PROYECTOS">WORK</span></a><a href="/#contact"><span class="about-nav-marker" aria-hidden="true">[<i>+</i>]</span><span data-en="CONTACT" data-es="CONTACTO">CONTACT</span></a></nav>
   </div>
-  <div class="about-preferences"><PageControls /></div>
+  <div class="about-preferences">    <div class="about__loading">
+      <span class="about__dot" aria-hidden="true"></span>
+      <p data-status role="status" aria-live="polite" aria-atomic="true">
+        A little world of mine.
+      </p>
+      <progress
+        data-load-progress
+        max="1"
+        value="0"
+        aria-label="3D assets loaded"
+        hidden
+      ></progress>
+    </div>
+<PageControls /></div>
   <div class="about-mobile-copy">
     <a class="about-mobile-cv" href="/cv/"><span data-en="THE FORMAL STUFF" data-es="MI CURRÍCULUM">THE FORMAL STUFF</span></a>
     <div class="about-mobile-intro">
@@ -50,19 +64,6 @@ const base = import.meta.env.BASE_URL;
       <button data-pause type="button" disabled aria-pressed="false">
         Pause motion
       </button>
-    </div>
-    <div class="about__loading">
-      <span class="about__dot" aria-hidden="true"></span>
-      <p data-status role="status" aria-live="polite" aria-atomic="true">
-        A little world of mine.
-      </p>
-      <progress
-        data-load-progress
-        max="1"
-        value="0"
-        aria-label="3D assets loaded"
-        hidden
-      ></progress>
     </div>
     <p class="about__hint" data-hint hidden data-en="Drag to look around · Select something to get closer" data-es="Arrastra para explorar · Selecciona un objeto para acercarte">Drag to look around · Select something to get closer</p>
     <noscript>
@@ -107,21 +108,21 @@ const base = import.meta.env.BASE_URL;
         <a class="link" href="mailto:sanchezlaguna99@gmail.com">
           Gmail <span aria-hidden="true">↗</span>
         </a>
-        <a
+        <a data-roll-link
           class="link"
           href="https://www.linkedin.com/in/leolaguna/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          LinkedIn <span aria-hidden="true">↗</span>
+          <span data-roll-label>LinkedIn</span> <span aria-hidden="true">↗</span>
         </a>
-        <a
+        <a data-roll-link
           class="link"
           href="https://www.instagram.com/laguna.99/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Instagram <span aria-hidden="true">↗</span>
+          <span data-roll-label>Instagram</span> <span aria-hidden="true">↗</span>
         </a>
       </div>
     </div>
@@ -131,14 +132,14 @@ const base = import.meta.env.BASE_URL;
         aria-label="Main navigation"
         data-box-motion
       >
-        <a href="/" data-en="HOME" data-es="INICIO">HOME</a>
-        <a href={base + '#work'} data-en="WORK" data-es="PROYECTOS">WORK</a>
-        <a href={base + '#contact'} data-en="CONTACT" data-es="CONTACTO">CONTACT</a>
+        <a href="/"><span class="about-nav-marker" aria-hidden="true">[<i>+</i>]</span><span data-en="HOME" data-es="INICIO">HOME</span></a>
+        <a href={base + '#work'}><span class="about-nav-marker" aria-hidden="true">[<i>+</i>]</span><span data-en="WORK" data-es="PROYECTOS">WORK</span></a>
+        <a href={base + '#contact'}><span class="about-nav-marker" aria-hidden="true">[<i>+</i>]</span><span data-en="CONTACT" data-es="CONTACTO">CONTACT</span></a>
       </nav>
 
       <a class="cv-link" href="/cv/">
         <span data-en="THE FORMAL STUFF" data-es="MI CURRÍCULUM">THE FORMAL STUFF</span>
-        <span class="cv-arrow" aria-hidden="true"></span>
+        <span class="about-nav-marker" aria-hidden="true">[<i>+</i>]</span>
       </a>
     </div>
   </div>
@@ -147,6 +148,7 @@ const base = import.meta.env.BASE_URL;
 
 <script>
   import '../../scripts/about/aboutController.js';
+  import '../../scripts/action-buttons';
   const about=document.querySelector<HTMLElement>('[data-about]');
   const toggle=about?.querySelector<HTMLButtonElement>('.about-mobile-toggle');
   const menu=about?.querySelector<HTMLElement>('.about-mobile-menu');
@@ -363,13 +365,13 @@ const base = import.meta.env.BASE_URL;
     font-weight: 700;
   }
 
-  .link span,
+  .link > span[aria-hidden="true"],
   .cv-link span {
     display: inline-block;
     transition: transform 180ms ease;
   }
 
-  .link:hover span {
+  .link:hover > span[aria-hidden="true"] {
     transform: translate(2px, -2px);
   }
 
@@ -727,7 +729,6 @@ const base = import.meta.env.BASE_URL;
   .about__composition {display:contents;}
   .about-mobile-copy,.about-mobile-toggle,.about-mobile-menu {display:none;}
   .box--nav .site-nav a {position:relative;transition:opacity .2s ease,font-weight .2s ease;}
-  .box--nav .site-nav a::before {content:'';position:absolute;left:-22px;top:50%;width:12px;height:12px;transform:translateY(-50%);background:currentColor;mask:url('/icons/hover-marker.svg') center/contain no-repeat;opacity:0;transition:opacity .2s ease;}
   .box--nav .site-nav:has(a:focus-visible) a:not(:focus-visible) {opacity:.65;}
   .box--nav .site-nav a:focus-visible {font-weight:650;text-decoration:none;}
   .box--nav .site-nav a:focus-visible::before {opacity:1;}

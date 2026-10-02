@@ -1,0 +1,71 @@
+---
+import sharp from 'sharp';
+import {resolve} from 'node:path';
+import type {CaseStudy} from '../data/case-studies';
+import {caseStudies} from '../data/case-studies';
+import {categoryKeys} from '../data/work-categories';
+import en from '../i18n/en.json';
+import '../styles/case-study.css';
+interface Props {project:CaseStudy}
+const {project}=Astro.props;
+const next=caseStudies.find(item=>item.slug===project.nextProject)!;
+const others=caseStudies.filter(item=>item.slug!==project.slug && item.slug!==next.slug);
+const labels=en as Record<string,string>;
+const dimensions=async(src:string)=>{const {width,height}=await sharp(resolve('public',src.slice(1))).metadata();return {width:width!,height:height!};};
+const sequence=project.media || project.images.map(src=>src?{kind:'image' as const,src}:null);
+const images=await Promise.all(sequence.map(async(item)=>item?{...item,...(item.kind==='image'?await dimensions(item.src):{width:item.width,height:item.height})}:null));
+const imageColumns=project.imageColumns || images.map((_,index)=>[index]);
+const preview=project.nextPreview||next.cover;
+const previewSize=await dimensions(preview);
+---
+<main class="case-study" data-case-study data-page-content aria-labelledby="case-title">
+  <div class="case-study__stage">
+    <div class="case-study__rail" data-case-rail>
+      <section class="case-study__intro">
+        <h1 id="case-title">{project.title}</h1>
+        <dl class="case-study__metadata">
+          <div><dt>Client</dt><dd>{project.client}</dd></div>
+          <div><dt>Service</dt><dd data-i18n={categoryKeys[project.categoryId]}>{labels[categoryKeys[project.categoryId]]}</dd></div>
+          <div><dt>Location</dt><dd>{project.location||'—'}</dd></div>
+          <div><dt>Date</dt><dd>{project.year}</dd></div>
+        </dl>
+      </section>
+      {project.model && <section class="case-study__model" data-case-model data-model={project.model} aria-label="Interactive 3D model">
+        <span data-model-status role="status">Loading 3D model…</span>
+        <div class="case-study__model-controls">
+          <span class="case-study__model-hint">Drag to rotate</span>
+          <div class="case-study__zoom" role="group" aria-label="Model zoom">
+            <button data-zoom-step="-1" disabled type="button" aria-label="Decrease zoom">−</button>
+            <input data-model-zoom disabled type="range" min="0" max="100" step="1" value="0" aria-label="Model zoom" aria-orientation="horizontal" />
+            <button data-zoom-step="1" disabled type="button" aria-label="Increase zoom">+</button>
+          </div>
+          <button class="case-study__explode" data-explode disabled type="button" aria-label="Explode model" aria-pressed="false"><span aria-hidden="true"></span></button>
+        </div>
+      </section>}
+      <div class="case-study__images">
+        {imageColumns.map(column=>(
+          <div class:list={['case-study__image-column',{'case-study__image-stack':column.length>1}]} style={column.length>1?'--stack-ratio:'+Math.max(...column.map(index=>images[index]!.width/images[index]!.height)):undefined}>
+          {column.map(index=>{const image=images[index];return (
+          <figure class="case-study__image" data-image-slot={index+1} hidden={!image} style={image?.kind==='video' && images[0] ? '--video-reference-ratio:'+images[0].width/images[0].height : undefined}>
+            {image?.kind==='image' && <img src={image.src} width={image.width} height={image.height} style={'--image-ratio:'+image.width/image.height} alt={project.client+' — '+String(index+1).padStart(2,'0')} loading="eager" fetchpriority={index===0?'high':'low'} decoding="async" />}
+            {image?.kind==='video' && <video data-case-video src={image.src} width={image.width} height={image.height} style={'--image-ratio:'+image.width/image.height} autoplay muted loop playsinline preload="auto" aria-label={project.client+' — animation'} />}
+          </figure>
+          );})}
+          </div>
+        ))}
+      </div>
+      <section class="case-study__end" aria-label="More case studies">
+        <nav class="case-study__others" aria-label="Other Cases"><span>Other Cases</span>{others.map(item=><a href={'/work/'+item.slug+'/'}><span>{item.title} — {item.client}</span><span class="case-study__other-arrow" aria-hidden="true"><span class="action-arrow" data-direction="diagonal"><span data-arrow="↗">↗</span></span></span></a>)}</nav>
+      <a class="case-study__next" href={'/work/'+next.slug+'/'} aria-label={'Next Case Study: '+next.title}>
+        <span class="case-study__next-label">Next Case Study ↗</span>
+        <div class="case-study__next-heading"><h2>{next.title}</h2><span>{next.client}</span></div>
+        <div class="case-study__preview">
+          <img src={preview} width={previewSize.width} height={previewSize.height} alt={next.client} loading="eager" fetchpriority="low" decoding="async" />
+          <div class="case-study__next-meta"><span data-i18n={categoryKeys[next.categoryId]}>{labels[categoryKeys[next.categoryId]]}</span><span>{next.year}</span></div>
+        </div>
+      </a>
+      </section>
+    </div>
+  </div>
+</main>
+<script>import '../scripts/case-study';</script>

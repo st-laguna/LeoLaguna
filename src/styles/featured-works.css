@@ -67,3 +67,7 @@ html body [data-featured-brands] > .brands[data-brands] {position:sticky;top:0;z
 @media(prefers-reduced-motion:no-preference) {
   .featured-works__arrow {animation:home-arrow-corner 2.4s cubic-bezier(.4,0,.2,1) infinite;}
 }
+.featured-works__closing > span {overflow:hidden;}
+
+/* Transforms require a box on each animated inner line. */
+.featured-works__closing > span > span {display:block;}

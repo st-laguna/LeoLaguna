@@ -27,17 +27,19 @@ interface Props {
   title?: string;
   description?: string;
   lang?: 'es' | 'en';
+  page?: 'case-study';
 }
 
 const {
   title = 'Leo Laguna',
   description = 'Ilustración científica y comunicación visual.',
   lang = 'es',
+  page,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} data-page={page}>
   <head>
     <meta charset="UTF-8" />
     <link rel="preload" href="/fonts/HostGrotesk.woff2" as="font" type="font/woff2" crossorigin />
@@ -109,17 +111,17 @@ const {
     <div class="theme-wipe" data-theme-wipe popover="manual" hidden aria-hidden="true"></div>
     <div data-home-curtain aria-hidden="true"></div>
     <header class="site-header" data-site-header style={headerBlueprint}>
-      <a class="site-header__footer-logo" href="#home" aria-label="Leo Laguna — Home"></a>
+      <a class="site-header__footer-logo" href={page ? "/#home" : "#home"} aria-label="Leo Laguna — Home"></a>
   <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-navigation" aria-label="Open menu / Abrir menú">
     <span></span><span></span><span></span>
   </button>
   <div class="mobile-menu-panel" id="mobile-navigation" data-mobile-menu inert>
   <nav class="site-nav" aria-label="Navegación principal">
     <div class="site-nav__items hover-group">
-      <a class="hover-option" href="#work"><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.services">Service</span></a>
+      <a class="hover-option" href={page ? "/#work" : "#work"}><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.services">Service</span></a>
       <a class="hover-option" href="/about/"><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.about">About</span></a>
       <a class="hover-option" href={Astro.url.pathname === '/' ? '#featured-works' : '/#featured-works'}><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.works">Works</span></a>
-      <a class="hover-option" href="#contact"><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.contact">Contact</span></a>
+      <a class="hover-option" href={page ? "/#contact" : "#contact"}><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.contact">Contact</span></a>
     </div>
     <div class="site-nav__submenu hover-group" id="site-work-options" hidden>
       <a class="hover-option" href="#work" data-project-jump="0" >01 Technical Visuals</a>

@@ -79,3 +79,25 @@ html[data-page="about"] {--background:#f7f7f7;--foreground:#171717;--surface:#ef
 html[data-page="about"][data-theme="dark"] {--background:#181818;--foreground:#f7f7f7;--surface:#222;color-scheme:dark;}
 html[data-page="about"].mobile-menu-open {overflow:hidden;}
 
+
+/* Align the existing status and controls as a single toolbar. */
+html body .about .about-preferences {display:flex;align-items:center;gap:14px;left:auto;right:28px;top:24px;}
+html body .about .about-preferences .about__loading {position:static;width:auto;max-width:none;height:auto;min-height:0;margin:0;padding:0;border:0;clip-path:none;overflow:visible;white-space:nowrap;}
+html body .about .about-preferences .about__loading p {font-size:10px;line-height:1.2;margin:0;}
+html body .about .about-preferences .page-controls,html body .about .about-preferences .site-controls {display:flex;align-items:center;flex-wrap:nowrap;gap:14px;}
+html body .about .box--nav .site-nav a::before {display:none;}
+html body .about .about-nav-marker {display:inline-flex;gap:1px;flex-shrink:0;margin-right:8px;}
+html body .about .about-nav-marker i {font-style:normal;display:inline-block;transition:transform .7s cubic-bezier(.76,0,.24,1);}
+html body .about a:is(:hover,:focus-visible) .about-nav-marker i {transform:rotate(45deg);}
+@media(max-width:700px), (orientation:landscape) and (max-height:500px) {
+html body .about .about-preferences {left:12px;right:12px;top:12px;bottom:auto;gap:6px;z-index:23;}
+html body .about .about-preferences .page-controls,html body .about .about-preferences .site-controls {gap:6px;}
+html body .about .about-preferences .action-pill {font-size:10px!important;padding:8px!important;}
+html body .about .about-preferences .about__loading p {font-size:8px;}
+html body .about .about-preferences .about__dot {display:none;}
+html body .about .about-mobile-toggle {top:58px;}
+}
+
+html body .about .about-preferences {top:24px!important;}
+html body .about .about-preferences .about__loading {position:static!important;width:auto!important;height:auto!important;clip-path:none!important;overflow:visible!important;padding:0!important;border:0!important;}
+@media(max-width:700px), (orientation:landscape) and (max-height:500px) {html body .about .about-preferences {top:12px!important;right:12px!important;}}

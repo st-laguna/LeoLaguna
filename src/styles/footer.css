@@ -1,7 +1,3 @@
-:root {
-  --footer-hover-icon: url('/icons/hover-marker.svg');
-}
-
 .footer {
   position: relative;
   isolation: isolate;
@@ -126,21 +122,7 @@
   transition: opacity 250ms ease, translate 300ms ease;
 }
 
-.hover-option::before {
-  content: '';
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  top: 50%;
-  left: -15px;
-  background: currentColor;
-  -webkit-mask: var(--footer-hover-icon) center / contain no-repeat;
-  mask: var(--footer-hover-icon) center / contain no-repeat;
-  opacity: 0;
-  transform: translateY(-50%);
-  transition: opacity 250ms;
-  pointer-events: none;
-}
+.hover-option::before {content:none;}
 
 @media (hover: hover) {
   .hover-group:has(> .hover-option:hover)
@@ -620,3 +602,6 @@ html[data-tablet-portrait] .footer .footer__heading {color:var(--background);z-i
   .footer__strip-window {display:none;}
 }
 html[data-tablet-portrait] .footer__strip-window {display:none;}
+/* Social glyphs retain the link typography, not the compact row's metadata style. */
+.footer .footer__contact-info a[data-roll-link] span {color:inherit;opacity:1;font-size:inherit;font-weight:inherit;}
+.footer .footer__contact-info a[data-roll-link] > .link-state {font-size:13px;font-weight:500;}

@@ -65,6 +65,8 @@ const cursorArrow=clickCursor?.querySelector<HTMLElement>('.footer__click-arrow'
 const finePointer=matchMedia('(hover:hover) and (pointer:fine)');
 
 let px=0,py=0,cx=0,cy=0,hasPointer=false,cursorFrame=0,scrollTimer=0,isScrolling=false;
+const cursorSize={scale:1};
+let cursorPulse:gsap.core.Timeline|undefined;
 
 function setCursor(show:boolean){
   if(!clickCursor)return;
@@ -74,6 +76,9 @@ function setCursor(show:boolean){
 function checkCursor(){
   if(!clickTarget||!hasPointer)return;
   const el=document.elementFromPoint(px,py);
+  const show=!!el&&(clickTarget.contains(el)||!!el.closest('.workflow__card, .project-enlarge:not(:disabled), .gallery-item button, .featured-work__cover, .featured-work a[href]'));
+  // Keep the current label and arrow throughout the fade out.
+  if(!show||!finePointer.matches){setCursor(false);return;}
   const zoom=!!el?.closest('.projects .project-media .project-enlarge');
   const label=zoom?'ZOOM':'CLICK';
   if(cursorLabel&&cursorLabel.textContent!==label)cursorLabel.textContent=label;
@@ -81,14 +86,24 @@ function checkCursor(){
   // Reuse the same circle inside an open native dialog's top layer.
   const cursorParent=el?.closest('dialog[open]')||document.body;
   if(clickCursor&&cursorParent&&clickCursor.parentElement!==cursorParent)cursorParent.append(clickCursor);
-  setCursor(!!el&&(clickTarget.contains(el)||!!el.closest('.workflow__card, .project-enlarge:not(:disabled), .gallery-item button, .featured-work__cover, .featured-work a[href]')));
+  setCursor(true);
+}
+
+function pulseCursor(event:PointerEvent){
+  if(event.button!==0||event.pointerType==='touch'||!finePointer.matches||!clickCursor?.classList.contains('is-visible')||reduced.matches)return;
+  cursorPulse?.kill();
+  const scale=cursorLabel?.textContent==='ZOOM'?.76:.84;
+  // Scale after translation so the cursor shrinks around its current center.
+  cursorPulse=gsap.timeline()
+    .to(cursorSize,{scale,duration:.184,ease:'power2.inOut'})
+    .to(cursorSize,{scale:1,duration:.276,ease:'power2.inOut'});
 }
 
 function animateCursor(){
   if(!clickCursor)return;
   cx+=(px-cx)*.18;
   cy+=(py-cy)*.18;
-  clickCursor.style.transform=`translate3d(${cx}px,${cy}px,0) translate(-50%,-50%)`;
+  clickCursor.style.transform=`translate3d(${cx}px,${cy}px,0) translate(-50%,-50%) scale(${cursorSize.scale})`;
   cursorFrame=requestAnimationFrame(animateCursor);
 }
 
@@ -219,7 +234,7 @@ function setFooterNavigation(active: boolean) {
     }
   }
   work?.addEventListener('click',()=>setOpen(work.getAttribute('aria-expanded')!=='true'),{signal});
-  document.addEventListener('pointerdown',event=>{if(!nav?.contains(event.target as Node))setOpen(false);},{signal});
+  document.addEventListener('pointerdown',event=>{pulseCursor(event);if(!nav?.contains(event.target as Node))setOpen(false);},{signal});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&work?.getAttribute('aria-expanded')==='true'){setOpen(false);work.focus();}},{signal});
   nav?.addEventListener('click',event=>{
     const link=(event.target as Element).closest<HTMLAnchorElement>('a');
@@ -243,6 +258,8 @@ function setFooterNavigation(active: boolean) {
     const remaining=Math.max(0,scroller.scrollHeight-scroller.clientHeight-scroller.scrollTop);
     // Read before reveal() changes attributes and starts entrance animations.
     const rect=footer!.getBoundingClientRect();
+    const headerBottom=document.querySelector('.site-header .site-nav')?.getBoundingClientRect().bottom ?? 60;
+    root.toggleAttribute('data-contact-hidden',rect.top<=viewportTop+headerBottom+24 && rect.bottom>viewportTop);
 
       if (remaining <= 4 && getComputedStyle(footer!.querySelector('.footer__compact-piece')!).display === 'contents') {
         const name = footer?.querySelector<HTMLElement>('.footer__name');
@@ -329,6 +346,7 @@ return () => {
   entranceElements.forEach(element=>element.removeAttribute('data-entered'));
 
   cancelAnimationFrame(cursorFrame);
+  cursorPulse?.kill();
   clickCursor?.classList.remove('is-visible');
   if(clickCursor&&cursorHome)cursorHome.append(clickCursor);
 
@@ -341,6 +359,7 @@ return () => {
   setOpen(false);
   root.classList.remove('footer-active');
   root.removeAttribute('data-featured-header');
+  root.removeAttribute('data-contact-hidden');
   root.style.removeProperty('--footer-header-y');
   root.style.removeProperty('--footer-nav-center');
 };

@@ -136,8 +136,14 @@ if(root){
       const master=frame.portrait?masters.v:masters.h;
       // Read layout before updating SVG attributes. Slot offsets exclude transforms.
       const image=slots[0].querySelector<HTMLImageElement>('.workflow__front img')!;
-      target={x:slots[0].offsetLeft,y:slots[0].offsetTop,w:image.offsetWidth,h:image.offsetHeight};
-      offsets=slots.map(slot=>slot.offsetLeft-target.x);
+      // Convert the slot's layout coordinates to the Hero's stage coordinates.
+      // offsetTop/Left alone are relative to its offsetParent, not the stage.
+      let x=0,y=0;
+      let node:HTMLElement|null=slots[0];
+      const stageElement=host.querySelector<HTMLElement>('.journey-stage')!;
+      while(node && node!==stageElement){x+=node.offsetLeft;y+=node.offsetTop;node=node.offsetParent as HTMLElement|null;}
+      target={x,y,w:image.offsetWidth,h:image.offsetHeight};
+      offsets=slots.map(slot=>slot.offsetLeft-slots[0].offsetLeft);
       cover.setAttribute('viewBox',`0 0 ${width} ${height}`);
       cover.querySelector('mask')!.setAttribute('width',String(width));
       cover.querySelector('mask')!.setAttribute('height',String(height));

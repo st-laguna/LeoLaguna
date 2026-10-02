@@ -1,10 +1,10 @@
 ---
 import SiteControls from './SiteControls.astro';
-const { home = false } = Astro.props;
+const { home = false, project = true } = Astro.props;
 ---
 <div class="page-controls">
   {home && <a class="home-link" href="/" data-i18n="nav.home">HOME</a>}
-  <SiteControls />
+  <SiteControls project={project} />
 </div>
 <style>
   .page-controls { display:flex; align-items:center; flex-wrap:wrap; gap:6px; color:var(--color-text, #171717); }
