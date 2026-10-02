@@ -32,6 +32,7 @@ const previewSize=await dimensions(preview);
       </section>
       {project.model && <section class="case-study__model" data-case-model data-model={project.model} aria-label="Interactive 3D model">
         <span data-model-status role="status" data-i18n="model.loading">Loading 3D model…</span>
+        <button class="case-study__model-explore" data-model-explore disabled type="button" data-i18n="model.explore">Explore 3D model</button>
         <div class="case-study__model-controls">
           <span class="case-study__model-hint" data-i18n="model.drag">Drag to rotate</span>
           <div class="case-study__zoom" role="group" aria-label="Model zoom" data-i18n-aria-label="model.zoom">

@@ -15,6 +15,16 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const zoom=viewport.querySelector<HTMLInputElement>('[data-model-zoom]')!;
   const zoomSteps=Array.from(viewport.querySelectorAll<HTMLButtonElement>('[data-zoom-step]'));
   const zoomState={amount:0};let zoomMotion:gsap.core.Tween|undefined;
+  const explore=viewport.querySelector<HTMLButtonElement>('[data-model-explore]')!;
+  const touchMedia=matchMedia('(any-pointer:coarse)');
+  const touchCapable=()=>touchMedia.matches||navigator.maxTouchPoints>0||document.documentElement.hasAttribute('data-ipad');
+  let preview=touchCapable(),previewAngle=0;
+  const previewRotation=new THREE.Quaternion(),verticalAxis=new THREE.Vector3(0,1,0);
+  const dialog=document.createElement('dialog');dialog.className='case-model-dialog';
+  dialog.dataset.lenisPrevent='';dialog.dataset.i18nAriaLabel='model.viewer';dialog.setAttribute('aria-label',translated('model.viewer'));
+  const close=document.createElement('button');close.type='button';close.className='case-model-dialog__close';close.dataset.i18n='model.close';close.textContent=translated('model.close');
+  dialog.append(close);document.body.append(dialog);
+  let placeholder:HTMLElement|undefined,savedScroll=0,savedOverflow='';
   const reduced=matchMedia('(prefers-reduced-motion:reduce)');
   const scene=new THREE.Scene(),root=new THREE.Group();root.name='MODEL_ROOT';scene.add(root);
   const camera=new THREE.PerspectiveCamera(35,1,.05,100);
@@ -25,7 +35,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const zoomRange=.55;
   let renderer:THREE.WebGLRenderer;
   try{renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'default'});}
-  catch{setStatus('model.unavailable');return()=>events.abort();}
+  catch{dialog.remove();setStatus('model.unavailable');return()=>events.abort();}
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;
   const canvas=renderer.domElement;canvas.tabIndex=0;canvas.dataset.i18nAriaLabel='model.canvas';canvas.setAttribute('aria-label',translated('model.canvas'));
   viewport.prepend(canvas);
@@ -36,7 +46,32 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const initialRotation=orbitCamera.quaternion.clone();
   scene.add(new THREE.HemisphereLight(0xffffff,0x777777,2.0));
   const light=new THREE.DirectionalLight(0xffffff,2.5);light.position.set(3,5,4);scene.add(light);
-  const touchDevice=matchMedia('(pointer:coarse)').matches||document.documentElement.hasAttribute('data-ipad');
+  function updateInteraction(){
+    preview=touchCapable()&&!dialog.open;
+    viewport.toggleAttribute('data-touch-preview',preview);controls.enabled=!preview;
+    canvas.style.touchAction=preview?'auto':dialog.open?'none':'pan-y';canvas.tabIndex=preview?-1:0;
+    canvas.dataset.i18nAriaLabel=preview?'model.preview':'model.canvas';canvas.setAttribute('aria-label',translated(canvas.dataset.i18nAriaLabel));
+    request();
+  }
+  function closeViewer(){
+    if(!placeholder)return;
+    placeholder.replaceWith(viewport);placeholder=undefined;
+    document.documentElement.style.overflow=savedOverflow;
+    window.scrollTo(0,savedScroll);
+    updateInteraction();resize();explore.focus({preventScroll:true});
+  }
+  explore.addEventListener('click',()=>{
+    if(!loaded||!touchCapable()||dialog.open)return;
+    savedScroll=scrollY;savedOverflow=document.documentElement.style.overflow;
+    placeholder=document.createElement('section');placeholder.className=viewport.className;placeholder.setAttribute('aria-hidden','true');
+    viewport.before(placeholder);dialog.append(viewport);
+    dialog.showModal();document.documentElement.style.overflow='hidden';
+    updateInteraction();resize();close.focus({preventScroll:true});
+  },{signal});
+  close.addEventListener('click',()=>dialog.close(),{signal});
+  dialog.addEventListener('close',closeViewer,{signal});
+  touchMedia.addEventListener('change',updateInteraction,{signal});
+  const touchDevice=touchCapable();
   renderer.shadowMap.enabled=!touchDevice;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   light.castShadow=!touchDevice;light.shadow.mapSize.set(1024,1024);
   Object.assign(light.shadow.camera,{left:-1.8,right:1.8,top:1.8,bottom:-1.8,near:.1,far:15});
@@ -60,12 +95,14 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   function request(){if(!disposed&&visible&&!document.hidden&&!frame)frame=requestAnimationFrame(render);}
   function render(now:number){
     frame=0;if(disposed||!visible||document.hidden)return;
-    time+=last?Math.min((now-last)/1000,.05):0;last=now;
+    const elapsed=last?Math.min((now-last)/1000,.05):0;time+=elapsed;last=now;
+    if(preview&&loaded&&!reduced.matches)previewAngle+=elapsed*.18;
     const moving=controls.update();
     const distance=THREE.MathUtils.clamp(controls.getDistance(),controls.minDistance,controls.maxDistance);
     camera.position.copy(viewDirection).multiplyScalar(distance);
 
-    root.quaternion.copy(initialRotation).multiply(orbitCamera.quaternion.clone().invert());
+    previewRotation.setFromAxisAngle(verticalAxis,previewAngle);
+    root.quaternion.copy(previewRotation).multiply(initialRotation).multiply(orbitCamera.quaternion.clone().invert());
     parts.forEach(part=>{
       const wave=time/part.period*Math.PI*2+part.phase,amount=floating.amount;
       part.object.position.copy(part.position).addScaledVector(part.offset,part.progress);
@@ -82,7 +119,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
       shadowTime+=performance.now()-renderStart;
       if(shadowFrames===48&&shadowTime/shadowFrames>32){renderer.shadowMap.enabled=false;light.castShadow=false;light.shadow.map?.dispose();request();}
     }
-    if(moving||zoomMotion?.isActive()||motion?.isActive()||(exploded&&!reduced.matches))request();
+    if((preview&&loaded&&!reduced.matches)||moving||zoomMotion?.isActive()||motion?.isActive()||(exploded&&!reduced.matches))request();
   }
   function resize(){
     const width=viewport.clientWidth,height=viewport.clientHeight;if(!width||!height)return;
@@ -127,7 +164,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
         const inverseParent=new THREE.Matrix3().setFromMatrix4(object.parent!.matrixWorld.clone().invert());
         parts.push({object,position:object.position.clone(),quaternion:object.quaternion.clone(),scale:object.scale.clone(),offset:new THREE.Vector3(x,y,z).multiplyScalar(distance).applyMatrix3(inverseParent),progress:0,delay,phase:index*2.399,period:22+index*.65});
       });
-      loaded=true;button.disabled=false;zoom.disabled=false;zoomSteps.forEach(step=>step.disabled=false);delete status.dataset.i18n;status.textContent='';viewport.dataset.modelReady='';request();
+      loaded=true;explore.disabled=false;button.disabled=false;zoom.disabled=false;zoomSteps.forEach(step=>step.disabled=false);delete status.dataset.i18n;status.textContent='';viewport.dataset.modelReady='';request();
     }catch(error){setStatus('model.error');console.error(error);}
   }
   const proximity=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){void load();proximity.disconnect();}},{rootMargin:'300px'});proximity.observe(viewport);
@@ -152,7 +189,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   function setExploded(next:boolean){
     if(!loaded||exploded===next)return;
     exploded=next;expandedWasInView=next&&visibleRatio>=.6;button.setAttribute('aria-pressed',String(exploded));button.dataset.i18nAriaLabel=exploded?'model.assemble':'model.explode';button.setAttribute('aria-label',translated(button.dataset.i18nAriaLabel));
-    if(exploded)bringIntoView();
+    if(exploded&&!dialog.open)bringIntoView();
     motion?.kill();
     if(!exploded&&!visible){restoreAssembly();return;}
     if(reduced.matches){floating.amount=0;parts.forEach(part=>part.progress=exploded?1:0);request();return;}
@@ -163,8 +200,9 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     request();
   }
   button.addEventListener('click',()=>setExploded(!exploded),{signal});
-  canvas.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return;event.preventDefault();const axis=new THREE.Vector3(event.key==='ArrowUp'||event.key==='ArrowDown'?1:0,event.key==='ArrowLeft'||event.key==='ArrowRight'?1:0,0);const angle=event.key==='ArrowLeft'||event.key==='ArrowUp'?.12:-.12;orbitCamera.position.applyAxisAngle(axis,angle);orbitCamera.lookAt(0,0,0);request();},{signal});
+  canvas.addEventListener('keydown',event=>{if(preview)return;if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return;event.preventDefault();const axis=new THREE.Vector3(event.key==='ArrowUp'||event.key==='ArrowDown'?1:0,event.key==='ArrowLeft'||event.key==='ArrowRight'?1:0,0);const angle=event.key==='ArrowLeft'||event.key==='ArrowUp'?.12:-.12;orbitCamera.position.applyAxisAngle(axis,angle);orbitCamera.lookAt(0,0,0);request();},{signal});
   reduced.addEventListener('change',()=>{zoomMotion?.kill();zoomState.amount=Number(zoom.value)/100;applyZoom();motion?.kill();floating.amount=0;parts.forEach(part=>part.progress=exploded?1:0);request();},{signal});
+  updateInteraction();
   function disposeObject(object:THREE.Object3D){const textures=new Set<THREE.Texture>(),materials=new Set<THREE.Material>();object.traverse(item=>{if(!(item instanceof THREE.Mesh))return;item.geometry.dispose();(Array.isArray(item.material)?item.material:[item.material]).forEach(material=>materials.add(material));});materials.forEach(material=>{Object.values(material).forEach(value=>{if(value instanceof THREE.Texture)textures.add(value);});material.dispose();});textures.forEach(texture=>{const data=texture.source.data;if(typeof ImageBitmap!=='undefined'&&data instanceof ImageBitmap)data.close();texture.dispose();});}
-  return()=>{disposed=true;events.abort();motion?.kill();zoomMotion?.kill();cancelAnimationFrame(frame);proximity.disconnect();visibility.disconnect();resizeObserver.disconnect();controls.dispose();draco.dispose();disposeObject(root);light.shadow.dispose();renderer.dispose();canvas.remove();};
+  return()=>{disposed=true;if(dialog.open)dialog.close();closeViewer();dialog.remove();viewport.removeAttribute("data-touch-preview");events.abort();motion?.kill();zoomMotion?.kill();cancelAnimationFrame(frame);proximity.disconnect();visibility.disconnect();resizeObserver.disconnect();controls.dispose();draco.dispose();disposeObject(root);light.shadow.dispose();renderer.dispose();canvas.remove();};
 }
