@@ -226,6 +226,7 @@ if (brandsLayout) {
     });
   }
   function disposeScroll(){
+    settleSelections();
     slideReveals.forEach(context=>context.revert());slideReveals.clear();enteredSlides.clear();
     panels.forEach(panel=>{
       const selected=Number(panel.querySelector<HTMLElement>('[aria-selected="true"]')?.dataset.select || 0);
@@ -340,32 +341,36 @@ if (brandsLayout) {
       .to(state, { exit: 1, duration: 1, ease: 'none' }, 6.5);
     render();ScrollTrigger.refresh();
   }
+  const selections=new Map<HTMLElement,{timeline:gsap.core.Timeline,pending:number|null}>();
+  function settleSelections(){
+    Array.from(selections).forEach(([panel,state])=>{const latest=state.pending;state.pending=null;state.timeline.progress(1);if(latest!==null){select(panel,latest);selections.get(panel)?.timeline.progress(1);}});
+  }
   function select(panel:HTMLElement,index:number){
-    const slides=Array.from(panel.querySelectorAll<HTMLElement>('[data-slide]'));
-    const previous=slides.findIndex(slide=>!slide.hidden&&slide.dataset.leaving!=='true');
+    if(frozen)return;
+    const active=selections.get(panel);
+    if(active){active.pending=index;return;}
+    const slides=panelSlides.get(panel)!;
+    if(!slides[index])return;
+    const previous=Number(panel.querySelector<HTMLElement>('[aria-selected="true"]')?.dataset.select||0);
     if(previous===index)return;
-    if(slides[index])hydrateImages(slides[index]);
+    slides.forEach(slide=>{slideReveals.get(slide)?.revert();slideReveals.delete(slide);gsap.killTweensOf(slide);gsap.set(slide,{clearProps:'transform,clipPath'});delete slide.dataset.leaving;slide.hidden=true;slide.querySelector('video')?.pause();});
+    hydrateImages(slides[index]);enteredSlides.add(slides[index]);
+    slides[index].hidden=false;slides[previous].hidden=false;
+    panel.querySelectorAll<HTMLElement>('[data-select]').forEach(button=>{const selected=Number(button.dataset.select)===index;button.setAttribute('aria-selected',String(selected));if(button.getAttribute('role')!=='tab')button.setAttribute('aria-pressed',String(selected));button.tabIndex=selected?0:-1;});
     const direction=index>previous?1:-1;
-    const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
-    slides.forEach(slide=>{slideReveals.get(slide)?.revert();slideReveals.delete(slide);});
-    slides.forEach((slide,i)=>{
-      gsap.killTweensOf(slide);delete slide.dataset.leaving;
-      slide.querySelector('video')?.pause();
-      slide.style.clipPath='none';
-      if(i===index){
-        slide.hidden=false;
-        if(reduced)gsap.set(slide,{xPercent:0});
-        else {enteredSlides.add(slide);revealSlide(slide,direction,true);}
-      }else if(i===previous&&!reduced){
-        slide.dataset.leaving='true';
-        gsap.to(slide,{xPercent:-direction*100,duration:.55,ease:'power3.inOut',onComplete:()=>{slide.hidden=true;delete slide.dataset.leaving;gsap.set(slide,{clearProps:"transform,clipPath"});}});
-      }else slide.hidden=true;
-    });
-    panel.querySelectorAll<HTMLElement>('[data-select]').forEach(button=>{const selected=Number(button.dataset.select)===index;if(button.getAttribute('role')!=='tab')button.setAttribute('aria-pressed',String(selected));button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1;});
+    const state:{timeline:gsap.core.Timeline,pending:number|null}={timeline:gsap.timeline({paused:true,onComplete:()=>{
+      slides.forEach((slide,i)=>{slide.hidden=i!==index;gsap.set(slide,{clearProps:'transform,clipPath'});});
+      selections.delete(panel);if(state.pending!==null&&state.pending!==index)select(panel,state.pending);
+    }}),pending:null};
+    selections.set(panel,state);
+    const duration=reducedMotion.matches?0:.55;
+    state.timeline.fromTo(slides[index],{xPercent:direction*100},{xPercent:0,duration,ease:'power3.inOut'},0)
+      .to(slides[previous],{xPercent:-direction*100,duration,ease:'power3.inOut'},0).play();
   }
   section.addEventListener('click',event=>{
     const button=(event.target as Element).closest<HTMLElement>('button');if(!button)return;
 
+    if(frozen)return;
     if(button.hasAttribute('data-select'))select(button.closest<HTMLElement>('[data-panel]')!,Number(button.dataset.select));
     if(button.hasAttribute('data-step')){
       const target=Math.max(0,Math.min(3,current+Number(button.dataset.step)));
@@ -413,7 +418,7 @@ if (brandsLayout) {
     event.preventDefault();scrollPage(0, false);history.replaceState(null,'','#home');
   },{signal:events.signal});
   window.addEventListener('leo:gallery-lock',()=>{
-    frozen=true;
+    settleSelections();frozen=true;
     timeline?.scrollTrigger?.getTween()?.pause();
     mobileTimeline?.scrollTrigger?.getTween()?.pause();
   },{signal:events.signal});

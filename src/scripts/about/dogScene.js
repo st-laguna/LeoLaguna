@@ -26,12 +26,13 @@ export function createAboutScene(section, callbacks = {}) {
   if (!container) throw new Error('Missing scene container');
   const abort = new AbortController();
   const resources = new Resources();
+  const editorial=section.hasAttribute('data-editorial');
   const scene = new THREE.Scene();
   const mobilePortrait = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)');
   const isMobilePortrait = mobilePortrait.matches;
-  scene.background = new THREE.Color(document.documentElement.dataset.theme === 'dark' ? '#181818' : SCENE.background);
+  scene.background = new THREE.Color(document.documentElement.dataset.theme === 'dark' ? (editorial?'#1C1C1C':'#181818') : (editorial?'#D1D1D1':SCENE.background));
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 150);
-  camera.position.fromArray(SCENE.camera);
+  camera.position.fromArray(editorial?[0,2.3,4.5]:SCENE.camera);
   const renderer = new THREE.WebGLRenderer({
     antialias: false,
     powerPreference: 'default',
@@ -47,8 +48,8 @@ export function createAboutScene(section, callbacks = {}) {
   const controls = new OrbitControls(camera, canvas);
   controls.target.fromArray(SCENE.target);
   controls.enablePan = false;
-  controls.minDistance = 0.8;
-  controls.maxDistance = 18;
+  controls.minDistance = editorial?1.6:0.8;
+  controls.maxDistance = editorial?6:18;
   controls.maxPolarAngle = Math.PI * 0.49;
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
@@ -101,12 +102,14 @@ export function createAboutScene(section, callbacks = {}) {
   const loader = new GLTFLoader();
   loader.setDRACOLoader(draco);
   const simba = new Dog('Simba', {
+    roamRadius:editorial?1.8:4.5,
     canRest: true,
     baseSpeed: 1.8,
     runProbability: 0.1,
     turnSpeed: 1.5,
   });
   const morena = new Dog('Morena', {
+    roamRadius:editorial?1.8:4.5,
     canRest: true,
     baseSpeed: 4,
     runProbability: 0.9,
@@ -132,8 +135,11 @@ export function createAboutScene(section, callbacks = {}) {
   const projection = new THREE.Vector3();
   const gemScale = new THREE.Vector3();
   const defaultTarget = new THREE.Vector3().fromArray(SCENE.target);
-  const defaultCamera = new THREE.Vector3().fromArray(SCENE.overview);
+  const defaultCamera = new THREE.Vector3().fromArray(editorial?[0,2.3,4.5]:SCENE.overview);
   const tooltip = section.querySelector('[data-tooltip]');
+  const framing={offset:.1};
+  let appliedOffset=NaN;
+  function applyFraming(){if(!editorial)return;const offset=Math.round(width*framing.offset);if(appliedOffset!==offset){appliedOffset=offset;camera.setViewOffset(width,height,-offset,0,width,height);}}
   let width = 1,
     height = 1,
     rect = null;
@@ -244,6 +250,7 @@ export function createAboutScene(section, callbacks = {}) {
       Math.max(1, Math.round(height * scale)),
     );
     camera.aspect = width / height;
+    if(editorial){appliedOffset=NaN;applyFraming();}
     camera.updateProjectionMatrix();
     // CSS-pixel size: lowering internal resolution does not enlarge the intended pixel blocks.
     lookPass.uniforms.resolution.value.set(width, height);
@@ -348,7 +355,7 @@ export function createAboutScene(section, callbacks = {}) {
   }
   function focus(id) {
     const entry = entries.get(id);
-    if (!entry || leaving || disposed || active === entry) return;
+    if (!entry || leaving || disposed || active === entry || (editorial&&transition)) return;
     if (transition) {
       transition.tween?.kill();
       transition = null;
@@ -364,7 +371,7 @@ export function createAboutScene(section, callbacks = {}) {
       controls.target,
     );
     if (offset.lengthSq() < 0.01) offset.set(1, 0.6, 1);
-    offset.normalize().multiplyScalar(entry.kind === 'character' ? 2.2 : 2.6);
+    offset.normalize().multiplyScalar(entry.kind === 'character' ? 2.2 : editorial?1.4:2.6);
     offset.y = Math.max(0.65, offset.y);
     controls.autoRotate = false;
     controls.enabled = false;
@@ -374,6 +381,7 @@ export function createAboutScene(section, callbacks = {}) {
       fromTarget,
       offset,
       returning: false,
+      framingFrom:framing.offset,
     };
     transition = travel;
     emitSelection();
@@ -390,7 +398,7 @@ export function createAboutScene(section, callbacks = {}) {
     requestRender();
   }
   function reset() {
-    if (disposed || leaving) return;
+    if (disposed || leaving || (editorial&&transition)) return;
     transition?.tween?.kill();
     active = null;
     hovered = null;
@@ -400,6 +408,7 @@ export function createAboutScene(section, callbacks = {}) {
       from: camera.position.clone(),
       fromTarget: controls.target.clone(),
       returning: true,
+      framingFrom:framing.offset,
     };
     transition = travel;
     emitSelection();
@@ -448,6 +457,7 @@ export function createAboutScene(section, callbacks = {}) {
     }
     if (transition) {
       const travel = transition;
+      if(editorial){framing.offset=THREE.MathUtils.lerp(travel.framingFrom,travel.returning?.1:.035,travel.progress);applyFraming();}
       if (travel.returning) {
         world.copy(defaultTarget);
         cameraGoal.copy(defaultCamera);
@@ -460,6 +470,7 @@ export function createAboutScene(section, callbacks = {}) {
       if (travel.finished || reduced) {
         transition = null;
         controls.enabled = !leaving;
+        if(editorial)callbacks.onTransitionEnd?.(active?{id:active.id,label:active.label}:null);
       }
     } else if (active) {
       active.track.getWorldPosition(world);
@@ -601,9 +612,12 @@ export function createAboutScene(section, callbacks = {}) {
     qualitySample(interval);
     if (ambient() || tweens.size || transition) requestRender();
   }
-  controls.addEventListener('change', requestRender);
+  function controlChange(){if(editorial)callbacks.onZoom?.(getZoom());requestRender();}
+  function getZoom(){return THREE.MathUtils.clamp(1-(controls.getDistance()-controls.minDistance)/(controls.maxDistance-controls.minDistance),0,1);}
+  function setZoom(value){if(!editorial||transition||leaving||disposed)return;const distance=THREE.MathUtils.lerp(controls.maxDistance,controls.minDistance,THREE.MathUtils.clamp(value,0,1));camera.position.sub(controls.target).normalize().multiplyScalar(distance).add(controls.target);controls.update();controlChange();}
+  controls.addEventListener('change', controlChange);
   on(window, 'leo:theme-change', () => {
-    scene.background.set(document.documentElement.dataset.theme === 'dark' ? '#181818' : SCENE.background);
+    const target=new THREE.Color(document.documentElement.dataset.theme === 'dark' ? (editorial?'#1C1C1C':'#181818') : (editorial?'#D1D1D1':SCENE.background));if(editorial)animateValue(scene.background,{r:target.r,g:target.g,b:target.b,duration:.65,ease:'power2.inOut'});else scene.background.copy(target);
     requestRender();
   });
 
@@ -665,6 +679,8 @@ export function createAboutScene(section, callbacks = {}) {
             asset(modelURL(id), async (gltf) => {
               const model = actor.attach(gltf);
               if(isMobilePortrait)actor.usePortraitIdle();
+              if(editorial&&reduced&&id==='leo'){actor.usePortraitIdle();actor.actions.stand?.stop();actor.mixer.update(0);}
+              if(editorial&&id!=='leo'){actor.model.position.set(id==='simba'?-1.1:1.1,0,id==='simba'?.3:-.4);actor.roamDest.copy(actor.model.position);actor.isIdling=true;actor.idleTimer=2;}
               // Compile the final material/shadow setup before the entrance starts.
               await renderer.compileAsync(model, camera, scene);
               if (disposed) return;
@@ -692,7 +708,9 @@ export function createAboutScene(section, callbacks = {}) {
       PROPS.map(
         (config) => () =>
           asset(modelURL(config.id), async (gltf) => {
-            const entry = props.attach(gltf, config);
+            if(editorial)gltf.scene.scale.multiplyScalar(.4);
+            const placements={laptop:[-2.2,2.5,-.5],ipad:[.2,2.8,-1.2],cuadro:[2,2.3,-1],libro1:[-1.4,2.6,-1.5],libro2:[1.4,2.7,-1.8]};
+            const entry = props.attach(gltf, editorial?{...config,position:placements[config.id]}:config);
             resources.track(entry.root);
             await renderer.compileAsync(entry.root, camera, scene);
             if (disposed) return;
@@ -726,6 +744,7 @@ export function createAboutScene(section, callbacks = {}) {
     );
     if (disposed) return;
     allSettled = true;
+    if(editorial)controlChange();
     callbacks.onReady?.({ loaded, failed, interactive: entries.size });
     requestRender();
   }
@@ -784,7 +803,7 @@ export function createAboutScene(section, callbacks = {}) {
     cancelAnimationFrame(raf);
     for (const animation of [...tweens]) animation.kill();
     tweens.clear();
-    controls.removeEventListener('change', requestRender);
+    controls.removeEventListener('change', controlChange);
     controls.dispose();
     for (const actor of actors) actor.dispose();
     props.dispose();
@@ -806,6 +825,8 @@ export function createAboutScene(section, callbacks = {}) {
     load,
     focus,
     reset,
+    setZoom,
+    getZoom,
     setPaused,
     setReducedMotion,
     setVisible,

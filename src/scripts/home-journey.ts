@@ -1,4 +1,5 @@
 import { isTabletPortrait, getHeroFrame } from './responsive-layout';
+import { mountHeroDistortion } from './hero-distortion';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import { scrollPage, isCommittingScrollJump } from './smooth-scroll';
@@ -12,6 +13,7 @@ if(root){
   const fish=host.querySelector<HTMLElement>('.hero__parallax')!;
   const masterOverlay=host.querySelector<HTMLElement>('.hero__master');
   const masters=JSON.parse(hero.dataset.heroMasters!);
+  const distortion=mountHeroDistortion(hero);
   const ipad=document.documentElement.hasAttribute('data-ipad');
   let disposed=false;
   const imageQueue:HTMLImageElement[]=[];
@@ -209,6 +211,7 @@ if(root){
         const transform=`translate(${px} ${py}) scale(${scale})`;
         if(cutout.getAttribute('transform')!==transform)cutout.setAttribute('transform',transform);
       }
+      distortion.setInitialState(p<.42,1-ease((p-.32)/.1));
       cover.style.visibility=p<.42?'visible':'hidden';
       mask.style.maskImage='none';
       mask.style.webkitMaskImage='none';
@@ -391,6 +394,7 @@ slots.forEach((slot, i) => {
       const p=clamp(state.p);
       if(p>.02)loadIntermediateImages();
       if(p>.18)loadWorkflowImages();
+      distortion.setInitialState(p<.105,1-ease((p-.08)/.025));
       const portal=ease(p/.2);
       texts.filter(text=>text!==mobileOverlay).forEach((text,i)=>{
         const out=ease((p-i*.012)/.075);
@@ -504,7 +508,7 @@ slots.forEach((slot, i) => {
         headerLogo?.style.removeProperty('transform');
         document.documentElement.removeAttribute('data-workflow-header');
         removeStaticStop();
-        disposed=true;clearTimeout(warmupTimer);clearTimeout(imageQueueTimer);imageQueue.length=0;
+        distortion.dispose();disposed=true;clearTimeout(warmupTimer);clearTimeout(imageQueueTimer);imageQueue.length=0;
         media.revert();
         cover.remove();
         intermediateImages.forEach(image => image.remove());

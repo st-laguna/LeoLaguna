@@ -1,0 +1,48 @@
+---
+import '../../styles/about-editorial.css';
+---
+<div class="about-editorial" data-editorial-ui>
+  <div class="about-editorial__lines" aria-hidden="true"><i class="line-top"></i><i class="line-bottom"></i><i class="line-left"></i><i class="line-right-top"></i><i class="line-right-middle"></i><i class="line-right-bottom"></i></div>
+  <header class="about-editorial__top" data-editorial-enter>
+    <div data-editorial-status class="about-editorial__status"></div>
+    <div class="about-editorial__navigation">
+      <nav class="about-editorial__links" aria-label="Main navigation">
+        <a href="/"><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-en="Home" data-es="Inicio">Home</span></a>
+        <a href="/#work"><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-en="Services" data-es="Servicios">Services</span></a>
+        <a href="/#featured-works"><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-en="Work" data-es="Proyectos">Work</span></a>
+      </nav>
+      <div data-editorial-preferences></div>
+    </div>
+    <div class="about-editorial__cta-cell" data-editorial-project></div>
+  </header>
+  <section class="about-editorial__bio" data-editorial-enter aria-labelledby="about-editorial-title">
+    <span class="about-editorial__number">[1]</span>
+    <h1 id="about-editorial-title"><span data-en="HEY, I'M LEO" data-es="HOLA, SOY LEO">HEY, I'M LEO</span><strong>LAGUNA</strong></h1>
+    <hr class="about-editorial__bio-rule" aria-hidden="true" /><div class="about-editorial__copy" data-editorial-copy></div>
+    <dl data-editorial-details></dl>
+  </section>
+  <div class="about-editorial__stage-ui" data-editorial-enter>
+    <span class="about-editorial__number">[2]</span><div data-editorial-return></div>
+    <span class="about-editorial__select-hint" data-en="SELECT TO EXPLORE" data-es="SELECCIONA PARA EXPLORAR">SELECT TO EXPLORE</span>
+    <span class="about-editorial__drag-hint" data-en="DRAG TO LOOK" data-es="ARRASTRA PARA EXPLORAR">DRAG TO LOOK</span>
+    <div class="about-editorial__zoom"><span aria-hidden="true">−</span><input data-about-zoom type="range" min="0" max="100" step="1" value="0" disabled aria-label="Scene zoom" /><span aria-hidden="true">+</span></div>
+    <div class="about-editorial__access" data-editorial-access></div>
+  </div>
+  <aside class="about-editorial__context" id="about-context" aria-label="Selected object" aria-hidden="true" inert>
+    <span class="about-editorial__number">[3]</span>
+    <div class="about-editorial__context-content">
+      <div class="about-editorial__context-title"><h2 data-context-title></h2><button data-context-close type="button" aria-label="Close selected object">✱</button></div>
+      <div class="about-editorial__image-placeholder" data-en="IMAGE TO BE PROVIDED" data-es="IMAGEN PENDIENTE">IMAGE TO BE PROVIDED</div>
+      <p data-context-description data-en="Content to be provided." data-es="Contenido pendiente.">Content to be provided.</p>
+    </div>
+  </aside>
+  <footer class="about-editorial__bottom" data-editorial-enter>
+    <div class="about-editorial__clock" data-editorial-clock></div>
+    <nav class="about-editorial__links" aria-label="Contact links">
+      <a href="https://www.instagram.com/laguna.99/" target="_blank" rel="noopener noreferrer">Instagram<span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></a>
+      <a href="https://www.linkedin.com/in/leolaguna/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></a>
+      <a href="mailto:hello@leolaguna.com"><span data-en="Mail" data-es="Correo">Mail</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></a>
+    </nav>
+    <div class="about-editorial__cta-cell"><a class="action-pill" href="/cv/"><span data-roll-label data-en="THE FORMAL STUFF" data-es="MI CURRÍCULUM">THE FORMAL STUFF</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></a></div>
+  </footer>
+</div>

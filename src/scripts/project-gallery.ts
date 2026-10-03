@@ -1,4 +1,6 @@
 import gsap from 'gsap';
+import {openServiceCover} from './service-cover-transition';
+import {mountServiceStickyGrid} from './service-sticky-grid';
 const gallery=document.querySelector<HTMLDialogElement>('.gallery-dialog');
 const lightbox=document.querySelector<HTMLDialogElement>('.project-lightbox');
 const section=document.querySelector<HTMLElement>('[data-projects]');
@@ -15,6 +17,11 @@ if(gallery&&lightbox&&section){
   let galleryBusy=false,lightboxBusy=false;
   let galleryOpener:HTMLElement|null=null,lightboxOpener:HTMLElement|null=null;
   let observer:IntersectionObserver|undefined;
+  let disposeSticky:(()=>void)|undefined;
+  let opening:ReturnType<typeof openServiceCover>|undefined;
+  let clockTimer:ReturnType<typeof setInterval>|undefined;
+  function updateGalleryClock(){const now=new Date(),locale=document.documentElement.lang==='es'?'es-PE':'en-US';g.querySelectorAll('[data-gallery-clock]').forEach(node=>node.textContent=new Intl.DateTimeFormat(locale,{timeZone:'America/Lima',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(now));g.querySelectorAll('[data-gallery-date]').forEach(node=>node.textContent=new Intl.DateTimeFormat(locale,{timeZone:'America/Lima',weekday:'long',month:'short',day:'numeric',year:'numeric'}).format(now));g.querySelectorAll('[data-gallery-year]').forEach(node=>node.textContent=String(now.getFullYear()));}
+  g.addEventListener('click',event=>{if((event.target as Element).closest('[data-gallery-top]'))scroller.scrollTo({top:0,behavior:reduced.matches?'instant':'smooth'});},{signal:events.signal});
   function lock(){
     if(locks++===0){
       scroll=window.scrollY;
@@ -43,9 +50,8 @@ if(gallery&&lightbox&&section){
     disconnectItems();
     const items=Array.from(g.querySelectorAll<HTMLElement>('[data-gallery]:not([hidden]) .gallery-item'));
     gsap.set(items.map(item=>item.firstElementChild),{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)'});
-    if(reduced.matches)return;
     observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
-      if(entry.isIntersecting){gsap.to(entry.target.firstElementChild,{clipPath:'inset(0% 0 0)',duration:.65,ease:'power3.inOut'});observer?.unobserve(entry.target);}
+      if(entry.isIntersecting){entry.target.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>img.src=img.dataset.src!);if(!reduced.matches)gsap.to(entry.target.firstElementChild,{clipPath:'inset(0% 0 0)',duration:.65,ease:'power3.inOut'});observer?.unobserve(entry.target);}
     }),{root:scroller,threshold:.05});
     items.forEach(item=>observer!.observe(item));
   }
@@ -55,23 +61,30 @@ if(gallery&&lightbox&&section){
     const index=button.dataset.open==='current'?Number(s.dataset.current||0):Number(button.dataset.open);
     g.querySelectorAll<HTMLElement>('[data-gallery]').forEach((grid,i)=>{
       grid.hidden=i!==index;
-      if(i===index)grid.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>img.src=img.dataset.src!);
     });
-    gsap.set(shell,{yPercent:reduced.matches?0:100});
+    gsap.set(shell,{yPercent:0});
     g.removeAttribute('data-media-closing');
+    g.toggleAttribute('data-sticky-gallery',index!==3);closeGalleryButton.classList.toggle('action-pill',index===3);
     lock();g.showModal();scroller.scrollTop=0;
     window.scrollTo({top:scroll,behavior:'instant'});
+    const sticky=g.querySelector<HTMLElement>('[data-gallery]:not([hidden]) [data-service-sticky]');
+    if(sticky){disposeSticky=mountServiceStickyGrid(sticky,scroller);updateGalleryClock();clockTimer=setInterval(updateGalleryClock,1000);}
     animateItems();
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','true'));
     closeGalleryButton.focus({preventScroll:true});
-    await gsap.to(shell,{yPercent:0,duration:reduced.matches?0:.7,ease:'power3.inOut'});
+    if(!reduced.matches){
+      const title=g.querySelector<HTMLElement>('[data-gallery]:not([hidden]) [data-sticky-title]');
+      opening=openServiceCover(g,shell,title,s,index);
+      await opening.finished;
+      opening=undefined;
+    }
     galleryBusy=false;
   }
   async function closeGallery(){
     if(galleryBusy||!g.open||l.open)return;
     galleryBusy=true;g.setAttribute('data-media-closing','');pause(g);disconnectItems();
     await gsap.to(shell,{yPercent:reduced.matches?0:100,duration:reduced.matches?0:.65,ease:'power3.inOut'});
-    g.close();clearItemAnimations();unlock();
+    disposeSticky?.();disposeSticky=undefined;clearInterval(clockTimer);g.close();clearItemAnimations();unlock();
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','false'));
     galleryOpener?.focus({preventScroll:true});galleryOpener=null;galleryBusy=false;
   }
@@ -101,8 +114,11 @@ if(gallery&&lightbox&&section){
   g.addEventListener('cancel',event=>{event.preventDefault();void closeGallery();},{signal:events.signal});
   l.addEventListener('cancel',event=>{event.preventDefault();event.stopPropagation();void closeImage();},{signal:events.signal});
   l.addEventListener('click',event=>{if(event.target===l)void closeImage();},{signal:events.signal});
+  reduced.addEventListener('change',()=>{if(reduced.matches)opening?.finish();},{signal:events.signal});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)opening?.finish();},{signal:events.signal});
   if(import.meta.hot)import.meta.hot.dispose(()=>{
-    events.abort();disconnectItems();clearItemAnimations();gsap.killTweensOf([shell,figure]);pause(g);
+    opening?.dispose();
+    events.abort();clearInterval(clockTimer);disposeSticky?.();disconnectItems();clearItemAnimations();gsap.killTweensOf([shell,figure]);pause(g);
     if(l.open)l.close();if(g.open)g.close();while(locks)unlock();
   });
 }

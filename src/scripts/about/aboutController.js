@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import { message } from './messages.js';
+import { mountEditorialAbout, editorialMedia } from './editorialAbout.js';
 
 const mounted = new Map();
 
@@ -16,7 +17,7 @@ function mount(section) {
   const timeEl = query('[data-local-time]');
   const status = query('[data-status]');
   let statusMessage = 'Loading my little world…';
-  function setStatus(text) { statusMessage = text; status.textContent = message(text); }
+  function setStatus(text) { statusMessage = text; status.textContent = message(text); editorial?.status(text); }
   const progress = query('[data-load-progress]');
   const returnButton = query('[data-return]');
   const pauseButton = query('[data-pause]');
@@ -38,6 +39,9 @@ function mount(section) {
     launchElement = null,
     watchdog = 0;
   const animations = new Set();
+  const editorial=mountEditorialAbout(section,()=>scene,on,reduced);
+  const desktopQuery=matchMedia(editorialMedia);
+  on(desktopQuery,'change',()=>{dispose();mounted.set(section,mount(section));});
 
   // A remount (for example during HMR) may reuse the same HTML nodes.
   explore.replaceChildren();
@@ -55,14 +59,14 @@ function mount(section) {
     timeZone: 'America/Lima',
     hour: '2-digit',
     minute: '2-digit',
+    ...(editorial ? {second:'2-digit'} : {}),
     hourCycle: 'h23',
   });
   function updateClock() {
-    if (!document.hidden && timeEl)
-      timeEl.textContent = formatter.format(new Date());
+    if (!document.hidden && timeEl){const now=new Date();timeEl.textContent = formatter.format(now);editorial?.clock(now);}
   }
   updateClock();
-  const clockTimer = setInterval(updateClock, 30000);
+  const clockTimer = setInterval(updateClock, editorial?1000:30000);
   on(document, 'visibilitychange', updateClock);
 
   function tween(target, values) {
@@ -87,6 +91,7 @@ function mount(section) {
     return animation;
   }
   function enter() {
+    editorial?.enter();
     for (const animation of [...animations]) animation.kill();
     leaving = false;
     boxes.forEach((box, index) => {
@@ -105,6 +110,7 @@ function mount(section) {
 
   function select(item) {
     focused = item;
+    if(editorial){editorial.select(item);setStatus(item?'Inspecting '+item.label:'Back to the full scene.');return;}
     const visible = Boolean(item);
     const returnHadFocus = document.activeElement === returnButton;
     section.dataset.focused = String(visible);
@@ -164,6 +170,7 @@ function mount(section) {
     pauseButton.textContent =
       message(paused || reduced ? 'Play motion' : 'Pause motion');
     pauseButton.setAttribute('aria-pressed', String(paused || reduced));
+    editorial?.pause(paused || reduced);
     // Explicit Play overrides the preference for this visit; changing OS settings resets it.
     scene?.setReducedMotion(reduced);
     scene?.setPaused(paused);
@@ -245,6 +252,8 @@ function mount(section) {
           progress.value = completed / total;
         },
         onFocus: select,
+        onTransitionEnd(){editorial?.settled();},
+        onZoom(value){editorial?.zoom(value);},
         onStatus(message) {
           setStatus(message);
         },
@@ -255,6 +264,7 @@ function mount(section) {
         },
         onReady({ failed, interactive }) {
           clearTimeout(watchdog);
+          editorial?.ready(interactive);
           section.setAttribute('aria-busy', 'false');
           progress.hidden = true;
           section.toggleAttribute('data-scene-unavailable', interactive === 0);
@@ -331,6 +341,7 @@ function mount(section) {
     for (const animation of [...animations]) animation.kill();
     animations.clear();
     scene?.dispose();
+    editorial?.dispose();
     mounted.delete(section);
   }
   updatePause();

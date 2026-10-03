@@ -12,6 +12,7 @@ export class Dog {
 
     // Personalidad
     this.baseSpeedUnitsPerSec = options.baseSpeed ?? 1.5;
+    this.roamRadius = options.roamRadius ?? 4.5;
     this.runProbability = options.runProbability ?? 0.5;
     this.turnSpeed = options.turnSpeed ?? 2.0;
     this.meshes = [];
@@ -93,7 +94,7 @@ export class Dog {
 
     while (!valid) {
       // Radio seguro entre 1m y 4.5m para no chocar con la pared invisible
-      const r = 1.0 + Math.random() * 3.5;
+      const r = 1.0 + Math.random() * (this.roamRadius - 1);
       const theta = Math.random() * Math.PI * 2;
       rx = Math.cos(theta) * r;
       rz = Math.sin(theta) * r;

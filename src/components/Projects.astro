@@ -1,8 +1,11 @@
 ---
 import { projects } from '../data/projects';
+import { projectImageSize } from '../data/project-image-size';
 import en from '../i18n/en.json';
 import '../styles/projects.css';
 import GlassSidebar from './GlassSidebar.astro';
+import ServiceStickyGrid from './ServiceStickyGrid.astro';
+import GalleryFooter from './GalleryFooter.astro';
 
 
 const t = en as Record<string,string>;
@@ -87,19 +90,31 @@ const t = en as Record<string,string>;
       <h2 id="gallery-heading" data-i18n="projects.gallery">{t['projects.gallery']}</h2>
       <button type="button" class="action-pill" data-gallery-close><span data-roll-label data-i18n="projects.close">{t['projects.close']}</span> <span class="action-arrow" data-direction="up" aria-hidden="true"><span data-arrow="↑">↑</span></span></button>
     </header>
-    <div class="gallery-scroll">
+    <div class="gallery-scroll" tabindex="0" aria-label="Project gallery / Galería de proyectos">
       {projects.map((project,index)=>(
-        <div class="gallery-masonry" data-gallery={index} hidden>
-          {project.assets.map(asset=>(
+        <div class="service-gallery" data-gallery={index} hidden>
+          {index !== 3 && <ServiceStickyGrid project={project} />}
+          {index === 3 && <div class="service-video-intro">
+            <span class="service-intro-number" data-service-number>{project.id}</span>
+            <span class="service-grid-eyebrow" data-sticky-eyebrow data-i18n="projects.gallery">{t['projects.gallery']}</span>
+            <h2 class="service-grid-title" data-sticky-title data-i18n={`projects.${project.id}.title`}>{t[`projects.${project.id}.title`]}</h2>
+            <span class="service-grid-scroll-hint" data-sticky-hint data-i18n="projects.scrollHint">{t['projects.scrollHint']}</span>
+          </div>}
+
+          <div class:list={["gallery-masonry", {"service-gallery-list": index !== 3}]}>
+          {index !== 3 && [0,1,2].map(i=><div class="service-gallery-lead-slot" data-service-lead={i} hidden></div>)}
+          {(index === 3 ? project.assets : project.assets.slice(6)).map(asset=>(
             <figure class="gallery-item">
               {asset.kind==='image' ? (
                 <button type="button" data-zoom-src={asset.src} data-zoom-alt={asset.client || project.id} aria-label={`Ampliar / Enlarge: ${asset.client || project.id}`}>
-                  <img data-src={asset.src} alt={asset.client || project.id} loading="lazy" decoding="async" />
+                  <img data-src={asset.src} {...projectImageSize(asset.src)} alt={asset.client || project.id} loading="lazy" decoding="async" />
                 </button>
               ) : <video data-auto-video src={asset.src} poster={asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={asset.client || 'Video del proyecto'} ></video>}
               {asset.client && <figcaption>{asset.client}</figcaption>}
             </figure>
           ))}
+          </div>
+          {index !== 3 && <GalleryFooter />}
         </div>
       ))}
     </div>
