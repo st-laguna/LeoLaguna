@@ -11,6 +11,17 @@ html body .contact-card :is(input,textarea,button){background:transparent;border
 html body .contact-card button{cursor:pointer}
 html body .contact-card :is(input,textarea){outline:none;font-size:2.8114cqw;letter-spacing:.04em;font-weight:500;padding:0}
 html body .contact-card :is(input,textarea)::placeholder{color:#8c8c8c;opacity:1}
+/* Clip the browser autofill paint to glyphs so the material remains visible. */
+html body .contact-card__email:autofill,
+html body .contact-card__email:-webkit-autofill{
+  -webkit-text-fill-color:#1c1c1c;
+  caret-color:#1c1c1c;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-box-shadow:none;
+  box-shadow:none;
+}
+
 html body .contact-card :is(input,textarea):focus-visible{outline:none}
 /* Highlight the authored field geometry rather than drawing a second rectangle. */
 .contact-card:has(.contact-card__message:focus-visible) .contact-card__message-outline,
