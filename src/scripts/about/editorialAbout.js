@@ -31,8 +31,10 @@ export function mountEditorialAbout(section, getScene, on, reduced) {
   const originalArrow=back.firstElementChild.textContent;back.firstElementChild.textContent='←';
   function setState(next){state=next;section.dataset.aboutState=next;const busy=next==='object-transitioning'||next==='returning';zoom.disabled=busy||next==='loading';back.disabled=!selected||busy;close.disabled=busy;query('[data-explore]').inert=busy;for(const button of roller.querySelectorAll('button'))button.disabled=busy||next==='loading';}
   const title=query('#about-editorial-title');
-  function fitTitle(){for(const line of title.children){line.style.fontSize='100px';const range=document.createRange();range.selectNodeContents(line);const width=range.getBoundingClientRect().width;line.style.fontSize=(100*title.clientWidth/width)+'px';for(let i=0;i<3;i++){const measured=range.getBoundingClientRect().width;line.style.fontSize=(parseFloat(line.style.fontSize)*title.clientWidth/measured)+'px';}}}
-  const titleObserver=new ResizeObserver(fitTitle);titleObserver.observe(title);document.fonts.ready.then(()=>{if(section.hasAttribute('data-editorial'))fitTitle();});
+  let fittedWidth=-1;
+  // Ignore height-only observer notifications caused by our own font fitting.
+  function fitTitle(){const widthNow=title.clientWidth;if(widthNow===fittedWidth)return;fittedWidth=widthNow;for(const line of title.children){line.style.fontSize='100px';const range=document.createRange();range.selectNodeContents(line);const width=range.getBoundingClientRect().width;line.style.fontSize=(100*title.clientWidth/width)+'px';for(let i=0;i<3;i++){const measured=range.getBoundingClientRect().width;line.style.fontSize=(parseFloat(line.style.fontSize)*title.clientWidth/measured)+'px';}}}
+  const titleObserver=new ResizeObserver(fitTitle);titleObserver.observe(title);document.fonts.ready.then(()=>{if(section.hasAttribute('data-editorial')){fittedWidth=-1;fitTitle();}});
   const picker=query('[data-picker]');
   const choices=Array.from(query('[data-explore]').querySelectorAll('button'));
   const ordered=choices.filter(b=>b.dataset.id!=='morena').concat(choices.filter(b=>b.dataset.id==='morena'));

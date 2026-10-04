@@ -70,7 +70,7 @@ html[data-theme="dark"] .service-grid-content .action-pill {color:#fff;}
 .gallery-footer-meta {display:flex;flex-direction:column;justify-content:space-between;gap:48px;}
 .gallery-footer-center {display:flex;gap:24px;align-items:center;font-size:16px;}
 .gallery-footer-center p {margin-top:20px;}
-.gallery-footer-logo {flex:none;width:clamp(115px,10vw,210px);aspect-ratio:494.6/277.66;background:currentColor;border:0;padding:0;mask:url('/icons/logo_w.svg') center/contain no-repeat;cursor:pointer;}
+.gallery-footer-logo {color:inherit;flex:none;width:clamp(115px,10vw,210px);aspect-ratio:494.6/277.66;background:currentColor;border:0;padding:0;mask:url('/icons/logo_w.svg') center/contain no-repeat;cursor:pointer;}
 .gallery-footer-label {display:block;font-size:12px;opacity:.55;}
 .gallery-footer-social {justify-self:end;display:grid;gap:8px;font-size:18px;}
 .gallery-footer-social [data-gallery-top] {margin-top:24px;border:0;cursor:pointer;font-size:13px;}

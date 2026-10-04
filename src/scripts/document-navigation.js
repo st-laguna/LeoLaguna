@@ -81,7 +81,7 @@ window.addEventListener('pagereveal', event => {
   root.setAttribute('data-page-transition', '');
   window.dispatchEvent(new Event('leo:page-position'));
   // Content enters inside the new snapshot; it is not a second page overlay.
-  const anchor = ['#work', '#contact'].includes(location.hash) ? document.querySelector(location.hash) : null;
+  const anchor = ['#work', '#featured-works', '#contact'].includes(location.hash) ? document.querySelector(location.hash) : null;
   entrance = root.dataset.page === 'about' ? undefined : prepareEntrances(anchor || document.querySelector('[data-page-content], .hero'));
   const {oldFrames,newFrames} = snapshotFrames();
   transition.ready.then(() => {
