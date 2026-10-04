@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ignoreMobileResize:true});
 let lenis: Lenis | null = null;
 let locked = false;
+let contactLocked = false;
 let transitioning = false;
 let committing = false;
 const events = new AbortController();
@@ -34,9 +35,9 @@ if (ipad) {
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const media = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
 const tick = (seconds: number) => lenis?.raf(seconds * 1000);
-const pacing = createScrollPacing(() => locked || transitioning || committing);
+const pacing = createScrollPacing(() => locked || contactLocked || transitioning || committing);
 
-export function isScrollLocked() { return locked || transitioning; }
+export function isScrollLocked() { return locked || contactLocked || transitioning; }
 export function isCommittingScrollJump() { return committing; }
 export function beginScrollTransition() {
   if (isScrollLocked()) return false;
@@ -51,7 +52,7 @@ export function endScrollTransition() {
   transitioning = false;
   window.removeEventListener('wheel', preventScroll, true);
   window.removeEventListener('touchmove', preventScroll, true);
-  if (!locked) lenis?.start();
+  if (!locked && !contactLocked) lenis?.start();
 }
 export function commitScrollJump(changePosition: () => void) {
   if (locked) return;
@@ -107,7 +108,7 @@ function configure() {
   lenis.on('scroll', ScrollTrigger.update);
   pacing.setNative(false);
   gsap.ticker.add(tick);
-  if (locked || transitioning) lenis.stop();
+  if (locked || contactLocked || transitioning) lenis.stop();
 }
 
 window.addEventListener('leo:gallery-lock', () => {
@@ -121,14 +122,17 @@ window.addEventListener('leo:gallery-unlock', (event) => {
   if (lenis) {
     lenis.resize();
     lenis.scrollTo(top, { immediate: true, force: true });
-    if (!transitioning) lenis.start();
+    if (!transitioning && !contactLocked) lenis.start();
   }
   ScrollTrigger.update();
 }, { signal });
 
+window.addEventListener('leo:contact-open', () => { contactLocked = true; pacing.suspend(); lenis?.stop(); }, {signal});
+window.addEventListener('leo:contact-close', () => { contactLocked = false; if (!locked && !transitioning) lenis?.start(); }, {signal});
+
 // Other anchors (ABOUT, etc.) keep the existing behavior for now.
 document.addEventListener('click', event => {
-  if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || locked || transitioning) return;
+  if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || locked || contactLocked || transitioning) return;
   const link = (event.target as Element).closest<HTMLAnchorElement>('a[href^="#"]');
   if (!link || link.hash.length < 2) return;
   let target: HTMLElement | null;

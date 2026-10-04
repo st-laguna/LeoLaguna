@@ -32,7 +32,10 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const viewDirection=camera.position.clone().normalize();
   const orbitCamera=camera.clone();
   let defaultDistance=4.6;
-  const zoomRange=.55;
+  // New minimum equals 75% of the former slider; maximum is modestly closer.
+  const zoomMinimum=.55*.75;
+  const zoomMaximum=.65;
+  const zoomFactor=()=>1+THREE.MathUtils.lerp(zoomMinimum,zoomMaximum,zoomState.amount);
   let renderer:THREE.WebGLRenderer;
   try{renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'default'});}
   catch{dialog.remove();setStatus('model.unavailable');return()=>events.abort();}
@@ -125,12 +128,12 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     const width=viewport.clientWidth,height=viewport.clientHeight;if(!width||!height)return;
     renderer.setSize(width,height,false);camera.aspect=width/height;
     defaultDistance=1.45*Math.max(1,1/camera.aspect)/Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
-    controls.minDistance=defaultDistance/(1+zoomRange);controls.maxDistance=defaultDistance;
-    orbitCamera.position.sub(controls.target).normalize().multiplyScalar(defaultDistance/(1+zoomRange*zoomState.amount)).add(controls.target);
+    controls.minDistance=defaultDistance/(1+zoomMaximum);controls.maxDistance=defaultDistance/(1+zoomMinimum);
+    orbitCamera.position.sub(controls.target).normalize().multiplyScalar(defaultDistance/zoomFactor()).add(controls.target);
     controls.update();camera.updateProjectionMatrix();request();
   }
   function applyZoom(){
-    const distance=defaultDistance/(1+zoomRange*zoomState.amount);
+    const distance=defaultDistance/zoomFactor();
     orbitCamera.position.sub(controls.target).normalize().multiplyScalar(distance).add(controls.target);
     controls.update();request();
   }

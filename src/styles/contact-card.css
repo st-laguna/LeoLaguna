@@ -1,0 +1,170 @@
+@font-face{font-family:Contact Host;src:url('/about/fonts/HostGrotesk-VariableFont_wght.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* Coordinates follow carta.svg's 640.25 × 824.07 viewBox. */
+html body .contact-modal{--contact-backdrop:0;--contact-blur:0px;position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:#1c1c1c;overflow:auto;overscroll-behavior:contain;color-scheme:light;font-family:Contact Host,'Host Grotesk',sans-serif}
+.contact-modal:not([open]){display:none}
+.contact-modal::backdrop{background:rgb(0 0 0 / var(--contact-backdrop));backdrop-filter:blur(var(--contact-blur));-webkit-backdrop-filter:blur(var(--contact-blur))}
+.contact-modal__stage{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;box-sizing:border-box;perspective:1400px;gap:8px}
+html body .contact-card{position:relative;flex:none;width:min(640.25px,calc((100svh - 96px) * .77694),calc(100vw - 32px));aspect-ratio:640.25 / 824.07;margin:0;padding:0;border:0;background:transparent;container-type:inline-size;transform-origin:50% 65%;box-sizing:border-box;font-weight:500}
+.contact-card__geometry{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+html body .contact-card :is(input,textarea,button,h2,p,label,output){position:absolute;margin:0;box-sizing:border-box;font-family:inherit;color:#1c1c1c;line-height:1.2;border-radius:0;text-transform:none}
+html body .contact-card :is(input,textarea,button){background:transparent;border:0;box-shadow:none}
+html body .contact-card button{cursor:pointer}
+html body .contact-card :is(input,textarea){outline:none;font-size:2.8114cqw;letter-spacing:.04em;font-weight:500;padding:0}
+html body .contact-card :is(input,textarea)::placeholder{color:#8c8c8c;opacity:1}
+html body .contact-card :is(input,textarea):focus-visible{outline:none}
+/* Highlight the authored field geometry rather than drawing a second rectangle. */
+.contact-card:has(.contact-card__message:focus-visible) .contact-card__message-outline,
+.contact-card:has(.contact-card__email:focus-visible) .contact-card__email-outline{stroke-width:2}
+html body .contact-card :is(button,h2):focus-visible{outline:2px solid #1c1c1c;outline-offset:3px}
+html body .contact-card :is(label,.contact-card__copy-label){font-size:2.8114cqw;letter-spacing:.22em;font-weight:500}
+.contact-card__dot{position:absolute;left:6.56%;top:6.73%;width:2.04%;aspect-ratio:1;background:#ff6e4a;clip-path:circle(50%)}
+html body .contact-card__title{left:11.545%;top:5.91%;font-size:2.9457cqw;letter-spacing:.2em;font-weight:500;white-space:nowrap}
+html body .contact-card__close{left:86.9%;top:4.65%;width:5.3%;height:4.12%;display:grid;place-items:center;padding:.6cqw}
+.contact-card__close svg{width:100%;height:100%}
+html body .contact-card__email-label{left:10.143%;top:16.07%;font-weight:600}
+html body .contact-card__email{left:13.527%;top:23.27%;width:72%;height:2.95%}
+html body .contact-card__message-label{left:10.143%;top:31.56%}
+html body .contact-card__counter{right:10.14%;top:32.17%;font-size:2.1866cqw;letter-spacing:.14em;color:#6e6e6e;font-weight:500}
+html body .contact-card__message{left:14.36%;top:40.38%;width:71.8%;height:17.7%;resize:none;overflow:auto}
+html body .contact-card__submit{left:37.11%;top:66.38%;width:25.78%;height:4.89%;font-size:3.7485cqw;letter-spacing:.1em;font-weight:600;padding:0;transition:opacity .2s ease}
+html body .contact-card__submit:disabled{opacity:.45;cursor:default}
+/* The full SVG-aligned rectangle is the submit hit area. */
+html body .contact-card__submit{scale:1;transition:scale .18s ease,opacity .2s ease}
+@media(hover:hover) and (pointer:fine){html body .contact-card__submit:not(:disabled):hover{scale:1.05}}
+html body .contact-card__submit:not(:disabled):active{scale:1.1}
+html body .contact-card__submit[data-contact-released]:not(:active),html body .contact-card__submit:disabled{scale:1}
+@media(prefers-reduced-motion:reduce){html body .contact-card__submit{scale:1!important}}
+html body .contact-card__copy-label{position:absolute;left:10%;top:75.65%}
+html body .contact-card__copy{left:10.143%;top:80.35%;width:70.29%;height:6.795%;padding:0}
+html body .contact-card__copy span{position:absolute;left:29.04%;top:27%;font-size:3.7485cqw;font-weight:400;letter-spacing:.04em;white-space:nowrap}
+html body .contact-card__status{left:10.143%;top:89%;width:79.657%;font-size:1.9cqw;text-align:center;line-height:1.25}
+.contact-modal__verification{flex:none;max-width:100%;font-family:inherit}
+@media(max-width:600px){html body .contact-card :is(input,textarea){font-size:16px;letter-spacing:0}html body .contact-card__status{font-size:11px}html body .contact-card__submit{font-size:10px;letter-spacing:.06em}html body .contact-card__title{font-size:12px;letter-spacing:.12em}}
+@media(prefers-reduced-motion:reduce){html body .contact-card *{transition:none!important}}
+
+/* Enlarge touch targets without changing the reference icon/button geometry. */
+@media(pointer:coarse){.contact-card__close::before{content:"";position:absolute;inset:-14px}.contact-card__submit::before{content:"";position:absolute;inset:-12px 0}html body .contact-card__counter{font-size:10px}}
+
+/* Two physical faces; text remains readable only on the front. */
+html body .contact-card{transform-style:preserve-3d}
+.contact-card__front,.contact-card__back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.contact-card__front{transform:translateZ(.1px)}
+.contact-card__back{transform:rotateY(180deg);pointer-events:none}
+html body .contact-card__copy-icon{left:80.43%;top:80.35%;width:9.37%;height:6.795%;padding:0;display:grid;place-items:center}
+.contact-card__copy-icon svg{width:48.4%;height:55.36%}
+.contact-card__asterisk{transform-box:fill-box;transform-origin:center;animation:contact-asterisk-turn 12s linear infinite;animation-play-state:paused}
+.contact-modal[open] .contact-card__asterisk{animation-play-state:running}
+html body .contact-card :is(.contact-card__close,[data-contact-copy]){transition:scale .18s ease;scale:1}
+@media(hover:hover) and (pointer:fine){html body .contact-card :is(.contact-card__close,[data-contact-copy]):hover{scale:.95}}
+html body .contact-card :is(.contact-card__close,[data-contact-copy]):active{scale:.88}
+@keyframes contact-asterisk-turn{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.contact-card__asterisk{animation:none}html body .contact-card :is(.contact-card__close,[data-contact-copy]){scale:1!important}}
+
+html body .contact-card :is(.contact-card__close,[data-contact-copy])[data-contact-released]:not(:active){scale:1}
+
+/* Offscreen transforms must never create a temporary modal scrollbar.
+   clip also prevents automatic focus scrolling during the entrance. */
+html body .contact-modal[data-contact-moving]{overflow:clip}
+
+/* CONTACT CARD FRONT FX TUNING
+   Normal values live here. Remove contact-card--fx-debug from ContactCard.astro
+   to return to these values. Opacities: 0 = off, 1 = full intensity.
+   The debug overrides below are intentionally diagnostic, not final polish. */
+.contact-card{
+  --fx-holo-intensity:.95;
+  --fx-debug-floor:0;
+  --fx-galaxy-opacity:1;
+  --fx-grain-opacity:.3;
+  --fx-illusion-opacity:.02;
+  /* Density 3 = patterns three times smaller than their original framing.
+     Increase density for finer repetition; decrease for larger patterns. */
+  --fx-illusion-density:39;
+  --fx-illusion-base-size:190%;
+  --fx-ancient-opacity:.07;
+  --fx-ancient-density:7;
+  --fx-ancient-base-size:120%;
+  /* White specular light: size is the hotspot radius, width is a gradient band. */
+  --fx-glare-opacity:.18;
+  --fx-glare-size:84%;
+  --fx-streak-opacity:.2;
+  --fx-streak-width:3%;
+  --fx-streak-movement:.55;
+  --fx-streak-angle:125deg;
+  --fx-streak-angle-response:.18;
+  --fx-secondary-opacity:.18;
+  --fx-spectrum-parallax-x:.9;
+  --fx-spectrum-parallax-y:.75;
+  --fx-secondary-parallax:.15;
+  --fx-texture-parallax:.12;
+  --fx-illusion-parallax:.3;
+  --fx-ancient-parallax:.2;
+  --fx-spectrum-angle:115deg;
+  --fx-spectrum-angle-x:.85;
+  --fx-spectrum-angle-y:.4;
+  --fx-secondary-angle:65deg;
+  --fx-secondary-angle-x:.6;
+  --fx-spectrum-saturation:1;
+  --fx-spectrum-contrast:1;
+}
+/* TEMPORARY DEBUG PRESET: toggle the class; no JS/lifecycle changes needed. */
+.contact-card--fx-debug{
+  --fx-debug-floor:.75;
+  --fx-grain-opacity:.15;
+  --fx-glare-opacity:.8;
+  --fx-streak-opacity:.3;
+  --fx-secondary-opacity:.18;
+}
+.contact-card__front,.contact-card__back{
+  --fx-pointer-x:0;--fx-pointer-y:0;
+  --foil-x:50%;--foil-y:50%;--foil-strength:0;
+  --foil-bg-x:calc(50% + var(--fx-pointer-x) * var(--fx-spectrum-parallax-x) * 1%);
+  --foil-bg-y:calc(50% + var(--fx-pointer-y) * var(--fx-spectrum-parallax-y) * 1%);
+  --foil-reverse-x:calc(50% - var(--fx-pointer-x) * var(--fx-secondary-parallax) * 1%);
+  --foil-reverse-y:calc(50% - var(--fx-pointer-y) * var(--fx-secondary-parallax) * 1%);
+  --foil-texture-x:calc(50% + var(--fx-pointer-x) * var(--fx-texture-parallax) * 1%);
+  --foil-texture-y:calc(50% + var(--fx-pointer-y) * var(--fx-texture-parallax) * 1%);
+  --holo-angle:calc(var(--fx-spectrum-angle) + var(--fx-pointer-x) * var(--fx-spectrum-angle-x) * 1deg + var(--fx-pointer-y) * var(--fx-spectrum-angle-y) * 1deg);
+  --holo-secondary-angle:calc(var(--fx-secondary-angle) - var(--fx-pointer-x) * var(--fx-secondary-angle-x) * 1deg);
+  --fx-active:calc(max(var(--foil-strength),var(--fx-debug-floor)) * var(--fx-holo-intensity));
+  isolation:isolate;
+}
+.contact-material,.contact-material *{position:absolute;inset:0;pointer-events:none!important}
+.contact-material{z-index:1;mix-blend-mode:hard-light}
+html body .contact-card__front>:is(input,textarea,button,h2,p,label,output,span){z-index:2}
+.contact-material__grain{mask:url('/icons/grain.svg') center/100% 100% no-repeat;-webkit-mask:url('/icons/grain.svg') center/100% 100% no-repeat;mask-mode:alpha;background:url('/img/cards/grain.webp') center/240px 240px repeat;mix-blend-mode:multiply;opacity:var(--fx-grain-opacity)}
+/* Both spectra and diagnostic interference remain within the galaxy SVG. */
+.contact-material__foil{mask:url('/icons/galaxy.svg') center/100% 100% no-repeat;-webkit-mask:url('/icons/galaxy.svg') center/100% 100% no-repeat;mask-mode:alpha;opacity:var(--fx-active)}
+.contact-material__galaxy,.contact-material__secondary{mask-image:url('/img/cards/galaxy.png');mask-mode:luminance;mask-size:125% 125%;mask-position:var(--foil-texture-x) var(--foil-texture-y);mask-repeat:no-repeat;background-size:220% 220%;background-repeat:no-repeat;filter:saturate(var(--fx-spectrum-saturation)) contrast(var(--fx-spectrum-contrast))}
+.contact-material__galaxy{background-image:repeating-linear-gradient(var(--holo-angle),#ff2448 0%,#ff8c19 7%,#ffe62b 14%,#35ed58 21%,#16e9ed 28%,#397bff 35%,#a13dff 42%,#f42daf 49%,#ff2448 56%);background-position:var(--foil-bg-x) var(--foil-bg-y);opacity:var(--fx-galaxy-opacity)}
+.contact-material__secondary{background-image:repeating-linear-gradient(var(--holo-secondary-angle),#ff3159 0%,#ffd52b 12%,#29eb91 24%,#27bfff 36%,#a443ff 48%,#ff3159 60%);background-position:var(--foil-reverse-x) var(--foil-reverse-y);mix-blend-mode:exclusion;opacity:var(--fx-secondary-opacity)}
+.contact-material__illusion{background:url('/img/cards/illusion-mask.png') calc(50% + var(--fx-pointer-x) * var(--fx-illusion-parallax) * 1%) calc(50% - var(--fx-pointer-y) * var(--fx-illusion-parallax) * 1%)/calc(var(--fx-illusion-base-size) / var(--fx-illusion-density)) calc(var(--fx-illusion-base-size) / var(--fx-illusion-density)) repeat;mix-blend-mode:soft-light;opacity:var(--fx-illusion-opacity)}
+.contact-material__ancient{background:url('/img/cards/ancient.png') calc(50% - var(--fx-pointer-x) * var(--fx-ancient-parallax) * 1%) calc(50% + var(--fx-pointer-y) * var(--fx-ancient-parallax) * 1%)/calc(var(--fx-ancient-base-size) / var(--fx-ancient-density)) calc(var(--fx-ancient-base-size) / var(--fx-ancient-density)) repeat;mix-blend-mode:multiply;opacity:var(--fx-ancient-opacity)}
+/* Independent neutral light, outside the hard-light material blend group.
+   Text/form controls stay above it; no rainbow or extra mask coverage. */
+.contact-lighting,.contact-lighting *{position:absolute;inset:0;pointer-events:none!important}
+.contact-lighting{z-index:1}
+.contact-material__glare{
+  background:radial-gradient(ellipse var(--fx-glare-size) var(--fx-glare-size) at var(--foil-x) var(--foil-y),#fff 0%,#ffffffb3 15%,#ffffff40 45%,transparent 100%);
+  opacity:calc(max(.3,var(--foil-strength)) * var(--fx-glare-opacity));
+}
+.contact-material__streaks{
+  --streak-center:calc(50% + (var(--fx-pointer-x) - var(--fx-pointer-y)) * var(--fx-streak-movement) * 1%);
+  --streak-angle:calc(var(--fx-streak-angle) + var(--fx-pointer-x) * var(--fx-streak-angle-response) * 1deg);
+  background-image:linear-gradient(var(--streak-angle),transparent calc(var(--streak-center) - var(--fx-streak-width) * 3),#ffffff26 calc(var(--streak-center) - var(--fx-streak-width)),#ffffffd9 var(--streak-center),#ffffff26 calc(var(--streak-center) + var(--fx-streak-width)),transparent calc(var(--streak-center) + var(--fx-streak-width) * 3)),linear-gradient(var(--streak-angle),transparent calc(var(--streak-center) + 15% - var(--fx-streak-width) * 2),#ffffff80 calc(var(--streak-center) + 15%),transparent calc(var(--streak-center) + 15% + var(--fx-streak-width) * 2));
+  opacity:calc(max(.3,var(--foil-strength)) * var(--fx-streak-opacity));
+}
+@media(pointer:coarse){.contact-card:not(.contact-card--fx-debug){--fx-grain-opacity:.018}}
+@media(prefers-reduced-motion:reduce){.contact-material__foil,.contact-lighting{display:none}}
+
+/* Front colors from the updated carta.svg; material tuning remains independent. */
+html body .contact-card .contact-card__close{color:#ff6e4a}
+
+/* CONTACT CARD BACK FX TUNING: alpha mask excludes the black logo completely. */
+.contact-card__back{--fx-back-opacity:.65;--foil-strength:.7}
+.contact-back-material,.contact-back-material *{position:absolute;inset:0;pointer-events:none!important}
+.contact-back-material{
+  mask:url('/icons/backmask.svg') center/100% 100% no-repeat;
+  -webkit-mask:url('/icons/backmask.svg') center/100% 100% no-repeat;
+  mask-mode:alpha;opacity:var(--fx-back-opacity);mix-blend-mode:screen;
+}
+@media(prefers-reduced-motion:reduce){.contact-back-material{display:none}}

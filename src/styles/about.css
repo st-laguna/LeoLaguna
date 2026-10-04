@@ -12,7 +12,7 @@
   background: rgba(255, 255, 255, 0) !important; /* Más opaco para que resalte */
   backdrop-filter: blur(10px) !important;
   border: 1px solid rgba(0, 0, 0, 0) !important;
-  border-radius: 30px !important;
+  border-radius:0!important;
   color: #000000 !important;
   font-weight: bold !important;
   font-size: 1rem !important;
@@ -44,7 +44,7 @@
   background: rgba(255, 255, 255, 0.2) !important;
   backdrop-filter: blur(12px) !important;
   border: 1px solid rgba(255, 255, 255, 0.6) !important;
-  border-radius: 12px !important;
+  border-radius:0!important;
   color: #111111 !important;
   font-family: 'Host Grotesk', sans-serif !important;
   opacity: 0;
@@ -101,3 +101,9 @@ html body .about .about-mobile-toggle {top:58px;}
 html body .about .about-preferences {top:24px!important;}
 html body .about .about-preferences .about__loading {position:static!important;width:auto!important;height:auto!important;clip-path:none!important;overflow:visible!important;padding:0!important;border:0!important;}
 @media(max-width:700px), (orientation:landscape) and (max-height:500px) {html body .about .about-preferences {top:12px!important;right:12px!important;}}
+
+/* Keep the first paint coherent until About's initial scene is ready. */
+html[data-about-loading] [data-page-content] {opacity:0;visibility:hidden;}
+.about-loading-indicator {display:none;}
+html[data-about-loading] .about-loading-indicator {display:block;position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);margin:0;font:500 12px 'Host Grotesk',sans-serif;color:var(--foreground);}
+html[data-page="about"][data-theme="dark"],html[data-page="about"][data-theme="dark"] body {background:#1C1C1C;}

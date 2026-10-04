@@ -356,15 +356,15 @@ html.footer-active .site-nav__items {
   top: 0;
   left: 0;
 
-  width: 92px;
-  height: 92px;
+  width: 69px;
+  height: 69px;
 
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
 
-  border-radius: 50%;
+  border-radius:50%;
 
   /* Difference mode */
   background: #fff;
@@ -531,13 +531,13 @@ html.footer-active .site-nav__items {
 }
 /* Paint the two lower corners behind the existing GET IN TOUCH surface. */
 .footer .footer__strip-window::before {
-  content:'';
+  content:none;
   position:absolute;
   inset:auto 0 100%;
   height:clamp(32px,4.5vw,90px);
   z-index:-1;
   background:var(--background);
-  border-radius:0 0 clamp(32px,4.5vw,90px) clamp(32px,4.5vw,90px);
+  border-radius:0;
   box-shadow:0 clamp(32px,4.5vw,90px) 0 clamp(32px,4.5vw,90px) var(--foreground);
   pointer-events:none;
 }

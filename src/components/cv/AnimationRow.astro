@@ -83,7 +83,7 @@ const count = items.length;
     flex: 1 1 0%; 
     min-width: 280px; /* Límite mínimo para que no se aplasten si hay muchas */
     background: var(--color-bg-card);
-    border-radius: var(--radius-card);
+    border-radius:0;
     padding: var(--space-lg);
     transition: flex var(--duration-slow) var(--ease-premium), min-width var(--duration-slow) var(--ease-premium);
     min-height: 400px;
@@ -238,7 +238,7 @@ const count = items.length;
     display: block;
     width: 100%;
     height: 100%; /* En lugar de aspect-ratio, toma toda la altura */
-    border-radius: var(--radius-card);
+    border-radius:0;
     background: #000;
     object-fit: cover;
     /* 1. Esto ancla la imagen/video a la izquierda para el barrido lateral */

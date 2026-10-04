@@ -90,7 +90,33 @@ function mount(section) {
     animations.add(animation);
     return animation;
   }
+  let initialReveal;
+  function revealInitialAbout(){
+    if(initialReveal)return initialReveal;
+    initialReveal=(async()=>{
+      const root=document.documentElement;
+      if(!root.hasAttribute('data-about-loading'))return;
+      await document.fonts.ready;
+      if(root.hasAttribute('data-page-transition'))await new Promise(resolve=>{
+        on(window,'leo:page-reveal',resolve,{once:true});
+        abort.signal.addEventListener('abort',resolve,{once:true});
+      });
+      if(destroyed)return;
+      clearTimeout(window.__aboutLoadingFallback);
+      // Establish the first reveal frame before removing the pre-paint gate.
+      // Fade only the scene in editorial mode: an opacity ancestor isolates difference text.
+      const content=section.hasAttribute('data-editorial') ? section.querySelector('.about__scene-shell') : section.closest('[data-page-content]');
+      if(content&&!reduced)gsap.set(content,{opacity:0});
+      root.removeAttribute('data-about-loading');
+      // One entrance owns the complete interface; the scene is already rendered.
+      enter();
+      if(content&&!reduced)tween(content,{opacity:1,duration:.45,ease:'power2.out',onComplete:()=>content.style.removeProperty('opacity')});
+    })();
+    return initialReveal;
+  }
+  on(window,'leo:about-loading-fallback',()=>{enter();});
   function enter() {
+    if(document.documentElement.hasAttribute("data-about-loading"))return;
     editorial?.enter();
     for (const animation of [...animations]) animation.kill();
     leaving = false;
@@ -258,11 +284,13 @@ function mount(section) {
           setStatus(message);
         },
         onError(message) {
+          void revealInitialAbout();
           setStatus(message);
           progress.hidden = true;
           section.setAttribute('aria-busy', 'false');
         },
         onReady({ failed, interactive }) {
+          void revealInitialAbout();
           clearTimeout(watchdog);
           editorial?.ready(interactive);
           section.setAttribute('aria-busy', 'false');
@@ -292,6 +320,7 @@ function mount(section) {
       progress.hidden = true;
       pauseButton.disabled = true;
       section.setAttribute('aria-busy', 'false');
+      void revealInitialAbout();
       if (import.meta.env.DEV) console.warn('[About]', error);
     } finally {
       clearTimeout(watchdog);

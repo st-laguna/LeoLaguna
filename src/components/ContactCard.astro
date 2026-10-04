@@ -1,0 +1,68 @@
+---
+import '../styles/contact-card.css';
+import { contactCopy, contactConfig } from '../data/contact';
+const t=contactCopy.en;
+---
+<dialog class="contact-modal" aria-labelledby="contact-card-title" data-contact-modal data-site-key={contactConfig.siteKey} data-endpoint={contactConfig.endpoint}>
+  <div class="contact-modal__stage" data-lenis-prevent>
+    <!-- Temporary front-material tuning: remove contact-card--fx-debug for normal values. -->
+    <form class="contact-card contact-card--fx-debug" data-contact-form>
+      <div class="contact-card__front">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640.25 824.07" class="contact-card__geometry" aria-hidden="true" focusable="false">
+  <rect x="0" width="637.37" height="824.02" fill="#ededed" />
+  <line x1="107.46" y1="566.72" x2="217.46" y2="566.72" fill="none" stroke="#1c1c1c" stroke-width="2" opacity=".28" />
+  <line x1="422.79" y1="566.72" x2="532.79" y2="566.72" fill="none" stroke="#1c1c1c" stroke-width="2" opacity=".28" />
+  <line x1="514.94" y1="668.16" x2="514.94" y2="712.16" fill="none" stroke="#1c1c1c" stroke-width="2" opacity=".45" />
+  <polygon class="contact-card__submit-outline" points="392.1 546.98 237.59 546.98 237.59 576.26 248.59 587.26 402.66 587.26 402.66 558.43 392.1 546.98" fill="#83a4b7" stroke="#000" stroke-width="1" />
+
+  <path d="M640.04,0H.04v21.06C.02,21.49,0,21.93,0,22.37H0c0,.44.02.88.04,1.32v776.71c-.03.44-.04.87-.04,1.32H0c0,.44.02.88.04,1.32v20.99h20.69c.56.04,1.12.07,1.68.07s1.13-.03,1.68-.07h592.05c.56.04,1.12.07,1.68.07h0c.57,0,1.13-.03,1.68-.07h20.52v-19.29c.13-.99.21-1.99.21-3.01h0c0-1.02-.08-2.03-.21-3.01V0ZM617.77,801.72h-115.4s-13.8-23.28-13.8-23.28H174.12l-13.8,23.28H44.83s-22.42-22.37-22.42-22.37V22.37h573l22.36,22.37v756.97Z" fill="#ff6464" />
+  <path d="M640.46,22.37h0c0-1.02-.08-2.03-.21-3.01V0H.04v21.06C.02,21.49,0,21.93,0,22.37H0c0,.44.02.88.04,1.32v776.71c-.03.44-.04.87-.04,1.32H0c0,.44.02.88.04,1.32v20.99h20.7c.56.04,1.12.07,1.68.07s1.13-.03,1.68-.07h592.25c.56.04,1.12.07,1.68.07h0c.57,0,1.13-.03,1.68-.07h20.53v-19.29c.13-.99.21-1.99.21-3.01h0c0-1.02-.08-2.03-.21-3.01V25.39c.13-.99.21-1.99.21-3.01ZM617.98,801.72h-115.44s-13.81-23.28-13.81-23.28H174.18l-13.81,23.28H44.85s-22.42-22.37-22.42-22.37V22.37h573.19l22.37,22.37v756.97Z" fill="#1c1c1c" />
+  <path d="M555.52,104.78H39.94v376.3l44.08,44.58h513.92c1.1,0,2-.9,2-2V149.03l-44.42-44.25Z" fill="#83a4b7" />
+  <polygon class="contact-card__message-outline" points="552.04 306 64.94 306 64.94 476.03 87.37 498.87 574.94 498.87 574.94 328.82 552.04 306" fill="#ededed" stroke="#1c1c1c" stroke-width="1" />
+  <polygon points="562.21 662.16 64.94 662.16 64.94 705.54 77.54 718.16 574.94 718.16 574.94 674.65 562.21 662.16" fill="#83a4b7" stroke="#1c1c1c" stroke-width="1" />
+  <polygon class="contact-card__email-outline" points="574.8 187.91 562.19 175.3 562.21 175.27 64.94 175.27 64.94 218.65 65.02 218.57 77.63 231.18 77.54 231.27 574.94 231.27 574.94 187.76 574.8 187.91" fill="#ededed" stroke="#1c1c1c" stroke-width="1" />
+  <path d="M555.52,104.78H39.94v376.3l44.08,44.58h513.92c1.1,0,2-.9,2-2V149.03l-44.42-44.25Z" fill="none" stroke="#1c1c1c" stroke-width="1" />
+</svg>
+      <div class="contact-material" aria-hidden="true">
+        <div class="contact-material__grain"></div>
+        <div class="contact-material__foil">
+          <div class="contact-material__galaxy"></div>
+          <div class="contact-material__illusion"></div>
+          <div class="contact-material__ancient"></div>
+          <div class="contact-material__secondary"></div>
+        </div>
+      </div>
+      <div class="contact-lighting" aria-hidden="true">
+        <div class="contact-material__streaks"></div>
+        <div class="contact-material__glare"></div>
+      </div>
+      <span class="contact-card__dot" aria-hidden="true"></span>
+      <h2 id="contact-card-title" class="contact-card__title" tabindex="-1" data-contact-text="title">{t.title}</h2>
+      <button class="contact-card__close" type="button" data-contact-close aria-label={t.close}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M21 3L3 21" fill="none" stroke="currentColor" stroke-width="4" /></svg></button>
+      <label class="contact-card__email-label" for="contact-email" data-contact-text="email">{t.email}</label>
+      <input class="contact-card__email" id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="name@email.com" />
+      <label class="contact-card__message-label" for="contact-message" data-contact-text="message">{t.message}</label>
+      <output class="contact-card__counter" id="contact-counter" for="contact-message" data-contact-counter aria-label={t.count}>0 / 500</output>
+      <textarea class="contact-card__message" id="contact-message" name="message" required maxlength="500" placeholder={t.placeholder} aria-describedby="contact-counter contact-status"></textarea>
+      <button class="contact-card__submit" type="submit" data-contact-submit aria-describedby="contact-status" data-contact-text="send">{t.send}</button>
+      <span class="contact-card__copy-label" data-contact-text="copy">{t.copy}</span>
+      <button class="contact-card__copy" type="button" data-contact-copy aria-label={t.copy}><span>hello@leolaguna.com</span></button>
+      <button class="contact-card__copy-icon" type="button" data-contact-copy aria-label={t.copy}><svg viewBox="531.78 674.66 29 31" aria-hidden="true"><path d="M540.78,674.66v7h-9v24h20v-7h9v-24h-20ZM549.78,703.66h-16v-20h7v15h9v5ZM558.78,696.66h-16v-20h16v20Z" fill="#1c1c1c" /></svg></button>
+      <p class="contact-card__status" id="contact-status" role="status" aria-live="polite" data-contact-status></p>
+      </div>
+      <div class="contact-card__back" aria-hidden="true">
+        <img src="/icons/back.svg" class="contact-card__geometry" width="640.25" height="824.07" alt="" decoding="sync" />
+        <div class="contact-back-material">
+          <div class="contact-material__galaxy"></div>
+          <div class="contact-material__illusion"></div>
+          <div class="contact-material__ancient"></div>
+          <div class="contact-material__secondary"></div>
+          <div class="contact-material__streaks"></div>
+          <div class="contact-material__glare"></div>
+        </div>
+      </div>
+    </form>
+    <div class="contact-modal__verification" data-contact-verification></div>
+  </div>
+</dialog>
+<script>import '../scripts/contact-card';</script>

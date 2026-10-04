@@ -28,7 +28,8 @@ export function createAboutScene(section, callbacks = {}) {
   let disposed=false,visible=true,paused=false,reduced=false,lost=false,raf=0,aspect=1;
   const clamp=v=>Math.max(0,Math.min(1,v));
   function request(){if(!disposed&&!lost&&visible&&!document.hidden&&!raf)raf=requestAnimationFrame(frame);}
-  function theme(){scene.background=new THREE.Color(document.documentElement.dataset.theme==='dark'?'#181818':'#f7f7f7');request();}
+  // Theme tokens resolve immediately even while the section's background transitions.
+  function theme(){scene.background=new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--background').trim());request();}
   function resize(){
     const w=container.clientWidth,h=container.clientHeight;if(!w||!h)return;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
@@ -107,7 +108,7 @@ export function createAboutScene(section, callbacks = {}) {
       }catch(error){failed++;console.warn('[About] '+id+' could not load',error);}
       completed++;callbacks.onProgress?.({completed,total:3});request();
     }
-    if(!disposed)callbacks.onReady?.({failed,interactive:actors.filter(Boolean).length});
+    if(!disposed){frame(performance.now());callbacks.onReady?.({failed,interactive:actors.filter(Boolean).length});}
   }
   const observer=new ResizeObserver(resize);observer.observe(container);
   window.addEventListener('scroll',request,{passive:true,signal:events.signal});

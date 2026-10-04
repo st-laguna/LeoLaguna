@@ -172,7 +172,7 @@ const groupedTraining = training.reduce<Record<string, string[]>>((acc, curr) =>
     width: 100%;
     max-width: 420px;
     aspect-ratio: 1 / 1;
-    border-radius: var(--radius-avatar);
+    border-radius:0;
     object-fit: cover;
   }
 
@@ -191,7 +191,7 @@ const groupedTraining = training.reduce<Record<string, string[]>>((acc, curr) =>
     color: var(--color-text);
     border: 1px solid var(--color-border);
     padding: 6px 16px;
-    border-radius: 999px;
+    border-radius:0;
   }
 
   .lang-icon {
@@ -214,7 +214,7 @@ const groupedTraining = training.reduce<Record<string, string[]>>((acc, curr) =>
   .entry-course::before { content: "•"; position: absolute; left: 0; color: var(--color-text-secondary); opacity: 0.5; }
 
   .pill-list { display: flex; flex-wrap: wrap; gap: 10px; }
-  .lang-pill { font-family: var(--font-body); font-weight: 500; font-size: var(--fs-body-sm); color: var(--color-text); border: 1px solid var(--color-border); padding: 6px 16px; border-radius: 999px; }
+  .lang-pill { font-family: var(--font-body); font-weight: 500; font-size: var(--fs-body-sm); color: var(--color-text); border: 1px solid var(--color-border); padding: 6px 16px; border-radius:0; }
 
   .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem 1.5rem; justify-items: center; }
   .skill-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; opacity: 0.45; transition: all 0.3s ease; }
@@ -242,7 +242,7 @@ const groupedTraining = training.reduce<Record<string, string[]>>((acc, curr) =>
       width: calc(100% + 32px); 
       max-width: calc(100% + 32px); 
       margin-left: -16px; 
-      border-radius: 0; 
+      border-radius:0;
       aspect-ratio: 1 / 1;
       /* Centra la cara para evitar que se desplace a la derecha */
       object-position: center center; 
@@ -253,7 +253,7 @@ const groupedTraining = training.reduce<Record<string, string[]>>((acc, curr) =>
   /* MÓVIL HORIZONTAL (LANDSCAPE) */
   @media (max-width: 809px) and (orientation: landscape), (max-width: 1000px) and (max-height: 500px) and (orientation: landscape) {
     .profile-header { flex-direction: row; align-items: center; gap: 2rem; }
-    .avatar { width: 35vw; max-width: 300px; border-radius: var(--radius-avatar); }
+    .avatar { width: 35vw; max-width: 300px; border-radius:0; }
     .profile-info { flex: 1; display: flex; justify-content: center; }
     .desktop-hidden { display: block; }
     .mobile-hidden { display: none; }

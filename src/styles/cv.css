@@ -31,9 +31,9 @@
   --space-2xl: 57px;
   --space-3xl: 60px;
 
-  --radius-avatar: 10px;
-  --radius-card: 30px;
-  --radius-square: 6px;
+  --radius-avatar:0;
+  --radius-card:0;
+  --radius-square:0;
 
   --ease-premium: cubic-bezier(0.33, 1, 0.68, 1);
   --duration-fast: 0.35s;
@@ -117,7 +117,7 @@ img {
   max-width: 90vw;
   max-height: 90dvh;
   object-fit: contain;
-  border-radius: var(--radius-card); /* Asegúrate de que esta variable exista en global, si no pon 12px */
+  border-radius:0; /* Asegúrate de que esta variable exista en global, si no pon 12px */
   transform: scale(0.95);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);

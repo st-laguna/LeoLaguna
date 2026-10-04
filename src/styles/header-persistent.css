@@ -113,3 +113,15 @@ html[data-tablet-portrait] body .site-header .mobile-menu-panel .site-nav__items
 html[data-tablet-portrait] body .site-header .mobile-menu-panel .site-nav__items>.mobile-only {display:block;}
 html[data-tablet-portrait] body .site-header .mobile-menu-panel .site-controls {display:flex!important;}
 html[data-tablet-portrait].mobile-menu-open:not([data-page]) body>main {visibility:visible;}
+
+/* Change before Featured Works reaches the navigation; restore on exit.
+   A missing blend color falls back to inherited black, invisible in difference. */
+html[data-theme="light"]{--featured-nav-blend:#dedede}
+html[data-theme="dark"]{--featured-nav-blend:var(--dark-featured-blend)}
+@media(min-width:701px) and (min-height:501px) {
+ html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav {transition:color .25s ease;}
+ html[data-featured-header]:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav {color:var(--featured-nav-blend,#dedede)!important;}
+}
+@media(prefers-reduced-motion:reduce) {
+ html body .site-header .mobile-menu-panel .site-nav {transition:none!important;}
+}

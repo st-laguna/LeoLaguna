@@ -1,4 +1,6 @@
 import gsap from 'gsap';
+import Lenis from 'lenis';
+import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import {openServiceCover} from './service-cover-transition';
 import {mountServiceStickyGrid} from './service-sticky-grid';
 const gallery=document.querySelector<HTMLDialogElement>('.gallery-dialog');
@@ -20,8 +22,30 @@ if(gallery&&lightbox&&section){
   let disposeSticky:(()=>void)|undefined;
   let opening:ReturnType<typeof openServiceCover>|undefined;
   let clockTimer:ReturnType<typeof setInterval>|undefined;
+  const mouseScroll=matchMedia('(hover:hover) and (pointer:fine)');
+  let galleryScroll:Lenis|undefined;
+  let galleryContent:HTMLDivElement|undefined;
+  const galleryTick=(seconds:number)=>galleryScroll?.raf(seconds*1000);
+  function destroyGalleryScroll(){
+    gsap.ticker.remove(galleryTick);galleryScroll?.destroy();galleryScroll=undefined;
+  }
+  function configureGalleryScroll(){
+    destroyGalleryScroll();
+    if(!g.open||l.open||galleryBusy||reduced.matches||!mouseScroll.matches||navigator.maxTouchPoints>0||document.documentElement.hasAttribute('data-ipad'))return;
+    if(!galleryContent){
+      galleryContent=document.createElement('div');
+      galleryContent.className='gallery-scroll-content';
+      while(scroller.firstChild)galleryContent.append(scroller.firstChild);
+      scroller.append(galleryContent);
+    }
+    // The page's Lenis is stopped while this dialog is open: only one scroller
+    // is active. Native scroll coordinates remain ScrollTrigger's authority.
+    galleryScroll=new Lenis({wrapper:scroller,content:galleryContent,eventsTarget:scroller,autoRaf:false,smoothWheel:true,syncTouch:false,lerp:.1});
+    galleryScroll.on('scroll',()=>ScrollTrigger.update());
+    gsap.ticker.add(galleryTick);
+  }
   function updateGalleryClock(){const now=new Date(),locale=document.documentElement.lang==='es'?'es-PE':'en-US';g.querySelectorAll('[data-gallery-clock]').forEach(node=>node.textContent=new Intl.DateTimeFormat(locale,{timeZone:'America/Lima',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(now));g.querySelectorAll('[data-gallery-date]').forEach(node=>node.textContent=new Intl.DateTimeFormat(locale,{timeZone:'America/Lima',weekday:'long',month:'short',day:'numeric',year:'numeric'}).format(now));g.querySelectorAll('[data-gallery-year]').forEach(node=>node.textContent=String(now.getFullYear()));}
-  g.addEventListener('click',event=>{if((event.target as Element).closest('[data-gallery-top]'))scroller.scrollTo({top:0,behavior:reduced.matches?'instant':'smooth'});},{signal:events.signal});
+  g.addEventListener('click',event=>{if((event.target as Element).closest('[data-gallery-top]')){if(galleryScroll)galleryScroll.scrollTo(0);else scroller.scrollTo({top:0,behavior:reduced.matches?'instant':'smooth'});}},{signal:events.signal});
   function lock(){
     if(locks++===0){
       scroll=window.scrollY;
@@ -59,6 +83,10 @@ if(gallery&&lightbox&&section){
     if(galleryBusy||g.open)return;
     galleryBusy=true;galleryOpener=button;pause(s);
     const index=button.dataset.open==='current'?Number(s.dataset.current||0):Number(button.dataset.open);
+    const preparation:Promise<void>[]=[];
+    window.dispatchEvent(new CustomEvent('leo:prepare-gallery',{detail:{index,waitUntil:(promise:Promise<void>)=>preparation.push(promise)}}));
+    await Promise.all(preparation);
+    if(events.signal.aborted){galleryBusy=false;return;}
     g.querySelectorAll<HTMLElement>('[data-gallery]').forEach((grid,i)=>{
       grid.hidden=i!==index;
     });
@@ -78,12 +106,24 @@ if(gallery&&lightbox&&section){
       await opening.finished;
       opening=undefined;
     }
-    galleryBusy=false;
+    galleryBusy=false;configureGalleryScroll();
   }
   async function closeGallery(){
     if(galleryBusy||!g.open||l.open)return;
+    destroyGalleryScroll();
     galleryBusy=true;g.setAttribute('data-media-closing','');pause(g);disconnectItems();
-    await gsap.to(shell,{yPercent:reduced.matches?0:100,duration:reduced.matches?0:.65,ease:'power3.inOut'});
+    if(!reduced.matches){
+      // Return the current gallery to its intro before reversing the shared
+      // panel timeline; flush only this dialog's scrub animation.
+      if(scroller.scrollTop>0)await gsap.to(scroller,{scrollTop:0,duration:.35,ease:'power2.inOut',onUpdate:()=>ScrollTrigger.update()});
+      scroller.scrollTop=0;ScrollTrigger.update();
+      ScrollTrigger.getAll().filter(trigger=>trigger.vars.scroller===scroller).forEach(trigger=>trigger.getTween()?.progress(1));
+      const active=g.querySelector<HTMLElement>('[data-gallery]:not([hidden])');
+      const index=Number(active?.dataset.gallery||0);
+      const title=active?.querySelector<HTMLElement>('[data-sticky-title]')||null;
+      opening=openServiceCover(g,shell,title,s,index,true);
+      await opening.finished;opening=undefined;
+    }
     disposeSticky?.();disposeSticky=undefined;clearInterval(clockTimer);g.close();clearItemAnimations();unlock();
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','false'));
     galleryOpener?.focus({preventScroll:true});galleryOpener=null;galleryBusy=false;
@@ -93,6 +133,7 @@ if(gallery&&lightbox&&section){
     image.src=button.dataset.zoomSrc!;image.alt=button.dataset.zoomAlt||'';
     figure.querySelector('figcaption')!.textContent=image.alt;
     gsap.set(figure,{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)',y:reduced.matches?0:35});
+    galleryScroll?.stop();
     lock();l.showModal();window.scrollTo({top:scroll,behavior:'instant'});
     l.querySelector<HTMLButtonElement>('[data-lightbox-close]')!.focus({preventScroll:true});
     await gsap.fromTo(figure,{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)',y:reduced.matches?0:35},{clipPath:'inset(0% 0 0)',y:0,duration:reduced.matches?0:.55,ease:'power3.inOut'});
@@ -101,7 +142,7 @@ if(gallery&&lightbox&&section){
   async function closeImage(){
     if(lightboxBusy||!l.open)return;lightboxBusy=true;
     await gsap.to(figure,{clipPath:reduced.matches?'inset(0)':'inset(0 0 100%)',y:reduced.matches?0:-30,duration:reduced.matches?0:.45,ease:'power3.inOut'});
-    l.close();unlock();lightboxOpener?.focus({preventScroll:true});lightboxOpener=null;lightboxBusy=false;
+    l.close();unlock();if(galleryScroll)galleryScroll.start();else configureGalleryScroll();lightboxOpener?.focus({preventScroll:true});lightboxOpener=null;lightboxBusy=false;
   }
   document.addEventListener('click',event=>{
     const button=(event.target as Element).closest<HTMLElement>('button');
@@ -114,10 +155,11 @@ if(gallery&&lightbox&&section){
   g.addEventListener('cancel',event=>{event.preventDefault();void closeGallery();},{signal:events.signal});
   l.addEventListener('cancel',event=>{event.preventDefault();event.stopPropagation();void closeImage();},{signal:events.signal});
   l.addEventListener('click',event=>{if(event.target===l)void closeImage();},{signal:events.signal});
-  reduced.addEventListener('change',()=>{if(reduced.matches)opening?.finish();},{signal:events.signal});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)opening?.finish();},{signal:events.signal});
+  reduced.addEventListener('change',()=>{if(reduced.matches)opening?.finish();configureGalleryScroll();},{signal:events.signal});
+  mouseScroll.addEventListener('change',configureGalleryScroll,{signal:events.signal});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){opening?.finish();galleryScroll?.stop();}else if(!l.open&&!galleryBusy)galleryScroll?.start();},{signal:events.signal});
   if(import.meta.hot)import.meta.hot.dispose(()=>{
-    opening?.dispose();
+    destroyGalleryScroll();opening?.dispose();
     events.abort();clearInterval(clockTimer);disposeSticky?.();disconnectItems();clearItemAnimations();gsap.killTweensOf([shell,figure]);pause(g);
     if(l.open)l.close();if(g.open)g.close();while(locks)unlock();
   });

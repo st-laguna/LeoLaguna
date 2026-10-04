@@ -1,5 +1,5 @@
 import { isTabletPortrait } from './responsive-layout';
-import { scrollPage } from './smooth-scroll';
+import { scrollPage, beginScrollTransition, endScrollTransition, commitScrollJump } from './smooth-scroll';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import './project-gallery';
@@ -346,7 +346,7 @@ if (brandsLayout) {
     Array.from(selections).forEach(([panel,state])=>{const latest=state.pending;state.pending=null;state.timeline.progress(1);if(latest!==null){select(panel,latest);selections.get(panel)?.timeline.progress(1);}});
   }
   function select(panel:HTMLElement,index:number){
-    if(frozen)return;
+    if(frozen||section!.hasAttribute("data-gallery-preparing"))return;
     const active=selections.get(panel);
     if(active){active.pending=index;return;}
     const slides=panelSlides.get(panel)!;
@@ -370,7 +370,7 @@ if (brandsLayout) {
   section.addEventListener('click',event=>{
     const button=(event.target as Element).closest<HTMLElement>('button');if(!button)return;
 
-    if(frozen)return;
+    if(frozen||section!.hasAttribute("data-gallery-preparing"))return;
     if(button.hasAttribute('data-select'))select(button.closest<HTMLElement>('[data-panel]')!,Number(button.dataset.select));
     if(button.hasAttribute('data-step')){
       const target=Math.max(0,Math.min(3,current+Number(button.dataset.step)));
@@ -413,6 +413,26 @@ if (brandsLayout) {
       scrollPage(panels[index].getBoundingClientRect().top + window.scrollY);
     }
   }) as EventListener, { signal: events.signal });
+  // View All measures shared text only after the selected service is framed.
+  window.addEventListener('leo:prepare-gallery',((event:CustomEvent<{index:number,waitUntil:(promise:Promise<void>)=>void}>)=>{
+    const index=event.detail.index;
+    const desktop=section!.hasAttribute('data-horizontal');
+    const trigger=desktop?timeline?.scrollTrigger:mobileTimeline?.scrollTrigger;
+    if(!trigger||!panels[index])return;
+    const destination=trigger.start+(desktop?stops[index]/total:index/3*.86)*(trigger.end-trigger.start);
+    const prepare=async()=>{
+      if(!beginScrollTransition())return;
+      section!.setAttribute('data-gallery-preparing','');
+      const driver={top:window.scrollY};
+      try{
+        await gsap.to(driver,{top:destination,duration:reducedMotion.matches||Math.abs(destination-driver.top)<2?0:.4,ease:'power2.inOut',onUpdate:()=>{
+          commitScrollJump(()=>scrollPage(driver.top,false));
+        }});
+        commitScrollJump(()=>scrollPage(destination,false));
+      }finally{section!.removeAttribute('data-gallery-preparing');endScrollTransition();}
+    };
+    event.detail.waitUntil(prepare());
+  }) as EventListener,{signal:events.signal});
   // HOME evita pasar lentamente por todo el recorrido al volver al inicio.
   section.querySelector<HTMLAnchorElement>('nav a[href="#home"]')?.addEventListener('click',event=>{
     event.preventDefault();scrollPage(0, false);history.replaceState(null,'','#home');

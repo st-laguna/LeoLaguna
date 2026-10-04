@@ -8,7 +8,7 @@
   --light-base: #ededed;
   --light-ink: #1C1C1C;
   --light-coral: #EF6C65;
-  --light-featured: #78848C;
+  --light-featured: #83a4b7;
   --light-white: #FFFFFF;
   color-scheme: light;
   --background: #f7f7f7;
@@ -20,8 +20,8 @@
 :root[data-theme="dark"] {
   --dark-base: #1C1C1C;
   --dark-coral: #EF6C65;
-  --dark-service-light: #D1D1D1;
-  --dark-featured: #78848C;
+  --dark-service-light: #ededed;
+  --dark-featured: #83a4b7;
   --dark-featured-blend: #CCCCCC;
   --dark-white: #FFFFFF;
   --dark-black: #000000;

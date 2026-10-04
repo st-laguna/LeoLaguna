@@ -30,7 +30,7 @@ export function createAboutScene(section, callbacks = {}) {
   const scene = new THREE.Scene();
   const mobilePortrait = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)');
   const isMobilePortrait = mobilePortrait.matches;
-  scene.background = new THREE.Color(document.documentElement.dataset.theme === 'dark' ? (editorial?'#1C1C1C':'#181818') : (editorial?'#D1D1D1':SCENE.background));
+  scene.background = new THREE.Color(document.documentElement.dataset.theme === 'dark' ? (editorial?'#1C1C1C':'#181818') : (editorial?getComputedStyle(section).getPropertyValue('--light-base').trim():SCENE.background));
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 150);
   camera.position.fromArray(editorial?[0,2.3,4.5]:SCENE.camera);
   const renderer = new THREE.WebGLRenderer({
@@ -286,6 +286,13 @@ export function createAboutScene(section, callbacks = {}) {
     camera.updateMatrixWorld();
     raycaster.setFromCamera(projection, camera);
     hits.length = 0;
+    // Leo starts seated, then stands: cached skinned bounds must follow the current pose.
+    // Refresh only during picking, not on every rendered frame.
+    for (const mesh of leo.meshes) {
+      if (!mesh.isSkinnedMesh) continue;
+      mesh.computeBoundingSphere();
+      if (mesh.boundingBox !== null) mesh.computeBoundingBox();
+    }
     raycaster.intersectObjects(meshes, false, hits);
     return hits.length ? meshEntries.get(hits[0].object) : null;
   }
@@ -394,7 +401,6 @@ export function createAboutScene(section, callbacks = {}) {
         requestRender();
       },
     });
-    if (entry.id === 'leo') leo.skipWait();
     requestRender();
   }
   function reset() {
@@ -508,7 +514,7 @@ export function createAboutScene(section, callbacks = {}) {
       halo.visible = active?.id === id && !leaving;
       if (!halo.visible) continue;
       active.head.getWorldPosition(world);
-      world.y += 0.04;
+      world.y += id === 'leo' ? 0.04 : 0.16;
       halo.position.copy(world);
       if (ambient()) {
         halo.rotation.y -= 0.5 * delta;
@@ -616,8 +622,9 @@ export function createAboutScene(section, callbacks = {}) {
   function getZoom(){return THREE.MathUtils.clamp(1-(controls.getDistance()-controls.minDistance)/(controls.maxDistance-controls.minDistance),0,1);}
   function setZoom(value){if(!editorial||transition||leaving||disposed)return;const distance=THREE.MathUtils.lerp(controls.maxDistance,controls.minDistance,THREE.MathUtils.clamp(value,0,1));camera.position.sub(controls.target).normalize().multiplyScalar(distance).add(controls.target);controls.update();controlChange();}
   controls.addEventListener('change', controlChange);
+  // Read the final palette token, never an in-flight CSS background transition.
   on(window, 'leo:theme-change', () => {
-    const target=new THREE.Color(document.documentElement.dataset.theme === 'dark' ? (editorial?'#1C1C1C':'#181818') : (editorial?'#D1D1D1':SCENE.background));if(editorial)animateValue(scene.background,{r:target.r,g:target.g,b:target.b,duration:.65,ease:'power2.inOut'});else scene.background.copy(target);
+    const target=new THREE.Color(document.documentElement.dataset.theme === 'dark' ? (editorial?'#1C1C1C':'#181818') : (editorial?getComputedStyle(section).getPropertyValue('--light-base').trim():SCENE.background));if(editorial)animateValue(scene.background,{r:target.r,g:target.g,b:target.b,duration:.65,ease:'power2.inOut'});else scene.background.copy(target);
     requestRender();
   });
 
@@ -745,6 +752,9 @@ export function createAboutScene(section, callbacks = {}) {
     if (disposed) return;
     allSettled = true;
     if(editorial)controlChange();
+    scene.updateMatrixWorld(true);
+    updateCamera(0);
+    composer.render();
     callbacks.onReady?.({ loaded, failed, interactive: entries.size });
     requestRender();
   }

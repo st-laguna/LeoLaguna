@@ -169,12 +169,6 @@ export class Leo {
     }
   }
 
-  skipWait() {
-    if (this.state === 'waiting') {
-      this.stateTimer = 0;
-    }
-  }
-
   update(delta) {
     if (!this.mixer) return;
     this.mixer.update(delta);

@@ -1,8 +1,8 @@
 export const profile = {
   name: "Leonardo S. Laguna",
-  tagline: "Marine Biologist • Scientific Illustrator • 3D Developer",
+  tagline: "BSc in Marine Biology • Scientific Illustrator • 3D Developer",
   avatar: "/img/Perfil.webp", // vas a poner tu foto acá más adelante
-  summary: "Marine biologist with 5 years of experience in scientific illustration and communication, working with NGOs, research institutions, and industry on marine conservation and aquaculture projects. I turn complex marine science into clear visual material, illustration, 3D modeling, and video, supporting research, education, and decision-making.",
+  summary: "Scientific illustrator and 3D developer with a background in Marine Biology and 5 years of experience in scientific communication. I have worked with NGOs, research institutions, and industry across marine conservation, aquaculture, and engineering projects. My work translates complex scientific and technical subjects into clear visual communication through illustration, 3D visualization, and video, supporting research, education, and decision-making.",
   email: "sanchezlaguna99@gmail.com",
   phone: "+51 981 309 842",
   socials: [

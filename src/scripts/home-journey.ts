@@ -229,7 +229,7 @@ hero.style.width = `${width + (target.w - width) * shrink}px`;
 hero.style.height = `${height + (target.h - height) * shrink}px`;
 hero.style.left = `${target.x * shrink}px`;
 hero.style.top = `${target.y * shrink}px`;
-hero.style.borderRadius = `${18 * shrink}px`;
+hero.style.borderRadius = "0";
 hero.style.transform = `rotateY(${180 * turn}deg)`;
 
 hero.style.backgroundColor = p >= .72 ? '#000' : '';
@@ -448,7 +448,7 @@ slots.forEach((slot, i) => {
       hero.style.height=`${height+(target.h-height)*shrink}px`;
       hero.style.left=`${target.x*shrink}px`;
       hero.style.top=`${target.y*shrink}px`;
-      hero.style.borderRadius=`${18*shrink}px`;
+      hero.style.borderRadius="0";
       const handoff=.32;
       const crossfade=ease((p-.29)/.03);
       fish.style.filter='none';
@@ -470,7 +470,7 @@ slots.forEach((slot, i) => {
         const visible=local>-.02&&local<1.03;
         slot.style.visibility=visible?'visible':'hidden';
         slot.style.opacity='1';
-        slot.style.clipPath=`inset(${(1-enter)*100}% 0 ${leave*100}% 0 round 18px)`;
+        slot.style.clipPath=`inset(${(1-enter)*100}% 0 ${leave*100}% 0)`;
         slot.style.transform=`translate3d(0,${(1-enter)*42-leave*90}px,${(1-enter)*-170-leave*170}px) scale(${.86+.14*enter-.12*leave})`;
         slot.style.zIndex=String(10-i);
         turns[i].style.transform=`rotateY(${180*flip}deg)`;

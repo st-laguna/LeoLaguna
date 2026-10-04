@@ -24,3 +24,9 @@ pnpm-debug.log*
 .idea/
 
 PUBLICAR.bat
+
+# Local Cloudflare credentials and generated Worker state
+.dev.vars
+.dev.vars.*
+.wrangler/
+.env.local

@@ -18,7 +18,7 @@ html[data-home-entry] [data-home-curtain] {display:block;position:fixed;inset:0;
 
 :root {--button-coral:#EF6C65;}
 html[data-theme="dark"] {--button-coral:var(--dark-coral);}
-html body .action-pill {display:inline-flex;align-items:center;justify-content:center;gap:3px;padding:8px 16px;border:0;border-radius:999px;background:var(--button-coral);color:#000;font:700 14px/1.2 'Host Grotesk',sans-serif;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;}
+html body .action-pill {display:inline-flex;align-items:center;justify-content:center;gap:3px;padding:8px 16px;border:0;border-radius:0;background:var(--button-coral);color:#000;font:700 14px/1.2 'Host Grotesk',sans-serif;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;}
 html body .projects-view-all.action-pill {font-size:14px!important;font-weight:700!important;}
 html body .gallery-header .action-pill {font-size:14px;}
 html body .footer__back-top.action-pill {font-size:13px;}

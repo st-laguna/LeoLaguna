@@ -1,4 +1,5 @@
 ---
+import ContactCard from '../components/ContactCard.astro';
 import AboutSection from '../components/about/AboutSection.astro';
 import PageNavigation from '../components/PageNavigation.astro';
 import '../styles/about.css';
@@ -10,13 +11,25 @@ import '../styles/about.css';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About — Leo Laguna</title>
     <PageNavigation />
+    <script is:inline>
+      document.documentElement.setAttribute('data-about-loading', '');
+      // A failed runtime must never leave the biography or navigation hidden.
+      window.__aboutLoadingFallback=setTimeout(()=>{
+        document.documentElement.removeAttribute('data-about-loading');
+        window.dispatchEvent(new Event('leo:about-loading-fallback'));
+      },12000);
+    </script>
+    <link rel="preload" href="/about/fonts/HostGrotesk-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/about/fonts/Archivo.woff2" as="font" type="font/woff2" crossorigin />
     <!-- Fetch the main actors during navigation; decode/scene creation waits for reveal. -->
     <link rel="preload" href="/about/models/leo.glb" as="fetch" crossorigin="anonymous" />
     <link rel="preload" href="/about/models/simba.glb" as="fetch" crossorigin="anonymous" />
     <link rel="preload" href="/about/models/morena.glb" as="fetch" crossorigin="anonymous" />
   </head>
   <body>
+    <p class="about-loading-indicator" role="status" aria-live="polite">Loading…</p>
     <main data-page-content><AboutSection /></main>
     <script>import '../scripts/preferences';</script>
+    <ContactCard />
   </body>
 </html>

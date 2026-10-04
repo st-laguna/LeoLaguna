@@ -251,7 +251,7 @@ function setFooterNavigation(active: boolean) {
   function position(){
     scheduled=0;
     const featuredRect=featured?.getBoundingClientRect();
-    root.toggleAttribute('data-featured-header',!!featuredRect && featuredRect.top<=60 && featuredRect.bottom>60);
+    root.toggleAttribute('data-featured-header',!!featuredRect && featuredRect.top<=120 && featuredRect.bottom>60);
     const viewport=window.visualViewport;
     const visibleHeight=viewport?.height ?? innerHeight;
     const viewportTop=viewport?.offsetTop ?? 0;

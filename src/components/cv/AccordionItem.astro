@@ -61,7 +61,7 @@ const { company, dates, description, images = [], variant = "standard" }: Props 
     top: 26px;
     width: 8px;
     height: 8px;
-    border-radius: 50%;
+    border-radius:0;
     background: var(--color-hover-dot-a);
     opacity: 0;
     transition: opacity var(--duration-fast) var(--ease-premium);
@@ -209,7 +209,7 @@ const { company, dates, description, images = [], variant = "standard" }: Props 
   .media-grid .media-placeholder {
     width: 100%;
     aspect-ratio: 1.6;
-    border-radius: var(--radius-card);
+    border-radius:0;
     background: #000;
     object-fit: cover;
   }
@@ -217,7 +217,7 @@ const { company, dates, description, images = [], variant = "standard" }: Props 
   .media-full img,
   .media-placeholder-full {
     width: 100%;
-    border-radius: var(--radius-card);
+    border-radius:0;
     background: #000;
   }
 
