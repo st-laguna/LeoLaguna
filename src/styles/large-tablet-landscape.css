@@ -1,0 +1,32 @@
+/* Large touch landscape only; canonical components, stable scroll runways. */
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .home-journey:is([data-journey],[data-mobile-journey]) .journey-stage,
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .projects:is([data-horizontal],[data-mobile-stack]) .projects-stage {height:var(--tablet-viewport,100dvh);}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .journey-stage .hero {height:100%;min-height:0;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .projects[data-horizontal] .project-panel {--gallery-height:calc(var(--tablet-viewport,100dvh) - var(--project-footer) - 3px - var(--project-top) - var(--project-bottom));}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .brands {min-height:var(--tablet-viewport,100dvh);}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .brands .brands-layout {width:100%;max-width:1400px;margin-inline:auto;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .featured-brands::after {height:var(--tablet-viewport,100dvh);}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body [data-featured-brands]>.brands[data-brands] {margin-top:calc(-1 * var(--tablet-viewport,100dvh));}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .featured-works {margin-top:calc(-1 * var(--tablet-viewport,100dvh));min-height:var(--tablet-viewport,100dvh);}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .footer {height:var(--tablet-viewport,100dvh);background:var(--background);transition:color 450ms;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .footer__strip-window {height:190px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .footer .footer__bottom {--strip-height:190px;padding-block:24px 20px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .footer .footer__center-logo {width:125px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .footer .footer__contact-block {font-size:15px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .footer .footer__social {top:24px;font-size:18px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .footer__marquee {top:calc((100% - 190px) / 2);}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .gallery-footer {grid-template-columns:1fr auto 1fr;align-items:center;min-height:190px;padding:24px 40px;gap:28px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .gallery-footer-center {grid-column:2;grid-row:1;justify-self:center;font-size:14px;gap:20px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .gallery-footer-meta {grid-column:1;grid-row:1;gap:28px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .gallery-footer-social {grid-column:3;grid-row:1;font-size:16px;gap:6px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .gallery-footer-logo {width:140px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .gallery-footer-center p {margin-top:12px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .gallery-footer-social [data-gallery-top] {margin-top:12px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .about[data-editorial] {--about-left:clamp(280px,21vw,360px);--about-right:240px;--about-band:72px;--about-gap:24px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .about[data-editorial] .about-editorial {font-size:13px;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .about[data-editorial] .about-editorial__context-content {top:24%;}
+
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) :is(.projects[data-horizontal] .projects-stage,.case-study[data-horizontal] .case-study__stage) {touch-action:pan-y pinch-zoom;}
+
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .case-study[data-horizontal] .case-study__stage {height:var(--tablet-viewport,100dvh);}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .case-study[data-horizontal] .case-study__images {--case-media-height:calc(var(--tablet-viewport,100dvh) - 180px);}

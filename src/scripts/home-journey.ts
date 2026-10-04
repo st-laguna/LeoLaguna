@@ -54,6 +54,8 @@ if(root){
   let headerLogoActive=false;
   let headerLogoMotion:gsap.core.Tween|undefined;
   function showWorkflowLogo(active:boolean){
+    // The mark persists after the journey gives way to the remaining sections.
+    if(!active && scrollY>=host.offsetTop+host.offsetHeight-innerHeight)active=true;
     if(active===headerLogoActive)return;
     headerLogoActive=active;
     headerLogoMotion?.kill();

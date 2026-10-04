@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import {mountTabletHorizontalGesture} from './tablet-horizontal-gesture';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import {scrollPage} from './smooth-scroll';
 gsap.registerPlugin(ScrollTrigger);
@@ -15,7 +16,7 @@ if(host&&rail){
   media.add('(min-width:701px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (max-width:700px) and (prefers-reduced-motion:no-preference)',()=>{
     host.setAttribute('data-horizontal','');
     const distance=()=>Math.max(0,rail.scrollWidth-innerWidth);
-    const measure=()=>host.style.setProperty('--case-scroll-height',(innerHeight+distance())+'px');
+    const measure=()=>host.style.setProperty('--case-scroll-height',((document.documentElement.hasAttribute('data-large-tablet-landscape')?host.querySelector<HTMLElement>('.case-study__stage')!.clientHeight:innerHeight)+distance())+'px');
     measure();
     const entrance=endEntrance();
     let panelEntered=false;
@@ -32,6 +33,7 @@ if(host&&rail){
       invalidateOnRefresh:true,onRefreshInit:measure,onRefresh:updateEnd,
     },onUpdate:updateEnd});
     updateEnd();
+    const removeGesture=mountTabletHorizontalGesture(host,()=>tween.scrollTrigger);
     // Tab navigation follows a panel outside the transformed viewport.
     const focus=(event:FocusEvent)=>{
       if(!(event.target instanceof Element)||!event.target.closest('.case-study__end, .case-study__model'))return;
@@ -40,7 +42,7 @@ if(host&&rail){
       if(trigger){const panel=event.target.closest<HTMLElement>('.case-study__model, .case-study__end')!;scrollPage(panelScroll(panel),false);}
     };
     rail.addEventListener('focusin',focus);
-    return()=>{entrance?.revert();rail.removeEventListener('focusin',focus);host.removeAttribute('data-horizontal');host.style.removeProperty('--case-scroll-height');};
+    return()=>{removeGesture();entrance?.revert();rail.removeEventListener('focusin',focus);host.removeAttribute('data-horizontal');host.style.removeProperty('--case-scroll-height');};
   });
   media.add('(min-width:701px) and (orientation:portrait) and (prefers-reduced-motion:no-preference)',()=>{
     const entrance=endEntrance();

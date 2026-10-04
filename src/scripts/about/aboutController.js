@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import { message } from './messages.js';
-import { mountEditorialAbout, editorialMedia } from './editorialAbout.js';
+import { mountEditorialAbout, editorialMedia, isEditorialAbout } from './editorialAbout.js';
 
 const mounted = new Map();
 
@@ -42,6 +42,7 @@ function mount(section) {
   const editorial=mountEditorialAbout(section,()=>scene,on,reduced);
   const desktopQuery=matchMedia(editorialMedia);
   on(desktopQuery,'change',()=>{dispose();mounted.set(section,mount(section));});
+  on(window,'leo:orientation-ready',()=>{if(!!editorial!==isEditorialAbout()){dispose();mounted.set(section,mount(section));}});
 
   // A remount (for example during HMR) may reuse the same HTML nodes.
   explore.replaceChildren();

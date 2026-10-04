@@ -32,7 +32,30 @@
     window.addEventListener('resize', resizeViewport, { passive: true });
     window.addEventListener('pageshow', resizeViewport);
   }
-  function apply() { root.toggleAttribute('data-tablet-portrait', tablet.matches); }
+  const largeLandscape = matchMedia('(min-width:1367px) and (min-height:701px) and (orientation:landscape)');
+  const touch = matchMedia('(any-pointer:coarse)');
+  let dynamicTimer, lastHeight=0;
+  function dynamicViewport() {
+    if (!root.hasAttribute('data-large-tablet-landscape')) return;
+    const viewport=window.visualViewport;
+    if (viewport && Math.abs(viewport.scale-1)>.01) return;
+    const height=viewport?.height || innerHeight;
+    if(Math.abs(height-lastHeight)<1)return;
+    lastHeight=height;
+    root.style.setProperty('--tablet-viewport', `${height}px`);
+    clearTimeout(dynamicTimer);
+    dynamicTimer=setTimeout(()=>window.dispatchEvent(new Event('leo:tablet-viewport-ready')),220);
+  }
+  function apply() {
+    root.toggleAttribute('data-tablet-portrait', tablet.matches);
+    const large=largeLandscape.matches && (touch.matches || root.hasAttribute('data-ipad'));
+    root.toggleAttribute('data-large-tablet-landscape',large);
+    if(large)dynamicViewport();else {clearTimeout(dynamicTimer);lastHeight=0;root.style.removeProperty('--tablet-viewport');}
+  }
+  largeLandscape.addEventListener('change',resize);
+  touch.addEventListener('change',resize);
+  window.visualViewport?.addEventListener('resize',dynamicViewport,{passive:true});
+  window.addEventListener('resize',dynamicViewport,{passive:true});
   function resize() {
     apply();
     // Shared with ipad-device.js, regardless of which initializer runs first.

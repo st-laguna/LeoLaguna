@@ -75,7 +75,7 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
         y:(y-center.y)/scale-base.y,scale:box.width/base.width/scale};
     }
     const layers = [grid, ...columns, ...allItems, content, title, eyebrow, hint];
-    const promote = (active: boolean) => layers.forEach(layer => layer.style.willChange = active ? 'transform,opacity' : 'auto');
+    const promote = (active: boolean) => layers.forEach(layer => layer.style.willChange = active && !layer.closest('[data-service-lead]') ? 'transform,opacity' : 'auto');
     gsap.set(content, { autoAlpha:0, y:20 });
     gsap.set(title, { xPercent:-50, yPercent:-50, y:0, scale:1, opacity:1 });
     gsap.set(eyebrow,{xPercent:-50,yPercent:-100,y:()=>-title.offsetHeight/2-24});
@@ -100,7 +100,10 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
       // Finish the handoff before normal scrolling leaves the clipped scene.
       // A fast scroll must not wait for the scrub tail to reparent this row.
       onLeave:self=>{self.getTween()?.progress(1);master?.progress(1);},
-    }, onUpdate:()=>{const progress=master?.progress()??0;section.toggleAttribute('data-grid-revealed',progress>0);content.inert=progress<.65;grid.inert=progress<.005;if(progress>=.999&&!handedOff){lower.forEach((item,index)=>{slots[index].append(item);item.classList.add('gallery-item');});handedOff=true;}else if(progress<.999&&handedOff)restoreRow();} })
+    }, onUpdate:()=>{const progress=master?.progress()??0;section.toggleAttribute('data-grid-revealed',progress>0);content.inert=progress<.65;grid.inert=progress<.005;if(progress>=.999&&!handedOff){lower.forEach((item,index)=>{slots[index].append(item);item.classList.add('gallery-item');
+      // The real row owns natural layout after handoff, not a forced CSS
+      // transform competing with the scrub tween's composited state.
+      gsap.set(item,{clearProps:'transform,willChange'});});handedOff=true;}else if(progress<.999&&handedOff)restoreRow();} })
       .add(reveal,0).to(hint,{autoAlpha:0,duration:.04,ease:'none'},0).add(expand,.4).add(finish,.61).add(handoff,.88);
     refreshGeometry=()=>{const progress=master!.progress();master!.progress(0);restoreRow();measureGeometry();master!.invalidate().progress(progress);master!.scrollTrigger?.refresh();};
     master.scrollTrigger?.refresh();
@@ -109,16 +112,17 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
   });
   // Width/orientation changes rebuild distances; mobile toolbar-only changes do not.
   let resizeTimer: ReturnType<typeof setTimeout>;
-  window.addEventListener('resize', () => {
+  const geometryObserver = new ResizeObserver(() => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      if(width === scroller.clientWidth) return;
+      if(width === scroller.clientWidth && (!document.documentElement.hasAttribute('data-large-tablet-landscape') || viewport===scroller.clientHeight)) return;
       width = scroller.clientWidth; viewport = scroller.clientHeight;
       section.style.setProperty('--service-viewport', `${viewport}px`);
       hydrate();refreshGeometry?.();
     }, 180);
-  }, { signal, passive:true });
-  return () => { clearTimeout(resizeTimer); events.abort(); media.revert();restoreRow(); section.style.removeProperty('--service-viewport'); };
+  });
+  geometryObserver.observe(scroller);
+  return () => { geometryObserver.disconnect();clearTimeout(resizeTimer); events.abort(); media.revert();restoreRow(); section.style.removeProperty('--service-viewport'); };
 }
 
 

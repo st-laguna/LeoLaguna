@@ -6,6 +6,7 @@ import '../styles/ipad-portrait.css';
 import '../styles/header-persistent.css';
 import '../styles/home-microinteractions.css';
 import '../styles/compact-laptop.css';
+import '../styles/large-tablet-landscape.css';
 import PageNavigation from '../components/PageNavigation.astro';
 import SiteControls from '../components/SiteControls.astro';
 import {readFileSync} from 'node:fs';
@@ -204,6 +205,7 @@ const {
       document.addEventListener('astro:page-load', protectVideos);
     </script>
 
+    <script>import "../scripts/large-tablet-viewport";</script>
     <ContactCard />
   </body>
 </html>

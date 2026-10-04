@@ -1,6 +1,7 @@
 import { isTabletPortrait } from './responsive-layout';
 import { scrollPage, beginScrollTransition, endScrollTransition, commitScrollJump } from './smooth-scroll';
 import gsap from 'gsap';
+import {mountTabletHorizontalGesture} from './tablet-horizontal-gesture';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import './project-gallery';
 gsap.registerPlugin(ScrollTrigger);
@@ -225,7 +226,9 @@ if (brandsLayout) {
       if(button.disabled!==disabled)button.disabled=disabled;
     });
   }
+  let removeGesture:(()=>void)|undefined;
   function disposeScroll(){
+    removeGesture?.();removeGesture=undefined;
     settleSelections();
     slideReveals.forEach(context=>context.revert());slideReveals.clear();enteredSlides.clear();
     panels.forEach(panel=>{
@@ -339,6 +342,7 @@ if (brandsLayout) {
       .to(state,{position:2.965,duration:.9,ease:'power3.inOut'},4.5)
       .to(state, { position: 3, duration: 1.1, ease: 'none' }, 5.4)
       .to(state, { exit: 1, duration: 1, ease: 'none' }, 6.5);
+    removeGesture=mountTabletHorizontalGesture(section!,()=>timeline?.scrollTrigger);
     render();ScrollTrigger.refresh();
   }
   const selections=new Map<HTMLElement,{timeline:gsap.core.Timeline,pending:number|null}>();

@@ -139,7 +139,7 @@ const groupedTraining = training.reduce<Record<string, string[]>>((acc, curr) =>
         <Fragment><a data-roll-link href={social.url} target="_blank" rel="noopener noreferrer" class="social-link hover-arrow">
           <span data-roll-label>{social.name}</span>
           <svg class="arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-        </a>{social.name.toLowerCase()==='instagram' && <a class="action-pill" href="mailto:hello@leolaguna.com"><span data-roll-label data-i18n="button.startProject">Start a Project</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></a>}</Fragment>
+        </a>{social.name.toLowerCase()==='instagram' && <a class="action-pill" href="mailto:hello@leolaguna.com"><span data-roll-label data-i18n="button.startProject">Start a Project</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span><i class="cv-cta-arrow" aria-hidden="true"></i></span></span></a>}</Fragment>
       ))}
     </div>
 
@@ -152,6 +152,10 @@ const groupedTraining = training.reduce<Record<string, string[]>>((acc, curr) =>
 
 <style>
   * { box-sizing: border-box; }
+  .action-pill {background:var(--button-coral,#EF6C65);color:#1C1C1C;}
+  /* Override the existing shared CTA color lock only for this CV control. */
+  :global(html[data-page="cv"][data-theme="dark"] body) .action-pill {background:#EF6C65;color:#EDEDED!important;}
+  .cv-cta-arrow {display:block;width:1em;height:1em;background:currentColor;mask:url('/icons/arrow.svg') center/contain no-repeat;}
   
   .sidebar-content {
     display: flex;

@@ -1,10 +1,10 @@
 import gsap from 'gsap';
 import { message } from './messages.js';
 
-export const editorialMedia = '(min-width:1001px) and (min-height:501px) and (hover:hover) and (pointer:fine)';
+export const editorialMedia = '(min-width:1001px) and (min-height:501px) and (hover:hover) and (pointer:fine), (min-width:1367px) and (min-height:701px) and (orientation:landscape) and (any-pointer:coarse)';
 export function isEditorialAbout() {
   const root=document.documentElement;
-  return matchMedia(editorialMedia).matches&&!root.hasAttribute('data-ipad')&&!root.hasAttribute('data-tablet-portrait');
+  return !root.hasAttribute('data-tablet-portrait') && (root.hasAttribute('data-large-tablet-landscape') || (matchMedia(editorialMedia).matches&&!root.hasAttribute('data-ipad')));
 }
 export function mountEditorialAbout(section, getScene, on, reduced) {
   if(!isEditorialAbout())return null;
