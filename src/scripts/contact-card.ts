@@ -178,7 +178,7 @@ if(modal && typeof modal.showModal==='function') {
     busy=true;update();submit.textContent=copy().sending;say(undefined);
     request=new AbortController();const timeout=setTimeout(()=>request?.abort(),20000);
     try {
-      const response=await fetch(modal!.dataset.endpoint!,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email.value.trim(),message:message.value,token}),signal:request.signal});
+      const response=await fetch(modal!.dataset.endpoint!,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email.value.trim(),message:message.value,token,website:card.querySelector<HTMLInputElement>('[name=website]')!.value}),signal:request.signal});
       const result=await response.json().catch(()=>({}));
       if(!response.ok||result.ok!==true){say(response.status===429?'limited':response.status===503?'unavailable':result.code==='verification'?'verification':'failed');}
       else{card.reset();say('sent');}

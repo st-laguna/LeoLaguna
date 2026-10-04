@@ -22,7 +22,15 @@ export default {
           'MIME-Version: 1.0','Content-Type: text/plain; charset=UTF-8','Content-Transfer-Encoding: base64','',
           btoa(Array.from(new TextEncoder().encode(message.text),byte=>String.fromCharCode(byte)).join('')).match(/.{1,76}/g).join('\r\n'),
         ].join('\r\n');
-        await env.EMAIL.send(new EmailMessage(message.from,message.to,raw));
+        try {
+          await env.EMAIL.send(new EmailMessage(message.from,message.to,raw));
+        } catch (error) {
+          // Provider error only, without logging message content, token, or credentials.
+          const detail = String(error?.message || 'Unknown email binding failure')
+            .replaceAll(message.replyTo, '[visitor]');
+          console.error('Contact EMAIL.send failed', {code:error?.code, detail});
+          throw error;
+        }
       },
     });
   },

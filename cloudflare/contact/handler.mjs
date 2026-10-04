@@ -5,18 +5,21 @@ const hostnames = new Set(['leolaguna.com', 'www.leolaguna.com']);
 const reply = (status, code) => Response.json({ok:status===200, ...(code?{code}:{})}, {
   status, headers:{'Cache-Control':'no-store', ...(status===429?{'Retry-After':'60'}:{})},
 });
-export async function handleContact(request, env, {verify, deliver}) {
+export async function handleContact(request, env, {verify, deliver, isConfigured = config =>
+  !!(config.TURNSTILE_SECRET_KEY && config.EMAIL?.send && config.CONTACT_RATE_LIMITER?.limit && config.CONTACT_FROM)}) {
   if(new URL(request.url).pathname !== '/api/contact')return reply(404,'not_found');
   if(request.method !== 'POST')return reply(405,'method');
   if(!origins.has(request.headers.get('Origin')))return reply(403,'origin');
   if(!request.headers.get('Content-Type')?.startsWith('application/json'))return reply(415,'content_type');
   // Configuration failures must never masquerade as successful submissions.
-  if(!env.TURNSTILE_SECRET_KEY||!env.EMAIL?.send||!env.CONTACT_RATE_LIMITER?.limit||!env.CONTACT_FROM)return reply(503,'unavailable');
+  if(!isConfigured(env))return reply(503,'unavailable');
   const ip=request.headers.get('CF-Connecting-IP');
   if(!ip)return reply(403,'origin');
   try {
-    const {success}=await env.CONTACT_RATE_LIMITER.limit({key:'contact:'+ip});
-    if(!success)return reply(429,'limited');
+    if(env.CONTACT_RATE_LIMITER?.limit){
+      const {success}=await env.CONTACT_RATE_LIMITER.limit({key:'contact:'+ip});
+      if(!success)return reply(429,'limited');
+    }
     // Read with a hard byte limit even for requests without Content-Length.
     const reader=request.body?.getReader();if(!reader)return reply(400,'invalid');
     const parts=[];let size=0;
@@ -24,6 +27,8 @@ export async function handleContact(request, env, {verify, deliver}) {
     const bytes=new Uint8Array(size);let offset=0;for(const part of parts){bytes.set(part,offset);offset+=part.length;}
     let data;try{data=JSON.parse(new TextDecoder().decode(bytes));}catch{return reply(400,'invalid');}
     if(!data||typeof data.email!=='string'||typeof data.message!=='string'||typeof data.token!=='string')return reply(400,'invalid');
+    // Optional for older clients; populated honeypots always fail before verification.
+    if(data.website!==undefined && (typeof data.website!=='string'||data.website.trim()))return reply(400,'invalid');
     const email=data.email.trim(),message=data.message.trim();
     if(email.length>254||!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)||/[\r\n\x00-\x1f\x7f]/.test(email)||!message||data.message.length>500||!data.token||data.token.length>2048)return reply(400,'invalid');
     const validation=await verify({secret:env.TURNSTILE_SECRET_KEY,response:data.token,remoteip:ip});

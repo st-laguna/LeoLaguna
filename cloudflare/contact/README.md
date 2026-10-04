@@ -1,42 +1,54 @@
-# Contact Card — activation checklist
+# Free-plan contact: Pages -> private Worker -> verified destination
 
-Frontend: `src/data/contact.ts` contains only the public Site Key and `/api/contact`.
-The original `mailto:` links remain progressive-enhancement fallbacks. Normal clicks open a real HTML form.
+Pages project: leolaguna. Worker: leo-laguna-contact.
+functions/api/contact.js forwards the original request through CONTACT_WORKER.
+Worker index.mjs uses cloudflare:email EmailMessage and EMAIL.send, never REST.
+handler.mjs validates origin, method, size, email/header injection, message <=500,
+honeypot, Turnstile action/hostname and the Worker rate limiter (5/minute/IP/location).
+Recipient is hardcoded AND restricted by send_email to sanchezlaguna99@gmail.com.
+Visitor is Reply-To. Public/copy email remains hello@leolaguna.com.
 
-The Worker code is prepared but is NOT deployed or connected to production.
-The existing GitHub Pages deployment and Email Routing DNS/MX/rules are unchanged.
+## Exact deployment order (stay on Workers Free)
 
-## Required next dashboard configuration
+1. From X:\MainWP\cloudflare\contact run: npx wrangler deploy
+   wrangler.jsonc supplies CONTACT_FROM=forms@leolaguna.com, EMAIL restricted to
+   the verified Gmail address, and CONTACT_RATE_LIMITER. Check namespace 1001
+   is not already used elsewhere in the account; choose an unused ID if needed.
+   No Worker routes, workers.dev, preview URLs or custom domains are configured.
+2. In the same directory: npx wrangler secret put TURNSTILE_SECRET_KEY
+   Enter the real secret for Leo Laguna Contact interactively; never commit it.
+3. Pages leolaguna > Settings > Bindings > Add > Service binding:
+   Variable name CONTACT_WORKER; Service leo-laguna-contact; Production.
+4. Redeploy the existing Git-connected Pages project with the forwarding Function.
+   No changes to build config, DNS, MX or Email Routing are needed by this code.
+5. Start Worker runtime logs with npx wrangler tail, then submit ONE valid production
+   form at https://leolaguna.com using a fresh real Turnstile token. Check POST
+   /api/contact, Worker logs, the verified Gmail inbox, and Reply-To.
 
-1. Create/deploy the HTTP Worker `leo-laguna-contact` from this directory.
-2. Add secret `TURNSTILE_SECRET_KEY` in Worker Settings → Variables and Secrets.
-3. Enable/add the **Send Email** binding named `EMAIL`, restricted to the already verified
-   destination `sanchezlaguna99@gmail.com`. Equivalent Wrangler configuration is in `wrangler.jsonc`.
-   Do not use the pending `hello@leolaguna.com` as a destination.
-4. `CONTACT_FROM` is `forms@leolaguna.com`: confirm Cloudflare permits that sender for the existing
-   Email Routing-enabled domain. Do not replace existing DNS/MX records to activate this code.
-   If the dashboard requires additional domain changes, pause and review them first.
-5. The `CONTACT_RATE_LIMITER` binding allows 5 attempts/minute per IP per Cloudflare location;
-   namespace `1001` must be unused by other rate limit bindings in your account, or choose another.
-6. Add HTTP Worker routes `leolaguna.com/api/contact*` and, if used, `www.leolaguna.com/api/contact*`.
-   HTTP routes are distinct from email routing rules. The hostnames must already be proxied by Cloudflare.
-   If they are not, pause; do not change the site's DNS automatically.
-7. Confirm the Managed Turnstile widget permits these hostnames. Production credentials are not
-   intended for localhost. For local UI tests, mock the widget and endpoint; never send real mail in tests.
+## Sender acceptance is NOT yet verified in the real account
 
-After activation, perform one authorized end-to-end submission and verify inbox delivery and Reply-To.
-Until then, the modal may be reviewed, but real delivery is not verified. A 503/404 or failed challenge
-never displays a success message and preserves the visitor's draft.
+Cloudflare documents free sends to verified destinations even with Email Routing
+only, but the sender domain must be available to Email Service. Do not infer that
+forms@leolaguna.com is accepted from a mock test or the recipient's verified status.
+If EMAIL.send rejects it, the Worker returns JSON 503/unavailable, preserves the
+visitor draft, and logs Contact EMAIL.send failed with the provider's code/message
+(visitor email redacted). Copy that error for diagnosis and STOP. Do not onboard
+outbound Email Sending, modify DNS/MX, or upgrade the plan automatically.
 
-## Verification
+Pages requires only CONTACT_WORKER, not an email API token or Account ID.
+The REST adapter has been removed. Previously configured REST credentials are
+unused; revoke the old token if it was created solely for this discarded solution.
+The public Site Key stays in src/data/contact.ts; the secret belongs to the Worker.
 
-`node --test cloudflare/contact/handler.test.mjs`
-`npm run build`
+## Tests
 
-Worker security: strict origin/action/hostname checks; server-side Siteverify; fixed destination;
-plain-text UTF-8 MIME; Reply-To validation; 500-character and 8KB payload limits; rate limiting.
-No visitor content, secrets, or full IP addresses are logged or stored by the application.
-Turnstile tokens are single-use and must be renewed after every submission attempt.
+node --test cloudflare/contact/handler.test.mjs cloudflare/contact/pages.test.mjs
+npm run build
 
-The SVG contains no submit control. The action is placed in its existing blank area between the
-field frame and separator; the Turnstile challenge appears below the card only when required.
+All tests use mocks; they do not prove live sender acceptance or inbox delivery.
+Local astro dev does not execute Pages Functions or the private Worker.
+
+References:
+https://developers.cloudflare.com/email-service/platform/pricing/
+https://developers.cloudflare.com/pages/functions/bindings/#service-bindings
+https://developers.cloudflare.com/email-service/configuration/send-bindings/

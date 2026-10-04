@@ -13,3 +13,5 @@ test('foreign origin rejected',async()=>{const {calls,deps}=setup();assert.equal
 test('rate limited request never verifies or sends',async()=>{const config=env();config.CONTACT_RATE_LIMITER.limit=async()=>({success:false});const {calls,deps}=setup();assert.equal((await handleContact(request(),config,deps)).status,429);assert.equal(calls.length,0);});
 test('oversized body rejected',async()=>{const {calls,deps}=setup();assert.equal((await handleContact(request({...input,extra:'x'.repeat(9000)}),env(),deps)).status,413);assert.equal(calls.length,0);});
 test('delivery failure is not success',async()=>{const {deps}=setup();deps.deliver=async()=>{throw Error('offline');};assert.equal((await handleContact(request(),env(),deps)).status,503);});
+
+test('populated honeypot never verifies or sends',async()=>{const {calls,deps}=setup();assert.equal((await handleContact(request({...input,website:'bot'}),env(),deps)).status,400);assert.equal(calls.length,0);});

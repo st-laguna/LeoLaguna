@@ -40,6 +40,7 @@ const t=contactCopy.en;
       <h2 id="contact-card-title" class="contact-card__title" tabindex="-1" data-contact-text="title">{t.title}</h2>
       <button class="contact-card__close" type="button" data-contact-close aria-label={t.close}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M21 3L3 21" fill="none" stroke="currentColor" stroke-width="4" /></svg></button>
       <label class="contact-card__email-label" for="contact-email" data-contact-text="email">{t.email}</label>
+      <div hidden aria-hidden="true"><input name="website" type="text" tabindex="-1" autocomplete="off" /></div>
       <input class="contact-card__email" id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="name@email.com" />
       <label class="contact-card__message-label" for="contact-message" data-contact-text="message">{t.message}</label>
       <output class="contact-card__counter" id="contact-counter" for="contact-message" data-contact-counter aria-label={t.count}>0 / 500</output>
