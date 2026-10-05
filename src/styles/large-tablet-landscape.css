@@ -30,3 +30,12 @@ html[data-large-tablet-landscape]:not([data-tablet-portrait]) :is(.projects[data
 
 html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .case-study[data-horizontal] .case-study__stage {height:var(--tablet-viewport,100dvh);}
 html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .case-study[data-horizontal] .case-study__images {--case-media-height:calc(var(--tablet-viewport,100dvh) - 180px);}
+
+/* Updated large-iPad target: square 3x3 image thumbnails; video stays 2-column. */
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .projects[data-horizontal] .project-panel:not(.project-panel--video) .project-thumbs {grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));height:auto;aspect-ratio:1;align-self:center;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .project-panel:not(.project-panel--video) .project-thumbs button:nth-child(9) {display:block;}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .projects[data-horizontal] .projects-view-all {padding-inline:20px;}
+
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .site-header .site-controls {grid-template-columns:max(96px,var(--header-bot1-w)) var(--header-control-gap-1) max(92px,var(--header-bo2-w)) var(--header-control-gap-2) minmax(var(--header-bo3-w),max-content);}
+
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .about[data-editorial] .about-editorial .theme {width:92px;}

@@ -39,13 +39,24 @@ if(modal && typeof modal.showModal==='function') {
   const tiltY=gsap.quickTo(card,'rotationY',{duration:.35,ease:'power3.out'});
   function stopTilt(){settled=false;tiltX.tween.pause();tiltY.tween.pause();foilX.tween.pause();foilY.tween.pause();foilStrength.tween.pause();foilState.x=50;foilState.y=50;foilState.strength=0;paintFoil();}
   function resetTilt(){resetFoil();if(settled&&!closing){tiltX(0);tiltY(0);}}
+  let touchPointer:number|undefined,touchBounds:DOMRect|undefined;
+  card.addEventListener('pointerdown',event=>{
+    if(event.pointerType!=='touch'||!settled||closing||reduced.matches||Math.min(innerWidth,innerHeight)<=700)return;
+    if((event.target as Element).closest('input,textarea,button,a,label,[contenteditable]'))return;
+    touchPointer=event.pointerId;touchBounds=card.getBoundingClientRect();card.setPointerCapture(event.pointerId);
+  },{signal});
+  const releaseTouch=()=>{if(touchPointer===undefined)return;touchPointer=undefined;touchBounds=undefined;resetTilt();};
+  card.addEventListener('pointerup',releaseTouch,{signal});
+  card.addEventListener('pointercancel',releaseTouch,{signal});
+  card.addEventListener('lostpointercapture',releaseTouch,{signal});
   card.addEventListener('pointermove',event=>{
-    if(!settled||closing||reduced.matches||!fine.matches||event.pointerType==='touch')return;
-    const bounds=card.getBoundingClientRect();
+    const touching=event.pointerType==='touch'&&event.pointerId===touchPointer;
+    if(!settled||closing||reduced.matches||(!touching&&(!fine.matches||event.pointerType==='touch')))return;
+    const bounds=touching?touchBounds!:card.getBoundingClientRect();
     const x=gsap.utils.clamp(-1,1,((event.clientX-bounds.left)/bounds.width-.5)*2);
     const y=gsap.utils.clamp(-1,1,((event.clientY-bounds.top)/bounds.height-.5)*2);
     foilX((x+1)*50);foilY((y+1)*50);foilStrength(Math.max(0,Math.min(1,(Math.hypot(x,y)-.12)/.88)));
-    tiltX(-y*7);tiltY(x*7);
+    const limit=touching?4:7;tiltX(-y*limit);tiltY(x*limit);
   },{signal});
   card.addEventListener('pointerleave',resetTilt,{signal});
   // Keep typing/selection steady; resume following the pointer after editing.

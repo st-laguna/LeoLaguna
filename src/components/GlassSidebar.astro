@@ -46,21 +46,6 @@
     display: none;
   }
 
-  /* A narrow native blur samples the real HTML; no RGB wash or SVG filter chain. */
-  :global(.projects[data-horizontal]) .projects-sidebar::before {
-    content: "";
-    display: block;
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: min(100%, calc(var(--project-left) + clamp(24px, 2vw, 40px)));
-    pointer-events: none;
-    background: color-mix(in srgb, var(--foreground) 3%, transparent);
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
-    -webkit-mask-image: linear-gradient(90deg, #000 65%, transparent);
-    mask-image: linear-gradient(90deg, #000 65%, transparent);
-  }
-
   /* Botón: área de clic amplia, rayitas pequeñas. */
   .glass-toggle {
     position: absolute;

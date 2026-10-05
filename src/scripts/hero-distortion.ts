@@ -18,7 +18,7 @@ export function mountHeroDistortion(hero: HTMLElement) {
   const full = !tablet && mouse.matches && !limited;
   const maxDisplacement = full ? .085 : .018;
   const force = full ? .5 : .2;
-  let ended = false, initial = true, visible = true, loading = false, generation = 0;
+  let ended = false, initial = true, visible = true, loading = false, generation = 0, covered=false;
   let release: (() => void) | undefined;
   let resume: (() => void) | undefined;
   let pause: (() => void) | undefined;
@@ -44,7 +44,7 @@ export function mountHeroDistortion(hero: HTMLElement) {
   function sync() {
     if (ended || !initial || unavailable) return;
     if (reduced.matches || mobile || (!tablet && !mouse.matches)) { deactivate(); return; }
-    if (!visible || document.hidden) { pause?.(); return; }
+    if (!visible || document.hidden || covered) { pause?.(); return; }
     if (resume) resume(); else void init();
   }
   const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); });
@@ -55,6 +55,8 @@ export function mountHeroDistortion(hero: HTMLElement) {
   reduced.addEventListener('change', sync, { signal });
   mouse.addEventListener('change', sync, { signal });
   document.addEventListener('visibilitychange', sync, { signal });
+  window.addEventListener('leo:section-cover',()=>{covered=true;sync();},{signal});
+  window.addEventListener('leo:section-reveal',()=>{covered=false;sync();},{signal});
   window.addEventListener('pagehide', finish, { signal });
   function sourceChanged(){
     if(ended||!initial)return;
@@ -145,7 +147,7 @@ export function mountHeroDistortion(hero: HTMLElement) {
       function stop(){cancelAnimationFrame(frame);frame=0;last=0;previous=undefined;dx=dy=0;
         if(tracking){window.removeEventListener('pointermove',move,true);window.removeEventListener('pointerdown',start,true);window.removeEventListener('pointerup',leave,true);window.removeEventListener('pointercancel',leave,true);tracking=false;}}
       function draw(time:number){
-        frame=0;if(ended||!visible||document.hidden)return;
+        frame=0;if(ended||!visible||document.hidden||covered)return;
         const dt=Math.min(last?(time-last)/1000:1/60,.05);last=time;
         const decay=Math.exp(-dt*(full?2.7:3.3)),aspect=canvas.clientWidth/canvas.clientHeight;
         let energy=0;
@@ -195,7 +197,10 @@ export function mountHeroDistortion(hero: HTMLElement) {
         renderer.setSize(width,height,false);
         renderer.setViewport(0,0,canvas.width/renderer.getPixelRatio(),canvas.height/renderer.getPixelRatio());
         const container=width/height,source=decoded.naturalWidth/decoded.naturalHeight;
-        material.uniforms.uCover.value.set(Math.min(container/source,1),Math.min(source/container,1));wake();
+        material.uniforms.uCover.value.set(Math.min(container/source,1),Math.min(source/container,1));
+        // Resizing clears WebGL's drawing buffer. Repaint in this same layout
+        // callback, before Safari can composite an empty first image.
+        renderer.render(scene,camera);
       }
       updateStrength=()=>{material.uniforms.uStrength.value=strength;wake();};
       const resizeObserver=new ResizeObserver(resize);

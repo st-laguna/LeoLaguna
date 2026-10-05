@@ -128,3 +128,12 @@ html[data-theme="dark"] .about-editorial__context {color:#EDEDED;}
 .about-editorial__image-placeholder:has(img) {background:none;border:0;padding:0;}
 .about-editorial__image-placeholder img {width:100%;height:100%;object-fit:cover;display:block;}
 .about-editorial__context-content>p {margin:16px 0 0;}
+
+/* One composited Difference layer for the bottom information; coral stays outside. */
+.about-editorial__bottom-blend {grid-column:1 / 3;display:grid;grid-template-columns:var(--about-left) minmax(0,1fr);align-items:center;color:#fff;mix-blend-mode:difference;}
+.about-editorial__bottom-blend :is(.about-editorial__clock,.about-editorial__links) {mix-blend-mode:normal;color:inherit;}
+.about-editorial__bottom>.about-editorial__cta-cell {grid-column:3;}
+.about-editorial__zoom input {height:44px;margin-block:-21px;touch-action:none;background:linear-gradient(#fff8,#fff8) center / 100% 2px no-repeat;}
+.about-editorial__zoom input::-webkit-slider-runnable-track {height:2px;}
+.about-editorial__zoom input::-webkit-slider-thumb {margin-top:-4px;}
+.about-editorial__zoom input::-moz-range-track {height:2px;background:transparent;}

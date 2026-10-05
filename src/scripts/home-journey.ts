@@ -159,8 +159,13 @@ if(root){
       render();
     }
 
+    let refreshFrame=0;
     function render(){
       if(!active || !width)return;
+      if(ipad&&ScrollTrigger.isRefreshing){
+        if(!refreshFrame)refreshFrame=requestAnimationFrame(()=>{refreshFrame=0;render();});
+        return;
+      }
       const requested=clamp(state.p);
       if(isCommittingScrollJump()) {
         returning?.kill();returning=null;returnFloor.p=0;
@@ -327,7 +332,7 @@ slots.forEach((slot, i) => {
     hero.querySelector('a[href="#workflow"]')?.addEventListener('click',jump);
     measure();ScrollTrigger.refresh();
     return()=>{
-      active=false;
+      active=false;cancelAnimationFrame(refreshFrame);
       exit.scrollTrigger?.kill();exit.revert();
       removeStops();
       intermediateImages.forEach(image=>image.removeEventListener('load',render));

@@ -179,3 +179,9 @@ html body .contact-card .contact-card__close{color:#ff6e4a}
   mask-mode:alpha;opacity:var(--fx-back-opacity);mix-blend-mode:screen;
 }
 @media(prefers-reduced-motion:reduce){.contact-back-material{display:none}}
+
+@media(min-width:701px) and (any-pointer:coarse) {
+ .contact-card__front {touch-action:pan-y;}
+ .contact-card__front :is(input,textarea) {touch-action:pan-y;}
+ .contact-card__front button {touch-action:manipulation;}
+}

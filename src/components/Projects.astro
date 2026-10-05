@@ -1,4 +1,5 @@
 ---
+import {serviceThumbnail} from '../data/service-thumbnail';
 import { projects } from '../data/projects';
 import { projectImageSize } from '../data/project-image-size';
 import en from '../i18n/en.json';
@@ -46,7 +47,7 @@ const t = en as Record<string,string>;
                     <button type="button" role="tab" data-select={j} data-index={j} aria-selected={j===0} tabindex={j===0 ? 0 : -1} aria-label={`${project.id} — ${asset.client || j+1}`}>
                       {/* Beyond these desktop limits, controls only appear as image-free mobile dots. */}
                       {j < (asset.kind === 'video' ? 8 : 9) && (
-                        <img data-src={asset.kind === 'video' ? asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp') : asset.src} alt="" loading="lazy" decoding="async" />
+                        <img data-src={serviceThumbnail(asset,320)} data-srcset={`${serviceThumbnail(asset,320)} 320w, ${serviceThumbnail(asset,640)} 640w`} sizes="(min-width:1001px) min(10vw,220px), 120px" width="320" height="320" alt="" loading="lazy" decoding="async" />
                       )}
                     </button>
                   ))}

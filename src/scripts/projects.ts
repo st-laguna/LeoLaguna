@@ -49,6 +49,7 @@ if(section){
   function hydrateImages(root:Element){
     root.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>{
       img.loading='eager';
+      if(img.dataset.srcset)img.srcset=img.dataset.srcset;
       img.src=img.dataset.src!;
     });
   }
@@ -58,7 +59,7 @@ if(section){
     if(checkedThumbs.has(panel))return;
     if(getComputedStyle(panel).visibility==='hidden')return;
     panel.querySelectorAll<HTMLImageElement>('.project-thumbs img[data-src]:not([src])').forEach(img=>{
-      if(img.getClientRects().length && getComputedStyle(img).visibility==='visible')img.src=img.dataset.src!;
+      if(img.getClientRects().length && getComputedStyle(img).visibility==='visible'){img.loading='eager';if(img.dataset.srcset)img.srcset=img.dataset.srcset;img.src=img.dataset.src!;}
     });
     checkedThumbs.add(panel);
   }
@@ -75,7 +76,7 @@ if(section){
       if(!entry.isIntersecting)return;
       const slide=entry.target.querySelector<HTMLElement>('[data-slide]:not([hidden])');
       if(!slide)return;
-      hydrateImages(slide);
+      hydratePanel(entry.target as HTMLElement);
       slide.querySelectorAll<HTMLImageElement>('img').forEach(img=>void img.decode().catch(()=>{}));
     });
     hydrateStaticPanels();

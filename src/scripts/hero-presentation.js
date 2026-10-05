@@ -27,7 +27,7 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
     hero.style.setProperty('--hero-mask-position', `${f.x}px ${f.y - portraitOffset}px`);
     composition.style.transform = `translate(${f.x}px,${f.y - portraitOffset}px) scale(${f.scale})`;
     // Authored anchors and the mask source only change with the artwork master.
-    if (lastPortrait === f.portrait) return;
+    if (lastPortrait === f.portrait) { hero.setAttribute('data-hero-layout-ready', ''); return; }
     lastPortrait = f.portrait;
     hero.style.setProperty('--hero-mask', m.mask);
     composition.style.width = `${f.masterWidth}px`;
@@ -59,6 +59,11 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
   });
   observer.observe(stage, { box: 'border-box' });
   measure();
+  // Inline setup can precede the stylesheet's first valid layout. Commit again
+  // after parsing; readiness must never depend on a scroll or theme event.
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',measure,{once:true});
+  else requestAnimationFrame(measure);
+  document.fonts.ready.then(measure);
   // Also covers a responsive attribute change without a stage-size change.
   window.addEventListener('leo:orientation-ready', measure);
 

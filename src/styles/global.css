@@ -345,6 +345,10 @@ html[data-theme="light"] body .footer .footer__back-top.action-pill {color:var(-
 }
 
 /* Landscape tablets share the footer surface with its optical edges. */
-@media(min-width:701px) and (min-height:501px) and (orientation:landscape) {
- html[data-theme="dark"] .footer[data-compact-layout] {--background:var(--dark-base);--footer-optics-background:var(--dark-base);}
-}
+
+/* Dark contact surface owns its palette; intentionally black children keep theirs. */
+html[data-theme="dark"] .footer {--background:var(--dark-base);--footer-optics-background:var(--dark-base);}
+
+/* Tablet touch areas, including the shared CV/About controls. */
+html[data-ipad] body .site-controls .language button {min-width:44px;}
+html body .projects[data-horizontal] .projects-view-all {padding-inline:20px;}
