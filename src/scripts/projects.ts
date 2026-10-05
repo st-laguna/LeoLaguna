@@ -342,7 +342,7 @@ if (brandsLayout) {
       .to(state,{position:2.965,duration:.9,ease:'power3.inOut'},4.5)
       .to(state, { position: 3, duration: 1.1, ease: 'none' }, 5.4)
       .to(state, { exit: 1, duration: 1, ease: 'none' }, 6.5);
-    removeGesture=mountTabletHorizontalGesture(section!,()=>timeline?.scrollTrigger);
+    removeGesture=mountTabletHorizontalGesture(section!,()=>timeline?.scrollTrigger,[0,6.5/7.5]);
     render();ScrollTrigger.refresh();
   }
   const selections=new Map<HTMLElement,{timeline:gsap.core.Timeline,pending:number|null}>();

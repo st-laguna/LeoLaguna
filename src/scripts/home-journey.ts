@@ -54,6 +54,8 @@ if(root){
   let headerLogoActive=false;
   let headerLogoMotion:gsap.core.Tween|undefined;
   function showWorkflowLogo(active:boolean){
+    // Refresh temporarily rewinds scrub state; preserve the live entrance state.
+    if(ScrollTrigger.isRefreshing)return;
     // The mark persists after the journey gives way to the remaining sections.
     if(!active && scrollY>=host.offsetTop+host.offsetHeight-innerHeight)active=true;
     if(active===headerLogoActive)return;

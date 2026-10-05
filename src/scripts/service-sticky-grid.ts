@@ -16,6 +16,7 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
   const hint=section.querySelector<HTMLElement>('[data-sticky-hint]')!;
   const slots=Array.from(section.parentElement!.querySelectorAll<HTMLElement>('[data-service-lead]'));
   const lower=columns.map(column=>column.lastElementChild as HTMLElement);
+  const largeTablet=()=>document.documentElement.hasAttribute('data-large-tablet-landscape');
   let handedOff=false;
   function restoreRow(){if(!handedOff)return;lower.forEach((item,index)=>{columns[index].append(item);item.classList.remove('gallery-item');});handedOff=false;}
   let master: gsap.core.Timeline | undefined;
@@ -63,6 +64,8 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
       const rowTop=center.y+scale*(bases[0].y-bases[0].width/2);
       section.parentElement!.style.setProperty('--service-lead-overlap',`${viewport+padding-rowTop}px`);
     }
+    // Avoid transferring nested 3D compositing layers between clipped parents.
+    if(largeTablet())gsap.set([grid,...columns,...allItems],{force3D:false});
     measureGeometry();
     function cell(index:number){
       const slot=slots[index],box=slot.getBoundingClientRect(),base=bases[index];
@@ -75,7 +78,7 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
         y:(y-center.y)/scale-base.y,scale:box.width/base.width/scale};
     }
     const layers = [grid, ...columns, ...allItems, content, title, eyebrow, hint];
-    const promote = (active: boolean) => layers.forEach(layer => layer.style.willChange = active && !layer.closest('[data-service-lead]') ? 'transform,opacity' : 'auto');
+    const promote = (active: boolean) => layers.forEach(layer => layer.style.willChange = active && !largeTablet() && !layer.closest('[data-service-lead]') ? 'transform,opacity' : 'auto');
     gsap.set(content, { autoAlpha:0, y:20 });
     gsap.set(title, { xPercent:-50, yPercent:-50, y:0, scale:1, opacity:1 });
     gsap.set(eyebrow,{xPercent:-50,yPercent:-100,y:()=>-title.offsetHeight/2-24});
@@ -93,7 +96,9 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
     items[1].forEach((item,index) => expand.to(item, { yPercent:(index===0?-1:1)*(compact?100:40), duration:.25, ease:'power2.inOut' }, 0));
     const finish = gsap.timeline().to(eyebrow,{y:()=>shift()-(title.offsetHeight*.72+52),duration:.12,ease:'power2.inOut'},0).to(title,{scale:.72,y:()=>shift()-(title.offsetHeight*.72/2+28),duration:.12,ease:'power2.inOut'},0)
       .to(content, { autoAlpha:1, y:shift, duration:.12, ease:'power2.out' }, .04);
-    const handoff=gsap.timeline();lower.forEach((item,index)=>handoff.to(item,{x:()=>cell(index).x,y:()=>cell(index).y,yPercent:0,scale:()=>cell(index).scale,duration:.22,ease:'power2.inOut'},0));
+    const number=section.querySelector<HTMLElement>('[data-service-number]');
+    const lift=()=>largeTablet()?Math.max(0,content.getBoundingClientRect().bottom-scene.getBoundingClientRect().top+32-(viewport-parseFloat(section.parentElement!.style.getPropertyValue('--service-lead-overlap')))):0;
+    const handoff=gsap.timeline().to([title,eyebrow,content,...(number?[number]:[])],{y:(index,target)=>Number(gsap.getProperty(target,'y'))-lift(),duration:.22,ease:'power2.inOut'},0);lower.forEach((item,index)=>handoff.to(item,{x:()=>cell(index).x,y:()=>cell(index).y,yPercent:0,scale:()=>cell(index).scale,duration:.22,ease:'power2.inOut'},0));
     master = gsap.timeline({ scrollTrigger: {
       id:'service-sticky-grid', trigger:section, scroller, start:'top top', end:'bottom bottom', scrub:compact?.3:.65, invalidateOnRefresh:true,
       onToggle:self => promote(self.isActive),
@@ -103,7 +108,9 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
     }, onUpdate:()=>{const progress=master?.progress()??0;section.toggleAttribute('data-grid-revealed',progress>0);content.inert=progress<.65;grid.inert=progress<.005;if(progress>=.999&&!handedOff){lower.forEach((item,index)=>{slots[index].append(item);item.classList.add('gallery-item');
       // The real row owns natural layout after handoff, not a forced CSS
       // transform competing with the scrub tween's composited state.
-      gsap.set(item,{clearProps:'transform,willChange'});});handedOff=true;}else if(progress<.999&&handedOff)restoreRow();} })
+      gsap.set(item,{x:0,y:0,yPercent:0,scale:1,force3D:false,clearProps:'willChange'});
+      // These already revealed cards do not participate in the list entrance.
+      gsap.set(item.firstElementChild,{clearProps:'clipPath',autoAlpha:1});});handedOff=true;}else if(progress<.999&&handedOff)restoreRow();} })
       .add(reveal,0).to(hint,{autoAlpha:0,duration:.04,ease:'none'},0).add(expand,.4).add(finish,.61).add(handoff,.88);
     refreshGeometry=()=>{const progress=master!.progress();master!.progress(0);restoreRow();measureGeometry();master!.invalidate().progress(progress);master!.scrollTrigger?.refresh();};
     master.scrollTrigger?.refresh();
