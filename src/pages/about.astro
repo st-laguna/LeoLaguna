@@ -5,6 +5,20 @@ import PageNavigation from '../components/PageNavigation.astro';
 import '../styles/about.css';
 import '../styles/compact-laptop.css';
 import '../styles/large-tablet-landscape.css';
+import mobileAboutDevice from '../scripts/about/mobileAboutDevice.js?raw';
+// Keep the desktop preload behavior without fetching 3D assets on mobile/iPad.
+const mobileAboutPrepaint = '(() => {\n' + mobileAboutDevice.replace(/^export /gm, '') + `
+  document.documentElement.toggleAttribute('data-about-mobile', isMobileAbout());
+  if (!isMobileAbout()) {
+    for (const name of ['leo', 'simba', 'morena']) {
+      const link = document.createElement('link');
+      link.rel = 'preload'; link.as = 'fetch'; link.crossOrigin = 'anonymous';
+      link.href = '/about/models/' + name + '.glb';
+      document.head.append(link);
+    }
+  }
+})();
+`;
 ---
 <!doctype html>
 <html lang="en" data-page="about">
@@ -13,6 +27,7 @@ import '../styles/large-tablet-landscape.css';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About — Leo Laguna</title>
     <PageNavigation />
+    <script is:inline set:html={mobileAboutPrepaint}></script>
     <script is:inline>
       document.documentElement.setAttribute('data-about-loading', '');
       // A failed runtime must never leave the biography or navigation hidden.
@@ -21,12 +36,8 @@ import '../styles/large-tablet-landscape.css';
         window.dispatchEvent(new Event('leo:about-loading-fallback'));
       },12000);
     </script>
-    <link rel="preload" href="/about/fonts/HostGrotesk-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/about/fonts/Archivo.woff2" as="font" type="font/woff2" crossorigin />
-    <!-- Fetch the main actors during navigation; decode/scene creation waits for reveal. -->
-    <link rel="preload" href="/about/models/leo.glb" as="fetch" crossorigin="anonymous" />
-    <link rel="preload" href="/about/models/simba.glb" as="fetch" crossorigin="anonymous" />
-    <link rel="preload" href="/about/models/morena.glb" as="fetch" crossorigin="anonymous" />
+    <link rel="preload" href="/fonts/HostGrotesk.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Archivo.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <p class="about-loading-indicator" role="status" aria-live="polite">Loading…</p>

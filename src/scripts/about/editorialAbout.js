@@ -15,7 +15,7 @@ export function mountEditorialAbout(section, getScene, on, reduced) {
   section.setAttribute('aria-labelledby','about-editorial-title');
   move(query('.about__loading'),query('[data-editorial-status]'));
   move(query('.page-controls'),query('[data-editorial-preferences]'));
-  move(query('.site-controls>.action-pill'),query('[data-editorial-project]'));
+  move(query('[data-editorial-preferences] .site-controls>.action-pill'),query('[data-editorial-project]'));
   move(query('[data-return]'),query('[data-editorial-return]'));
   move(query('[data-picker]'),query('[data-editorial-access]'));
   move(query('[data-pause]'),query('[data-editorial-access]'));

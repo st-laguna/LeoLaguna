@@ -1,10 +1,14 @@
 import gsap from 'gsap';
 import { message } from './messages.js';
+import { mountMobileAbout } from './mobileAbout';
+import { isMobileAbout, mobileAboutMedia } from './mobileAboutDevice.js';
 import { mountEditorialAbout, editorialMedia, isEditorialAbout } from './editorialAbout.js';
 
 const mounted = new Map();
 
 function mount(section) {
+  document.documentElement.toggleAttribute('data-about-mobile', isMobileAbout());
+  if (isMobileAbout()) return mountMobileAbout(section);
   const abort = new AbortController();
   const on = (target, name, handler, options = {}) =>
     target?.addEventListener(name, handler, {
@@ -379,21 +383,30 @@ function mount(section) {
     // The shared destination entrance owns these nodes during navigation.
     gsap.set(boxes, { autoAlpha: 1, y: 0 });
   } else enter();
-  return { dispose };
+  return { dispose, mode: 'desktop' };
 }
 
 function boot() {
   for (const [section, controller] of mounted)
-    if (!section.isConnected) controller.dispose();
+    if (!section.isConnected) { controller.dispose(); mounted.delete(section); }
   for (const section of document.querySelectorAll('[data-about]')) {
+    const current = mounted.get(section);
+    if (current && current.mode !== (isMobileAbout() ? 'mobile' : 'desktop')) {
+      current.dispose();
+      mounted.delete(section);
+    }
     if (!mounted.has(section)) mounted.set(section, mount(section));
   }
 }
 
 boot();
 document.addEventListener('astro:page-load', boot);
+const mobileMedia = matchMedia(mobileAboutMedia);
+mobileMedia.addEventListener('change', boot);
+window.addEventListener('leo:orientation-ready', boot);
 function disposeAll() {
   for (const controller of [...mounted.values()]) controller.dispose();
+  mounted.clear();
 }
 document.addEventListener('astro:before-swap', disposeAll);
 if (import.meta.hot)
@@ -401,4 +414,6 @@ if (import.meta.hot)
     for (const controller of [...mounted.values()]) controller.dispose();
     document.removeEventListener('astro:page-load', boot);
     document.removeEventListener('astro:before-swap', disposeAll);
+    mobileMedia.removeEventListener('change', boot);
+    window.removeEventListener('leo:orientation-ready', boot);
   });

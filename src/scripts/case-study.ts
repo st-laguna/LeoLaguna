@@ -5,6 +5,16 @@ import {scrollPage} from './smooth-scroll';
 gsap.registerPlugin(ScrollTrigger);
 const host=document.querySelector<HTMLElement>('[data-case-study]');
 const rail=host?.querySelector<HTMLElement>('[data-case-rail]');
+// Warm adjacent panels in both horizontal and vertical layouts, retaining full-quality sources.
+if(host){
+  const images=new IntersectionObserver(entries=>{for(const entry of entries){
+    if(!entry.isIntersecting)continue;
+    const image=entry.target as HTMLImageElement;
+    image.src=image.dataset.caseSrc!;images.unobserve(image);
+  }},{rootMargin:'100% 100%'});
+  host.querySelectorAll<HTMLImageElement>('img[data-case-src]').forEach(image=>images.observe(image));
+  if(import.meta.hot)import.meta.hot.dispose(()=>images.disconnect());
+}
 if(host&&rail){
   const media=gsap.matchMedia();
   const endPanel=host.querySelector<HTMLElement>('.case-study__end');
@@ -77,12 +87,31 @@ if(modelViewport){
     scrollMotion=gsap.to(position,{y:target,duration:1.2,ease:'power3.inOut',onUpdate:()=>scrollPage(position.y,false)});
   };
   let cleanup:(()=>void)|undefined,cancelled=false;
-  void import('./case-model').then(({mountCaseModel})=>{if(!cancelled)cleanup=mountCaseModel(modelViewport,bringIntoView);});
-  if(import.meta.hot)import.meta.hot.dispose(()=>{cancelled=true;scrollMotion?.kill();cleanup?.();});
+  const proximity=new IntersectionObserver(entries=>{
+    if(!entries.some(entry=>entry.isIntersecting))return;
+    proximity.disconnect();
+    void import('./case-model').then(({mountCaseModel})=>{if(!cancelled)cleanup=mountCaseModel(modelViewport,bringIntoView);}).catch(()=>{
+      if(cancelled)return;
+      const status=modelViewport.querySelector<HTMLElement>('[data-model-status]');
+      if(status){status.dataset.i18n='model.unavailable';status.textContent=document.documentElement.lang==='es'?'Modelo 3D no disponible.':'3D model unavailable.';}
+    });
+  },{rootMargin:'300px'});
+  proximity.observe(modelViewport);
+  if(import.meta.hot)import.meta.hot.dispose(()=>{cancelled=true;proximity.disconnect();scrollMotion?.kill();cleanup?.();});
 }
 const video=host?.querySelector<HTMLVideoElement>('[data-case-video]');
 if(video){
-  const observer=new IntersectionObserver(([entry])=>{if(entry.isIntersecting)void video.play().catch(()=>{});else video.pause();});
+  let visible=false,pending=false,suspended=false;
+  const events=new AbortController();
+  const allowed=()=>visible&&!document.hidden&&!suspended;
+  function update(){
+    if(!allowed()){video!.pause();return;}
+    if(video!.paused&&!pending){pending=true;void video!.play().catch(()=>{}).finally(()=>{pending=false;if(!allowed())video!.pause();});}
+  }
+  const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;update();});
   observer.observe(video);
-  if(import.meta.hot)import.meta.hot.dispose(()=>{observer.disconnect();video.pause();});
+  document.addEventListener('visibilitychange',update,{signal:events.signal});
+  window.addEventListener('pagehide',()=>{suspended=true;update();},{signal:events.signal});
+  window.addEventListener('pageshow',()=>{suspended=false;update();},{signal:events.signal});
+  if(import.meta.hot)import.meta.hot.dispose(()=>{suspended=true;update();events.abort();observer.disconnect();});
 }

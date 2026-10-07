@@ -79,13 +79,20 @@ window.addEventListener('pagereveal', event => {
   if (reduced.matches) { transition.skipTransition(); cleanNavigation(); return; }
   activeTransition = transition;
   root.setAttribute('data-page-transition', '');
-  window.dispatchEvent(new Event('leo:page-position'));
   // Content enters inside the new snapshot; it is not a second page overlay.
   const anchor = ['#work', '#featured-works', '#contact'].includes(location.hash) ? document.querySelector(location.hash) : null;
-  entrance = root.dataset.page === 'about' ? undefined : prepareEntrances(anchor || document.querySelector('[data-page-content], .hero'));
   const {oldFrames,newFrames} = snapshotFrames();
-  transition.ready.then(() => {
+  transition.ready.then(async () => {
+    if (anchor) {
+      if (document.readyState === 'loading') await new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve, {once:true}));
+      let layoutDeadline;
+      await Promise.race([document.fonts.ready, new Promise(resolve => { layoutDeadline = setTimeout(resolve,1000); })]);
+      clearTimeout(layoutDeadline);
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    }
     if (activeTransition !== transition) return;
+    window.dispatchEvent(new Event('leo:page-position'));
+    entrance = root.dataset.page === 'about' ? undefined : prepareEntrances(anchor || document.querySelector('[data-page-content], .hero'));
     animations = [
       root.animate(oldFrames,{duration:SECTION_TRANSITION.duration*1000,fill:'both',pseudoElement:'::view-transition-old(root)'}),
       root.animate(newFrames,{duration:SECTION_TRANSITION.duration*1000,delay:SECTION_TRANSITION.followDelay*1000,fill:'both',pseudoElement:'::view-transition-new(root)'}),

@@ -12,10 +12,9 @@ export function initFooterMarquee(host: HTMLElement) {
   const abort = new AbortController();
   const signal = abort.signal;
 
-  const ipad=document.documentElement.hasAttribute('data-ipad');
-  // Do not compile shaders or allocate footer textures during the iPad Hero intro.
-  let glass=ipad?null:createFooterRefraction(host);
-  let glassInitialized=!ipad;
+  // Allocate the below-fold renderer only when its existing effect is visible.
+  let glass:ReturnType<typeof createFooterRefraction>=null;
+  let glassInitialized=false;
   const glassThemeObserver=new MutationObserver(()=>{resize();});
   glassThemeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 
@@ -115,7 +114,7 @@ export function initFooterMarquee(host: HTMLElement) {
     }).join('');
   }
   function resize() {
-    if(ipad&&!visible)return;
+    if(!visible)return;
     if(!glassInitialized){glassInitialized=true;glass=createFooterRefraction(host);}
     htmlSource=getComputedStyle(message).display!=='none';
     opticalScale=host.clientHeight/MARQUEE_VIEW.height;
@@ -191,7 +190,7 @@ export function initFooterMarquee(host: HTMLElement) {
   reduced.addEventListener('change',()=>{stop();amounts.fill(0);active=-1;draw();start();},{signal});
   document.addEventListener('visibilitychange',()=>{stop();start();},{signal});
 
-  const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;host.toggleAttribute('data-optics-visible',visible);if(visible){if(ipad)resize();draw();start();}else stop();});observer.observe(host);
+  const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;host.toggleAttribute('data-optics-visible',visible);if(visible){resize();draw();start();}else stop();});observer.observe(host);
   resize();
   return {resize,dispose:()=>{
     stop();abort.abort();glassThemeObserver.disconnect();observer.disconnect();

@@ -1,0 +1,245 @@
+[
+  {
+    "file": "public/about/models/leo.glb",
+    "images": [
+      {
+        "width": 512,
+        "height": 512,
+        "format": "webp",
+        "bytes": 27356,
+        "rgbaBytes": 1048576
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  },
+  {
+    "file": "public/about/models/simba.glb",
+    "images": [
+      {
+        "width": 1024,
+        "height": 1024,
+        "format": "webp",
+        "bytes": 137822,
+        "rgbaBytes": 4194304
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  },
+  {
+    "file": "public/about/models/morena.glb",
+    "images": [
+      {
+        "width": 1024,
+        "height": 1024,
+        "format": "webp",
+        "bytes": 90534,
+        "rgbaBytes": 4194304
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  },
+  {
+    "file": "public/models/caseta.glb",
+    "images": [
+      {
+        "width": 4800,
+        "height": 1440,
+        "format": "webp",
+        "bytes": 361966,
+        "rgbaBytes": 27648000
+      },
+      {
+        "width": 4800,
+        "height": 1440,
+        "format": "webp",
+        "bytes": 242684,
+        "rgbaBytes": 27648000
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987,
+        "wrapS": 33071,
+        "wrapT": 33071
+      }
+    ]
+  },
+  {
+    "file": "public/about/models/libro2.glb",
+    "images": [
+      {
+        "width": 2048,
+        "height": 2048,
+        "format": "webp",
+        "bytes": 261626,
+        "rgbaBytes": 16777216
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  },
+  {
+    "file": "public/about/models/ipad.glb",
+    "images": [
+      {
+        "width": 1080,
+        "height": 1080,
+        "format": "webp",
+        "bytes": 155186,
+        "rgbaBytes": 4665600
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  },
+  {
+    "file": "public/about/models/laptop.glb",
+    "images": [
+      {
+        "width": 1080,
+        "height": 1080,
+        "format": "webp",
+        "bytes": 129430,
+        "rgbaBytes": 4665600
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  },
+  {
+    "file": "public/about/models/libro1.glb",
+    "images": [
+      {
+        "width": 1024,
+        "height": 1024,
+        "format": "webp",
+        "bytes": 117308,
+        "rgbaBytes": 4194304
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  },
+  {
+    "file": "public/about/models/halomorena.glb",
+    "images": [
+      {
+        "width": 1366,
+        "height": 1367,
+        "format": "png",
+        "bytes": 64597,
+        "rgbaBytes": 7469288
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  },
+  {
+    "file": "public/about/models/halosimba.glb",
+    "images": [
+      {
+        "width": 1366,
+        "height": 1367,
+        "format": "png",
+        "bytes": 64597,
+        "rgbaBytes": 7469288
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  },
+  {
+    "file": "public/about/models/haloleo.glb",
+    "images": [
+      {
+        "width": 1366,
+        "height": 1367,
+        "format": "png",
+        "bytes": 64597,
+        "rgbaBytes": 7469288
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  },
+  {
+    "file": "public/about/models/cuadro.glb",
+    "images": [
+      {
+        "width": 1024,
+        "height": 1024,
+        "format": "webp",
+        "bytes": 29762,
+        "rgbaBytes": 4194304
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  },
+  {
+    "file": "public/about/models/gem.glb",
+    "images": [
+      {
+        "width": 1366,
+        "height": 1367,
+        "format": "png",
+        "bytes": 18133,
+        "rgbaBytes": 7469288
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987
+      }
+    ]
+  }
+]

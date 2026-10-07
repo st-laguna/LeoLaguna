@@ -2,11 +2,13 @@
 import '../../styles/home-microinteractions.css';
 import PageControls from '../PageControls.astro';
 import EditorialAbout from './EditorialAbout.astro';
+import MobileAbout from './MobileAbout.astro';
 const base = import.meta.env.BASE_URL;
 ---
 
 <section class="about" id="about" data-about aria-labelledby="about-title">
   <EditorialAbout />
+  <MobileAbout />
   <div class="about__composition">
   <button class="about-mobile-toggle" type="button" aria-expanded="false" aria-controls="about-mobile-menu" aria-label="Open menu / Abrir menú"><span></span><span></span><span></span></button>
   <div class="about-mobile-menu" id="about-mobile-menu" inert>

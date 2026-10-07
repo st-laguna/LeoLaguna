@@ -70,7 +70,11 @@ let cursorPulse:gsap.core.Timeline|undefined;
 
 function setCursor(show:boolean){
   if(!clickCursor)return;
-  clickCursor.classList.toggle('is-visible',show&&finePointer.matches);
+  const visible = show && finePointer.matches && !document.hidden;
+  clickCursor.classList.toggle('is-visible',visible);
+  if (visible) wakeCursor();
+  else { cancelAnimationFrame(cursorFrame); cursorFrame=0; }
+
 }
 
 function checkCursor(){
@@ -94,17 +98,21 @@ function pulseCursor(event:PointerEvent){
   cursorPulse?.kill();
   const scale=cursorLabel?.textContent==='ZOOM'?.76:.84;
   // Scale after translation so the cursor shrinks around its current center.
-  cursorPulse=gsap.timeline()
+  cursorPulse=gsap.timeline({onUpdate:wakeCursor})
     .to(cursorSize,{scale,duration:.184,ease:'power2.inOut'})
     .to(cursorSize,{scale:1,duration:.276,ease:'power2.inOut'});
 }
 
+function wakeCursor(){
+  if(!cursorFrame && !document.hidden && finePointer.matches && clickCursor?.classList.contains('is-visible')) cursorFrame=requestAnimationFrame(animateCursor);
+}
 function animateCursor(){
-  if(!clickCursor)return;
+  cursorFrame=0;
+  if(!clickCursor || document.hidden || !finePointer.matches || !clickCursor.classList.contains('is-visible'))return;
   cx+=(px-cx)*.18;
   cy+=(py-cy)*.18;
   clickCursor.style.transform=`translate3d(${cx}px,${cy}px,0) translate(-50%,-50%) scale(${cursorSize.scale})`;
-  cursorFrame=requestAnimationFrame(animateCursor);
+  if(Math.abs(px-cx)+Math.abs(py-cy)>.05 || cursorPulse?.isActive()) wakeCursor();
 }
 
 document.addEventListener('pointermove',e=>{
@@ -119,8 +127,8 @@ window.addEventListener('scroll',checkCursor,{passive:true,signal});
 document.documentElement.addEventListener('mouseleave',()=>setCursor(false),{signal});
 window.addEventListener('blur',()=>setCursor(false),{signal});
 
-if(clickCursor&&clickTarget&&finePointer.matches)
-  cursorFrame=requestAnimationFrame(animateCursor);
+finePointer.addEventListener('change',()=>{if(finePointer.matches)checkCursor();else setCursor(false);},{signal});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)setCursor(false);else checkCursor();},{signal});
 
   const nav=document.querySelector<HTMLElement>('.site-nav');
   const work=document.querySelector<HTMLButtonElement>('[data-footer-work]');

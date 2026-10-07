@@ -57,7 +57,8 @@ export function mountHeroDistortion(hero: HTMLElement) {
   document.addEventListener('visibilitychange', sync, { signal });
   window.addEventListener('leo:section-cover',()=>{covered=true;sync();},{signal});
   window.addEventListener('leo:section-reveal',()=>{covered=false;sync();},{signal});
-  window.addEventListener('pagehide', finish, { signal });
+  window.addEventListener('pagehide', event => { if(event.persisted) pause?.(); else finish(); }, { signal });
+  window.addEventListener('pageshow', event => { if(event.persisted) sync(); }, { signal });
   function sourceChanged(){
     if(ended||!initial)return;
     if(currentImage().currentSrc && currentImage().currentSrc!==selectedSource){

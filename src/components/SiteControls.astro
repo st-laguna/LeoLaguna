@@ -1,7 +1,8 @@
 ---
-const { project = true } = Astro.props;
+const { project = true, preferences = true, projectHref = 'mailto:hello@leolaguna.com', projectLabel = 'Start a Project', projectI18n = true } = Astro.props;
 ---
 <div class="site-controls" data-reveal>
+  {preferences && <Fragment>
   <div class="language" role="group" aria-label="Idioma / Language">
     <button type="button" data-language="en" aria-pressed="true">
       EN
@@ -65,7 +66,8 @@ const { project = true } = Astro.props;
       </g>
     </svg>
   </button>
-  {project && <a class="action-pill" href="mailto:hello@leolaguna.com"><span data-roll-label data-i18n="button.startProject">Start a Project</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></a>}
+  </Fragment>}
+  {project && <a class="action-pill" href={projectHref}><span data-roll-label data-i18n={projectI18n ? "button.startProject" : undefined}>{projectLabel}</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></a>}
 </div>
 <style>
   .site-controls {

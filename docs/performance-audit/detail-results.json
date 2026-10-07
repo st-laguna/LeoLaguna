@@ -1,0 +1,41 @@
+[
+  {
+    "route": "/work/wwf/",
+    "shifts": [],
+    "gl": [
+      {
+        "w": 864,
+        "h": 900,
+        "draws": 29,
+        "connected": true
+      }
+    ],
+    "resources": []
+  },
+  {
+    "route": "/",
+    "shifts": [],
+    "gl": [
+      {
+        "w": 1425,
+        "h": 1260,
+        "draws": 3,
+        "connected": true
+      }
+    ],
+    "resources": []
+  },
+  {
+    "route": "/about/",
+    "shifts": [],
+    "gl": [
+      {
+        "w": 1224,
+        "h": 765,
+        "draws": 1998,
+        "connected": true
+      }
+    ],
+    "resources": []
+  }
+]

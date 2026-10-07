@@ -7,8 +7,9 @@ import '../styles/header-persistent.css';
 import '../styles/home-microinteractions.css';
 import '../styles/compact-laptop.css';
 import '../styles/large-tablet-landscape.css';
+import '../styles/touch-section-palette.css';
 import PageNavigation from '../components/PageNavigation.astro';
-import SiteControls from '../components/SiteControls.astro';
+import NavigationMenu from '../components/NavigationMenu.astro';
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 const headerSource=readFileSync(resolve('public/icons/logo_horizontal.svg'),'utf8');
@@ -115,34 +116,25 @@ const {
     <div data-home-curtain aria-hidden="true"></div>
     <header class="site-header" data-site-header style={headerBlueprint}>
       <a class="site-header__footer-logo" href={page ? "/#home" : "#home"} aria-label="Leo Laguna — Home"></a>
-  <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-navigation" aria-label="Open menu / Abrir menú">
-    <span></span><span></span><span></span>
-  </button>
-  <div class="mobile-menu-panel" id="mobile-navigation" data-mobile-menu inert>
-  <nav class="site-nav" aria-label="Navegación principal">
-    <div class="site-nav__items hover-group">
-      <a class="hover-option" href={page ? "/#work" : "#work"}><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.services">Service</span></a>
-      <a class="hover-option" href="/about/"><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.about">About</span></a>
-      <a class="hover-option" href={Astro.url.pathname === '/' ? '#featured-works' : '/#featured-works'}><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.works">Works</span></a>
-      <a class="hover-option" href={page ? "/#contact" : "#contact"}><span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n="nav.contact">Contact</span></a>
-    </div>
-    <div class="site-nav__submenu hover-group" id="site-work-options" hidden>
+  <NavigationMenu context="site" id="mobile-navigation" preferences links={[
+    {label:'Service',href:page ? '/#work' : '#work',i18n:'nav.services'},
+    {label:'About',href:'/about/',i18n:'nav.about'},
+    {label:'Works',href:Astro.url.pathname === '/' ? '#featured-works' : '/#featured-works',i18n:'nav.works'},
+    {label:'Contact',href:page ? '/#contact' : '#contact',i18n:'nav.contact'},
+  ]}>
+    <div slot="submenu" class="site-nav__submenu hover-group" id="site-work-options" hidden>
       <a class="hover-option" href="#work" data-project-jump="0" >01 Technical Visuals</a>
       <a class="hover-option" href="#work" data-project-jump="1" >02 Scientific Illustration</a>
       <a class="hover-option" href="#work" data-project-jump="2" >03 Educational Visuals</a>
       <a class="hover-option" href="#work" data-project-jump="3" >04 Animation and Video</a>
     </div>
-  </nav>
-
-  <SiteControls />
-  </div>
+  </NavigationMenu>
 </header>
     <slot />
 
     <script>
       import '../scripts/main';
       import '../scripts/action-buttons';
-      import { isTabletPortrait } from '../scripts/responsive-layout';
 
       document.addEventListener('contextmenu', e => {
         if ((e.target as Element)?.closest('img, video')) e.preventDefault();
@@ -151,47 +143,6 @@ const {
       document.addEventListener('dragstart', e => {
         if ((e.target as Element)?.closest('img, video')) e.preventDefault();
       });
-
-      const header = document.querySelector<HTMLElement>('[data-site-header]');
-      const menuButton = header?.querySelector<HTMLButtonElement>('.mobile-menu-toggle');
-      const menuPanel = header?.querySelector<HTMLElement>('[data-mobile-menu]');
-      const menuMedia = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait)');
-      const tabletMedia = matchMedia('(min-width:701px) and (max-width:1100px) and (orientation:portrait)');
-      const controls = header?.querySelector<HTMLElement>('.site-controls');
-      function placeControls() {
-        if (controls && header && menuPanel) menuPanel.append(controls);
-      }
-      tabletMedia.addEventListener('change', placeControls);
-      placeControls();
-      window.addEventListener('leo:orientation-ready', () => { placeControls(); setMobileMenu(false); });
-
-      function setMobileMenu(open: boolean) {
-        if (!header || !menuButton || !menuPanel) return;
-        const phoneMenu = menuMedia.matches || isTabletPortrait();
-        const active = open && phoneMenu;
-        header.toggleAttribute('data-menu-open', active);
-        menuButton.setAttribute('aria-expanded', String(active));
-        menuButton.setAttribute('aria-label', active ? 'Close menu / Cerrar menú' : 'Open menu / Abrir menú');
-        menuPanel.inert = phoneMenu ? !active : false;
-        document.documentElement.classList.toggle('mobile-menu-open', active);
-      }
-
-      menuButton?.addEventListener('click', () => setMobileMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
-      menuPanel?.addEventListener('click', event => {
-        if ((event.target as Element).closest('a, button[data-language], button[data-theme-toggle]')) {
-          if ((event.target as Element).closest('a')) setMobileMenu(false);
-        }
-      });
-      document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && menuButton?.getAttribute('aria-expanded') === 'true') {
-          setMobileMenu(false);
-          menuButton.focus({ preventScroll: true });
-        }
-      });
-      menuMedia.addEventListener('change', () => setMobileMenu(false));
-      window.addEventListener('leo:close-menu', () => setMobileMenu(false));
-
-      setMobileMenu(false);
 
       function protectVideos() {
         document.querySelectorAll<HTMLVideoElement>('video').forEach(video => {

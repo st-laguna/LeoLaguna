@@ -204,28 +204,28 @@ export const experience = [
         company: "WWF",
         dates: "03/2025 to 06/2025",
         description: "Animated video presenting the proposed Traffic Separation Scheme to protect humpback whale migratory routes along the northern coast of Peru.",
-        images: ["/cv/video/wwf2.webm"]
+        images: ["/videos/7.webm"]
       },
 
       {
         company: "GroAqua",
         dates: "04/2025 to 05/2026",
         description: "Development of technical and demonstrative videos showcasing aquaculture vessels, feeding barges, and related systems, illustrating their components, functionality, and implementation.",
-        images: ["/cv/video/groaqua.webm"]
+        images: ["/videos/9.webm"]
       },
 
       {
         company: "WWF",
         dates: "04/2026 to 06/2026",
         description: "Development of a scientific communication audiovisual resource integrating field footage, interviews, and 2D animation to communicate research on the satellite tagging and tracking of humpback whales.",
-        images: ["/cv/video/wwf1.webm"]
+        images: ["/videos/3.webm"]
       },
 
       {
         company: "HAVIDA",
         dates: "04/2026 to 05/2026",
         description: "Development of technical illustrations showcasing control systems used in salmon aquaculture farms, illustrating their integration and operation across different equipment and cage systems.",
-        images: ["/cv/video/havida.webm"]
+        images: ["/videos/havida.webm"]
       }
 
     ]

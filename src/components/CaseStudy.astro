@@ -48,8 +48,8 @@ const previewSize=await dimensions(preview);
           <div class:list={['case-study__image-column',{'case-study__image-stack':column.length>1}]} style={column.length>1?'--stack-ratio:'+Math.max(...column.map(index=>images[index]!.width/images[index]!.height)):undefined}>
           {column.map(index=>{const image=images[index];return (
           <figure class="case-study__image" data-image-slot={index+1} hidden={!image} style={image?.kind==='video' && images[0] ? '--video-reference-ratio:'+images[0].width/images[0].height : undefined}>
-            {image?.kind==='image' && <img src={image.src} width={image.width} height={image.height} style={'--image-ratio:'+image.width/image.height} alt={project.client+' — '+String(index+1).padStart(2,'0')} loading="eager" fetchpriority={index===0?'high':'low'} decoding="async" />}
-            {image?.kind==='video' && <video data-case-video src={image.src} width={image.width} height={image.height} style={'--image-ratio:'+image.width/image.height} autoplay muted loop playsinline preload="auto" aria-label={project.client+' — animation'} />}
+            {image?.kind==='image' && <img src={index===0?image.src:undefined} data-case-src={index===0?undefined:image.src} width={image.width} height={image.height} style={'--image-ratio:'+image.width/image.height} alt={project.client+' — '+String(index+1).padStart(2,'0')} loading="eager" fetchpriority={index===0?'high':'low'} decoding="async" />}
+            {image?.kind==='video' && <video data-case-video src={image.src} width={image.width} height={image.height} style={'--image-ratio:'+image.width/image.height} muted loop playsinline preload="none" aria-label={project.client+' — animation'} />}
           </figure>
           );})}
           </div>
@@ -61,7 +61,7 @@ const previewSize=await dimensions(preview);
         <span class="case-study__next-label"><span data-i18n="case.next">Next Case Study</span> <span aria-hidden="true">↗</span></span>
         <div class="case-study__next-heading"><h2 data-i18n={'case.'+next.slug+'.title'}>{labels['case.'+next.slug+'.title']||next.title}</h2><span>{next.client}</span></div>
         <div class="case-study__preview">
-          <img src={preview} width={previewSize.width} height={previewSize.height} alt={next.client} loading="eager" fetchpriority="low" decoding="async" />
+          <img data-case-src={preview} width={previewSize.width} height={previewSize.height} alt={next.client} loading="eager" fetchpriority="low" decoding="async" />
           <div class="case-study__next-meta"><span data-i18n={categoryKeys[next.categoryId]}>{labels[categoryKeys[next.categoryId]]}</span><span>{next.year}</span></div>
         </div>
       </a>

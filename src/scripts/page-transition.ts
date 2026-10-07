@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { isMobileAbout } from './about/mobileAboutDevice.js';
 import { prepareHomeEntrance } from './home-entrance.js';
 import { scrollPage, isScrollLocked, beginScrollTransition, endScrollTransition, commitScrollJump } from './smooth-scroll';
 
@@ -22,8 +23,10 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 let entryAnchorSettled = false;
 let userMoved = false;
 for (const type of ['touchstart','wheel','keydown']) window.addEventListener(type, () => {userMoved=true;}, {once:true,passive:true,signal});
-function settleEntryAnchor() {
-  if (entryAnchorSettled || userMoved) return;
+function settleEntryAnchor(event?: Event) {
+  // The destination can move while modules/fonts establish their sticky runway.
+  // Re-align the explicit pre-reveal event, without fighting later user scrolling.
+  if ((entryAnchorSettled && event?.type !== 'leo:page-position') || userMoved) return;
   if (performance.getEntriesByType('navigation').some(entry =>
     (entry as PerformanceNavigationTiming).type === 'back_forward')) return;
   const id = location.hash.slice(1);
@@ -36,7 +39,7 @@ if (document.readyState === 'loading') {
 } else settleEntryAnchor();
 window.addEventListener('leo:page-position', settleEntryAnchor, {signal});
 // The responsive sticky sections establish their final height after module setup.
-window.addEventListener('load', () => requestAnimationFrame(settleEntryAnchor), {once:true,signal});
+window.addEventListener('load', () => requestAnimationFrame(() => settleEntryAnchor()), {once:true,signal});
 
 function getCurtain() {
   if (curtain?.isConnected) return curtain;
@@ -236,6 +239,17 @@ function transitionTo(changePosition: () => void, focus?: HTMLElement | null) {
 // Capture runs before the older footer/sidebar handlers: no duplicate jump.
 document.addEventListener('click', event => {
   if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  // Native navigation into mobile About supersedes a running Home/section reveal.
+  // Do not run both transitions, or swallow the About link behind the scroll lock.
+  if (transitioning && !event.defaultPrevented && event.target instanceof Element && isMobileAbout()) {
+    const destination = event.target.closest<HTMLAnchorElement>('a[href]');
+    if (destination && !destination.hasAttribute('download') && (!destination.target || destination.target === '_self')) {
+      const url = new URL(destination.href, location.href);
+      if (url.origin === location.origin && /^\/about\/?$/.test(url.pathname)) {
+        nativeTransition?.skipTransition(); release(); return;
+      }
+    }
+  }
   if (transitioning) { event.preventDefault(); event.stopImmediatePropagation(); return; }
   if (event.defaultPrevented || isScrollLocked() || !(event.target instanceof Element)) return;
   const link = event.target.closest<HTMLAnchorElement>('a[href]');

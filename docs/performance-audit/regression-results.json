@@ -1,0 +1,51 @@
+[
+  {
+    "test": "CV accordion loads on first expansion",
+    "passed": true
+  },
+  {
+    "test": "CV video plays expanded and pauses collapsed",
+    "passed": true
+  },
+  {
+    "test": "Home ScrollTrigger counts stable after repeated breakpoint round trips",
+    "counts": [
+      14,
+      14,
+      14,
+      14
+    ]
+  },
+  {
+    "test": "Deferred footer GPU effect initializes at footer",
+    "passed": true
+  },
+  {
+    "test": "Persisted lifecycle events retain one Hero canvas (synthetic, not actual BFCache)",
+    "passed": true
+  },
+  {
+    "test": "/work/wewhale/ full rail media loads",
+    "passed": true
+  },
+  {
+    "test": "/work/groaqua/ full rail media loads",
+    "passed": true
+  },
+  {
+    "test": "/work/exo-environmental/ full rail media loads",
+    "passed": true
+  },
+  {
+    "test": "/work/wwf/ full rail media loads",
+    "passed": true
+  },
+  {
+    "test": "/work/sperm-whales-of-dominica/ full rail media loads",
+    "passed": true
+  },
+  {
+    "test": "Dark/reduced-motion mobile routes and no uncaught JS errors",
+    "passed": true
+  }
+]

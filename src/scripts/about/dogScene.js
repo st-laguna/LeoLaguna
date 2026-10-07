@@ -685,6 +685,8 @@ export function createAboutScene(section, callbacks = {}) {
           () =>
             asset(modelURL(id), async (gltf) => {
               const model = actor.attach(gltf);
+              // Own replacement toon materials before asynchronous compilation can be interrupted.
+              resources.track(model);
               if(isMobilePortrait)actor.usePortraitIdle();
               if(editorial&&reduced&&id==='leo'){actor.usePortraitIdle();actor.actions.stand?.stop();actor.mixer.update(0);}
               if(editorial&&id!=='leo'){actor.model.position.set(id==='simba'?-1.1:1.1,0,id==='simba'?.3:-.4);actor.roamDest.copy(actor.model.position);actor.isIdling=true;actor.idleTimer=2;}

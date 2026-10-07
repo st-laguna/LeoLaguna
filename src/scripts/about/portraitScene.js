@@ -108,7 +108,7 @@ export function createAboutScene(section, callbacks = {}) {
       }catch(error){failed++;console.warn('[About] '+id+' could not load',error);}
       completed++;callbacks.onProgress?.({completed,total:3});request();
     }
-    if(!disposed){frame(performance.now());callbacks.onReady?.({failed,interactive:actors.filter(Boolean).length});}
+    if(!disposed){cancelAnimationFrame(raf);raf=0;frame(performance.now());callbacks.onReady?.({failed,interactive:actors.filter(Boolean).length});}
   }
   const observer=new ResizeObserver(resize);observer.observe(container);
   window.addEventListener('scroll',request,{passive:true,signal:events.signal});

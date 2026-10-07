@@ -1,0 +1,26 @@
+/* Touch layouts share the portrait palette, independently of orientation/layout. */
+html[data-theme="light"] {--touch-service-paper:var(--light-base);--touch-service-ink:var(--light-ink);--touch-service-canvas:var(--light-ink);}
+html[data-theme="dark"] {--touch-service-paper:var(--dark-base);--touch-service-ink:var(--dark-white);--touch-service-canvas:var(--dark-black);}
+
+html:is([data-ipad],[data-large-tablet-landscape]) body .projects :is(.projects-stage,.projects-main,.projects-window,.projects-rail),
+html:is([data-ipad],[data-large-tablet-landscape]) body .projects {background-color:var(--touch-service-canvas);}
+html:is([data-ipad],[data-large-tablet-landscape]) body .projects .project-panel {--background:var(--touch-service-paper);--surface:var(--touch-service-paper);--foreground:var(--touch-service-ink);background-color:var(--touch-service-paper);color:var(--touch-service-ink);}
+html:is([data-ipad],[data-large-tablet-landscape]) body .projects :is(.project-mobile-copy,.projects-footer) {--foreground:var(--touch-service-ink);background-color:var(--touch-service-paper);color:var(--touch-service-ink);}
+html:is([data-ipad],[data-large-tablet-landscape]) body .projects .projects-footer button:not(:disabled) {color:var(--touch-service-ink);}
+html:is([data-ipad],[data-large-tablet-landscape]) body .projects :is(.projects-paging,.projects-view-all) .action-arrow {color:var(--button-coral);}
+html:is([data-ipad],[data-large-tablet-landscape]) body .footer[data-compact-layout] {--background:var(--touch-service-paper);--foreground:var(--touch-service-ink);--footer-optics-background:var(--touch-service-paper);}
+html:is([data-ipad],[data-large-tablet-landscape])[data-theme="light"] body .home-journey .workflow .workflow__slot .workflow__front {background-color:transparent!important;}
+html:is([data-ipad],[data-large-tablet-landscape])[data-theme="dark"] body .home-journey .workflow .workflow__slot .workflow__front {background-color:var(--dark-base)!important;}
+
+/* Includes narrow landscape emulators with a fine mouse pointer. */
+@media (orientation:landscape) and (pointer:coarse), (max-width:1000px) and (max-height:500px) and (orientation:landscape) {
+  html[data-theme] body .projects :is(.projects-stage,.projects-main,.projects-window,.projects-rail),html[data-theme] body .projects {background-color:var(--touch-service-canvas);}
+  html[data-theme] body .projects .project-panel {--background:var(--touch-service-paper);--surface:var(--touch-service-paper);--foreground:var(--touch-service-ink);background-color:var(--touch-service-paper);color:var(--touch-service-ink);}
+  html[data-theme] body .projects :is(.project-mobile-copy,.projects-footer) {--foreground:var(--touch-service-ink);background-color:var(--touch-service-paper);color:var(--touch-service-ink);}
+  html[data-theme] body .projects .projects-footer button:not(:disabled) {color:var(--touch-service-ink);}
+  html[data-theme] body .projects :is(.projects-paging,.projects-view-all) .action-arrow {color:var(--button-coral);}
+  html[data-theme] body .footer[data-compact-layout] {--background:var(--touch-service-paper);--foreground:var(--touch-service-ink);--footer-optics-background:var(--touch-service-paper);}
+  html:not([data-ipad]) body .footer[data-compact-layout] {background:var(--background)!important;}
+  html[data-theme="light"] body .home-journey .workflow .workflow__slot .workflow__front {background-color:transparent!important;}
+  html[data-theme="dark"] body .home-journey .workflow .workflow__slot .workflow__front {background-color:var(--dark-base)!important;}
+}

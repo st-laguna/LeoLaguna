@@ -1,4 +1,6 @@
 @import "../../node_modules/tailwindcss/index.css";
+@source not "../../docs/performance-audit";
+@source not "../../docs/PERFORMANCE_AUDIT_PROGRESS.md";
 
 /* --- INTERFAZ 3D PROTEGIDA CONTRA TAILWIND --- */
 
@@ -70,8 +72,8 @@
   line-height: 1.2 !important;
 }
 /* Local fonts and document-only baseline from the standalone About page. */
-@font-face { font-family: 'Host Grotesk'; src: url('/about/fonts/HostGrotesk-VariableFont_wght.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
-@font-face { font-family: 'Archivo'; src: url('/about/fonts/Archivo.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Host Grotesk'; src: url('/fonts/HostGrotesk.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Archivo'; src: url('/fonts/Archivo.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
 html[data-page="about"], html[data-page="about"] body { margin: 0; padding: 0; background: var(--light-base); }
 html[data-page="about"][data-theme="dark"], html[data-page="about"][data-theme="dark"] body { background:#181818; }
 

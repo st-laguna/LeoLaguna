@@ -41,7 +41,7 @@ const count = items.length;
                                   src.toLowerCase().endsWith(".webm") || 
                                   src.toLowerCase().endsWith(".ogg");
                   return isVideo ? (
-                    <video src={src} autoplay loop muted playsinline class="media-element"></video>
+                    <video data-cv-video data-src={src} preload="none" loop muted playsinline class="media-element"></video>
                   ) : (
                     <img src={src} alt={item.company} class="media-element" />
                   );
@@ -277,6 +277,7 @@ const count = items.length;
 </style>
 
 <script>
+  import "../../scripts/cv-videos";
   const rows = document.querySelectorAll(".animation-row");
   const DRAG_CLICK_THRESHOLD = 6;
 

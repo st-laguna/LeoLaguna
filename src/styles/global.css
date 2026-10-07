@@ -1,4 +1,6 @@
 @import "../../node_modules/tailwindcss/index.css";
+@source not "../../docs/performance-audit";
+@source not "../../docs/PERFORMANCE_AUDIT_PROGRESS.md";
 
 @theme {
   --font-sans: "Host Grotesk", Arial, sans-serif;
@@ -164,17 +166,13 @@ body .site-header .site-controls {
     padding:12px;border:0;background:transparent;color:var(--foreground);flex-direction:column;
     justify-content:center;gap:6px;mix-blend-mode:difference;touch-action:manipulation;
   }
-  .mobile-menu-toggle span {display:block;width:27px;height:3px;border-radius:2px;background:#fff;transition:transform .35s ease,opacity .25s ease;}
-  [data-menu-open] .mobile-menu-toggle span:nth-child(1){transform:translateY(9px) rotate(45deg);}
-  [data-menu-open] .mobile-menu-toggle span:nth-child(2){opacity:0;}
-  [data-menu-open] .mobile-menu-toggle span:nth-child(3){transform:translateY(-9px) rotate(-45deg);}
+  .mobile-menu-toggle span {display:block;width:27px;height:3px;border-radius:2px;background:#fff;}
   .mobile-menu-panel {
     position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;justify-content:space-between;
     padding:88px 24px 28px;background:var(--background);color:var(--foreground);
     clip-path:inset(0 0 100%);visibility:hidden;pointer-events:none;
-    transition:clip-path .55s cubic-bezier(.76,0,.24,1),visibility 0s .55s;
   }
-  [data-menu-open] .mobile-menu-panel {clip-path:inset(0);visibility:visible;pointer-events:auto;transition-delay:0s;}
+  [data-menu-open] .mobile-menu-panel {clip-path:inset(0);visibility:visible;pointer-events:auto;}
   .mobile-menu-panel .site-nav {position:static;display:block;width:100%;transform:none;color:inherit;mix-blend-mode:normal;}
   .mobile-menu-panel .site-nav__items {display:flex!important;flex-direction:column;align-items:stretch!important;gap:0!important;width:100%;}
   .mobile-menu-panel .site-nav__items>.hover-option {display:block;width:100%;padding:11px 0;border:0;border-bottom:1px solid #8885;background:none;color:inherit;text-align:left;font:700 clamp(28px,9vw,48px)/1 'Archivo',sans-serif;}

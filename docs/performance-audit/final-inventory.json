@@ -1,0 +1,3184 @@
+{
+  "assets": [
+    {
+      "file": "public/cv/video/havida.webm",
+      "bytes": 6896117,
+      "hash": "2d4496af56b70a8b081bb09321c6dae00b61d3fdcce9e0b297dc91d00f446e69"
+    },
+    {
+      "file": "public/videos/havida.webm",
+      "bytes": 6896117,
+      "hash": "2d4496af56b70a8b081bb09321c6dae00b61d3fdcce9e0b297dc91d00f446e69"
+    },
+    {
+      "file": "public/videos/1.webm",
+      "bytes": 6433820,
+      "hash": "070a96c10261e810ae71092340fdab82570531d802a5fb7445fd9d7d266afc76"
+    },
+    {
+      "file": "public/cv/video/groaqua.webm",
+      "bytes": 6159267,
+      "hash": "ab05225fdd988f3fbb8bf6dd5d814f5f1f9731e7c87afeeee33f1528c9afce6e"
+    },
+    {
+      "file": "public/videos/9.webm",
+      "bytes": 6159267,
+      "hash": "ab05225fdd988f3fbb8bf6dd5d814f5f1f9731e7c87afeeee33f1528c9afce6e"
+    },
+    {
+      "file": "public/imgs/hero/010.png",
+      "bytes": 5598654,
+      "hash": "91205a49c72876aba3e7e16f272c4fc86bc30731c865d91755fcff7cd942d3b0",
+      "width": 2685,
+      "height": 1517,
+      "format": "png"
+    },
+    {
+      "file": "public/cv/video/Blas2k SPA-00.00.00.000-00.00.12.990.mp4",
+      "bytes": 5449788,
+      "hash": "ed2975cef10ef75773d38a049994ee06ea71a6cf721cd053a7f1edea159c4151"
+    },
+    {
+      "file": "public/videos/4.webm",
+      "bytes": 5299014,
+      "hash": "ebd28ce6c355c081bc9281ea2d046a72894855db2a06d034b009deeaf83e98ae"
+    },
+    {
+      "file": "public/cv/video/wwf1.webm",
+      "bytes": 4926859,
+      "hash": "b2b06bd5363eb82686ce711b29c101e9a74ed46215acf4a7cf9185e6c30af3c1"
+    },
+    {
+      "file": "public/img/FW/02/3.webm",
+      "bytes": 4926859,
+      "hash": "b2b06bd5363eb82686ce711b29c101e9a74ed46215acf4a7cf9185e6c30af3c1"
+    },
+    {
+      "file": "public/videos/3.webm",
+      "bytes": 4926859,
+      "hash": "b2b06bd5363eb82686ce711b29c101e9a74ed46215acf4a7cf9185e6c30af3c1"
+    },
+    {
+      "file": "public/cv/video/wwf2.webm",
+      "bytes": 3948630,
+      "hash": "2a332a6243856665cad72746838077fc782fea7ad6db21e185e2385a954909a7"
+    },
+    {
+      "file": "public/videos/7.webm",
+      "bytes": 3948630,
+      "hash": "2a332a6243856665cad72746838077fc782fea7ad6db21e185e2385a954909a7"
+    },
+    {
+      "file": "public/videos/8.webm",
+      "bytes": 3228182,
+      "hash": "246a476bfa89bee1aaf5d2ab7c7324a4f7a6d094816ce88223f2f9d21d15f230"
+    },
+    {
+      "file": "public/about/models/leo.glb",
+      "bytes": 3201452,
+      "hash": "5ec6c203c6103a8905cdb474b527578fc7a5a85afeb58039700c9c499bc0f1f9",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 1,
+      "vertices": 7975,
+      "triangles": 9039,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 0
+    },
+    {
+      "file": "public/videos/5.webm",
+      "bytes": 3043982,
+      "hash": "56c50083ae57a70cbcb9eee2a9be288ed967136b760a2e1c830848b4e7a81fae"
+    },
+    {
+      "file": "public/videos/10.webm",
+      "bytes": 2719669,
+      "hash": "440ab7f046b5a1c8c67f0da99c235295d8af45a88063e2ecde7f34bb72e48140"
+    },
+    {
+      "file": "public/videos/2.webm",
+      "bytes": 2601486,
+      "hash": "de490b602d503633eaa2f695766c63cc8aa5826fe78d6d04ddb1d04a43926aef"
+    },
+    {
+      "file": "public/about/models/simba.glb",
+      "bytes": 2297052,
+      "hash": "960f58af7e1cc76e608fb015d4448c10e41e24733b1d020e99cfa7117e0ab75e",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 1,
+      "vertices": 4779,
+      "triangles": 8160,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 0
+    },
+    {
+      "file": "public/about/models/morena.glb",
+      "bytes": 2103220,
+      "hash": "ad955f1dd293e989edce75dee1eff72171070460c4a8befdb752a75a906751b8",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 1,
+      "vertices": 6589,
+      "triangles": 11311,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 0
+    },
+    {
+      "file": "public/img/SPM1.webp",
+      "bytes": 1537982,
+      "hash": "44ba777222b1ee0cd6400556727791f50441c5d8bef2f406368fa67cb1d15214",
+      "width": 3200,
+      "height": 2002,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/2H.webp",
+      "bytes": 990404,
+      "hash": "ceb5a28c7f62ef79f61e348bb1d5dc45ac28a8d2a2c4bbcf9c7ae0ab46a372b1",
+      "width": 2559,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/3H.webp",
+      "bytes": 744310,
+      "hash": "27ada81ecb6efd03260fb21a70ed0686921085c8f689c957c6cb29ecb9603481",
+      "width": 1383,
+      "height": 2560,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/1H.webp",
+      "bytes": 712292,
+      "hash": "0d0ae48816d48df783f97c0a6a7b882fcd0e1a11364807c607efbe4cbb324f6c",
+      "width": 2159,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/02/2.webp",
+      "bytes": 659752,
+      "hash": "15c89c338b5b5decc1f0c80f8c781e71ee99e8aea6c1e7a2fbad54f0502076f9",
+      "width": 3368,
+      "height": 4763,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_OMI3.webp",
+      "bytes": 659752,
+      "hash": "15c89c338b5b5decc1f0c80f8c781e71ee99e8aea6c1e7a2fbad54f0502076f9",
+      "width": 3368,
+      "height": 4763,
+      "format": "webp"
+    },
+    {
+      "file": "public/models/caseta.glb",
+      "bytes": 653556,
+      "hash": "708225afe9bd6b442232a1b5f27dad8a2a96e7b471f1d20a1da29d1f30531d80",
+      "meshes": 16,
+      "primitives": 27,
+      "materials": 3,
+      "textures": 2,
+      "vertices": 4083,
+      "triangles": 3383,
+      "images": 2,
+      "doubleSided": 3,
+      "transparent": 0
+    },
+    {
+      "file": "public/about/fonts/Archivo.ttf",
+      "bytes": 652084,
+      "hash": "bc878c6e9e36b848bfa2fb9174acdf812ea6df640fd167f2c95b42674729f6b5"
+    },
+    {
+      "file": "public/imgs/hero/1H-1920.webp",
+      "bytes": 638880,
+      "hash": "d3832c7b629b16ef7906a090f287ecdc18d08a3dba6c6fc60104a2d771acd533",
+      "width": 1920,
+      "height": 1281,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/2H-1920.webp",
+      "bytes": 637386,
+      "hash": "2a2c28ccd9ff47264d919407f505beff3af348797e73eef9d5cfc15c25260553",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/icons/GAEA.svg",
+      "bytes": 576646,
+      "hash": "7fbb0c82876afae7137b36677802a09e1b22ba94b779dc219723e252d4da8626"
+    },
+    {
+      "file": "public/cv/programs/GAEA.svg",
+      "bytes": 576646,
+      "hash": "7fbb0c82876afae7137b36677802a09e1b22ba94b779dc219723e252d4da8626"
+    },
+    {
+      "file": "public/imgs/hero/4H.webp",
+      "bytes": 567286,
+      "hash": "821fcabc88f24dca1c8ddcea160d4be1ad2a9e93184c52350b6aaf20453c19d0",
+      "width": 1134,
+      "height": 2016,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/in_2.webp",
+      "bytes": 529314,
+      "hash": "3e6955dbc58bd7d34efda00e8a39545be04ccad02ff9f4efe99eac63529e3697",
+      "width": 1920,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/05/4.webp",
+      "bytes": 519096,
+      "hash": "dbb41e04deb3a229fd9d71192fc0cdcdba4d58860cb34a9e28f48efae4addd3d",
+      "width": 2302,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/draco/draco_decoder.js",
+      "bytes": 512465,
+      "hash": "8625489da79a805f4f2a7d511c3e52d8b4085608a9d2a4d5f4f9de5db0aea04f"
+    },
+    {
+      "file": "public/img/IMAR1.webp",
+      "bytes": 493552,
+      "hash": "fa982cd02ec29798d49352afe5a1dc111e80243c184e20aef0fe27ce97d917be",
+      "width": 6210,
+      "height": 5666,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/SPM3.webp",
+      "bytes": 491712,
+      "hash": "42fe5141723d91956598867f248c540eb53a37d3de0adb80415611cc644b9297",
+      "width": 3205,
+      "height": 2000,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_B3.webp",
+      "bytes": 456102,
+      "hash": "c7d86d0042aeded97df87bbcdb8f0ddee6478d0aba5f6fda8e0e7617381491b9",
+      "width": 3901,
+      "height": 2211,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WW3_3.webp",
+      "bytes": 455306,
+      "hash": "33d09e0eac8013ae0b207884cccf02454a22ef7e4315fac5b64c1ba59cf21d19",
+      "width": 1920,
+      "height": 2715,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/MV3.webp",
+      "bytes": 448932,
+      "hash": "4bb442a5f11cc5e17e72dce8eded6ba7b416d006d17e9268847e2803c356f658",
+      "width": 2545,
+      "height": 1411,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/SPM2.webp",
+      "bytes": 430822,
+      "hash": "919a78bc24fdf8bc03462621288ada1c2cbadaa6b22559d25f2a8371aff1f475",
+      "width": 4331,
+      "height": 2402,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WW3_1.webp",
+      "bytes": 420300,
+      "hash": "ac39cda9166e6bb2f1bc0ebc14da7a3b96708ca57ece938f0c23a6c0d33f5197",
+      "width": 1920,
+      "height": 2716,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WW3_2.webp",
+      "bytes": 413698,
+      "hash": "20e91983e8f12169a404080cf45957cb3209f4b81ae6f6a5ea81d61c290579ab",
+      "width": 1920,
+      "height": 2715,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/IGOR1.webp",
+      "bytes": 391532,
+      "hash": "c047bdd696721b9c60c32001e4d5723c7c9334e7894059f15f657bd380f5c283",
+      "width": 2316,
+      "height": 1316,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/SOA3.webp",
+      "bytes": 390784,
+      "hash": "9ca501fcb13994e8c613f1504aa3e42049d6c884e793536fe05f9434ca9063e9",
+      "width": 4500,
+      "height": 1500,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/MV2.webp",
+      "bytes": 386894,
+      "hash": "f84152ea2f10458c1b62ef6fc6ffded0dafcd58aff138c030668f5bdf7d865ab",
+      "width": 2069,
+      "height": 1415,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/MV1.webp",
+      "bytes": 377362,
+      "hash": "92cf55aea088ec5ddb029ce442dc5dad3525a3bbad93228af0d04b7151149398",
+      "width": 2025,
+      "height": 1238,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/REEF.webp",
+      "bytes": 364344,
+      "hash": "0841c7089f594d6c8d477f5e5ee58467a886f1c10b5162af281c0009a6de0148",
+      "width": 1920,
+      "height": 959,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/02/ss45.webp",
+      "bytes": 361966,
+      "hash": "1e05c69a8bc6548c49350adeda5c482a8a6abf6b94f1db189dc8a5811c16585c",
+      "width": 4800,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/in_3.webp",
+      "bytes": 352482,
+      "hash": "ff7801a80ca7dea0134801d0fa0078393fab9cd0465630c107710ae3f7835201",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/1H-1440.webp",
+      "bytes": 349634,
+      "hash": "c9d71810ea47b82b334327ebf94a59bf12daf7c21667e0b536fd1ee7aa83cb19",
+      "width": 1440,
+      "height": 960,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/IGOR3.webp",
+      "bytes": 348324,
+      "hash": "fb69245cf6731606d6c9426447e62bdf6815f74a0795033058ea3ce6ea64be47",
+      "width": 2400,
+      "height": 1350,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/2H-1440.webp",
+      "bytes": 335320,
+      "hash": "523be45f0efd910eb9b7967c18b257483b5f0059f1a3c3bbbf43698608b450ae",
+      "width": 1440,
+      "height": 810,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/IMAR3.webp",
+      "bytes": 332566,
+      "hash": "51c80a2d8cf372c439e7b824ef14d6c45e4bc597bc0e7e38d2f71ad61c649136",
+      "width": 4000,
+      "height": 3000,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/EXO2.webp",
+      "bytes": 322688,
+      "hash": "3c0680fe407449dced3fa103846c46f0e71e384bcd81351092277ec4cf81e7c7",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/03/1.webp",
+      "bytes": 322688,
+      "hash": "3c0680fe407449dced3fa103846c46f0e71e384bcd81351092277ec4cf81e7c7",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FWEXO.webp",
+      "bytes": 314830,
+      "hash": "29c044194be16bccb0ba5dfe7ec4e56b99ebe76563210c6ebf337513c084692d",
+      "width": 1920,
+      "height": 1283,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/VHL_2.webp",
+      "bytes": 312940,
+      "hash": "ad58afb2a51c5a91a8cb6e3ec6d69cb49ba7588a92850272720528579924c787",
+      "width": 1920,
+      "height": 1357,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/SHARK1.webp",
+      "bytes": 299980,
+      "hash": "821db2ed975cc0ee269a31f9fc34c64bfede81c4421c57b4ff820486720d321f",
+      "width": 1920,
+      "height": 993,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/IMAR2.webp",
+      "bytes": 296828,
+      "hash": "b019fc514b136d5bd54e8f48caa1c3371029a035319749ba9d23a4b89b9aba05",
+      "width": 4000,
+      "height": 3000,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WW2_3.webp",
+      "bytes": 292740,
+      "hash": "5019d8ddf991a19712fa3b18a7de8554f288060ce16ad54ffebf8aa82aadc4ee",
+      "width": 1920,
+      "height": 1384,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_OMI2.webp",
+      "bytes": 288708,
+      "hash": "a127bffe4f97a788dc676f1c57d11061966e04de3efd81e8f01305d22d7c0987",
+      "width": 1920,
+      "height": 1357,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WW2_2.webp",
+      "bytes": 283404,
+      "hash": "c81c426f2d9f1f00609500749ca68ece9693129498799a911d151f0d49c4b7f9",
+      "width": 1920,
+      "height": 1358,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/SOA1.webp",
+      "bytes": 274140,
+      "hash": "2a29895b26393d6ffb2d967bb253e14dbdef0778f8e8063a6a3395138143c610",
+      "width": 3000,
+      "height": 2250,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FWWW.webp",
+      "bytes": 272002,
+      "hash": "9e309fa21a17eff19f8b7a1078236886aa8b0c924f0627394f23727bb54d71e3",
+      "width": 1901,
+      "height": 3806,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_T3.webp",
+      "bytes": 270128,
+      "hash": "d6126cdbb7a9321c003134a775f60f62baf93ecd1c7f0a4194bf943f57f9d76e",
+      "width": 1920,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/01/06.webp",
+      "bytes": 269786,
+      "hash": "684394553e1fd8edbb2d0dbd22258e8730b8057058b3b7c1eabee5d210909866",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/03/4.webp",
+      "bytes": 269786,
+      "hash": "684394553e1fd8edbb2d0dbd22258e8730b8057058b3b7c1eabee5d210909866",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/models/libro2.glb",
+      "bytes": 265824,
+      "hash": "ad4444f9776d7f2ec695edd6533d19dada3ac0f03ab549db99b3907341f66b59",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 1,
+      "vertices": 307,
+      "triangles": 247,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 0
+    },
+    {
+      "file": "public/img/SOA2.webp",
+      "bytes": 256202,
+      "hash": "5d0aa04d2d68b0e3dcc80c547561cf5167c31f2ac269d04edcb51226fc6de768",
+      "width": 1920,
+      "height": 960,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/EXO4.webp",
+      "bytes": 252242,
+      "hash": "0592b9df0b0118f8bc986dbd9f414b284745afbcfad8d74d8139585bc4283779",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/03/3.webp",
+      "bytes": 252242,
+      "hash": "0592b9df0b0118f8bc986dbd9f414b284745afbcfad8d74d8139585bc4283779",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/EXO3.webp",
+      "bytes": 249360,
+      "hash": "3232b9a63eeba0444808bcff6dc33b7279a028dda87a369d3600b2a3e8c68449",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/02/ss423.webp",
+      "bytes": 242684,
+      "hash": "54d0a8b9f4bc382b0f54c29fd781807b2ddddf590c284869173038dcc45980af",
+      "width": 4800,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/4H-960.webp",
+      "bytes": 241496,
+      "hash": "3f9c5a97919251c2b937c5f4277e7f1a8827f51c0a0bbd83bcf665792a3ebc66",
+      "width": 960,
+      "height": 1707,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/QW1.webp",
+      "bytes": 233584,
+      "hash": "919bb7ab003b3f51679e5b31cd47510d602b9eeca3e0ddca68592ca8497fbd4a",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WW_DOLPH3.webp",
+      "bytes": 229962,
+      "hash": "2357f70001f81950d8d986271ed4bd82efe0ed287a2a5325c512aa9db792e965",
+      "width": 1787,
+      "height": 2526,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_T1.webp",
+      "bytes": 227122,
+      "hash": "09546a47258aa7be52c47688863d7b0518b2c93ec54546b0c41da51cd823e447",
+      "width": 1920,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/RH.webp",
+      "bytes": 222256,
+      "hash": "71cc5e138cb21b41765bf577e6734f1a521b82f987e1e1465b719ffd2cf5d675",
+      "width": 1920,
+      "height": 1088,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/IGOR2.webp",
+      "bytes": 211706,
+      "hash": "fb9f4358f1444b9bc8703250ae390a4b51df2793618dc7b544ca6952c28fc077",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_T2.webp",
+      "bytes": 210976,
+      "hash": "ead5e0927db9895e87fb7c90aeb847cc5e229959e5a3e69f51341c34d3397b7c",
+      "width": 1920,
+      "height": 800,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WW_DOLPH1.webp",
+      "bytes": 210300,
+      "hash": "a8c3ccabc640bed385c22db8b5b310ee51df899ffa60d14de8e7093e58d3fc16",
+      "width": 1786,
+      "height": 2526,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/01/2.webp",
+      "bytes": 208164,
+      "hash": "a0a3737f29eca7de50dedac4d85db8539deebe2b31d87e09074aa9a90c04599f",
+      "width": 2560,
+      "height": 1441,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/models/ipad.glb",
+      "bytes": 208032,
+      "hash": "b47d1660f9dd9d1d232c0fe35430ce0a8a382f49e8cf416d980f9eb5229bd2ec",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 2,
+      "vertices": 895,
+      "triangles": 1328,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 0
+    },
+    {
+      "file": "public/img/FWWWF.webp",
+      "bytes": 203800,
+      "hash": "26af0b755c6257a6a810e7b2e9a939fdfa5ea10b8f4d5fe613dbbffc2455f011",
+      "width": 1300,
+      "height": 2600,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/01/1.webp",
+      "bytes": 197566,
+      "hash": "d2b293120ae722fde19d561a0abb06faec455164dcdddfefe90a700e990f9df4",
+      "width": 1727,
+      "height": 1298,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/3H-960.webp",
+      "bytes": 196216,
+      "hash": "0d31b74fbc33d3726d5db098c577f09331f8a3c2e8d357086ea9c23e2ad1cd18",
+      "width": 960,
+      "height": 1777,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/05/1.webp",
+      "bytes": 193584,
+      "hash": "475cece93dae451cb02140f085983a862856d03d771c915fd753d8713a698756",
+      "width": 1440,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/draco/draco_decoder.wasm",
+      "bytes": 192420,
+      "hash": "a680d927bed9cb864ddbd63521868891af2bfbe755092761b4837487618df8ac"
+    },
+    {
+      "file": "public/img/FW/02/1.webp",
+      "bytes": 189202,
+      "hash": "3860d965f2d12f9c720ac8141065d05e56fa25339b89ac861a4b31e1a4120948",
+      "width": 2036,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/in_4.webp",
+      "bytes": 188788,
+      "hash": "e4c6feaf37db565a5d2509ea2b07d466c807aad3eda3297bb38b3f77b7343574",
+      "width": 1920,
+      "height": 1437,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/fonts/Archivo.woff2",
+      "bytes": 186240,
+      "hash": "307575e608d077e1c5a7c113f76f540c7b9a73b4d606176d064346c912007312"
+    },
+    {
+      "file": "public/fonts/Archivo.woff2",
+      "bytes": 186240,
+      "hash": "307575e608d077e1c5a7c113f76f540c7b9a73b4d606176d064346c912007312"
+    },
+    {
+      "file": "public/about/models/laptop.glb",
+      "bytes": 180064,
+      "hash": "90420468633ca1cd073a8e7f43a9fd74236595a7dd5feefafad2d36c19f1c95f",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 2,
+      "vertices": 1356,
+      "triangles": 928,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 0
+    },
+    {
+      "file": "public/cv/4.webp",
+      "bytes": 178698,
+      "hash": "e47e93789cf46de05060250444d4ef02cf750d2cff32d272328e3fe640b9add3",
+      "width": 1956,
+      "height": 2048,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/workflow/4.webp",
+      "bytes": 178698,
+      "hash": "e47e93789cf46de05060250444d4ef02cf750d2cff32d272328e3fe640b9add3",
+      "width": 1956,
+      "height": 2048,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/MV.webp",
+      "bytes": 178466,
+      "hash": "1f12d896e9b9f525091e5bbd0a69d24f3046f4d7b7a6c3196975903c531b5a2a",
+      "width": 1300,
+      "height": 1045,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/VHL_1.webp",
+      "bytes": 178210,
+      "hash": "c8ee92fc23667690a81538abd43010682d52962525d8ecf9041d7833fa05e13b",
+      "width": 1920,
+      "height": 1357,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/GRO3.webp",
+      "bytes": 177548,
+      "hash": "e891cab039ce08e59a5246e41ea0a880f523f67192b5d141aa47169f8c00d908",
+      "width": 1920,
+      "height": 1089,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FWSPM.webp",
+      "bytes": 177482,
+      "hash": "6c3beeb576b18c1e507637937de91193c151f2021166e2661b42d1defcfcee8b",
+      "width": 1382,
+      "height": 1920,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/01/4.webp",
+      "bytes": 175244,
+      "hash": "ad644fde622d25d9ed34ef2dc860b06f16877fad65e5b25514c2f98ba190d638",
+      "width": 2372,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_TB2.webp",
+      "bytes": 172520,
+      "hash": "e00af313adce3d6ff1333a11a7a257de6ea0e33bdacce5284604cbd5d7b1fa2b",
+      "width": 2048,
+      "height": 1161,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/EXO1.webp",
+      "bytes": 169486,
+      "hash": "72d361f60be86d07937a7d1b5b6fa62fe84f68f83545f6daead9427c8dc929ff",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_TB1.webp",
+      "bytes": 167494,
+      "hash": "eb59c12f382e22b2c9345ddf47159aff8ff7a69ac66bb8c27a164f3ae149be2d",
+      "width": 2048,
+      "height": 1161,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_TB3.webp",
+      "bytes": 164930,
+      "hash": "00b093628b12f220dc5465f51575b18b494e6da11302da4d259f050cd767ec57",
+      "width": 2048,
+      "height": 1161,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/MR.webp",
+      "bytes": 163160,
+      "hash": "01531017be58e80e65ce0948f6a6454e16caacf230c6fce51edba26c9c5e8d6f",
+      "width": 1920,
+      "height": 1582,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/GRO.webp",
+      "bytes": 162334,
+      "hash": "3cb52122e3969e1535be0c6ae98bef204c43f595af3108e71a255e73527f9111",
+      "width": 1920,
+      "height": 1081,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/QW3.webp",
+      "bytes": 161718,
+      "hash": "6fb33da4f1e37ab2e3acd43eb798560d77e31dbf788da63750ddb8adc1174648",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/VHL_3.webp",
+      "bytes": 160274,
+      "hash": "b471074d34658874c140ce918c9ca631527b442782f0ea1af61ec119dff84f2e",
+      "width": 1920,
+      "height": 1357,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_OMI1.webp",
+      "bytes": 156410,
+      "hash": "d005990c120adf7be914f80c9625d5bfb822c6d4846916934e653f35f3ee0342",
+      "width": 2160,
+      "height": 2700,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/SPERMWHALES3.webp",
+      "bytes": 156122,
+      "hash": "5724e879ff32e182ffb6af93eb3c8daa8e886fa60fc6a82e64d37e4d11d7d5c2",
+      "width": 1300,
+      "height": 1300,
+      "format": "webp"
+    },
+    {
+      "file": "public/cv/2.webp",
+      "bytes": 154252,
+      "hash": "3eba8995293f7deea867a46840f6ae7f3b5f1b438b7b3c558f8bd8acf9d2503f",
+      "width": 1612,
+      "height": 2248,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/workflow/2.webp",
+      "bytes": 154252,
+      "hash": "3eba8995293f7deea867a46840f6ae7f3b5f1b438b7b3c558f8bd8acf9d2503f",
+      "width": 1612,
+      "height": 2248,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/03/6.webp",
+      "bytes": 152682,
+      "hash": "0229aaa0a54fa6134b5d23175ffd99d37ac9e37be59ffafafcefbff70c4fdea6",
+      "width": 1732,
+      "height": 976,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/03/5.webp",
+      "bytes": 150418,
+      "hash": "179b4215f2f99a2f4800980be306ccd1e5b2ab086cb348fb2939295d7f26c922",
+      "width": 1920,
+      "height": 1283,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/Perfil.webp",
+      "bytes": 147202,
+      "hash": "eb901b76ed77f44c20289690524579ca01d6e5ddf0bcdcdd69c18fd7acb38ab9",
+      "width": 1105,
+      "height": 1423,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/01/5.webp",
+      "bytes": 146796,
+      "hash": "f7b5632dfa133359c84137ac9e4d22a35beb9ba1b4fea58abae79258f253847f",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/05/5.webp",
+      "bytes": 141944,
+      "hash": "f8da8c08ff2942a0fde010525b4d4c7a3254fb8b65c3f7dc55b8e0ab8ac4c502",
+      "width": 1152,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WW2_1.webp",
+      "bytes": 137080,
+      "hash": "b2eb63fb2093308fbe256d5d519df5246087b0e554b1c69a4b06be633f539522",
+      "width": 1920,
+      "height": 1357,
+      "format": "webp"
+    },
+    {
+      "file": "public/videos/mini/1.webp",
+      "bytes": 136886,
+      "hash": "978bcbf29b23a44ab96487537f26a44b1a77b83902bc73ff9cbac806ba9cadc5",
+      "width": 1280,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/in_1.webp",
+      "bytes": 135980,
+      "hash": "747575ba9b2a1154c9953b379036ee94096b7120a966bbef0fec065d5e43d442",
+      "width": 1920,
+      "height": 1079,
+      "format": "webp"
+    },
+    {
+      "file": "public/cv/1.webp",
+      "bytes": 135552,
+      "hash": "3dd58877406f0ec07e88e50019612e268d21ce58d95abd0a0f5bcb070aee3fbf",
+      "width": 1536,
+      "height": 2215,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/workflow/1.webp",
+      "bytes": 135552,
+      "hash": "3dd58877406f0ec07e88e50019612e268d21ce58d95abd0a0f5bcb070aee3fbf",
+      "width": 1536,
+      "height": 2215,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/models/libro1.glb",
+      "bytes": 135316,
+      "hash": "d79d45a9792119b2522ee5b09a0e6e56daa0cbddee858f404ee81891457e6325",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 1,
+      "vertices": 445,
+      "triangles": 375,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 0
+    },
+    {
+      "file": "public/img/WW_DOLPH2.webp",
+      "bytes": 134064,
+      "hash": "ad2571c4c67a6ceaf86f6ccfb255b5da5f4e78d782c837f849f48b0b67a727cc",
+      "width": 1920,
+      "height": 2715,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/2H-960.webp",
+      "bytes": 133588,
+      "hash": "0ffa1b8129b8bbce457ae8407942feca60e19570e4aca782fe3dded903ecf34e",
+      "width": 960,
+      "height": 540,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_B1.webp",
+      "bytes": 129288,
+      "hash": "81f866bc0c9b62db84ef10f3bdaad6dc92d0849200fc6bfe10546a01e5d34ff4",
+      "width": 1332,
+      "height": 907,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/4H-720.webp",
+      "bytes": 128070,
+      "hash": "517f36ed7c7ebb6c3173baae13fb8902ddf4e909ea260df7f379343e949e60b2",
+      "width": 720,
+      "height": 1280,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/QW2.webp",
+      "bytes": 127508,
+      "hash": "1fd7e5233d2ddc9fc826221d57c4bdc6bd4ce5d6b436f055e31834b6bb40db46",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/1H-960.webp",
+      "bytes": 123862,
+      "hash": "7e3c9fcc0e237e1611fc46e75a500de911baf54712eef91f5159f8be7e74d87f",
+      "width": 960,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/04/2.webp",
+      "bytes": 121312,
+      "hash": "594af1870cf25a806daba19cd7c6367b5f7f05063f8921a52677fa4bbf6ff1e3",
+      "width": 1018,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/ISRA3.webp",
+      "bytes": 114848,
+      "hash": "2e13fa8bfe4724d01a7e76329d536cf2df31a1bdd4d04dfaea277b8dad603d95",
+      "width": 1300,
+      "height": 756,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/02/S4.webp",
+      "bytes": 112134,
+      "hash": "05564f166a40e39be7e3867e4fbaacb4f2c4720f1325d7f9f973c1f2caf29405",
+      "width": 1152,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/04/1.webp",
+      "bytes": 112094,
+      "hash": "755f997aac106e44c4e2fd2ecbd2f5511c621c5213683e5aa30a0fe5c90ab5d8",
+      "width": 1920,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/cv/3.webp",
+      "bytes": 105242,
+      "hash": "95d3b20117509152939927a5fcd57603f726d717be26b0f72e19b773e1b7157e",
+      "width": 2343,
+      "height": 3121,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/workflow/3.webp",
+      "bytes": 105242,
+      "hash": "95d3b20117509152939927a5fcd57603f726d717be26b0f72e19b773e1b7157e",
+      "width": 2343,
+      "height": 3121,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/04/6.webp",
+      "bytes": 103176,
+      "hash": "b4831b0624f9818247deaeda293d133a7aa86c78ca411d7e2c83a09e7eb92b0e",
+      "width": 1018,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/WWF_B2.webp",
+      "bytes": 97874,
+      "hash": "d05bbf92f952ec75f809b7e52afef2a88918aa912bdbc19275783d2dd0afaebd",
+      "width": 1332,
+      "height": 907,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/3H-720.webp",
+      "bytes": 96180,
+      "hash": "8bdf898decaecd711bf69174ac383701c37739edbc6faa39277501d280058eef",
+      "width": 720,
+      "height": 1333,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/cards/illusion-mask.png",
+      "bytes": 95933,
+      "hash": "70b518c37194e59424352fe95f89d99aa68eb8b66a5139402e1e45c798c44861",
+      "width": 600,
+      "height": 600,
+      "format": "png"
+    },
+    {
+      "file": "public/img/FWGRO.webp",
+      "bytes": 93100,
+      "hash": "e4f6746d905e7f2814761c662f30451b7163dedc8493f4af484ad561f67f844c",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/GRO2.webp",
+      "bytes": 93100,
+      "hash": "e4f6746d905e7f2814761c662f30451b7163dedc8493f4af484ad561f67f844c",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/04/5.webp",
+      "bytes": 92570,
+      "hash": "6e270754d46bd37c01e7de8a2b5fd25f8496ea1e5e7e66472e602d32fa641dc3",
+      "width": 1018,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/04/3.webp",
+      "bytes": 90556,
+      "hash": "ef07cf4ca55f24e67ff3f32a7a605bb60ddfde334b3b059f47433516ef3bc916",
+      "width": 1018,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/02/S2.webp",
+      "bytes": 90436,
+      "hash": "b227068ba84f932e2d372cd47452f0974a31d95788243790bf7879dea47e5256",
+      "width": 1152,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/01/3.webp",
+      "bytes": 90066,
+      "hash": "cf69adbe65c438a815e1de1966542b8379da17e07476f8e298d147a5d3ff6e08",
+      "width": 1153,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/04/4.webp",
+      "bytes": 89438,
+      "hash": "eb20f4dcdc1c066f8e1e6f1ae9c7d49049e059ff081fce6d76b4e08d527ab362",
+      "width": 1018,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/02/S5.webp",
+      "bytes": 86844,
+      "hash": "5fbc2b1d1a721eca018d5b24777363906ea467119c570dc20fba214d516d0ce2",
+      "width": 1152,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/videos/mini/3.webp",
+      "bytes": 86410,
+      "hash": "3fbac2b2d1ec69db40ac5b75428cc4492b7e5fb2b0478c4bc5a98e8c52c1a525",
+      "width": 1280,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/03/2.webp",
+      "bytes": 84958,
+      "hash": "d374aaeb73b6146aff9eb17ba4c41c68332966ca0311227c7fcbe6fa851bdd8f",
+      "width": 1920,
+      "height": 1437,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/BL.webp",
+      "bytes": 78038,
+      "hash": "75d0b0cad1674d7d79a7e558f8367e2522bba0572c99b513aa6860245ddecc3a",
+      "width": 1300,
+      "height": 960,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/IGOR1.640.webp",
+      "bytes": 77768,
+      "hash": "66ee36768f6bb82a96f2391544092fe4da33b46d6d50ef32b3bd161223918fb3",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/02/S1.webp",
+      "bytes": 77356,
+      "hash": "6f6c04bb683558b4674d1d9da9f916ef7e3c8def4d87e6e1e613c5d1bce7df82",
+      "width": 1080,
+      "height": 1350,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/RH.webp",
+      "bytes": 76930,
+      "hash": "2f40c6bd22f04809f6139845c2156e15b0b3ba0817122922be0715041b0bacca",
+      "width": 1300,
+      "height": 737,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/02/S3.webp",
+      "bytes": 73618,
+      "hash": "4a1b2c4ac282062e7133e3b49727c6f44b64d9f5acc96900f107b1ae5c0a523a",
+      "width": 1152,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/icons/1about_layout.svg",
+      "bytes": 73437,
+      "hash": "013ce2ca1e190720c81d1c96defecc94decb12ce10394ed164bdec0cde2e1af7"
+    },
+    {
+      "file": "public/img/service-thumbs/REEF.640.webp",
+      "bytes": 73244,
+      "hash": "1f6996dcde31297bc60a388ac2312d69b032ce9a24253a646cc45f0935df0304",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/05/3.webp",
+      "bytes": 72808,
+      "hash": "92262eb0a1120058ce75d9db54cce28d9dd871774ea31248a50e3547d7ec3948",
+      "width": 2596,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/05/2.webp",
+      "bytes": 72314,
+      "hash": "030503f23fe1fca0b6f8ed4bf08b141f8f5715d54a79fb1a95ea3f4846df0dce",
+      "width": 810,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/GROA3.webp",
+      "bytes": 72240,
+      "hash": "1bfcb153296dcf8f303e9aa134ba12c388f2b33d99a7d0fae165c65f9c869589",
+      "width": 1300,
+      "height": 731,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/COA3.webp",
+      "bytes": 71976,
+      "hash": "7ac883225c6855569a58c3d8f504b5d2530bdd4d83bf1f95e37d17fb4dfa92ea",
+      "width": 1300,
+      "height": 650,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/models/halomorena.glb",
+      "bytes": 71468,
+      "hash": "8d34ec4c6453cb629a4066b9a28f81ee1b50538af3f5db87af330d6df33f12ea",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 1,
+      "vertices": 136,
+      "triangles": 192,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 1
+    },
+    {
+      "file": "public/about/models/halosimba.glb",
+      "bytes": 71468,
+      "hash": "f50a70eb0164481738250e96996861dfe40668c44c39f581183dc34d523f6c60",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 1,
+      "vertices": 136,
+      "triangles": 192,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 1
+    },
+    {
+      "file": "public/about/models/haloleo.glb",
+      "bytes": 71464,
+      "hash": "381e0043e14068a0cd9c34b3f838992527847287eed538888d6c37ba1c322599",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 1,
+      "vertices": 136,
+      "triangles": 192,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 1
+    },
+    {
+      "file": "public/img/service-thumbs/MV3.640.webp",
+      "bytes": 69704,
+      "hash": "5dc9f5dd1559756c3c93406b278830dca320bf2a266cc0d083bb7708a03d2053",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/EXO2.640.webp",
+      "bytes": 69410,
+      "hash": "312722bd3acf6e9a1cefcfb42fcc6572b1bff8e0abe6e87cdf0c3d9ab69cd88b",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/videos/mini/2.webp",
+      "bytes": 67720,
+      "hash": "250b7c92c28e0d39cadaf4ad1fde33a8ad4004f47fa41e1de307d7a48ba25c9b",
+      "width": 1280,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/videos/mini/5.webp",
+      "bytes": 62708,
+      "hash": "ea36fcf35a24d5da1bc1507960cd778f46d2cbaa258c3f3aa9e0658be31dc5c7",
+      "width": 1280,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/VH.webp",
+      "bytes": 61128,
+      "hash": "964819c0096c154e87274ed2694622d9e53a5227c6c8ff2a13375eed479c2f58",
+      "width": 1300,
+      "height": 919,
+      "format": "webp"
+    },
+    {
+      "file": "public/videos/mini/4.webp",
+      "bytes": 60524,
+      "hash": "8fbf119066d3773e52a00c8d82b210b61ec80aed5a4db2724ac799f234c0d3a1",
+      "width": 1280,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/cards/grain.webp",
+      "bytes": 59244,
+      "hash": "a3085cdb018e6b356fe9c8be08ddf489cb14c42423d5c74483ca008d153ee862",
+      "width": 500,
+      "height": 500,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/draco/draco_wasm_wrapper.js",
+      "bytes": 58456,
+      "hash": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6"
+    },
+    {
+      "file": "public/videos/mini/6.webp",
+      "bytes": 57960,
+      "hash": "c907b1da5ce5f3aa8a8ada33d3ea7565a8d82c87fbdd1c16872cc2a0fc79625c",
+      "width": 1280,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/img/leo.webp",
+      "bytes": 56558,
+      "hash": "a3954bb00ef1e912ed87df3e459638426f475e029ab1d06729d054664b274c7e",
+      "width": 682,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/1.640.webp",
+      "bytes": 56194,
+      "hash": "d7ad821a2ba96cd18e4715004a8d21885df2bb9181e3eb69133774f20da89162",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/MV1.640.webp",
+      "bytes": 54394,
+      "hash": "80fa62f5775350a94a6f071adf127ff121686ccd58a6cfe92f6cd78db72e412c",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/02/S6.webp",
+      "bytes": 54210,
+      "hash": "56a4481e741050da4fcc6835be0fa673b050b93a3e343f4c93c1e96b067199d9",
+      "width": 1152,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/IMA3.webp",
+      "bytes": 52344,
+      "hash": "98e7ef5adde8a6adb46de307d65ee1bc70cbd20c89c70fb555890d3f52aea567",
+      "width": 1300,
+      "height": 1186,
+      "format": "webp"
+    },
+    {
+      "file": "public/videos/mini/7.webp",
+      "bytes": 51684,
+      "hash": "6d2e69bde30910c2b3f43e527da8b1cea4b848c7186733eb5bc241e49dd2b1fd",
+      "width": 1280,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/EXO3.webp",
+      "bytes": 51680,
+      "hash": "25be48694187e9f176c29dd235248fb1aec844f296b6a014e438a6dc3f7131dd",
+      "width": 1300,
+      "height": 973,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/img/morena.webp",
+      "bytes": 51354,
+      "hash": "3c6df3551dd021806d6679af8a8e13fc3078f1d31811ca42a4890a1bbc90760b",
+      "width": 584,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/EXO4.640.webp",
+      "bytes": 51128,
+      "hash": "463cd4425830f1bd5e20b7b9e24fe4dd6d73b567bf572806a47d7db0f066862f",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/RH.640.webp",
+      "bytes": 50346,
+      "hash": "053bbac637c589ac25aaf6e0b30a6c907a55b6ccb82c738c8277e4eefaad5f9f",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/FW/05/6.webp",
+      "bytes": 48840,
+      "hash": "9170b6a51fbc5bceadbfaa847ab5e6587c0b1467c9cef1a79431328fc1c38fcf",
+      "width": 1038,
+      "height": 1440,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/QW3.webp",
+      "bytes": 47544,
+      "hash": "2350493e886136676378fa78d00efa51b05fd5ddea0cff42ec0bc0be9f11fd6a",
+      "width": 1300,
+      "height": 731,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/WEWHALE3.webp",
+      "bytes": 47072,
+      "hash": "81cdae06cfaaa86ad549d38bcd76ca4c44fc44400581ec678d6fd5dba13148cf",
+      "width": 1300,
+      "height": 732,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/EXO3.640.webp",
+      "bytes": 47028,
+      "hash": "8513fd11b9754a6a6623af7204377d3b572ec6277757284580d3c006eaa15721",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/VHL_2.640.webp",
+      "bytes": 44432,
+      "hash": "81c7dd39de4ce396fea4934c8207d6eadbd9cb7403727dcc4766134b09b3ba5f",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/IGOR2.640.webp",
+      "bytes": 44294,
+      "hash": "89e7637aeea4d218bf7594f34fd41ea337067868a37232a7a47bfa001dce05d8",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/DOLPH.webp",
+      "bytes": 44036,
+      "hash": "7103b5050b2805e015bdd664822385788967ec778ff0a257f490a7a4c1cfa6d6",
+      "width": 1920,
+      "height": 1582,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/HAVIDA3.webp",
+      "bytes": 42814,
+      "hash": "6dc55583ab4e6bf4d2526a46e97993503f764e56fc683af111d07676ba55b957",
+      "width": 1300,
+      "height": 731,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/4H-480.webp",
+      "bytes": 42628,
+      "hash": "3c19e18d3ab1ccf55b83d5e5b493ea6c722ab88f674ed613ea9bfb3817bb0392",
+      "width": 480,
+      "height": 853,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/MV2.640.webp",
+      "bytes": 41446,
+      "hash": "02e841efdfa5c3c5c6daf3e7d6c7d149212a23eb1253fb69e7b06a198f6ff364",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/GUITA2.webp",
+      "bytes": 40906,
+      "hash": "0aa989438c3df07fd02d6baea49804c2d84e47a00cf8bdc19d1004cfb458c19f",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/3.640.webp",
+      "bytes": 40136,
+      "hash": "ab36d832fe2a35bcf49cf70628908d24911bdf27398224288d216f94766e9e01",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/SOA2.640.webp",
+      "bytes": 39194,
+      "hash": "b3f1a40a8389b802c3e7c2b246fcd4d4c2a9d70506b7d8843ce90c644cde64ae",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/SHARK2.webp",
+      "bytes": 37138,
+      "hash": "8cd5114772bc126daa36781e26d242d18d017698950f39ea9aa7fecd49f64ff2",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/GRO.640.webp",
+      "bytes": 36966,
+      "hash": "c0a465b2d393005f5b84c37413f79c27377f2566c00eef41a4dd086fbffb47bb",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/GUITA.webp",
+      "bytes": 36832,
+      "hash": "0718f41ed88805ad77daf3ec81dcc5a8938a3c656b6345abca54b21438bcd28f",
+      "width": 1920,
+      "height": 1582,
+      "format": "webp"
+    },
+    {
+      "file": "public/videos/mini/havida.webp",
+      "bytes": 36344,
+      "hash": "b65c03a98a84cd2d84ebbbe813d17ba03dea3582079bf9bbf76ee6b9f0927ce8",
+      "width": 1280,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/hero/3H-480.webp",
+      "bytes": 35816,
+      "hash": "ce1a2cfd95f7a64c7e911ffd24f5b12247d7441c5c03acb15083ac309af6c2e2",
+      "width": 480,
+      "height": 889,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/WW_DOLPH1.640.webp",
+      "bytes": 34030,
+      "hash": "baba2bfe055f0d102c882edcefc3b626391334d032000a97b3cf870cbfe4f3a3",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/models/cuadro.glb",
+      "bytes": 33188,
+      "hash": "552d187f5e23b9e078b27c7725113693b8c882159a38ab12450ff55d1f338af3",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 2,
+      "vertices": 51,
+      "triangles": 28,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 0
+    },
+    {
+      "file": "public/imgs/brands/previews/SOA3.webp",
+      "bytes": 33174,
+      "hash": "f463fc3c600b400596258d5a9f79a144e4efa4303f2e2ff0c11c944c66282628",
+      "width": 1300,
+      "height": 975,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/WW_DOLPH3.640.webp",
+      "bytes": 32922,
+      "hash": "ebcf29c40a9796ca41b527b905972c8494e46b5c647eec057cf3aa02d5242344",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/EXO1.640.webp",
+      "bytes": 32550,
+      "hash": "3f6fab1fea096d0180386b118a3a9c0187f413e03e3d47de0b9b1f46435d0edc",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/2.640.webp",
+      "bytes": 32088,
+      "hash": "fc21b990d596d30281363106eddd2e4c4d6d3832b5baab322e9121cfd074a331",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/cards/galaxy.png",
+      "bytes": 31684,
+      "hash": "013535789bca6d65c3e2da05fc56fbf3b5227913bb4b31a846cdaa450bc5d33f",
+      "width": 734,
+      "height": 1024,
+      "format": "png"
+    },
+    {
+      "file": "public/imgs/brands/previews/WWF3.webp",
+      "bytes": 31588,
+      "hash": "6239e0f3086eb5e365def39a35213cd5739f8f1c4616b683e93df3d9d9f36b30",
+      "width": 1300,
+      "height": 731,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/SHARK1.640.webp",
+      "bytes": 31404,
+      "hash": "28af20627998f8fb7dd7e2ac275361f6e86dbc31f1127199b3632aec4aee7288",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/fonts/HostGrotesk-VariableFont_wght.woff2",
+      "bytes": 31204,
+      "hash": "86c23bdc830d2319b24d7c3a76a5d0e215c86c021c337ae43eecdfb82f38b3e7"
+    },
+    {
+      "file": "public/fonts/HostGrotesk.woff2",
+      "bytes": 31204,
+      "hash": "86c23bdc830d2319b24d7c3a76a5d0e215c86c021c337ae43eecdfb82f38b3e7"
+    },
+    {
+      "file": "public/img/service-thumbs/4.640.webp",
+      "bytes": 30698,
+      "hash": "b265a7bad851737ffc132295380f4f5ae20b319707adb294d346f3f885c61f80",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/videos/mini/9.webp",
+      "bytes": 29440,
+      "hash": "5ca3f625b5899849bef95fe82f17c4e8a6be6e46238c9245721f84eb323e0e5d",
+      "width": 1280,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/GRO3.640.webp",
+      "bytes": 27916,
+      "hash": "ac0ad91a822c626e7706825d262712413b7cbd9ebaaea2e2997f1518b1bf9c7a",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/VHL_3.640.webp",
+      "bytes": 27648,
+      "hash": "68e41f4cffaedfd5489d8be4a771ce0db4526c56582777d34550dece62b966e2",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/5.640.webp",
+      "bytes": 26522,
+      "hash": "82de9050e2d032b6dad3ef66031567deeaf0b53b39a90ef09ed05415c0ee18ca",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/IGOR1.320.webp",
+      "bytes": 26134,
+      "hash": "ffb60c2392f8a4fcb5bfd3f7eb69b90ad35915285ea4c184f9d8a674fb40965e",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/VHL_1.640.webp",
+      "bytes": 26104,
+      "hash": "5f13cac724e831296ee200f0cc5915acaa6e6ad0c9d1e4594d9bbd1cb17b59bc",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/IMA3.svg",
+      "bytes": 26058,
+      "hash": "1a474409f93e66b40165962cf0e286ca305e2438696bab93e867e81883873ca9"
+    },
+    {
+      "file": "public/img/service-thumbs/REEF.320.webp",
+      "bytes": 25646,
+      "hash": "72c51dc8158a845a4d4917b1ddd8314fafed3b6b6978bfeea5c03162c4e79024",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/EXO2.320.webp",
+      "bytes": 24862,
+      "hash": "2387cf38493ef38c3c8acff80cf7f982abfbb05edd771dc222999dcb28f28c09",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/6.640.webp",
+      "bytes": 24026,
+      "hash": "a4b60b13fee34cb7f68aa017d5fc07f4d9132564a60507f28129888cfe7914b7",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/SPERMWHALES3_W.svg",
+      "bytes": 23661,
+      "hash": "9dfa58deae67933d48713cc756de29a12be48ff71760e73e46ca5047868e1ead"
+    },
+    {
+      "file": "public/img/service-thumbs/GRO2.640.webp",
+      "bytes": 23552,
+      "hash": "50bb8dd1036b4e389ebd5a8662552bc991c59c8d23b970cc8ed1254596b09257",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/MR.640.webp",
+      "bytes": 23060,
+      "hash": "d6e6ce23e9539e4241b1afb06c47d14b055158e187061b6e6d015e620ce5724f",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/previews/KA.webp",
+      "bytes": 22616,
+      "hash": "d296edbbbbccf5a3dcd6ee732919225c5eaa2e43c0c986ac2f6db18bdb836849",
+      "width": 1300,
+      "height": 672,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/cards/ancient.png",
+      "bytes": 22238,
+      "hash": "13e343a113b3fe2b6fbc7ca5c6039af20ed8a7afce919c666e022f467acb4f1d",
+      "width": 300,
+      "height": 300,
+      "format": "png"
+    },
+    {
+      "file": "public/about/models/gem.glb",
+      "bytes": 22168,
+      "hash": "3b49d59ffa39138c9ef5b8f20ae53bfe4f022264dd07bd00d44f0daace038f28",
+      "meshes": 1,
+      "primitives": 1,
+      "materials": 1,
+      "textures": 2,
+      "vertices": 72,
+      "triangles": 44,
+      "images": 1,
+      "doubleSided": 1,
+      "transparent": 0
+    },
+    {
+      "file": "public/imgs/brands/IMA3_W.svg",
+      "bytes": 21054,
+      "hash": "f73d5fb20b6e54601db36c73411bf0beb6206dd22a085e05d4b875780b1fd68c"
+    },
+    {
+      "file": "public/img/service-thumbs/SHARK2.640.webp",
+      "bytes": 20922,
+      "hash": "054b9c8797b9b980c346bb936d51931c4bdc5e781581fe178cf6d955e2ac48fb",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/7.640.webp",
+      "bytes": 20730,
+      "hash": "a09d11a24db750c44b36c2fb0a2c20c2f7e77e6e91a96698204cc7a6be339b4f",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/1.320.webp",
+      "bytes": 20582,
+      "hash": "1237c0a2f1c117882689d990addc2c090ade351a3ad36d733d438237b81e60fc",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/videos/mini/8.webp",
+      "bytes": 20448,
+      "hash": "a075b43a04ab4395f9d8550741e686612bfea07480e92efef41e8f8c93df8fd8",
+      "width": 1280,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/SPERMWHALES3.svg",
+      "bytes": 19816,
+      "hash": "81e1a5ad9f0fcdabd11046efadfa74d89e7f8697dc2d6b4ac6ac5a502bfed77a"
+    },
+    {
+      "file": "public/img/service-thumbs/WW_DOLPH2.640.webp",
+      "bytes": 19546,
+      "hash": "8bb86c9fcf7db270beb4b68051b9353642ae35274b3cf2ca2ab7b29567a9a734",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/EXO4.320.webp",
+      "bytes": 18752,
+      "hash": "fd46f9439381cac54e86008753e53dfa0608b526dc18283fbb43bc2e14126593",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/GUITA2.640.webp",
+      "bytes": 18624,
+      "hash": "93adf7ae63dfaed658ecbfeca992aa654f8efa8da7f13407057830a979485ab9",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/about/img/simba.webp",
+      "bytes": 18618,
+      "hash": "f7c92e3f1533ccb62b41eeac3739d83ec558b0c1b4690c4bf9059e0892af52f6",
+      "width": 548,
+      "height": 720,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/BL.svg",
+      "bytes": 18363,
+      "hash": "87a54f34fef72cd030311e481da3568f7a7f3f111ece40257de4fc38c5e1edf3"
+    },
+    {
+      "file": "public/img/service-thumbs/EXO3.320.webp",
+      "bytes": 17632,
+      "hash": "d95bbe6e970dacf69a7bb5b948b7b8b579a157fb180da08ba03a9aa19c316695",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/RH.320.webp",
+      "bytes": 16584,
+      "hash": "76f3c4b7f74818b6b91b578deff0b1bdc9bf81dd0499501c36deceaa66aef15a",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/3.320.webp",
+      "bytes": 16258,
+      "hash": "cddb506415befbb188f26ee7e965a7197293a5474aa53811c796de9822c30612",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/icons/logo_ipad.svg",
+      "bytes": 16160,
+      "hash": "b20c27e3b46f3114ba13a0c0cba0ecca92575ca5d9905a85920c37868c021403"
+    },
+    {
+      "file": "public/img/service-thumbs/MV3.320.webp",
+      "bytes": 15836,
+      "hash": "9b30834903c29bc1bff9294e639dff28f0384d29a3f8116dd73882fa2ba69a1f",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/havida.640.webp",
+      "bytes": 15720,
+      "hash": "d802809f299f99b1564ff580d9a7b6879b4ae8f1599742e164fa44b5b62c114f",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/SOA2.320.webp",
+      "bytes": 15572,
+      "hash": "8ccbfc3b0d1c15571c953bb654a0d318bae670d957bd3cb7ebe8af5464283c91",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/icons/carta.svg",
+      "bytes": 15266,
+      "hash": "ad60b1886beff2d50c5d6d80a20361595cbca132f5e34ba8d20ada9efdaf25f0"
+    },
+    {
+      "file": "public/img/service-thumbs/IGOR2.320.webp",
+      "bytes": 14998,
+      "hash": "a39ceb7e55570c7f1f42f009b9894ca4e3e463fe3e93f9bd5c35a419ec515bf2",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/GRO.320.webp",
+      "bytes": 14598,
+      "hash": "486850d79b9a7eaeb7b3a3dfa80151cbabcd76a30197045e569ced0d7ce7474f",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/2.320.webp",
+      "bytes": 14352,
+      "hash": "04ade17116a79e680572a2698e7ebfb1420d0a53a6046b0dd92b496479de0e84",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/icons/galaxy.svg",
+      "bytes": 13983,
+      "hash": "1fec8b92eb1e1d6ca9a708a466ef9834bbe8627aff432ff4e6fca3e99b4d541e"
+    },
+    {
+      "file": "public/icons/grain.svg",
+      "bytes": 13693,
+      "hash": "d63b23990d58aa8ae0a2006487bbc1dd50f21387844f28333213456a6bafb656"
+    },
+    {
+      "file": "public/img/service-thumbs/VHL_2.320.webp",
+      "bytes": 13540,
+      "hash": "c26856350e6049ac10c9978c97b1c5d50b2aca089bddf9457855542cf6bb19ac",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/favicon.ico",
+      "bytes": 13409,
+      "hash": "564df441643b61fb95d526b85649f896112e5f26bdea19e69214f0b7ee60f85f"
+    },
+    {
+      "file": "public/icons/logo_phn.svg",
+      "bytes": 12759,
+      "hash": "75e116206f4f305a2a1dce1a6b54c5386114111d610ac4bc226a380f43015c98"
+    },
+    {
+      "file": "public/img/service-thumbs/WW_DOLPH1.320.webp",
+      "bytes": 12386,
+      "hash": "8c2f01c9f32bb6df787e39a7970cc943ad6e71609420e3fb019c344b98dea2a3",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/EXO1.320.webp",
+      "bytes": 12338,
+      "hash": "39722b72caf626fdf8ea7ba0865a2137d258e47d0fc3a81f1aa907230cb0687f",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/WEWHALE3.svg",
+      "bytes": 11925,
+      "hash": "96c82d81b2e853a2b2ecc55271d285a81724a380002ee3fb2cc7fc2ec6584f75"
+    },
+    {
+      "file": "public/img/service-thumbs/4.320.webp",
+      "bytes": 11638,
+      "hash": "d578079615a1cc014b1475587a7d9a9345261c72b1bd0e2af800f98b1b3a9cac",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/WW_DOLPH3.320.webp",
+      "bytes": 11460,
+      "hash": "0a83b8f2a54e8f4fce32300e2266556a9d9fe6819ea5918970d1e36a2c4c5ae2",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/6.320.webp",
+      "bytes": 10984,
+      "hash": "4143a0229da890073ba1469fe2267881d933cc18f2073315b752bfb240494424",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/SHARK1.320.webp",
+      "bytes": 10816,
+      "hash": "92b9fa1de006912c841fa92e475814c4dbb35d953705fe3ac67f4465282af7c7",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/MV1.320.webp",
+      "bytes": 10618,
+      "hash": "a42f4b0ef7be7fd5e5030cdde950c5e8be8108c252f251255142ba62b329505c",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/VHL_3.320.webp",
+      "bytes": 10458,
+      "hash": "f74105f893c04ad4eff735b952484715e265be18335a9d594f0a793a72bd0e17",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/MV2.320.webp",
+      "bytes": 10434,
+      "hash": "e7c74c6f98f746f30b4b1d37cff9f17d1d37355c2b2102f4cbeb3ca758b2ff4b",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/5.320.webp",
+      "bytes": 10160,
+      "hash": "964858ece622099c23b514dfb615bb29bc5b8c0484b05c9f864c964cce78e3f5",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/GRO2.320.webp",
+      "bytes": 9964,
+      "hash": "8ebfa2beb3fe8e101a87de53f7eff5f854940b2a3ea683c5a620ab71810a833b",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/SHARK2.320.webp",
+      "bytes": 9576,
+      "hash": "5515143c1ebf1a34cd8dab106620c53f0716599610fc071a12b30ab3040825f4",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/VHL_1.320.webp",
+      "bytes": 9378,
+      "hash": "c3306bc04e4f3fe6c62a71b74eb62556cfdc217e4d295957b0565e71526c0b7d",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/DOLPH.640.webp",
+      "bytes": 8884,
+      "hash": "85dad537adea950806d09422d8eb44a9511dc5d88fd18e8ad86554fa4c1b6668",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/7.320.webp",
+      "bytes": 8720,
+      "hash": "3c41bacf72f58275d10b812b89599d5cb4bfa3e1c36a3eb7cf43d4dcb4183833",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/GRO3.320.webp",
+      "bytes": 8602,
+      "hash": "009c08cf3233cde2c7f77dc7cf4d301330de650011dfd8ef9228c668fd6ea132",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/COA3_W.svg",
+      "bytes": 8471,
+      "hash": "bd95044e0418807b5fa630a971e825d74e56c46f150dd36bda00f3c1edbfab49"
+    },
+    {
+      "file": "public/imgs/brands/ISRA3.svg",
+      "bytes": 8371,
+      "hash": "6e81d414580acb6a735eaafa56e37eb87ee0c65e81760697f3b27787a422c9e5"
+    },
+    {
+      "file": "public/imgs/brands/COA3.svg",
+      "bytes": 8061,
+      "hash": "6df37dd436e80cffdb283269ae289db3a75269b85b7c422f6e23252e31b72fa5"
+    },
+    {
+      "file": "public/imgs/brands/RH.svg",
+      "bytes": 7706,
+      "hash": "3f4e02c7d3dbb34bfdfba127c921039d89ea33113e7a4e171744be3c7aa00c04"
+    },
+    {
+      "file": "public/imgs/brands/SOA3.svg",
+      "bytes": 7581,
+      "hash": "f9771f26fc091d5d8aa38fb3f0eb84c2ac878f4ffc43c5397ee7720fa2a82416"
+    },
+    {
+      "file": "public/img/service-thumbs/WW_DOLPH2.320.webp",
+      "bytes": 7266,
+      "hash": "74c3aa7065265cfd4d9aad332be8eff6132fe7a8626b77c9aa1d7ced2f37ec55",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/MR.320.webp",
+      "bytes": 7192,
+      "hash": "e6b69ded216289f8e2cb081350c1391228314d8fcc6507e140a46c2162195bcd",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/havida.320.webp",
+      "bytes": 6898,
+      "hash": "2ef5bb95de9e3080d6f2bd8a6d657d8d15271830136842d74941f7113b6ad284",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/GUITA.640.webp",
+      "bytes": 6892,
+      "hash": "aef77ca0c1990bdf0bf5b9d7564be7cbd12eebbbf0eb343d81a11b70f112a650",
+      "width": 640,
+      "height": 640,
+      "format": "webp"
+    },
+    {
+      "file": "public/img/service-thumbs/GUITA2.320.webp",
+      "bytes": 6728,
+      "hash": "c258c9a9b073aad058e05852f8618132fdaa4457da612c6070ff1126d3035b12",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/imgs/brands/STRA3.svg",
+      "bytes": 6578,
+      "hash": "f223b21b8376a139b47775ad9d613b3a6f96aa1f0e7008ba94f61a1a649741ad"
+    },
+    {
+      "file": "public/imgs/brands/QW3.svg",
+      "bytes": 6204,
+      "hash": "3e490dc7a0acd2f7260ce1f2c48f1f741acc990f9803fe74065871a37a498331"
+    },
+    {
+      "file": "public/imgs/brands/GROA3.svg",
+      "bytes": 6185,
+      "hash": "4e2c2af81a692fbaffa14753ba48631be79a6065c213ff0a53720130e48b0ca7"
+    },
+    {
+      "file": "public/cv/icons/usa.svg",
+      "bytes": 5631,
+      "hash": "6cf73c8cb98b5e5ab9d23bdb717c3e9383b3d67069acdb8813a8563c22e257f0"
+    },
+    {
+      "file": "public/imgs/brands/WWF3_W.svg",
+      "bytes": 4609,
+      "hash": "ebfed75474a35064898f3f7b28d49fc8781c333c024a4c281a84390ebefbc967"
+    },
+    {
+      "file": "public/imgs/brands/WWF3.svg",
+      "bytes": 4485,
+      "hash": "b9c6f468de8a16d1e4b7dd65b431f81eae5350da8daa7cd125214eeefbe78d7c"
+    },
+    {
+      "file": "public/imgs/brands/EXO3.svg",
+      "bytes": 4328,
+      "hash": "9d621382fcf665614db151f1144a2531746703d286e31917f93448281448f439"
+    },
+    {
+      "file": "public/imgs/brands/HAVIDA3.svg",
+      "bytes": 4210,
+      "hash": "d2041534ac255d1b27170b1487f8df046794910cfb9885757e199629a157277a"
+    },
+    {
+      "file": "public/imgs/brands/KA.svg",
+      "bytes": 3924,
+      "hash": "e1b43b40e86dd0815df280b11fffd21e06a3da68247a832f14db4c695aa77c1a"
+    },
+    {
+      "file": "public/imgs/brands/VH.svg",
+      "bytes": 3868,
+      "hash": "00a0255ba19bdf6caaee583e5f1d6a4b95f80ea532ad02227f9a2f7df66f3a88"
+    },
+    {
+      "file": "public/img/service-thumbs/DOLPH.320.webp",
+      "bytes": 3630,
+      "hash": "b04f00d9a2aa69d344b0a287433e5823e54b76e75a504149eaabad1481a45725",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/icons/git.svg",
+      "bytes": 3015,
+      "hash": "4658cb7e331606ac063e44fab5e90025fd81ace76a0767971bc617752c6e5be8"
+    },
+    {
+      "file": "public/icons/laguna.svg",
+      "bytes": 2929,
+      "hash": "afd0626902d190466ee0cab3c95f3c2a7b7e63e87156d2f447cc792c62b0ccd4"
+    },
+    {
+      "file": "public/imgs/brands/MV.svg",
+      "bytes": 2926,
+      "hash": "dcb3ff9ddfc39e26629f070cf94c74b18bc5f92c4af9d4d74d1ac26f61610fea"
+    },
+    {
+      "file": "public/img/service-thumbs/GUITA.320.webp",
+      "bytes": 2600,
+      "hash": "9321f93f26d8e40b943dd3295a05eb8067ce7e36820cdc3f9c180dbbf084dd83",
+      "width": 320,
+      "height": 320,
+      "format": "webp"
+    },
+    {
+      "file": "public/cv/programs/AS.svg",
+      "bytes": 2229,
+      "hash": "1bf658bd6087442b9718254114ec4adcfdc8c7e901fdf1604a92748c9b8d87cf"
+    },
+    {
+      "file": "public/about/icons/AS.svg",
+      "bytes": 2209,
+      "hash": "bfa70e7b95c9064554aa26288e0317a62f8694aa810e7cb2c381fc0c7aab1553"
+    },
+    {
+      "file": "public/icons/logo_horizontal.svg",
+      "bytes": 2126,
+      "hash": "6d3325092753d9385d30f9da1df364b481f7ab46e94f8cffe51bed72ad5ec020"
+    },
+    {
+      "file": "public/icons/logo_vertical.svg",
+      "bytes": 1653,
+      "hash": "339760571fa5e4bec4bfe4e3d982af807ccb684609a397d4155ab3abfd138bd2"
+    },
+    {
+      "file": "public/cv/icons/port.svg",
+      "bytes": 1568,
+      "hash": "b47bb4f1fc504d03480e35606b29c7d778a5d6f14fc2d1b496a42ea70ebbe554"
+    },
+    {
+      "file": "public/about/icons/BLENDER.svg",
+      "bytes": 1483,
+      "hash": "c99038d1ceb1d53d8a791f027855ef921e1917657f1091ac8da12545f5130b66"
+    },
+    {
+      "file": "public/cv/programs/BLENDER.svg",
+      "bytes": 1483,
+      "hash": "c99038d1ceb1d53d8a791f027855ef921e1917657f1091ac8da12545f5130b66"
+    },
+    {
+      "file": "public/icons/leo.svg",
+      "bytes": 1405,
+      "hash": "1c5c3421a4482e195f9bd7a964bc576c666bfe202dfeb0ea70b4534c8b90697c"
+    },
+    {
+      "file": "public/cv/programs/PS.svg",
+      "bytes": 1290,
+      "hash": "12c89ffa17b6517cd3dcc2c9878283546408057e52f0d477ce24fb1ec3aca0a1"
+    },
+    {
+      "file": "public/about/icons/UNREAL.svg",
+      "bytes": 1285,
+      "hash": "4a54f6edc00f3039c0059932b13c896d7df35162a9620ffad03426d0b983c223"
+    },
+    {
+      "file": "public/cv/programs/UNREAL.svg",
+      "bytes": 1285,
+      "hash": "4a54f6edc00f3039c0059932b13c896d7df35162a9620ffad03426d0b983c223"
+    },
+    {
+      "file": "public/icons/FW_layout.svg",
+      "bytes": 1206,
+      "hash": "31ad62072624ad9fbd368fcaea959602c3671c4f2d92ab35df2b72b3c257c5c4"
+    },
+    {
+      "file": "public/icons/play.svg",
+      "bytes": 1171,
+      "hash": "eeae5acc3b2cdc6f5a7a6db8e0abb9ba2e53e56c244ff23776facbe525b5ffc7"
+    },
+    {
+      "file": "public/about/icons/DAVINCI.svg",
+      "bytes": 1076,
+      "hash": "7be8deee4d1f080552840855b90fc03b6b6b77c8e7bf15d44023affe61fe5b42"
+    },
+    {
+      "file": "public/cv/programs/DAVINCI.svg",
+      "bytes": 1076,
+      "hash": "7be8deee4d1f080552840855b90fc03b6b6b77c8e7bf15d44023affe61fe5b42"
+    },
+    {
+      "file": "public/cv/programs/AI.svg",
+      "bytes": 1069,
+      "hash": "859eb9a63df075fe553fdc3b3b880d7863ba466fc26291e40cbc991bdb7d679d"
+    },
+    {
+      "file": "public/icons/back.svg",
+      "bytes": 985,
+      "hash": "07c731334c8d18dcd6c9f8baaf023b9d5511647e1e8c4d19005d93c0f23b4ee3"
+    },
+    {
+      "file": "public/cv/icons/spain.svg",
+      "bytes": 936,
+      "hash": "b1d447380132beb65e31c32042ee71c1070a9982a26d736f1c04c4c3e437cff1"
+    },
+    {
+      "file": "public/about/icons/QGIS.svg",
+      "bytes": 871,
+      "hash": "12b48537c58683493e1a468d05e37303f30dd4560ed7f08c2c14db82297e17ba"
+    },
+    {
+      "file": "public/cv/programs/QGIS.svg",
+      "bytes": 871,
+      "hash": "12b48537c58683493e1a468d05e37303f30dd4560ed7f08c2c14db82297e17ba"
+    },
+    {
+      "file": "public/cv/programs/AE.svg",
+      "bytes": 817,
+      "hash": "74cb2512ead215ee2aaaf59fbe38cd2fb92a4a29f24554679905682d175df216"
+    },
+    {
+      "file": "public/icons/asterisk.svg",
+      "bytes": 784,
+      "hash": "68a320a60a8430c3d38006a89c95cb7aa7c1c2d7483db9bc867ad158973bf3e1"
+    },
+    {
+      "file": "public/favicon.svg",
+      "bytes": 672,
+      "hash": "04b6ab905e4015808ab1664164c9e611e9a172cb3c4fd56cb7215199ed996572"
+    },
+    {
+      "file": "public/icons/lupa.svg",
+      "bytes": 656,
+      "hash": "c321d61624f879b9bd90312ef6d8ca5af31d6dc1ab834e7174eb4b5bd0c01afa"
+    },
+    {
+      "file": "public/icons/footer_mask.svg",
+      "bytes": 650,
+      "hash": "81825a19ff4dafa895de80ad4f9cce5362bc85c3f9f57497410e5661c2b5a8b6"
+    },
+    {
+      "file": "public/icons/expand.svg",
+      "bytes": 606,
+      "hash": "909428ce4a630e232d66ffa72ea7270dbb05e053fcb18593697c72b6b5c1aa3f"
+    },
+    {
+      "file": "public/icons/pause.svg",
+      "bytes": 602,
+      "hash": "8edfaf4e527873fafaba6bd3d703c9c17f5802629caa9e822a9d4a5c7bd94e87"
+    },
+    {
+      "file": "public/icons/logo_w.svg",
+      "bytes": 591,
+      "hash": "ea049117f212aae7569a0b8957c064cedf325a308bf0d24894035fab92263956"
+    },
+    {
+      "file": "public/favicon-dark.svg",
+      "bytes": 560,
+      "hash": "6c611b248f4481ce411cf9e3869551924cb94ade1997450b197c11f401630a6c"
+    },
+    {
+      "file": "public/favicon-light.svg",
+      "bytes": 560,
+      "hash": "fc6361dcfeef07586be8a9cf722933091b076999efd7450eaa67591cde3e2124"
+    },
+    {
+      "file": "public/icons/backmask.svg",
+      "bytes": 487,
+      "hash": "e6bea7f755713fda39b668a5744634898d1218f0815f91a436f1c39c7be07b57"
+    },
+    {
+      "file": "public/icons/hover-marker.svg",
+      "bytes": 485,
+      "hash": "4828b35c98c9c4dfa34449c8b7fb28fa049b4cacf9cc23a27ace8c62c71b39cf"
+    },
+    {
+      "file": "public/about/icons/arrow.svg",
+      "bytes": 349,
+      "hash": "090d9f53eb5c1496ea76f967031600809a0dbae02edd7e6487b6726fc7db137e"
+    },
+    {
+      "file": "public/cv/icons/arrow.svg",
+      "bytes": 349,
+      "hash": "090d9f53eb5c1496ea76f967031600809a0dbae02edd7e6487b6726fc7db137e"
+    },
+    {
+      "file": "public/icons/arrow.svg",
+      "bytes": 349,
+      "hash": "090d9f53eb5c1496ea76f967031600809a0dbae02edd7e6487b6726fc7db137e"
+    },
+    {
+      "file": "public/_headers",
+      "bytes": 343,
+      "hash": "6f6dd61e2cacdb86cf34dde97a4fe2f7054eb5c197e40df91c4ba6b364827e6e"
+    },
+    {
+      "file": "public/robots.txt",
+      "bytes": 23,
+      "hash": "16ceb5ee3e0dc13aa9adf31a3ebbe45a1d965b8c2b9f72eaf84e5911e140ed95"
+    },
+    {
+      "file": "public/CNAME",
+      "bytes": 13,
+      "hash": "93479b5b14f6597b8a61f17aaa8e4d2e68b7dc64a4a7e576775489fc5e7957c2"
+    }
+  ],
+  "duplicates": [
+    [
+      {
+        "file": "public/about/fonts/Archivo.woff2",
+        "bytes": 186240,
+        "hash": "307575e608d077e1c5a7c113f76f540c7b9a73b4d606176d064346c912007312"
+      },
+      {
+        "file": "public/fonts/Archivo.woff2",
+        "bytes": 186240,
+        "hash": "307575e608d077e1c5a7c113f76f540c7b9a73b4d606176d064346c912007312"
+      }
+    ],
+    [
+      {
+        "file": "public/about/fonts/HostGrotesk-VariableFont_wght.woff2",
+        "bytes": 31204,
+        "hash": "86c23bdc830d2319b24d7c3a76a5d0e215c86c021c337ae43eecdfb82f38b3e7"
+      },
+      {
+        "file": "public/fonts/HostGrotesk.woff2",
+        "bytes": 31204,
+        "hash": "86c23bdc830d2319b24d7c3a76a5d0e215c86c021c337ae43eecdfb82f38b3e7"
+      }
+    ],
+    [
+      {
+        "file": "public/about/icons/arrow.svg",
+        "bytes": 349,
+        "hash": "090d9f53eb5c1496ea76f967031600809a0dbae02edd7e6487b6726fc7db137e"
+      },
+      {
+        "file": "public/cv/icons/arrow.svg",
+        "bytes": 349,
+        "hash": "090d9f53eb5c1496ea76f967031600809a0dbae02edd7e6487b6726fc7db137e"
+      },
+      {
+        "file": "public/icons/arrow.svg",
+        "bytes": 349,
+        "hash": "090d9f53eb5c1496ea76f967031600809a0dbae02edd7e6487b6726fc7db137e"
+      }
+    ],
+    [
+      {
+        "file": "public/about/icons/BLENDER.svg",
+        "bytes": 1483,
+        "hash": "c99038d1ceb1d53d8a791f027855ef921e1917657f1091ac8da12545f5130b66"
+      },
+      {
+        "file": "public/cv/programs/BLENDER.svg",
+        "bytes": 1483,
+        "hash": "c99038d1ceb1d53d8a791f027855ef921e1917657f1091ac8da12545f5130b66"
+      }
+    ],
+    [
+      {
+        "file": "public/about/icons/DAVINCI.svg",
+        "bytes": 1076,
+        "hash": "7be8deee4d1f080552840855b90fc03b6b6b77c8e7bf15d44023affe61fe5b42"
+      },
+      {
+        "file": "public/cv/programs/DAVINCI.svg",
+        "bytes": 1076,
+        "hash": "7be8deee4d1f080552840855b90fc03b6b6b77c8e7bf15d44023affe61fe5b42"
+      }
+    ],
+    [
+      {
+        "file": "public/about/icons/GAEA.svg",
+        "bytes": 576646,
+        "hash": "7fbb0c82876afae7137b36677802a09e1b22ba94b779dc219723e252d4da8626"
+      },
+      {
+        "file": "public/cv/programs/GAEA.svg",
+        "bytes": 576646,
+        "hash": "7fbb0c82876afae7137b36677802a09e1b22ba94b779dc219723e252d4da8626"
+      }
+    ],
+    [
+      {
+        "file": "public/about/icons/QGIS.svg",
+        "bytes": 871,
+        "hash": "12b48537c58683493e1a468d05e37303f30dd4560ed7f08c2c14db82297e17ba"
+      },
+      {
+        "file": "public/cv/programs/QGIS.svg",
+        "bytes": 871,
+        "hash": "12b48537c58683493e1a468d05e37303f30dd4560ed7f08c2c14db82297e17ba"
+      }
+    ],
+    [
+      {
+        "file": "public/about/icons/UNREAL.svg",
+        "bytes": 1285,
+        "hash": "4a54f6edc00f3039c0059932b13c896d7df35162a9620ffad03426d0b983c223"
+      },
+      {
+        "file": "public/cv/programs/UNREAL.svg",
+        "bytes": 1285,
+        "hash": "4a54f6edc00f3039c0059932b13c896d7df35162a9620ffad03426d0b983c223"
+      }
+    ],
+    [
+      {
+        "file": "public/cv/1.webp",
+        "bytes": 135552,
+        "hash": "3dd58877406f0ec07e88e50019612e268d21ce58d95abd0a0f5bcb070aee3fbf",
+        "width": 1536,
+        "height": 2215,
+        "format": "webp"
+      },
+      {
+        "file": "public/imgs/workflow/1.webp",
+        "bytes": 135552,
+        "hash": "3dd58877406f0ec07e88e50019612e268d21ce58d95abd0a0f5bcb070aee3fbf",
+        "width": 1536,
+        "height": 2215,
+        "format": "webp"
+      }
+    ],
+    [
+      {
+        "file": "public/cv/2.webp",
+        "bytes": 154252,
+        "hash": "3eba8995293f7deea867a46840f6ae7f3b5f1b438b7b3c558f8bd8acf9d2503f",
+        "width": 1612,
+        "height": 2248,
+        "format": "webp"
+      },
+      {
+        "file": "public/imgs/workflow/2.webp",
+        "bytes": 154252,
+        "hash": "3eba8995293f7deea867a46840f6ae7f3b5f1b438b7b3c558f8bd8acf9d2503f",
+        "width": 1612,
+        "height": 2248,
+        "format": "webp"
+      }
+    ],
+    [
+      {
+        "file": "public/cv/3.webp",
+        "bytes": 105242,
+        "hash": "95d3b20117509152939927a5fcd57603f726d717be26b0f72e19b773e1b7157e",
+        "width": 2343,
+        "height": 3121,
+        "format": "webp"
+      },
+      {
+        "file": "public/imgs/workflow/3.webp",
+        "bytes": 105242,
+        "hash": "95d3b20117509152939927a5fcd57603f726d717be26b0f72e19b773e1b7157e",
+        "width": 2343,
+        "height": 3121,
+        "format": "webp"
+      }
+    ],
+    [
+      {
+        "file": "public/cv/4.webp",
+        "bytes": 178698,
+        "hash": "e47e93789cf46de05060250444d4ef02cf750d2cff32d272328e3fe640b9add3",
+        "width": 1956,
+        "height": 2048,
+        "format": "webp"
+      },
+      {
+        "file": "public/imgs/workflow/4.webp",
+        "bytes": 178698,
+        "hash": "e47e93789cf46de05060250444d4ef02cf750d2cff32d272328e3fe640b9add3",
+        "width": 1956,
+        "height": 2048,
+        "format": "webp"
+      }
+    ],
+    [
+      {
+        "file": "public/cv/video/groaqua.webm",
+        "bytes": 6159267,
+        "hash": "ab05225fdd988f3fbb8bf6dd5d814f5f1f9731e7c87afeeee33f1528c9afce6e"
+      },
+      {
+        "file": "public/videos/9.webm",
+        "bytes": 6159267,
+        "hash": "ab05225fdd988f3fbb8bf6dd5d814f5f1f9731e7c87afeeee33f1528c9afce6e"
+      }
+    ],
+    [
+      {
+        "file": "public/cv/video/havida.webm",
+        "bytes": 6896117,
+        "hash": "2d4496af56b70a8b081bb09321c6dae00b61d3fdcce9e0b297dc91d00f446e69"
+      },
+      {
+        "file": "public/videos/havida.webm",
+        "bytes": 6896117,
+        "hash": "2d4496af56b70a8b081bb09321c6dae00b61d3fdcce9e0b297dc91d00f446e69"
+      }
+    ],
+    [
+      {
+        "file": "public/cv/video/wwf1.webm",
+        "bytes": 4926859,
+        "hash": "b2b06bd5363eb82686ce711b29c101e9a74ed46215acf4a7cf9185e6c30af3c1"
+      },
+      {
+        "file": "public/img/FW/02/3.webm",
+        "bytes": 4926859,
+        "hash": "b2b06bd5363eb82686ce711b29c101e9a74ed46215acf4a7cf9185e6c30af3c1"
+      },
+      {
+        "file": "public/videos/3.webm",
+        "bytes": 4926859,
+        "hash": "b2b06bd5363eb82686ce711b29c101e9a74ed46215acf4a7cf9185e6c30af3c1"
+      }
+    ],
+    [
+      {
+        "file": "public/cv/video/wwf2.webm",
+        "bytes": 3948630,
+        "hash": "2a332a6243856665cad72746838077fc782fea7ad6db21e185e2385a954909a7"
+      },
+      {
+        "file": "public/videos/7.webm",
+        "bytes": 3948630,
+        "hash": "2a332a6243856665cad72746838077fc782fea7ad6db21e185e2385a954909a7"
+      }
+    ],
+    [
+      {
+        "file": "public/img/EXO2.webp",
+        "bytes": 322688,
+        "hash": "3c0680fe407449dced3fa103846c46f0e71e384bcd81351092277ec4cf81e7c7",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp"
+      },
+      {
+        "file": "public/img/FW/03/1.webp",
+        "bytes": 322688,
+        "hash": "3c0680fe407449dced3fa103846c46f0e71e384bcd81351092277ec4cf81e7c7",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp"
+      }
+    ],
+    [
+      {
+        "file": "public/img/EXO4.webp",
+        "bytes": 252242,
+        "hash": "0592b9df0b0118f8bc986dbd9f414b284745afbcfad8d74d8139585bc4283779",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp"
+      },
+      {
+        "file": "public/img/FW/03/3.webp",
+        "bytes": 252242,
+        "hash": "0592b9df0b0118f8bc986dbd9f414b284745afbcfad8d74d8139585bc4283779",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp"
+      }
+    ],
+    [
+      {
+        "file": "public/img/FW/01/06.webp",
+        "bytes": 269786,
+        "hash": "684394553e1fd8edbb2d0dbd22258e8730b8057058b3b7c1eabee5d210909866",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp"
+      },
+      {
+        "file": "public/img/FW/03/4.webp",
+        "bytes": 269786,
+        "hash": "684394553e1fd8edbb2d0dbd22258e8730b8057058b3b7c1eabee5d210909866",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp"
+      }
+    ],
+    [
+      {
+        "file": "public/img/FW/02/2.webp",
+        "bytes": 659752,
+        "hash": "15c89c338b5b5decc1f0c80f8c781e71ee99e8aea6c1e7a2fbad54f0502076f9",
+        "width": 3368,
+        "height": 4763,
+        "format": "webp"
+      },
+      {
+        "file": "public/img/WWF_OMI3.webp",
+        "bytes": 659752,
+        "hash": "15c89c338b5b5decc1f0c80f8c781e71ee99e8aea6c1e7a2fbad54f0502076f9",
+        "width": 3368,
+        "height": 4763,
+        "format": "webp"
+      }
+    ],
+    [
+      {
+        "file": "public/img/FWGRO.webp",
+        "bytes": 93100,
+        "hash": "e4f6746d905e7f2814761c662f30451b7163dedc8493f4af484ad561f67f844c",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp"
+      },
+      {
+        "file": "public/img/GRO2.webp",
+        "bytes": 93100,
+        "hash": "e4f6746d905e7f2814761c662f30451b7163dedc8493f4af484ad561f67f844c",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp"
+      }
+    ]
+  ],
+  "chunks": [
+    {
+      "file": "three.module.4gI5Z-_B.js",
+      "bytes": 736589,
+      "gzip": 185290,
+      "brotli": 149873
+    },
+    {
+      "file": "draco_decoder.fzg4nYZr.js",
+      "bytes": 719410,
+      "gzip": 148812,
+      "brotli": 108048
+    },
+    {
+      "file": "gsap.CvDoa17S.js",
+      "bytes": 69582,
+      "gzip": 27051,
+      "brotli": 24500
+    },
+    {
+      "file": "draco_wasm_wrapper.DxJM36Ib.js",
+      "bytes": 58763,
+      "gzip": 11903,
+      "brotli": 10115
+    },
+    {
+      "file": "draco_wasm_wrapper.fZCQGLGb.js",
+      "bytes": 58456,
+      "gzip": 11748,
+      "brotli": 9994
+    },
+    {
+      "file": "DRACOLoader.BL6A1PCW.js",
+      "bytes": 53131,
+      "gzip": 15984,
+      "brotli": 14288
+    },
+    {
+      "file": "ScrollTrigger.CDDhF-DF.js",
+      "bytes": 42725,
+      "gzip": 17412,
+      "brotli": 15782
+    },
+    {
+      "file": "Projects.astro_astro_type_script_index_0_lang.CEkSl_jk.js",
+      "bytes": 35391,
+      "gzip": 10876,
+      "brotli": 9831
+    },
+    {
+      "file": "Footer.astro_astro_type_script_index_0_lang.YBgX6U6l.js",
+      "bytes": 34992,
+      "gzip": 11119,
+      "brotli": 9766
+    },
+    {
+      "file": "dogScene.Deuk8eqY.js",
+      "bytes": 34713,
+      "gzip": 11708,
+      "brotli": 10621
+    },
+    {
+      "file": "HomeJourney.astro_astro_type_script_index_0_lang.BnsKw-zi.js",
+      "bytes": 22798,
+      "gzip": 8285,
+      "brotli": 7423
+    },
+    {
+      "file": "AboutSection.astro_astro_type_script_index_0_lang.DEcYWoJp.js",
+      "bytes": 19999,
+      "gzip": 7229,
+      "brotli": 6332
+    },
+    {
+      "file": "OrbitControls.ByLEOZ_P.js",
+      "bytes": 19903,
+      "gzip": 4447,
+      "brotli": 4010
+    },
+    {
+      "file": "lenis.BeaIEUdr.js",
+      "bytes": 18602,
+      "gzip": 5377,
+      "brotli": 4835
+    },
+    {
+      "file": "BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+      "bytes": 17411,
+      "gzip": 6199,
+      "brotli": 5529
+    },
+    {
+      "file": "ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+      "bytes": 10644,
+      "gzip": 3956,
+      "brotli": 3401
+    },
+    {
+      "file": "case-model.D_aMuusa.js",
+      "bytes": 10189,
+      "gzip": 4222,
+      "brotli": 3798
+    },
+    {
+      "file": "es.BbOb-G-0.js",
+      "bytes": 9075,
+      "gzip": 3341,
+      "brotli": 2647
+    },
+    {
+      "file": "Brands.astro_astro_type_script_index_0_lang.VlmqJjKy.js",
+      "bytes": 6653,
+      "gzip": 2722,
+      "brotli": 2418
+    },
+    {
+      "file": "portraitScene.CXBrem06.js",
+      "bytes": 4839,
+      "gzip": 2579,
+      "brotli": 2296
+    },
+    {
+      "file": "CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+      "bytes": 4526,
+      "gzip": 1988,
+      "brotli": 1794
+    },
+    {
+      "file": "smooth-scroll.8REswEng.js",
+      "bytes": 3222,
+      "gzip": 1486,
+      "brotli": 1290
+    },
+    {
+      "file": "scroll-pacing.BGyzftgp.js",
+      "bytes": 3050,
+      "gzip": 1385,
+      "brotli": 1263
+    },
+    {
+      "file": "preferences.CW_ZlNqo.js",
+      "bytes": 2869,
+      "gzip": 1199,
+      "brotli": 1023
+    },
+    {
+      "file": "tablet-horizontal-gesture.Btp7B84K.js",
+      "bytes": 1829,
+      "gzip": 921,
+      "brotli": 806
+    },
+    {
+      "file": "sceneUtils.TI2hYmoN.js",
+      "bytes": 1481,
+      "gzip": 748,
+      "brotli": 678
+    },
+    {
+      "file": "preload-helper.B3nfOi5I.js",
+      "bytes": 1364,
+      "gzip": 742,
+      "brotli": 630
+    },
+    {
+      "file": "FeaturedWorks.astro_astro_type_script_index_0_lang.DZoAci6p.js",
+      "bytes": 996,
+      "gzip": 470,
+      "brotli": 421
+    },
+    {
+      "file": "CVLayout.astro_astro_type_script_index_0_lang.DzDxS30O.js",
+      "bytes": 957,
+      "gzip": 516,
+      "brotli": 427
+    },
+    {
+      "file": "action-buttons.BTmWQVPv.js",
+      "bytes": 783,
+      "gzip": 382,
+      "brotli": 298
+    },
+    {
+      "file": "ServicesIntro.astro_astro_type_script_index_0_lang.DLbKu8WA.js",
+      "bytes": 703,
+      "gzip": 488,
+      "brotli": 423
+    },
+    {
+      "file": "BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+      "bytes": 547,
+      "gzip": 342,
+      "brotli": 262
+    },
+    {
+      "file": "responsive-layout.n34oSUrW.js",
+      "bytes": 433,
+      "gzip": 321,
+      "brotli": 278
+    },
+    {
+      "file": "Sidebar.astro_astro_type_script_index_0_lang.CGcxT_nb.js",
+      "bytes": 37,
+      "gzip": 57,
+      "brotli": 41
+    },
+    {
+      "file": "about.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+      "bytes": 34,
+      "gzip": 54,
+      "brotli": 38
+    },
+    {
+      "file": "SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+      "bytes": 34,
+      "gzip": 54,
+      "brotli": 38
+    }
+  ],
+  "pages": [
+    {
+      "file": "about\\index.html",
+      "bytes": 127140,
+      "gzip": 27733,
+      "scripts": [
+        "/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+        "/_astro/AboutSection.astro_astro_type_script_index_0_lang.DEcYWoJp.js",
+        "/_astro/about.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+        "/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js"
+      ],
+      "inlineStyleBytes": 84238,
+      "images": 1,
+      "videos": []
+    },
+    {
+      "file": "cv\\index.html",
+      "bytes": 129232,
+      "gzip": 26723,
+      "scripts": [
+        "/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+        "/_astro/Sidebar.astro_astro_type_script_index_0_lang.CGcxT_nb.js",
+        "/_astro/CVLayout.astro_astro_type_script_index_0_lang.DzDxS30O.js",
+        "/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js"
+      ],
+      "inlineStyleBytes": 48161,
+      "images": 60,
+      "videos": [
+        "<video data-cv-video data-src=\"/videos/7.webm\" preload=\"none\" loop muted playsinline class=\"media-element\" data-astro-cid-dcwteoby>",
+        "<video data-cv-video data-src=\"/videos/9.webm\" preload=\"none\" loop muted playsinline class=\"media-element\" data-astro-cid-dcwteoby>",
+        "<video data-cv-video data-src=\"/videos/3.webm\" preload=\"none\" loop muted playsinline class=\"media-element\" data-astro-cid-dcwteoby>",
+        "<video data-cv-video data-src=\"/videos/havida.webm\" preload=\"none\" loop muted playsinline class=\"media-element\" data-astro-cid-dcwteoby>"
+      ]
+    },
+    {
+      "file": "index.html",
+      "bytes": 341550,
+      "gzip": 57775,
+      "scripts": [
+        "/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+        "/_astro/HomeJourney.astro_astro_type_script_index_0_lang.BnsKw-zi.js",
+        "/_astro/ServicesIntro.astro_astro_type_script_index_0_lang.DLbKu8WA.js",
+        "/_astro/Projects.astro_astro_type_script_index_0_lang.CEkSl_jk.js",
+        "/_astro/FeaturedWorks.astro_astro_type_script_index_0_lang.DZoAci6p.js",
+        "/_astro/Brands.astro_astro_type_script_index_0_lang.VlmqJjKy.js",
+        "/_astro/Footer.astro_astro_type_script_index_0_lang.YBgX6U6l.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+        "/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js"
+      ],
+      "inlineStyleBytes": 187938,
+      "images": 170,
+      "videos": [
+        "<video data-auto-video src=\"/videos/havida.webm\" poster=\"/videos/mini/havida.webp\" muted loop playsinline preload=\"none\" aria-label=\"HAVIDA\">",
+        "<video data-auto-video src=\"/videos/1.webm\" poster=\"/videos/mini/1.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/2.webm\" poster=\"/videos/mini/2.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/3.webm\" poster=\"/videos/mini/3.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/4.webm\" poster=\"/videos/mini/4.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/5.webm\" poster=\"/videos/mini/5.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/6.webm\" poster=\"/videos/mini/6.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/7.webm\" poster=\"/videos/mini/7.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/8.webm\" poster=\"/videos/mini/8.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/9.webm\" poster=\"/videos/mini/9.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/havida.webm\" poster=\"/videos/mini/havida.webp\" muted loop playsinline preload=\"none\" aria-label=\"HAVIDA\">",
+        "<video data-auto-video src=\"/videos/1.webm\" poster=\"/videos/mini/1.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/2.webm\" poster=\"/videos/mini/2.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/3.webm\" poster=\"/videos/mini/3.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/4.webm\" poster=\"/videos/mini/4.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/5.webm\" poster=\"/videos/mini/5.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/6.webm\" poster=\"/videos/mini/6.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/7.webm\" poster=\"/videos/mini/7.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/8.webm\" poster=\"/videos/mini/8.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">",
+        "<video data-auto-video src=\"/videos/9.webm\" poster=\"/videos/mini/9.webp\" muted loop playsinline preload=\"none\" aria-label=\"Video del proyecto\">"
+      ]
+    },
+    {
+      "file": "work\\exo-environmental\\index.html",
+      "bytes": 137756,
+      "gzip": 28614,
+      "scripts": [
+        "/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+        "/_astro/CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+        "/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js"
+      ],
+      "inlineStyleBytes": 100718,
+      "images": 8,
+      "videos": []
+    },
+    {
+      "file": "work\\groaqua\\index.html",
+      "bytes": 137420,
+      "gzip": 28569,
+      "scripts": [
+        "/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+        "/_astro/CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+        "/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js"
+      ],
+      "inlineStyleBytes": 100718,
+      "images": 7,
+      "videos": []
+    },
+    {
+      "file": "work\\sperm-whales-of-dominica\\index.html",
+      "bytes": 137752,
+      "gzip": 28603,
+      "scripts": [
+        "/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+        "/_astro/CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+        "/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js"
+      ],
+      "inlineStyleBytes": 100718,
+      "images": 8,
+      "videos": []
+    },
+    {
+      "file": "work\\wewhale\\index.html",
+      "bytes": 137677,
+      "gzip": 28537,
+      "scripts": [
+        "/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+        "/_astro/CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+        "/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js"
+      ],
+      "inlineStyleBytes": 100718,
+      "images": 8,
+      "videos": []
+    },
+    {
+      "file": "work\\wwf\\index.html",
+      "bytes": 138115,
+      "gzip": 28878,
+      "scripts": [
+        "/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+        "/_astro/CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+        "/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js"
+      ],
+      "inlineStyleBytes": 100718,
+      "images": 4,
+      "videos": [
+        "<video data-case-video src=\"/videos/3.webm\" width=\"1920\" height=\"1080\" style=\"--image-ratio:1.7777777777777777\" muted loop playsinline preload=\"none\" aria-label=\"WWF — animation\">"
+      ]
+    }
+  ],
+  "totalJS": 2006730,
+  "totalJSGzip": 511413
+}

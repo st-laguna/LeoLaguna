@@ -19,7 +19,7 @@ export const caseStudies:CaseStudy[] = [
     imageColumns:[[0],[1],[2,3],[4],[5]],nextProject:'wwf'},
   {slug:'wwf',client:'WWF',title:'Whale Science & Conservation',categoryId:'educational',location:'Peru',year:'2025-2026',cover:'/img/FWWWF.webp',images:[null,null,null,null,null],
     // 3.webm: encoded 1440x1080 with 4:3 pixel aspect; display ratio is 16:9.
-    media:[{kind:'image',src:'/img/FW/02/1.webp'},{kind:'image',src:'/img/FW/02/2.webp'},{kind:'video',src:'/img/FW/02/3.webm',width:1920,height:1080}],
+    media:[{kind:'image',src:'/img/FW/02/1.webp'},{kind:'image',src:'/img/FW/02/2.webp'},{kind:'video',src:'/videos/3.webm',width:1920,height:1080}],
     model:'/models/caseta.glb',nextProject:'sperm-whales-of-dominica'},
   {slug:'sperm-whales-of-dominica',client:'Sperm Whales of Dominica',title:'Cataloguing Dominica’s Sperm Whales',categoryId:'scientific',location:'USA and Dominica',year:'2022-2025',cover:'/img/FWSPM.webp',images:[null,null,null,null,null],
     media:[1,2,3,4,5,6].map(number=>({kind:'image' as const,src:'/img/FW/05/'+number+'.webp'})),nextProject:'wewhale'},

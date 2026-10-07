@@ -1,0 +1,3904 @@
+[
+  {
+    "device": "desktop",
+    "route": "/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/leo.svg",
+          "bytes": 1705,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/laguna.svg",
+          "bytes": 3229,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/HomeJourney.astro_astro_type_script_index_0_lang.BnsKw-zi.js",
+          "bytes": 23098,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/havida.webp",
+          "bytes": 36644,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ServicesIntro.astro_astro_type_script_index_0_lang.DLbKu8WA.js",
+          "bytes": 1003,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/1.webp",
+          "bytes": 137186,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/2.webp",
+          "bytes": 68020,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/3.webp",
+          "bytes": 86710,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/4.webp",
+          "bytes": 60824,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/5.webp",
+          "bytes": 63008,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/6.webp",
+          "bytes": 58260,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/7.webp",
+          "bytes": 51984,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/8.webp",
+          "bytes": 20748,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/9.webp",
+          "bytes": 29740,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/FWGRO.webp",
+          "bytes": 93400,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Projects.astro_astro_type_script_index_0_lang.CEkSl_jk.js",
+          "bytes": 35691,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/FeaturedWorks.astro_astro_type_script_index_0_lang.DZoAci6p.js",
+          "bytes": 1296,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Brands.astro_astro_type_script_index_0_lang.VlmqJjKy.js",
+          "bytes": 6953,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/arrow.svg",
+          "bytes": 649,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+          "bytes": 17711,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Footer.astro_astro_type_script_index_0_lang.BJjN7U8I.js",
+          "bytes": 35347,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+          "bytes": 847,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/hero/1H-1440.webp",
+          "bytes": 349934,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/logo_w.svg",
+          "bytes": 891,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/scroll-pacing.BGyzftgp.js",
+          "bytes": 3350,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/smooth-scroll.8REswEng.js",
+          "bytes": 3522,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/responsive-layout.n34oSUrW.js",
+          "bytes": 733,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/tablet-horizontal-gesture.Btp7B84K.js",
+          "bytes": 2129,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/fonts/Archivo.woff2",
+          "bytes": 186540,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/service-thumbs/EXO1.320.webp",
+          "bytes": 12638,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/service-thumbs/EXO2.320.webp",
+          "bytes": 25162,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/service-thumbs/EXO3.320.webp",
+          "bytes": 17932,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/service-thumbs/EXO4.320.webp",
+          "bytes": 19052,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/service-thumbs/GRO.320.webp",
+          "bytes": 14898,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/service-thumbs/GRO2.320.webp",
+          "bytes": 10264,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/service-thumbs/GRO3.320.webp",
+          "bytes": 8902,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/service-thumbs/IGOR1.320.webp",
+          "bytes": 26434,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/three.module.4gI5Z-_B.js",
+          "bytes": 736889,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        }
+      ],
+      "audit": {
+        "raf": 1326,
+        "long": [
+          321
+        ],
+        "lcp": [
+          {
+            "time": 180,
+            "tag": "IMG",
+            "class": "hero__image hero__image--light",
+            "url": "http://127.0.0.1:4329/imgs/hero/1H-1440.webp"
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 2,
+      "videos": [
+        {
+          "src": "/videos/havida.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/1.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/2.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/3.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/4.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/5.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/6.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/7.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/8.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/9.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/havida.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/1.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/2.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/3.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/4.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/5.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/6.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/7.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/8.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/9.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    },
+    "idleRafCallbacks": 552,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 2,
+      "videos": [
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/havida.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/1.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/2.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/3.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/4.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/5.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/6.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/7.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/8.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/9.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/havida.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/1.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/2.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/3.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/4.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/5.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/6.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/7.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/8.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/9.webm"
+        }
+      ],
+      "scrollWidth": 1425,
+      "innerWidth": 1440
+    }
+  },
+  {
+    "device": "desktop",
+    "route": "/cv/",
+    "initial": {
+      "resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Host+Grotesk:wght@300;400;600;700&display=swap",
+          "bytes": 0,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/Perfil.webp",
+          "bytes": 147502,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/icons/spain.svg",
+          "bytes": 1236,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/icons/usa.svg",
+          "bytes": 5931,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/icons/port.svg",
+          "bytes": 1868,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/AS.svg",
+          "bytes": 2529,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/BLENDER.svg",
+          "bytes": 1783,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/DAVINCI.svg",
+          "bytes": 1376,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/QGIS.svg",
+          "bytes": 1171,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/GAEA.svg",
+          "bytes": 576946,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Sidebar.astro_astro_type_script_index_0_lang.CGcxT_nb.js",
+          "bytes": 337,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/UNREAL.svg",
+          "bytes": 1585,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/CVLayout.astro_astro_type_script_index_0_lang.DzDxS30O.js",
+          "bytes": 1257,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/arrow.svg",
+          "bytes": 649,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        }
+      ],
+      "audit": {
+        "raf": 737,
+        "long": [],
+        "lcp": [
+          {
+            "time": 3216,
+            "tag": "IMG",
+            "class": "avatar",
+            "url": "http://127.0.0.1:4329/img/Perfil.webp"
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 0,
+      "videos": [
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    },
+    "idleRafCallbacks": 271,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 0,
+      "videos": [
+        {
+          "paused": false,
+          "src": "http://127.0.0.1:4329/videos/7.webm"
+        },
+        {
+          "paused": true,
+          "src": ""
+        },
+        {
+          "paused": true,
+          "src": ""
+        },
+        {
+          "paused": true,
+          "src": ""
+        }
+      ],
+      "scrollWidth": 1440,
+      "innerWidth": 1440
+    }
+  },
+  {
+    "device": "desktop",
+    "route": "/work/groaqua/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/FW/01/1.webp",
+          "bytes": 197866,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+          "bytes": 4826,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+          "bytes": 17711,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+          "bytes": 847,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/logo_w.svg",
+          "bytes": 891,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/smooth-scroll.8REswEng.js",
+          "bytes": 3522,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/tablet-horizontal-gesture.Btp7B84K.js",
+          "bytes": 2129,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/responsive-layout.n34oSUrW.js",
+          "bytes": 733,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/scroll-pacing.BGyzftgp.js",
+          "bytes": 3350,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        }
+      ],
+      "audit": {
+        "raf": 1462,
+        "long": [],
+        "lcp": [
+          {
+            "time": 68,
+            "tag": "H1",
+            "class": "",
+            "url": ""
+          },
+          {
+            "time": 76,
+            "tag": "IMG",
+            "class": "",
+            "url": "http://127.0.0.1:4329/img/FW/01/1.webp"
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 0,
+      "videos": []
+    },
+    "idleRafCallbacks": 548,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 0,
+      "videos": [],
+      "scrollWidth": 1425,
+      "innerWidth": 1440
+    }
+  },
+  {
+    "device": "desktop",
+    "route": "/work/wwf/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/FW/02/1.webp",
+          "bytes": 189502,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+          "bytes": 4826,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+          "bytes": 17711,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+          "bytes": 847,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/smooth-scroll.8REswEng.js",
+          "bytes": 3522,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/tablet-horizontal-gesture.Btp7B84K.js",
+          "bytes": 2129,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/responsive-layout.n34oSUrW.js",
+          "bytes": 733,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/scroll-pacing.BGyzftgp.js",
+          "bytes": 3350,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/logo_w.svg",
+          "bytes": 891,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/expand.svg",
+          "bytes": 906,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/case-model.D_aMuusa.js",
+          "bytes": 10489,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/three.module.4gI5Z-_B.js",
+          "bytes": 736889,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/OrbitControls.ByLEOZ_P.js",
+          "bytes": 20203,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/DRACOLoader.BL6A1PCW.js",
+          "bytes": 53431,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/models/caseta.glb",
+          "bytes": 653856,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_wasm_wrapper.js",
+          "bytes": 58756,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_decoder.wasm",
+          "bytes": 192720,
+          "type": "fetch"
+        }
+      ],
+      "audit": {
+        "raf": 1416,
+        "long": [
+          135
+        ],
+        "lcp": [
+          {
+            "time": 52,
+            "tag": "H1",
+            "class": "",
+            "url": ""
+          }
+        ],
+        "shifts": [
+          0.36848958333333337
+        ]
+      },
+      "canvases": 1,
+      "videos": [
+        {
+          "src": "/videos/3.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    },
+    "idleRafCallbacks": 552,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 1,
+      "videos": [
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/3.webm"
+        }
+      ],
+      "scrollWidth": 1425,
+      "innerWidth": 1440
+    }
+  },
+  {
+    "device": "desktop",
+    "route": "/about/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/fonts/Archivo.woff2",
+          "bytes": 186540,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/leo.glb",
+          "bytes": 3201752,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/simba.glb",
+          "bytes": 2297352,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/morena.glb",
+          "bytes": 2103520,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/about.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/AboutSection.astro_astro_type_script_index_0_lang.DEcYWoJp.js",
+          "bytes": 20299,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/asterisk.svg",
+          "bytes": 1084,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/pause.svg",
+          "bytes": 902,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/dogScene.Deuk8eqY.js",
+          "bytes": 35013,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/OrbitControls.ByLEOZ_P.js",
+          "bytes": 20203,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/DRACOLoader.BL6A1PCW.js",
+          "bytes": 53431,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/three.module.4gI5Z-_B.js",
+          "bytes": 736889,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/sceneUtils.TI2hYmoN.js",
+          "bytes": 1781,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_wasm_wrapper.js",
+          "bytes": 58756,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_decoder.wasm",
+          "bytes": 192720,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/laptop.glb",
+          "bytes": 180364,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/ipad.glb",
+          "bytes": 208332,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/cuadro.glb",
+          "bytes": 33488,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/libro1.glb",
+          "bytes": 135616,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/libro2.glb",
+          "bytes": 266124,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/gem.glb",
+          "bytes": 22468,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/halosimba.glb",
+          "bytes": 71768,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/halomorena.glb",
+          "bytes": 71768,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/haloleo.glb",
+          "bytes": 71764,
+          "type": "fetch"
+        }
+      ],
+      "audit": {
+        "raf": 1033,
+        "long": [
+          119,
+          108,
+          60,
+          60
+        ],
+        "lcp": [
+          {
+            "time": 56,
+            "tag": "P",
+            "class": "about-loading-indicator",
+            "url": ""
+          },
+          {
+            "time": 1076,
+            "tag": "P",
+            "class": "",
+            "url": ""
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 1,
+      "videos": []
+    },
+    "idleRafCallbacks": 272,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 1,
+      "videos": [],
+      "scrollWidth": 1440,
+      "innerWidth": 1440
+    }
+  },
+  {
+    "device": "mobile",
+    "route": "/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/leo.svg",
+          "bytes": 1705,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/laguna.svg",
+          "bytes": 3229,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ServicesIntro.astro_astro_type_script_index_0_lang.DLbKu8WA.js",
+          "bytes": 1003,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/HomeJourney.astro_astro_type_script_index_0_lang.BnsKw-zi.js",
+          "bytes": 23098,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/havida.webp",
+          "bytes": 36644,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/1.webp",
+          "bytes": 137186,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/2.webp",
+          "bytes": 68020,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/3.webp",
+          "bytes": 86710,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/4.webp",
+          "bytes": 60824,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/5.webp",
+          "bytes": 63008,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/6.webp",
+          "bytes": 58260,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/7.webp",
+          "bytes": 51984,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/8.webp",
+          "bytes": 20748,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/9.webp",
+          "bytes": 29740,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Projects.astro_astro_type_script_index_0_lang.CEkSl_jk.js",
+          "bytes": 35691,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/FWGRO.webp",
+          "bytes": 93400,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/FeaturedWorks.astro_astro_type_script_index_0_lang.DZoAci6p.js",
+          "bytes": 1296,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/arrow.svg",
+          "bytes": 649,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Brands.astro_astro_type_script_index_0_lang.VlmqJjKy.js",
+          "bytes": 6953,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+          "bytes": 17711,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Footer.astro_astro_type_script_index_0_lang.BJjN7U8I.js",
+          "bytes": 35347,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+          "bytes": 847,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/hero/3H-960.webp",
+          "bytes": 196516,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/fonts/Archivo.woff2",
+          "bytes": 186540,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/scroll-pacing.BGyzftgp.js",
+          "bytes": 3350,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/smooth-scroll.8REswEng.js",
+          "bytes": 3522,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/responsive-layout.n34oSUrW.js",
+          "bytes": 733,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/tablet-horizontal-gesture.Btp7B84K.js",
+          "bytes": 2129,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/arrow.svg",
+          "bytes": 649,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/ISRA3.svg",
+          "bytes": 8671,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/COA3.svg",
+          "bytes": 8361,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/WWF3.svg",
+          "bytes": 4785,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/IMA3.svg",
+          "bytes": 26358,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/KA.svg",
+          "bytes": 4224,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/EXO3.svg",
+          "bytes": 4628,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/VH.svg",
+          "bytes": 4168,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/QW3.svg",
+          "bytes": 6504,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/RH.svg",
+          "bytes": 8006,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/WEWHALE3.svg",
+          "bytes": 12225,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/HAVIDA3.svg",
+          "bytes": 4510,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/BL.svg",
+          "bytes": 18663,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/STRA3.svg",
+          "bytes": 6878,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/GROA3.svg",
+          "bytes": 6485,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/SPERMWHALES3.svg",
+          "bytes": 20116,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/SOA3.svg",
+          "bytes": 7881,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/MV.svg",
+          "bytes": 3226,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/logo_w.svg",
+          "bytes": 891,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        }
+      ],
+      "audit": {
+        "raf": 895,
+        "long": [],
+        "lcp": [],
+        "shifts": []
+      },
+      "canvases": 1,
+      "videos": [
+        {
+          "src": "/videos/havida.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/1.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/2.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/3.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/4.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/5.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/6.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/7.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/8.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/9.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/havida.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/1.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/2.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/3.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/4.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/5.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/6.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/7.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/8.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/9.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    },
+    "idleRafCallbacks": 280,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 1,
+      "videos": [
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/havida.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/1.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/2.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/3.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/4.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/5.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/6.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/7.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/8.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/9.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/havida.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/1.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/2.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/3.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/4.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/5.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/6.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/7.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/8.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/9.webm"
+        }
+      ],
+      "scrollWidth": 390,
+      "innerWidth": 390
+    }
+  },
+  {
+    "device": "mobile",
+    "route": "/cv/",
+    "initial": {
+      "resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Host+Grotesk:wght@300;400;600;700&display=swap",
+          "bytes": 0,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/Perfil.webp",
+          "bytes": 147502,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/icons/spain.svg",
+          "bytes": 1236,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/icons/usa.svg",
+          "bytes": 5931,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/icons/port.svg",
+          "bytes": 1868,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/AS.svg",
+          "bytes": 2529,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/BLENDER.svg",
+          "bytes": 1783,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/DAVINCI.svg",
+          "bytes": 1376,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/GAEA.svg",
+          "bytes": 576946,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/QGIS.svg",
+          "bytes": 1171,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/UNREAL.svg",
+          "bytes": 1585,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Sidebar.astro_astro_type_script_index_0_lang.CGcxT_nb.js",
+          "bytes": 337,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/CVLayout.astro_astro_type_script_index_0_lang.DzDxS30O.js",
+          "bytes": 1257,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/arrow.svg",
+          "bytes": 649,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        }
+      ],
+      "audit": {
+        "raf": 30,
+        "long": [],
+        "lcp": [
+          {
+            "time": 64,
+            "tag": "P",
+            "class": "body-text",
+            "url": ""
+          },
+          {
+            "time": 108,
+            "tag": "IMG",
+            "class": "avatar",
+            "url": "http://127.0.0.1:4329/img/Perfil.webp"
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 0,
+      "videos": [
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    },
+    "idleRafCallbacks": 0,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 0,
+      "videos": [
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/7.webm"
+        },
+        {
+          "paused": true,
+          "src": ""
+        },
+        {
+          "paused": true,
+          "src": ""
+        },
+        {
+          "paused": true,
+          "src": ""
+        }
+      ],
+      "scrollWidth": 390,
+      "innerWidth": 390
+    }
+  },
+  {
+    "device": "mobile",
+    "route": "/work/groaqua/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/FW/01/1.webp",
+          "bytes": 197866,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+          "bytes": 847,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+          "bytes": 4826,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+          "bytes": 17711,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/smooth-scroll.8REswEng.js",
+          "bytes": 3522,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/tablet-horizontal-gesture.Btp7B84K.js",
+          "bytes": 2129,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/responsive-layout.n34oSUrW.js",
+          "bytes": 733,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/scroll-pacing.BGyzftgp.js",
+          "bytes": 3350,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/fonts/Archivo.woff2",
+          "bytes": 186540,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        }
+      ],
+      "audit": {
+        "raf": 1022,
+        "long": [],
+        "lcp": [
+          {
+            "time": 60,
+            "tag": "H1",
+            "class": "",
+            "url": ""
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 0,
+      "videos": []
+    },
+    "idleRafCallbacks": 279,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 0,
+      "videos": [],
+      "scrollWidth": 390,
+      "innerWidth": 390
+    }
+  },
+  {
+    "device": "mobile",
+    "route": "/work/wwf/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/FW/02/1.webp",
+          "bytes": 189502,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+          "bytes": 4826,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+          "bytes": 847,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+          "bytes": 17711,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/smooth-scroll.8REswEng.js",
+          "bytes": 3522,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/tablet-horizontal-gesture.Btp7B84K.js",
+          "bytes": 2129,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/responsive-layout.n34oSUrW.js",
+          "bytes": 733,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/scroll-pacing.BGyzftgp.js",
+          "bytes": 3350,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/expand.svg",
+          "bytes": 906,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/fonts/Archivo.woff2",
+          "bytes": 186540,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/case-model.D_aMuusa.js",
+          "bytes": 10489,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/three.module.4gI5Z-_B.js",
+          "bytes": 736889,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/OrbitControls.ByLEOZ_P.js",
+          "bytes": 20203,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/DRACOLoader.BL6A1PCW.js",
+          "bytes": 53431,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/models/caseta.glb",
+          "bytes": 653856,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_wasm_wrapper.js",
+          "bytes": 58756,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_decoder.wasm",
+          "bytes": 192720,
+          "type": "fetch"
+        }
+      ],
+      "audit": {
+        "raf": 1685,
+        "long": [
+          102
+        ],
+        "lcp": [
+          {
+            "time": 52,
+            "tag": "H1",
+            "class": "",
+            "url": ""
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 1,
+      "videos": [
+        {
+          "src": "/videos/3.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    },
+    "idleRafCallbacks": 540,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 1,
+      "videos": [
+        {
+          "paused": false,
+          "src": "http://127.0.0.1:4329/videos/3.webm"
+        }
+      ],
+      "scrollWidth": 390,
+      "innerWidth": 390
+    }
+  },
+  {
+    "device": "mobile",
+    "route": "/about/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/fonts/Archivo.woff2",
+          "bytes": 186540,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/leo.glb",
+          "bytes": 3201752,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/simba.glb",
+          "bytes": 2297352,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/AboutSection.astro_astro_type_script_index_0_lang.DEcYWoJp.js",
+          "bytes": 20299,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/morena.glb",
+          "bytes": 2103520,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/about.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/portraitScene.CXBrem06.js",
+          "bytes": 5139,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/three.module.4gI5Z-_B.js",
+          "bytes": 736889,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/sceneUtils.TI2hYmoN.js",
+          "bytes": 1781,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/DRACOLoader.BL6A1PCW.js",
+          "bytes": 53431,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_wasm_wrapper.js",
+          "bytes": 58756,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_decoder.wasm",
+          "bytes": 192720,
+          "type": "fetch"
+        }
+      ],
+      "audit": {
+        "raf": 402,
+        "long": [],
+        "lcp": [
+          {
+            "time": 68,
+            "tag": "P",
+            "class": "about-loading-indicator",
+            "url": ""
+          },
+          {
+            "time": 320,
+            "tag": "P",
+            "class": "",
+            "url": ""
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 1,
+      "videos": []
+    },
+    "idleRafCallbacks": 0,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 1,
+      "videos": [],
+      "scrollWidth": 390,
+      "innerWidth": 390
+    }
+  },
+  {
+    "device": "tablet",
+    "route": "/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/leo.svg",
+          "bytes": 1705,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/laguna.svg",
+          "bytes": 3229,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/HomeJourney.astro_astro_type_script_index_0_lang.BnsKw-zi.js",
+          "bytes": 23098,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ServicesIntro.astro_astro_type_script_index_0_lang.DLbKu8WA.js",
+          "bytes": 1003,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/havida.webp",
+          "bytes": 36644,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/1.webp",
+          "bytes": 137186,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/2.webp",
+          "bytes": 68020,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/3.webp",
+          "bytes": 86710,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/4.webp",
+          "bytes": 60824,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/5.webp",
+          "bytes": 63008,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/6.webp",
+          "bytes": 58260,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/7.webp",
+          "bytes": 51984,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/8.webp",
+          "bytes": 20748,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/videos/mini/9.webp",
+          "bytes": 29740,
+          "type": "video"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Projects.astro_astro_type_script_index_0_lang.CEkSl_jk.js",
+          "bytes": 35691,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/FWGRO.webp",
+          "bytes": 93400,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/arrow.svg",
+          "bytes": 649,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/FeaturedWorks.astro_astro_type_script_index_0_lang.DZoAci6p.js",
+          "bytes": 1296,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Brands.astro_astro_type_script_index_0_lang.VlmqJjKy.js",
+          "bytes": 6953,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Footer.astro_astro_type_script_index_0_lang.BJjN7U8I.js",
+          "bytes": 35347,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+          "bytes": 847,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+          "bytes": 17711,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/hero/3H.webp",
+          "bytes": 744610,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/fonts/Archivo.woff2",
+          "bytes": 186540,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/scroll-pacing.BGyzftgp.js",
+          "bytes": 3350,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/smooth-scroll.8REswEng.js",
+          "bytes": 3522,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/responsive-layout.n34oSUrW.js",
+          "bytes": 733,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/tablet-horizontal-gesture.Btp7B84K.js",
+          "bytes": 2129,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/arrow.svg",
+          "bytes": 649,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/ISRA3.svg",
+          "bytes": 8671,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/COA3.svg",
+          "bytes": 8361,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/WWF3.svg",
+          "bytes": 4785,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/IMA3.svg",
+          "bytes": 26358,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/KA.svg",
+          "bytes": 4224,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/EXO3.svg",
+          "bytes": 4628,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/VH.svg",
+          "bytes": 4168,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/QW3.svg",
+          "bytes": 6504,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/RH.svg",
+          "bytes": 8006,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/WEWHALE3.svg",
+          "bytes": 12225,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/HAVIDA3.svg",
+          "bytes": 4510,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/BL.svg",
+          "bytes": 18663,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/STRA3.svg",
+          "bytes": 6878,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/GROA3.svg",
+          "bytes": 6485,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/SPERMWHALES3.svg",
+          "bytes": 20116,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/SOA3.svg",
+          "bytes": 7881,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/brands/MV.svg",
+          "bytes": 3226,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/logo_w.svg",
+          "bytes": 891,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/three.module.4gI5Z-_B.js",
+          "bytes": 736889,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/hero/in_1.webp",
+          "bytes": 136280,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/hero/in_2.webp",
+          "bytes": 529614,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/hero/in_4.webp",
+          "bytes": 189088,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/workflow/1.webp",
+          "bytes": 135852,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/hero/in_3.webp",
+          "bytes": 352782,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/workflow/2.webp",
+          "bytes": 154552,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/workflow/3.webp",
+          "bytes": 105542,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/imgs/workflow/4.webp",
+          "bytes": 178998,
+          "type": "img"
+        }
+      ],
+      "audit": {
+        "raf": 812,
+        "long": [
+          139
+        ],
+        "lcp": [
+          {
+            "time": 96,
+            "tag": "IMG",
+            "class": "hero__image hero__image--light",
+            "url": "http://127.0.0.1:4329/imgs/hero/3H.webp"
+          }
+        ],
+        "shifts": [
+          0.01947620218704246
+        ]
+      },
+      "canvases": 2,
+      "videos": [
+        {
+          "src": "/videos/havida.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/1.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/2.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/3.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/4.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/5.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/6.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/7.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/8.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/9.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/havida.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/1.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/2.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/3.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/4.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/5.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/6.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/7.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/8.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": "/videos/9.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    },
+    "idleRafCallbacks": 262,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 2,
+      "videos": [
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/havida.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/1.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/2.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/3.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/4.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/5.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/6.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/7.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/8.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/9.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/havida.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/1.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/2.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/3.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/4.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/5.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/6.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/7.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/8.webm"
+        },
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/9.webm"
+        }
+      ],
+      "scrollWidth": 1009,
+      "innerWidth": 1024
+    }
+  },
+  {
+    "device": "tablet",
+    "route": "/cv/",
+    "initial": {
+      "resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Host+Grotesk:wght@300;400;600;700&display=swap",
+          "bytes": 0,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/Perfil.webp",
+          "bytes": 147502,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/icons/spain.svg",
+          "bytes": 1236,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/icons/usa.svg",
+          "bytes": 5931,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/icons/port.svg",
+          "bytes": 1868,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/AS.svg",
+          "bytes": 2529,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/BLENDER.svg",
+          "bytes": 1783,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/DAVINCI.svg",
+          "bytes": 1376,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/QGIS.svg",
+          "bytes": 1171,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/GAEA.svg",
+          "bytes": 576946,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/cv/programs/UNREAL.svg",
+          "bytes": 1585,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/Sidebar.astro_astro_type_script_index_0_lang.CGcxT_nb.js",
+          "bytes": 337,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/CVLayout.astro_astro_type_script_index_0_lang.DzDxS30O.js",
+          "bytes": 1257,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/arrow.svg",
+          "bytes": 649,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        }
+      ],
+      "audit": {
+        "raf": 30,
+        "long": [],
+        "lcp": [
+          {
+            "time": 108,
+            "tag": "P",
+            "class": "body-text",
+            "url": ""
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 0,
+      "videos": [
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "src": null,
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    },
+    "idleRafCallbacks": 0,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 0,
+      "videos": [
+        {
+          "paused": false,
+          "src": "http://127.0.0.1:4329/videos/7.webm"
+        },
+        {
+          "paused": true,
+          "src": ""
+        },
+        {
+          "paused": true,
+          "src": ""
+        },
+        {
+          "paused": true,
+          "src": ""
+        }
+      ],
+      "scrollWidth": 1024,
+      "innerWidth": 1024
+    }
+  },
+  {
+    "device": "tablet",
+    "route": "/work/groaqua/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/FW/01/1.webp",
+          "bytes": 197866,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+          "bytes": 4826,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+          "bytes": 17711,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+          "bytes": 847,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/smooth-scroll.8REswEng.js",
+          "bytes": 3522,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/tablet-horizontal-gesture.Btp7B84K.js",
+          "bytes": 2129,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/responsive-layout.n34oSUrW.js",
+          "bytes": 733,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/scroll-pacing.BGyzftgp.js",
+          "bytes": 3350,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/fonts/Archivo.woff2",
+          "bytes": 186540,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/FW/01/2.webp",
+          "bytes": 208464,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/FW/01/3.webp",
+          "bytes": 90366,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        }
+      ],
+      "audit": {
+        "raf": 1018,
+        "long": [],
+        "lcp": [
+          {
+            "time": 52,
+            "tag": "H1",
+            "class": "",
+            "url": ""
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 0,
+      "videos": []
+    },
+    "idleRafCallbacks": 274,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 0,
+      "videos": [],
+      "scrollWidth": 1009,
+      "innerWidth": 1024
+    }
+  },
+  {
+    "device": "tablet",
+    "route": "/work/wwf/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/img/FW/02/1.webp",
+          "bytes": 189502,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_1_lang.BU1bJ5ig.js",
+          "bytes": 847,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/CaseStudy.astro_astro_type_script_index_0_lang.tyB4klvS.js",
+          "bytes": 4826,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DueT7C8s.js",
+          "bytes": 17711,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/smooth-scroll.8REswEng.js",
+          "bytes": 3522,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/tablet-horizontal-gesture.Btp7B84K.js",
+          "bytes": 2129,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/responsive-layout.n34oSUrW.js",
+          "bytes": 733,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/scroll-pacing.BGyzftgp.js",
+          "bytes": 3350,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/lenis.BeaIEUdr.js",
+          "bytes": 18902,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/expand.svg",
+          "bytes": 906,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/fonts/Archivo.woff2",
+          "bytes": 186540,
+          "type": "css"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/case-model.D_aMuusa.js",
+          "bytes": 10489,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/three.module.4gI5Z-_B.js",
+          "bytes": 736889,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/OrbitControls.ByLEOZ_P.js",
+          "bytes": 20203,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/DRACOLoader.BL6A1PCW.js",
+          "bytes": 53431,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/models/caseta.glb",
+          "bytes": 653856,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_wasm_wrapper.js",
+          "bytes": 58756,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_decoder.wasm",
+          "bytes": 192720,
+          "type": "fetch"
+        }
+      ],
+      "audit": {
+        "raf": 1689,
+        "long": [
+          59
+        ],
+        "lcp": [
+          {
+            "time": 52,
+            "tag": "H1",
+            "class": "",
+            "url": ""
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 1,
+      "videos": [
+        {
+          "src": "/videos/3.webm",
+          "paused": true,
+          "ready": 0,
+          "w": 0,
+          "h": 0
+        }
+      ]
+    },
+    "idleRafCallbacks": 550,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 1,
+      "videos": [
+        {
+          "paused": true,
+          "src": "http://127.0.0.1:4329/videos/3.webm"
+        }
+      ],
+      "scrollWidth": 1009,
+      "innerWidth": 1024
+    }
+  },
+  {
+    "device": "tablet",
+    "route": "/about/",
+    "initial": {
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4329/fonts/HostGrotesk.woff2",
+          "bytes": 31504,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/leo.glb",
+          "bytes": 3201752,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/fonts/Archivo.woff2",
+          "bytes": 186540,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/simba.glb",
+          "bytes": 2297352,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/morena.glb",
+          "bytes": 2103520,
+          "type": "link"
+        },
+        {
+          "url": "http://127.0.0.1:4329/icons/back.svg",
+          "bytes": 1285,
+          "type": "img"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/SiteControls.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/about.astro_astro_type_script_index_0_lang.DC0q3tdV.js",
+          "bytes": 334,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/AboutSection.astro_astro_type_script_index_0_lang.DEcYWoJp.js",
+          "bytes": 20299,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ContactCard.astro_astro_type_script_index_0_lang.CBjE_ZKk.js",
+          "bytes": 10944,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preferences.CW_ZlNqo.js",
+          "bytes": 3169,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/preload-helper.B3nfOi5I.js",
+          "bytes": 1664,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/action-buttons.BTmWQVPv.js",
+          "bytes": 1083,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/gsap.CvDoa17S.js",
+          "bytes": 69882,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/ScrollTrigger.CDDhF-DF.js",
+          "bytes": 43025,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/es.BbOb-G-0.js",
+          "bytes": 9375,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/dogScene.Deuk8eqY.js",
+          "bytes": 35013,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/three.module.4gI5Z-_B.js",
+          "bytes": 736889,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/OrbitControls.ByLEOZ_P.js",
+          "bytes": 20203,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/DRACOLoader.BL6A1PCW.js",
+          "bytes": 53431,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/_astro/sceneUtils.TI2hYmoN.js",
+          "bytes": 1781,
+          "type": "script"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon-light.svg",
+          "bytes": 860,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/favicon.ico",
+          "bytes": 13709,
+          "type": "other"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_wasm_wrapper.js",
+          "bytes": 58756,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/draco/draco_decoder.wasm",
+          "bytes": 192720,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/laptop.glb",
+          "bytes": 180364,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/ipad.glb",
+          "bytes": 208332,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/cuadro.glb",
+          "bytes": 33488,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/libro1.glb",
+          "bytes": 135616,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/libro2.glb",
+          "bytes": 266124,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/gem.glb",
+          "bytes": 22468,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/halosimba.glb",
+          "bytes": 71768,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/halomorena.glb",
+          "bytes": 71768,
+          "type": "fetch"
+        },
+        {
+          "url": "http://127.0.0.1:4329/about/models/haloleo.glb",
+          "bytes": 71764,
+          "type": "fetch"
+        }
+      ],
+      "audit": {
+        "raf": 968,
+        "long": [
+          55
+        ],
+        "lcp": [
+          {
+            "time": 64,
+            "tag": "P",
+            "class": "about-loading-indicator",
+            "url": ""
+          },
+          {
+            "time": 528,
+            "tag": "P",
+            "class": "",
+            "url": ""
+          }
+        ],
+        "shifts": []
+      },
+      "canvases": 1,
+      "videos": []
+    },
+    "idleRafCallbacks": 273,
+    "errors": [],
+    "bad": [],
+    "final": {
+      "canvases": 1,
+      "videos": [],
+      "scrollWidth": 1024,
+      "innerWidth": 1024
+    }
+  }
+]
