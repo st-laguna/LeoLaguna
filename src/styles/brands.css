@@ -193,19 +193,27 @@ html .brands[data-mobile-streams] .brands-column:nth-child(2) {animation-directi
  html body .brands .brands-info .brands-statement {margin-top:0;text-align:center;align-self:center;}
 }
 
-/* On a phone in landscape, the same two loops become horizontal rows. */
-@media(max-width:1000px) and (max-height:500px) and (orientation:landscape) and (any-pointer:coarse) {
- html:not([data-ipad]) body .brands[data-mobile-streams] {height:100svh;min-height:0;padding:0;}
- html:not([data-ipad]) body .brands[data-mobile-streams] .brands-layout {display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:20px;padding:32px 0 0;height:100%;}
- html:not([data-ipad]) body .brands[data-mobile-streams] .brands-info {grid-column:1;grid-row:1;padding:0 24px;gap:0;}
- html:not([data-ipad]) body .brands[data-mobile-streams] .brands-stats {display:flex;flex-direction:row;justify-content:space-evenly;gap:24px;text-align:center;}
- html:not([data-ipad]) body .brands[data-mobile-streams] .brands-stats>div {align-items:center;}
- html:not([data-ipad]) body .brands[data-mobile-streams] .brands-stats dd {font-size:32px;}
- html:not([data-ipad]) body .brands[data-mobile-streams] .brands-stats dt {font-size:12px;}
- html:not([data-ipad]) body .brands[data-mobile-streams] .brands-statement {display:none;}
- html:not([data-ipad]) body .brands[data-mobile-streams] .brands-grid {grid-column:1;grid-row:2;display:flex;flex-direction:column;border:0;height:100%;}
- html:not([data-ipad]) body .brands[data-mobile-streams] .brands-grid::after {display:none;}
- html:not([data-ipad]) body .brands[data-mobile-streams] .brands-column {flex:none;display:flex;flex-direction:row;width:max-content;height:50%;animation-name:brand-strip-left;animation-direction:normal;}
- html:not([data-ipad]) body .brands[data-mobile-streams] .brands-cell {flex:0 0 160px;width:160px;height:100%;padding:14px 22px;border-bottom:1px solid #8885;border-right:1px solid #8885;}
-}
+/* One horizontal strip composition for phones and iPads, landscape only. */
+html body .brands[data-mobile-streams][data-landscape-streams] {--brand-band-height:clamp(84px,18svh,152px);--brand-cell-width:clamp(128px,15vw,216px);height:100svh;min-height:0;padding:0;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-layout {position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;align-content:center;gap:clamp(16px,2.5svh,28px);width:100%;max-width:none;height:100%;margin:0;padding:clamp(24px,4svh,44px) 0;overflow:hidden;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-info {grid-column:1;grid-row:1;justify-content:center;padding:0 clamp(24px,4vw,64px);gap:0;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-stats {display:flex;flex-direction:row;justify-content:space-evenly;align-items:center;gap:clamp(16px,3vw,44px);text-align:center;padding:0;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-stats>div {display:flex;flex-direction:column;width:auto;align-items:center;gap:4px;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-stats dd {font-size:clamp(32px,5svh,52px);line-height:.94;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-stats dt {font-size:clamp(12px,1.7svh,18px);}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-statement {display:none;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-grid {grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:0;height:calc(2 * var(--brand-band-height));aspect-ratio:auto;border:0;border-top:1px solid #8885;overflow:hidden;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-grid::after {display:none;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-column {flex:none;display:flex;flex-direction:row;width:max-content;height:var(--brand-band-height);animation:brand-strip-left var(--brand-strip-duration,32s) linear infinite;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-column:nth-child(2) {animation-direction:reverse;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-cell {order:0;flex:0 0 var(--brand-cell-width);width:var(--brand-cell-width);height:100%;min-height:0;padding:clamp(8px,1.2svh,16px) clamp(12px,1.8vw,28px);border:0;border-bottom:1px solid #8885;border-right:1px solid #8885;background:var(--background);overflow:hidden;opacity:1;}
+html[data-theme="dark"] body .brands[data-mobile-streams][data-landscape-streams] .brands-cell {background:var(--dark-base);}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-cell[aria-hidden="true"] {display:grid;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-cell img {width:100%;height:100%;max-width:100%;max-height:100%;min-height:0;object-fit:contain;transform:none;}
+html body .brands[data-mobile-streams][data-landscape-streams] .brands-cell[data-brand-shape="square"] img {max-width:clamp(56px,8svh,104px);max-height:clamp(56px,8svh,104px);}
 @keyframes brand-strip-left {from {transform:translateX(0);}to {transform:translateX(-50%);}}
+@media(prefers-reduced-motion:reduce) {
+ html body .brands[data-mobile-streams][data-landscape-streams] .brands-column {animation:none;will-change:auto;}
+ html body .brands[data-mobile-streams][data-landscape-streams] .brands-cell[aria-hidden="true"] {display:none;}
+}
+

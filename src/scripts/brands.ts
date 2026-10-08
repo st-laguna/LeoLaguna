@@ -18,35 +18,59 @@ if(section){
   themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   updateLogos();
   let media: ReturnType<typeof gsap.matchMedia>;
+  const landscape = matchMedia('(orientation:landscape)');
+  let resizeTimer: ReturnType<typeof setTimeout> | undefined;
+  let layoutWidth=innerWidth, layoutLandscape=landscape.matches;
+  const useLandscapeStreams=()=>landscape.matches && (
+    document.documentElement.hasAttribute('data-ipad') ||
+    document.documentElement.hasAttribute('data-large-tablet-landscape') ||
+    matchMedia('(max-width:1000px) and (max-height:500px), (pointer:coarse)').matches
+  );
   function configureLayout(){
+    layoutWidth=innerWidth;layoutLandscape=landscape.matches;
     media?.revert();
     media=gsap.matchMedia();
     const tabletPortrait=document.documentElement.hasAttribute('data-tablet-portrait');
+    const horizontalStreams = useLandscapeStreams();
     media.add('(min-width:1001px), (min-width:701px) and (min-height:501px)',()=>{
-      if(!tabletPortrait)return initBrandPreview(section);
+      if(!tabletPortrait && !horizontalStreams)return initBrandPreview(section);
     });
-    media.add(tabletPortrait?'all':'(max-width:700px), (max-width:1000px) and (max-height:500px)',()=>{
+    media.add(tabletPortrait || horizontalStreams?'all':'(max-width:700px), (max-width:1000px) and (max-height:500px)',()=>{
     section.setAttribute('data-mobile-streams','');
+    section.toggleAttribute('data-landscape-streams', horizontalStreams);
     const cells=Array.from(section.querySelectorAll<HTMLButtonElement>('.brands-cell'));
     cells.forEach(cell=>{cell.disabled=true;});
     const copies:HTMLElement[]=[];
     section.querySelectorAll<HTMLElement>('.brands-column').forEach(column=>{
-      Array.from(column.children).forEach(cell=>{
+      const originals=Array.from(column.children);
+      const cellWidth=horizontalStreams?((originals[0] as HTMLElement).getBoundingClientRect().width || 128):0;
+      // Each identical half must cover the viewport, even on a larger iPad.
+      const repeats=horizontalStreams?Math.max(1,Math.ceil(innerWidth/(originals.length*cellWidth))):1;
+      const addCopy=(cell:Element)=>{
         const copy=cell.cloneNode(true) as HTMLElement;
         copy.setAttribute('aria-hidden','true');copy.setAttribute('tabindex','-1');
         copy.querySelector('img')?.setAttribute('loading','eager');
         column.append(copy);copies.push(copy);
-      });
+      };
+      for(let repeat=1;repeat<repeats;repeat++)originals.forEach(addCopy);
+      // Duplicate the complete first half, not just the original logo set.
+      const firstHalf=Array.from(column.children);
+      firstHalf.forEach(addCopy);
+      if(horizontalStreams)column.style.setProperty('--brand-strip-duration', `${originals.length*repeats*cellWidth/36}s`);
     });
-    return()=>{copies.forEach(copy=>copy.remove());cells.forEach(cell=>{cell.disabled=false;});section.removeAttribute('data-mobile-streams');};
+    return()=>{copies.forEach(copy=>copy.remove());cells.forEach(cell=>{cell.disabled=false;});section.querySelectorAll<HTMLElement>('.brands-column').forEach(column=>column.style.removeProperty('--brand-strip-duration'));section.removeAttribute('data-mobile-streams');section.removeAttribute('data-landscape-streams');};
     });
     media.add('(prefers-reduced-motion:no-preference)',()=>{
       const logos=Array.from(section!.querySelectorAll<HTMLElement>('.brands-cell img'));
-      const compact=tabletPortrait || matchMedia('(any-pointer:coarse)').matches;
+      const compact=tabletPortrait || horizontalStreams || matchMedia('(any-pointer:coarse)').matches;
       const counters=Array.from(section!.querySelectorAll<HTMLElement>('[data-count-to]'));
       const featured=section!.parentElement?.querySelector<HTMLElement>('[data-featured-works]');
       const presentation=gsap.timeline({paused:true});
-      presentation.fromTo(logos,{translate:compact?'0 12px':'0 22px',clipPath:'inset(100% 0 0)'},{translate:'0 0',clipPath:'inset(0% 0 0)',duration:compact?.9:1,stagger:compact?.09:.11,ease:'power3.inOut'},0);
+      if(horizontalStreams){
+        // Matching copies enter together, so the loop's two halves stay identical.
+        const names=[...new Set(logos.map(logo=>logo.closest<HTMLElement>('.brands-cell')!.dataset.brandName))];
+        names.forEach((name,index)=>presentation.fromTo(logos.filter(logo=>logo.closest<HTMLElement>('.brands-cell')!.dataset.brandName===name),{translate:'0 12px',clipPath:'inset(100% 0 0)'},{translate:'0 0',clipPath:'inset(0% 0 0)',duration:.9,ease:'power3.inOut'},index*.05));
+      }else presentation.fromTo(logos,{translate:compact?'0 12px':'0 22px',clipPath:'inset(100% 0 0)'},{translate:'0 0',clipPath:'inset(0% 0 0)',duration:compact?.9:1,stagger:compact?.09:.11,ease:'power3.inOut'},0);
       const informationStart=presentation.duration();
       const informationTweens: Array<{tween:gsap.core.Animation;offset:number}> = [];
       presentation.addLabel('information',informationStart);
@@ -95,5 +119,15 @@ if(section){
   configureLayout();
   const layoutObserver=new MutationObserver(configureLayout);
   layoutObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-tablet-portrait']});
-  if(import.meta.hot)import.meta.hot.dispose(()=>{layoutObserver.disconnect();media.revert();themeObserver.disconnect();});
+  const resize=()=>{
+    clearTimeout(resizeTimer);
+    if(innerWidth===layoutWidth && landscape.matches===layoutLandscape)return;
+    resizeTimer=setTimeout(()=>{
+      if(innerWidth===layoutWidth && landscape.matches===layoutLandscape)return;
+      if(useLandscapeStreams() || section!.hasAttribute('data-landscape-streams'))configureLayout();
+      else {layoutWidth=innerWidth;layoutLandscape=landscape.matches;}
+    },150);
+  };
+  window.addEventListener('resize',resize,{passive:true});
+  if(import.meta.hot)import.meta.hot.dispose(()=>{clearTimeout(resizeTimer);window.removeEventListener('resize',resize);layoutObserver.disconnect();media.revert();themeObserver.disconnect();});
 }
