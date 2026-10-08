@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { isPhoneViewport } from './responsive-layout';
 
 export function openServiceCover(dialog:HTMLDialogElement,shell:HTMLElement,title:HTMLElement|null,source:HTMLElement,index:number,reverse=false){
   const horizontal=source.hasAttribute('data-horizontal');
@@ -51,7 +52,7 @@ export function openServiceCover(dialog:HTMLDialogElement,shell:HTMLElement,titl
     // handing the temporary element back to the actual gallery heading.
     destination.textContent=text;
     Object.assign(destination.style,{fontFamily:style.fontFamily,fontWeight:style.fontWeight,fontStyle:style.fontStyle,fontStretch:style.fontStretch,fontFeatureSettings:style.fontFeatureSettings,fontSize:`${parseFloat(style.fontSize)*scale}px`,lineHeight:`${parseFloat(style.lineHeight)*scale}px`,letterSpacing:style.letterSpacing==='normal'?'normal':`${parseFloat(style.letterSpacing)*scale}px`,textTransform:style.textTransform,whiteSpace:'pre',width:`${width*scale}px`,textAlign:'center'});
-    if(destination===title)gsap.set(destination,{x:0,y:0,xPercent:-50,yPercent:-50});
+    if(destination===title){const phoneBlock=isPhoneViewport() && destination.closest('[data-service-intro-block]');gsap.set(destination,{x:0,y:0,xPercent:phoneBlock?0:-50,yPercent:phoneBlock?0:-50});}
     targets.push({clone,x:end.left+end.width/2-width*scale/2-left,y:end.top+end.height/2-height*scale/2-top,scale});
     gsap.set(clone,{transformOrigin:'0 0'});
     // A Range measures glyph bounds, not the line box. Match the actual glyph

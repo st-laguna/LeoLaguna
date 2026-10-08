@@ -75,13 +75,17 @@ if(gallery&&lightbox&&section){
     const items=Array.from(g.querySelectorAll<HTMLElement>('[data-gallery]:not([hidden]) .gallery-item'));
     gsap.set(items.map(item=>item.firstElementChild),{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)'});
     observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
+      if(entry.target.classList.contains('gallery-footer-return')){g.toggleAttribute('data-gallery-footer-visible',entry.isIntersecting);return;}
       if(entry.isIntersecting){entry.target.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>img.src=img.dataset.src!);if(!reduced.matches)gsap.to(entry.target.firstElementChild,{clipPath:'inset(0% 0 0)',duration:.65,ease:'power3.inOut'});observer?.unobserve(entry.target);}
     }),{root:scroller,threshold:.05});
     items.forEach(item=>observer!.observe(item));
+    const footerReturn=g.querySelector<HTMLElement>('[data-gallery]:not([hidden]) .gallery-footer-return');
+    if(footerReturn)observer.observe(footerReturn);
   }
   async function openGallery(button:HTMLElement){
     if(galleryBusy||g.open)return;
     galleryBusy=true;galleryOpener=button;pause(s);
+    g.removeAttribute('data-gallery-footer-visible');
     const index=button.dataset.open==='current'?Number(s.dataset.current||0):Number(button.dataset.open);
     const preparation:Promise<void>[]=[];
     window.dispatchEvent(new CustomEvent('leo:prepare-gallery',{detail:{index,waitUntil:(promise:Promise<void>)=>preparation.push(promise)}}));
@@ -96,7 +100,8 @@ if(gallery&&lightbox&&section){
     lock();g.showModal();scroller.scrollTop=0;
     window.scrollTo({top:scroll,behavior:'instant'});
     const sticky=g.querySelector<HTMLElement>('[data-gallery]:not([hidden]) [data-service-sticky]');
-    if(sticky){disposeSticky=mountServiceStickyGrid(sticky,scroller);updateGalleryClock();clockTimer=setInterval(updateGalleryClock,1000);}
+    if(sticky)disposeSticky=mountServiceStickyGrid(sticky,scroller);
+    updateGalleryClock();clockTimer=setInterval(updateGalleryClock,1000);
     animateItems();
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','true'));
     closeGalleryButton.focus({preventScroll:true});
@@ -124,7 +129,7 @@ if(gallery&&lightbox&&section){
       opening=openServiceCover(g,shell,title,s,index,true);
       await opening.finished;opening=undefined;
     }
-    disposeSticky?.();disposeSticky=undefined;clearInterval(clockTimer);g.close();clearItemAnimations();unlock();
+    disposeSticky?.();disposeSticky=undefined;clearInterval(clockTimer);g.close();g.removeAttribute('data-gallery-footer-visible');clearItemAnimations();unlock();
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','false'));
     galleryOpener?.focus({preventScroll:true});galleryOpener=null;galleryBusy=false;
   }

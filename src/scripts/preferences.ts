@@ -41,7 +41,6 @@
   }
   function applyTheme(theme: Theme) {
     root.dataset.theme = theme;
-    document.querySelector<HTMLLinkElement>('#site-favicon')?.setAttribute('href', `/favicon-${theme}.svg`);
 
     themeButton?.setAttribute(
       'aria-checked',

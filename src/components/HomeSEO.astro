@@ -1,0 +1,22 @@
+---
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+const url = 'https://leolaguna.com/';
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Person', '@id': `${url}#person`, name: 'Leo Laguna', url, jobTitle: 'Scientific Illustrator & 3D Developer' },
+    { '@type': 'WebSite', '@id': `${url}#website`, name: 'Leo Laguna', url, publisher: { '@id': `${url}#person` } },
+  ],
+};
+---
+<link rel="canonical" href={url} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Leo Laguna" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={url} />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')}></script>

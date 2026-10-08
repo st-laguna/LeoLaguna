@@ -18,7 +18,7 @@ const featuredWorks = [
 // Read original dimensions at build time; replacing a cover updates its ratio.
 const covers = await Promise.all(featuredWorks.map(async work => {
   const { width, height } = await sharp(resolve('public', work.image.slice(1))).metadata();
-  return { ...work, width, height };
+  return { ...work, width, height, phoneSquare: work.slug !== 'sperm-whales-of-dominica' && !!width && !!height && height / width > 1.2 };
 }));
 ---
 <section id="featured-works" class="featured-works" data-featured-works aria-labelledby="featured-works-heading">
@@ -27,7 +27,7 @@ const covers = await Promise.all(featuredWorks.map(async work => {
     {[[covers[1], covers[2], covers[0]], [covers[3], covers[4]]].map((column, columnIndex) => (
       <div class={`featured-works__column featured-works__column--${columnIndex === 0 ? 'left' : 'right'}`}>
         {column.map(work => (
-          <div class={`featured-work featured-work--${work.slug}`} data-future-href={work.futureHref}>
+          <div class={`featured-work featured-work--${work.slug}`} data-future-href={work.futureHref} data-phone-square={work.phoneSquare ? '' : undefined} style={work.slug !== 'sperm-whales-of-dominica' ? `--phone-cover-ratio:${work.width} / ${work.height};--phone-cover-aspect:${work.width! / work.height!}` : undefined}>
             <figure class="featured-work__content arrow-hover">
               <figcaption>
                 <span>[{work.number}] {work.client.toUpperCase()}</span>

@@ -1,6 +1,6 @@
 ---
 import {serviceThumbnail} from '../data/service-thumbnail';
-import { projects } from '../data/projects';
+import { projects, projectAssetLabel } from '../data/projects';
 import { projectImageSize } from '../data/project-image-size';
 import en from '../i18n/en.json';
 import '../styles/projects.css';
@@ -34,17 +34,17 @@ const t = en as Record<string,string>;
                 {project.assets.map((asset,j) => (
                   <figure class="project-slide" data-slide={j} hidden={j!==0}>
                     {asset.kind === 'image' ? (
-                      <button class="project-enlarge" type="button" data-zoom-src={asset.src} data-zoom-alt={asset.client || project.id} aria-label={`Ampliar / Enlarge: ${asset.client || project.id}`}><img src={index===0 && j===0 ? asset.src : undefined} data-src={asset.src} alt={asset.client || `${project.id} — ${j+1}`} loading="lazy" decoding="async" /></button>
+                      <button class="project-enlarge" type="button" data-zoom-src={asset.src} data-zoom-alt={projectAssetLabel(asset, project)} aria-label={`Ampliar / Enlarge: ${projectAssetLabel(asset, project)}`}><img src={index===0 && j===0 ? asset.src : undefined} data-src={asset.src} alt={projectAssetLabel(asset, project)} loading="lazy" decoding="async" /></button>
                     ) : (
-                      <video data-auto-video src={asset.src} poster={asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={asset.client || 'Video del proyecto'} ></video>
+                      <video data-auto-video src={asset.src} poster={asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={projectAssetLabel(asset, project)} ></video>
                     )}
                   </figure>
                 ))}
               </div>
               <div class="project-mobile-controls">
-                <div class="project-thumbs" role="tablist" aria-label={`Gallery ${project.id}`}>
+                <div class="project-thumbs" role="tablist" aria-label={`${t[`projects.${project.id}.title`]} gallery`}>
                   {project.assets.map((asset,j) => (
-                    <button type="button" role="tab" data-select={j} data-index={j} aria-selected={j===0} tabindex={j===0 ? 0 : -1} aria-label={`${project.id} — ${asset.client || j+1}`}>
+                    <button type="button" role="tab" data-select={j} data-index={j} aria-selected={j===0} tabindex={j===0 ? 0 : -1} aria-label={`View: ${projectAssetLabel(asset, project)}`}>
                       {/* Beyond these desktop limits, controls only appear as image-free mobile dots. */}
                       {j < (asset.kind === 'video' ? 8 : 9) && (
                         <img data-src={serviceThumbnail(asset,320)} data-srcset={`${serviceThumbnail(asset,320)} 320w, ${serviceThumbnail(asset,640)} 640w`} sizes="(min-width:1001px) min(10vw,220px), 120px" width="320" height="320" alt="" loading="lazy" decoding="async" />
@@ -55,7 +55,7 @@ const t = en as Record<string,string>;
                 <button type="button" class="project-mobile-more" data-open={index} aria-label={t['projects.viewAll']}><span data-roll-label data-i18n="projects.viewAll">{t['projects.viewAll']}</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></button>
               </div>
               <div class="project-mobile-copy">
-                <span><button type="button" class="project-panel-back" data-panel-back disabled tabindex="-1" aria-label={`Volver / Back to project ${project.id}`}>{project.id}</button></span>
+                <span><button type="button" class="project-panel-back" data-panel-back disabled tabindex="-1" aria-label={`Volver / Back to ${t[`projects.${project.id}.title`]}`}>{project.id}</button></span>
                 <h2 data-i18n={`projects.${project.id}.title`}>{t[`projects.${project.id}.title`]}</h2>
                 <p data-i18n={`projects.${project.id}.description`}>{t[`projects.${project.id}.description`]}</p>
               </div>
@@ -107,15 +107,15 @@ const t = en as Record<string,string>;
           {(index === 3 ? project.assets : project.assets.slice(6)).map(asset=>(
             <figure class="gallery-item">
               {asset.kind==='image' ? (
-                <button type="button" data-zoom-src={asset.src} data-zoom-alt={asset.client || project.id} aria-label={`Ampliar / Enlarge: ${asset.client || project.id}`}>
-                  <img data-src={asset.src} {...projectImageSize(asset.src)} alt={asset.client || project.id} loading="lazy" decoding="async" />
+                <button type="button" data-zoom-src={asset.src} data-zoom-alt={projectAssetLabel(asset, project)} aria-label={`Ampliar / Enlarge: ${projectAssetLabel(asset, project)}`}>
+                  <img data-src={asset.src} {...projectImageSize(asset.src)} alt={projectAssetLabel(asset, project)} loading="lazy" decoding="async" />
                 </button>
-              ) : <video data-auto-video src={asset.src} poster={asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={asset.client || 'Video del proyecto'} ></video>}
+              ) : <video data-auto-video src={asset.src} poster={asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={projectAssetLabel(asset, project)} ></video>}
               {asset.client && <figcaption>{asset.client}</figcaption>}
             </figure>
           ))}
           </div>
-          {index !== 3 && <GalleryFooter />}
+          {index !== 3 ? <GalleryFooter /> : <div class="gallery-phone-footer"><GalleryFooter /></div>}
         </div>
       ))}
     </div>

@@ -10,7 +10,6 @@ function restorePreferences() {
     root.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
     root.lang = 'en';
   }
-  document.getElementById('site-favicon')?.setAttribute('href', `/favicon-${root.dataset.theme}.svg`);
 }
 restorePreferences();
 // Prepare only the destination document on explicit pointer/keyboard intent.

@@ -1,5 +1,5 @@
 ---
-import type { Project } from '../data/projects';
+import { projectAssetLabel, type Project } from '../data/projects';
 import en from '../i18n/en.json';
 import '../styles/service-sticky-grid.css';
 interface Props { project: Project; }
@@ -15,17 +15,19 @@ const columns = [0, 1, 2].map(column => sample.filter((_, index) => index % 3 ==
       <div class="service-image-grid" data-sticky-grid>
         {columns.map(column => <div class="service-image-column" data-sticky-column>
           {column.map(asset => <figure class="service-grid-image" data-sticky-item>
-            <button type="button" data-zoom-src={asset.src} data-zoom-alt={asset.client || project.id} aria-label={`Ampliar / Enlarge: ${asset.client || project.id}`}><img data-src={asset.src} alt={asset.client || project.id} loading="lazy" decoding="async" width="640" height="512" /></button>
+            <button type="button" data-zoom-src={asset.src} data-zoom-alt={projectAssetLabel(asset, project)} aria-label={`Ampliar / Enlarge: ${projectAssetLabel(asset, project)}`}><img data-src={asset.src} alt={projectAssetLabel(asset, project)} loading="lazy" decoding="async" width="640" height="512" /></button>
           </figure>)}
         </div>)}
       </div>
     </div>
+    <div class="service-intro-block" data-service-intro-block>
     <span class="service-intro-number" data-service-number>{project.id}</span>
     <span class="service-grid-eyebrow" data-sticky-eyebrow data-i18n="projects.gallery">{t['projects.gallery']}</span>
     <h2 class="service-grid-title" id={`service-grid-title-${project.id}`} data-sticky-title data-i18n={`projects.${project.id}.title`}>{t[`projects.${project.id}.title`]}</h2>
     <div class="service-grid-content" data-sticky-content>
       <p data-i18n={`projects.${project.id}.description`}>{t[`projects.${project.id}.description`]}</p>
 
+    </div>
     </div>
     <span class="service-grid-scroll-hint" data-sticky-hint data-i18n="projects.scrollHint">Scroll to see more</span>
   </div>

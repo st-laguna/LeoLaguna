@@ -30,3 +30,5 @@ PUBLICAR.bat
 .dev.vars.*
 .wrangler/
 .env.local
+
+public/icons/~ai-*.tmp

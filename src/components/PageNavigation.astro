@@ -8,7 +8,10 @@ import '../styles/page-navigation.css';
 // Run before the first render: a deferred module can miss pagereveal.
 const source = `(() => {\n${homeEntrance.replace(/^export /gm, '')}\n${motion.replace(/^import .*home-entrance.*;$/gm, '').replace(/^export /gm, '')}\n${navigation}\n})();`;
 ---
-<link rel="icon" href="/favicon.ico" sizes="any" />
-<link id="site-favicon" rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 96x96 192x192 256x256" />
+<link rel="icon" type="image/png" href="/favicon.png" sizes="192x192" />
+<link rel="icon" type="image/svg+xml" href="/favicon-light.svg" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/svg+xml" href="/favicon-dark.svg" media="(prefers-color-scheme: dark)" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <script is:inline set:html={responsiveInit}></script>
 <script is:inline set:html={source}></script>

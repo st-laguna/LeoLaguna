@@ -56,3 +56,14 @@ export const projects: Project[] = [
     ],
   },
 ];
+// Accessible labels describe the work, never an internal asset/gallery index.
+export function projectAssetLabel(asset: ProjectAsset, project: Project): string {
+  if (asset.client) return asset.client;
+  const labels: Record<string, string> = {
+    '01': 'Technical visualization project',
+    '02': 'Scientific illustration project',
+    '03': 'Educational illustration project',
+    '04': 'Animation and video project',
+  };
+  return labels[project.id] || 'Visual communication project';
+}
