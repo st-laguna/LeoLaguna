@@ -11,7 +11,7 @@ The `/about/` page selects `MobileAbout.astro` for phones and tablets. Desktop k
 - `src/scripts/about/mobileAboutContent.ts`: sticker IDs, copy, image pairs and rotations.
 - `scripts/optimize-about-stickers.mjs`: `node scripts/optimize-about-stickers.mjs` regenerates transparent, trimmed 640/960px stickers from the original assets.
 
-Head framing comes from `about-split-test.astro`: portrait scale 2.8, Y -12%, crop 608/416; landscape scale 2, crop 608/620. Portrait upper/lower compensation is .414 of the base distance, added independently of each layer's travel. The original 1 / 1.10 / 1.10 / 1.10 layer multipliers and masks are preserved. Layers 1–4 use `mobile-a8` or `ipad-a8`; layer 5 is excluded.
+Head framing was developed in the former `about-split-test.astro` prototype and integrated into `/about/`: portrait scale 2.8, Y -12%, crop 608/416; landscape scale 2, crop 608/620. Portrait upper/lower compensation is .414 of the base distance, added independently of each layer's travel. The original 1 / 1.10 / 1.10 / 1.10 layer multipliers and masks are preserved. Layers 1–4 use `mobile-a8` or `ipad-a8`; layer 5 is excluded.
 
 `--portrait-gap` (.58) and `--landscape-gap` (.64) control the full central opening. The intro follows the supplied mockup: facts at top-left, right-aligned description at bottom-right, coral ampersand in the center. Intentional line breaks preserve the composition across sizes.
 
@@ -38,4 +38,4 @@ Navigation into About uses the same cross-document snapshot transition as the ot
 
 Phone 390×844 / 844×390; iPad 768×1024 / 1024×768 / 1024×1366 / 1366×1024. Checked forward/reverse ordering, repeated taps, card fit, all six photo/copy pairs, asset requests and centered gap. Desktop 1440×900 and 1366×768 geometry/styles match the pre-change baseline and retain WebGL.
 
-The isolated `about-split-test.astro` stays available and unchanged. Real-device Safari remains useful for final visual judgment and touch feel.
+The isolated `about-split-test.astro` prototype was retired after integration into `/about/`; `/about-split-test/` is no longer generated. Real-device Safari remains useful for final visual judgment and touch feel.
