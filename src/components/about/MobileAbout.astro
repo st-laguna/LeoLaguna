@@ -32,13 +32,15 @@ const introLines = ['I CREATE SCIENTIFIC', 'ILLUSTRATIONS, TECHNICAL', 'VISUALS,
         <span class="mobile-about__ampersand" aria-hidden="true">&amp;</span>
         <p class="mobile-about__description">{introLines.map(line => <span>{line}{' '}</span>)}</p>
       </div>
-      <button data-mobile-next type="button" aria-label="Explore my interests">tap to explore <span class="mobile-about__tap-arrow" aria-hidden="true">↗</span></button>
+      <button data-mobile-next type="button" aria-label="Explore my interests">Tap to explore <span class="mobile-about__tap-arrow" aria-hidden="true">↗</span></button>
     </section>
     <div class="mobile-about__stickers mobile-about__wheel" id="mobile-about-stickers" role="region" aria-roledescription="carousel" aria-label="Explore my interests" aria-hidden="true" inert>
       {aboutInterests.map((interest, index) => <div class="mobile-about__wheel-slot" data-wheel-slot style={`--sticker-index:${index}`}><div class="mobile-about__float"><button class="mobile-about__sticker" type="button" data-mobile-interest={interest.id} aria-label={`Explore ${interest.title.toLowerCase()}`} aria-haspopup="dialog" aria-controls="mobile-about-info" style={`--sticker-index:${index};--sticker-rotation:${interest.rotation}`}>
         <img data-sticker-asset={interest.asset} alt={interest.title} decoding="async" width="640" height="640" />
       </button></div></div>)}
     </div>
+    <div class="mobile-about__decorations" aria-hidden="true"></div>
+    <span class="mobile-about__wheel-cue" aria-hidden="true">›</span>
     <button class="mobile-about__hint" data-mobile-hint-action type="button" aria-label="Explore About"><span data-mobile-hint>tap to explore</span> <span class="mobile-about__tap-arrow" aria-hidden="true">↗</span></button>
     <p class="mobile-about__sr" data-mobile-status role="status" aria-live="polite"></p>
   </div>

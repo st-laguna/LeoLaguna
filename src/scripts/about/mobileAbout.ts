@@ -51,7 +51,6 @@ export function mountMobileAbout(section: HTMLElement) {
   function clearTimers() { timers.forEach(clearTimeout); timers.clear(); }
   const busy = () => state === 'opening' || state === 'closing' || state === 'leaving-intro';
   const wheel = mountMobileAboutWheel(stickers, openInterest, text => {status.textContent = text;});
-  const wheelHint = () => orientation.matches ? 'swipe left / right · tap to explore' : 'swipe up / down on a sticker · tap to explore';
   function setState(value: State) {
     state = value;
     wheel.setEnabled(value === 'stickers');
@@ -64,7 +63,7 @@ export function mountMobileAbout(section: HTMLElement) {
     menuToggle.disabled = !ready;
     intro.inert = value !== 'intro'; intro.setAttribute('aria-hidden', String(value !== 'intro'));
     stickers.inert = value !== 'stickers'; stickers.setAttribute('aria-hidden', String(value !== 'stickers'));
-    hint.textContent = value === 'closed' ? 'tap to explore' : value === 'stickers' ? wheelHint() : '';
+    hint.textContent = value === 'closed' ? 'tap to explore' : value === 'stickers' ? 'Tap to explore' : '';
     hintAction.hidden = value !== 'closed' && value !== 'stickers';
     hintAction.disabled = value !== 'closed' || !ready;
     artwork.setAttribute('aria-expanded', String(root.dataset.open === 'true'));
@@ -127,7 +126,6 @@ export function mountMobileAbout(section: HTMLElement) {
     if (sizeKey === lastSize || !size.width || !size.height) return;
     lastSize = sizeKey;
     root.dataset.orientation = mode;
-    if(state === 'stickers')hint.textContent = wheelHint();
     // Read geometry once per resize; no animation-frame measurements.
     const scale = head.getBoundingClientRect().width / W;
     const style = getComputedStyle(root);
@@ -180,7 +178,7 @@ export function mountMobileAbout(section: HTMLElement) {
     loadStickers(); setState('leaving-intro');
     later(() => {
       setState('stickers'); status.textContent = 'Six interests. Swipe to choose; tap the centered sticker to learn more.';
-      if (document.activeElement === next) query<HTMLButtonElement>('[data-mobile-interest]').focus({ preventScroll: true });
+      if (document.activeElement === next) query<HTMLButtonElement>('[data-active="true"] [data-mobile-interest]').focus({ preventScroll: true });
     }, reduced.matches ? 0 : 260);
   }
   function autoOpen() {

@@ -31,11 +31,14 @@ if(host&&rail){
     const items=endPanel.querySelectorAll<HTMLElement>('.case-study__others > span, .case-study__others > a > span:first-child, .case-study__next-label, .case-study__next-heading > *, .case-study__preview > img, .case-study__next-meta');
     return gsap.timeline({paused:true}).fromTo(items,{y:28,clipPath:'inset(100% 0 0 0)'},{y:0,clipPath:'inset(0% 0 0 0)',duration:.9,stagger:.12,ease:'power3.inOut'});
   }
-  media.add('(min-width:701px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (max-width:700px) and (prefers-reduced-motion:no-preference)',()=>{
+  media.add('(min-width:701px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (max-width:700px) and (prefers-reduced-motion:no-preference), (any-pointer:coarse) and (prefers-reduced-motion:no-preference)',()=>{
     host.setAttribute('data-horizontal','');
     const distance=()=>Math.max(0,rail.scrollWidth-innerWidth);
-    const measure=()=>host.style.setProperty('--case-scroll-height',((document.documentElement.hasAttribute('data-large-tablet-landscape')?host.querySelector<HTMLElement>('.case-study__stage')!.clientHeight:innerHeight)+distance())+'px');
+    const measure=()=>host.style.setProperty('--case-scroll-height',(host.querySelector<HTMLElement>('.case-study__stage')!.clientHeight+distance())+'px');
     measure();
+    // Toolbar changes resize dvh without rebuilding the rail or resetting progress.
+    const stageSize=new ResizeObserver(measure);
+    stageSize.observe(host.querySelector<HTMLElement>('.case-study__stage')!);
     const entrance=endEntrance();
     let panelEntered=false;
     const updateEnd=()=>{
@@ -46,12 +49,12 @@ if(host&&rail){
       panelEntered=visible;
       if(visible)entrance.play();else entrance.reverse();
     };
-    const tween=gsap.to(rail,{x:()=>-distance(),ease:'power1.inOut',scrollTrigger:{
+    const tween=gsap.to(rail,{x:()=>-distance(),ease:matchMedia('(any-pointer:coarse)').matches?'none':'power1.inOut',scrollTrigger:{
       id:'case-study-rail',trigger:host,start:'top top',end:()=>'+='+distance(),scrub:.65,
       invalidateOnRefresh:true,onRefreshInit:measure,onRefresh:updateEnd,
     },onUpdate:updateEnd});
     updateEnd();
-    const removeGesture=mountTabletHorizontalGesture(host,()=>tween.scrollTrigger);
+    const removeGesture=mountTabletHorizontalGesture(host.querySelector<HTMLElement>('.case-study__stage')!,()=>tween.scrollTrigger,[0,1],()=>matchMedia('(any-pointer:coarse)').matches);
     // Tab navigation follows a panel outside the transformed viewport.
     const focus=(event:FocusEvent)=>{
       if(!(event.target instanceof Element)||!event.target.closest('.case-study__end, .case-study__model'))return;
@@ -60,9 +63,9 @@ if(host&&rail){
       if(trigger){const panel=event.target.closest<HTMLElement>('.case-study__model, .case-study__end')!;scrollPage(panelScroll(panel),false);}
     };
     rail.addEventListener('focusin',focus);
-    return()=>{removeGesture();entrance?.revert();rail.removeEventListener('focusin',focus);host.removeAttribute('data-horizontal');host.style.removeProperty('--case-scroll-height');};
+    return()=>{stageSize.disconnect();removeGesture();entrance?.revert();rail.removeEventListener('focusin',focus);host.removeAttribute('data-horizontal');host.style.removeProperty('--case-scroll-height');};
   });
-  media.add('(min-width:701px) and (orientation:portrait) and (prefers-reduced-motion:no-preference)',()=>{
+  media.add('(min-width:701px) and (orientation:portrait) and (any-pointer:fine) and (not (any-pointer:coarse)) and (prefers-reduced-motion:no-preference)',()=>{
     const entrance=endEntrance();
     if(!endPanel||!entrance)return;
     const trigger=ScrollTrigger.create({id:'case-end-entry',trigger:endPanel,start:'top 90%',end:'bottom top',onEnter:()=>entrance.play(),onLeave:()=>entrance.reverse(),onEnterBack:()=>entrance.play(),onLeaveBack:()=>entrance.reverse()});
@@ -77,7 +80,7 @@ function panelScroll(panel:HTMLElement){
   if(!trigger||!rail)return panel.getBoundingClientRect().top+scrollY;
   const distance=Math.max(0,rail.scrollWidth-innerWidth);
   const desired=distance?Math.min(1,panel.offsetLeft/distance):0;
-  const ease=gsap.parseEase('power1.inOut');
+  const ease=gsap.parseEase(matchMedia('(any-pointer:coarse)').matches?'none':'power1.inOut');
   let low=0,high=1;
   for(let i=0;i<20;i++){const middle=(low+high)/2;if(ease(middle)<desired)low=middle;else high=middle;}
   return trigger.start+(low+high)/2*(trigger.end-trigger.start);

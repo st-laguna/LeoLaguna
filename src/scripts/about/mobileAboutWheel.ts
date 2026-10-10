@@ -4,14 +4,14 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
   const { signal } = events;
   const slots = [...root.querySelectorAll<HTMLElement>('[data-wheel-slot]')];
   const buttons = slots.map(slot => slot.querySelector<HTMLButtonElement>('[data-mobile-interest]')!);
-  const portrait = matchMedia('(orientation:portrait)');
+
   const reduced = matchMedia('(prefers-reduced-motion:reduce)');
   const count = slots.length;
   let enabled = false, obscured = false, visible = true, disposed = false;
   let position = 0, target = 0, velocity = 0, frame = 0, previousTime = 0;
-  let radius = 180, pixelsPerItem = 150, horizontal = portrait.matches;
+  let radius = 180, pixelsPerItem = 150;
   let suppressClick = false;
-  type Drag = {id:number; button:HTMLButtonElement; x:number; y:number; origin:number; last:number; time:number; locked:boolean; rejected:boolean};
+  type Drag = {id:number; capture:HTMLElement; x:number; y:number; origin:number; last:number; time:number; locked:boolean; rejected:boolean};
   let drag: Drag | undefined;
   const modulo = (n: number) => ((n % count) + count) % count;
   const offset = (n: number) => modulo(n + count / 2) - count / 2;
@@ -30,8 +30,8 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
       const displacement = Math.sin(radians) * radius;
       const depth = (Math.cos(radians) - 1) * radius;
       const scale = 1 - Math.min(absolute, 2) * .17;
-      // Actual axis switch: X/Z + rotateY in portrait; Y/Z + rotateX in landscape.
-      slot.style.transform = `translate(-50%, -50%) translate3d(${horizontal ? displacement : 0}px,${horizontal ? 0 : displacement}px,${depth}px) ${horizontal ? 'rotateY' : 'rotateX'}(${horizontal ? angle : -angle}deg) scale(${scale})`;
+      // All orientations share X/Z + rotateY; only the viewport dimensions change.
+      slot.style.transform = `translate(-50%, -50%) translate3d(${displacement}px,0px,${depth}px) rotateY(${angle}deg) scale(${scale})`;
       slot.style.opacity = String(1 - Math.min(absolute, 2) * .23);
       slot.style.zIndex = String(100 - Math.round(absolute * 20));
       slot.dataset.active = String(index === active);
@@ -43,7 +43,7 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
   function cancelMotion() { cancelAnimationFrame(frame); frame = 0; previousTime = 0; }
   function releasePointer() {
     const previous = drag; drag = undefined;
-    if(previous?.button.hasPointerCapture(previous.id))previous.button.releasePointerCapture(previous.id);
+    if(previous?.capture.hasPointerCapture(previous.id))previous.capture.releasePointerCapture(previous.id);
   }
   function finish() {
     cancelMotion(); position = modulo(Math.round(target)); target = position; velocity = 0;
@@ -75,34 +75,34 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
   function measure() {
     if(disposed)return;
     const bounds = root.getBoundingClientRect();
-    horizontal = portrait.matches;
-    root.dataset.axis = horizontal ? 'horizontal' : 'vertical';
-    root.setAttribute('aria-label', horizontal ? 'Interests carousel. Swipe left or right; swipe vertically to scroll.' : 'Interests carousel. Swipe up or down on a sticker; scroll outside the stickers.');
-    radius = horizontal ? Math.min(bounds.width * .62, 460) : bounds.height * .62;
+
+    root.dataset.axis = 'horizontal';
+    root.setAttribute('aria-label', 'Interests carousel');
+    radius = Math.min(bounds.width * .62, 460);
     pixelsPerItem = Math.max(80, radius * .78);
     // Rotation changes geometry, not selection, and cancels an in-flight gesture.
     releasePointer(); cancelMotion(); position = Math.round(position); target = position; velocity = 0;
     root.dataset.motion = 'idle'; render();
   }
   root.addEventListener('pointerdown', event => {
-    const button = (event.target as Element).closest<HTMLButtonElement>('[data-mobile-interest]');
-    if(!awake()||!button||!event.isPrimary||event.button!==0||drag)return;
+    if(!awake()||!event.isPrimary||event.button!==0||drag)return;
+    const capture = (event.target as Element).closest<HTMLElement>('[data-mobile-interest]') || root;
     cancelMotion(); velocity = 0; suppressClick = false;
-    drag = {id:event.pointerId,button,x:event.clientX,y:event.clientY,origin:position,last:horizontal?event.clientX:event.clientY,time:event.timeStamp,locked:false,rejected:false};
-    button.setPointerCapture(event.pointerId);
+    drag = {id:event.pointerId,capture,x:event.clientX,y:event.clientY,origin:position,last:event.clientX,time:event.timeStamp,locked:false,rejected:false};
+    capture.setPointerCapture(event.pointerId);
   },{signal});
   root.addEventListener('pointermove', event => {
     if(!drag||event.pointerId!==drag.id||drag.rejected)return;
     const dx=event.clientX-drag.x,dy=event.clientY-drag.y;
-    const primary=horizontal?dx:dy,cross=horizontal?dy:dx;
+    const primary=dx,cross=dy;
     if(!drag.locked){
       if(Math.max(Math.abs(primary),Math.abs(cross))<10)return;
       if(Math.abs(primary)<Math.abs(cross)*1.25){drag.rejected=true;suppressClick=true;return;}
       drag.locked=true;suppressClick=true;root.dataset.motion='dragging';
     }
-    // This handler is local to a gesture begun on a sticker, never the document.
+    // This handler is local to a gesture begun inside the wheel viewport, never the document.
     if(event.cancelable)event.preventDefault();
-    const coordinate=horizontal?event.clientX:event.clientY;
+    const coordinate=event.clientX;
     const dt=Math.max(8,event.timeStamp-drag.time)/1000;
     velocity=velocity*.3+(-(coordinate-drag.last)/pixelsPerItem/dt)*.7;
     position=drag.origin-primary/pixelsPerItem;
@@ -129,10 +129,9 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
   },{signal});
   root.addEventListener('keydown',event=>{
     if(!awake())return;
-    const direction=event.key===(horizontal?'ArrowRight':'ArrowDown')?1:event.key===(horizontal?'ArrowLeft':'ArrowUp')?-1:0;
+    const direction=event.key==='ArrowRight'?1:event.key==='ArrowLeft'?-1:0;
     if(direction){event.preventDefault();settle(Math.round(position)+direction);}
   },{signal});
-  portrait.addEventListener('change',measure,{signal});
   reduced.addEventListener('change',()=>{releasePointer();settle(Math.round(position));},{signal});
   document.addEventListener('visibilitychange',syncAwake,{signal});
   root.addEventListener('dragstart',event=>event.preventDefault(),{signal});
@@ -145,5 +144,3 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
     dispose(){disposed=true;releasePointer();cancelMotion();events.abort();resize.disconnect();intersection.disconnect();root.dataset.awake='false';root.dataset.motion='idle';},
   };
 }
-
-

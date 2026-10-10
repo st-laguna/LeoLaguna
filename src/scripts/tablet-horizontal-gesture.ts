@@ -3,13 +3,12 @@ import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import {scrollPage} from './smooth-scroll';
 
 // Writes only the existing vertical scroll coordinate; the master owns rendering.
-export function mountTabletHorizontalGesture(host:HTMLElement,getTrigger:()=>ScrollTrigger|undefined,range:[number,number]=[0,1]){
+export function mountTabletHorizontalGesture(host:HTMLElement,getTrigger:()=>ScrollTrigger|undefined,range:[number,number]=[0,1],enabled=()=>document.documentElement.hasAttribute('data-large-tablet-landscape')){
   const events=new AbortController(),signal=events.signal;
   let x=0,y=0,lastX=0,lastTime=0,velocity=0,intent='',tracking=false,targetScroll=0,suppressClick=false;
   const bounds=(trigger:ScrollTrigger)=>[trigger.start+(trigger.end-trigger.start)*range[0],trigger.start+(trigger.end-trigger.start)*range[1]];
   const drive=(trigger:ScrollTrigger,position:number)=>{if(!enabled()){inertia?.kill();return;}const [start,end]=bounds(trigger);targetScroll=gsap.utils.clamp(start,end,position);scrollPage(targetScroll,false);ScrollTrigger.update();trigger.getTween()?.progress(1);};
   let inertia:gsap.core.Tween|undefined;
-  const enabled=()=>document.documentElement.hasAttribute('data-large-tablet-landscape');
   host.addEventListener('touchstart',event=>{
     inertia?.kill();tracking=false;
     if(!enabled()||event.touches.length!==1||(event.target as Element).closest('input,textarea,a:not(.case-study__next),button:not(.project-enlarge),[data-case-model]:not([data-touch-preview])'))return;

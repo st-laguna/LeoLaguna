@@ -127,7 +127,7 @@ html[data-about-mobile] body .about>.mobile-about {display:block;}
 
 /* About 2D only. Slot geometry is content-agnostic; float never owns its axis. */
 .mobile-about__wheel {position:absolute;left:0;top:26%;width:100%;height:48%;perspective:900px;visibility:hidden;pointer-events:none;isolation:isolate;}
-.mobile-about[data-state="stickers"] .mobile-about__wheel {pointer-events:none;}
+.mobile-about[data-state="stickers"] .mobile-about__wheel {pointer-events:auto;touch-action:pan-y pinch-zoom;}
 .mobile-about__wheel-slot {position:absolute;left:50%;top:50%;width:clamp(160px,52vw,340px);aspect-ratio:1;transform-style:preserve-3d;pointer-events:none;}
 .mobile-about__float {width:100%;height:100%;--float-x:3px;--float-y:5px;--float-angle:2deg;animation:mobile-wheel-float calc(6.8s + var(--sticker-index) * .4s) ease-in-out infinite alternate;animation-delay:calc(var(--sticker-index) * -1.3s);animation-play-state:paused;}
 .mobile-about__wheel-slot[data-active="true"] .mobile-about__float {--float-x:1.5px;--float-y:2.5px;--float-angle:1deg;}
@@ -135,9 +135,19 @@ html[data-about-mobile] body .about>.mobile-about {display:block;}
 .mobile-about__wheel .mobile-about__sticker {display:block;width:100%;height:100%;min-width:44px;min-height:44px;padding:0;border:0;background:transparent;pointer-events:auto;touch-action:pan-y pinch-zoom;user-select:none;-webkit-user-select:none;}
 .mobile-about__wheel .mobile-about__sticker img {pointer-events:none;-webkit-user-drag:none;}
 .mobile-about__wheel-slot[aria-hidden="true"] .mobile-about__sticker {pointer-events:none;}
-.mobile-about[data-orientation="landscape"] .mobile-about__wheel {left:23%;top:3%;width:54%;height:94%;perspective:1100px;}
-.mobile-about[data-orientation="landscape"] .mobile-about__wheel-slot {width:clamp(120px,38svh,340px);}
-.mobile-about__wheel[data-axis="vertical"] .mobile-about__sticker {touch-action:pan-x pinch-zoom;}
+.mobile-about[data-orientation="landscape"] .mobile-about__wheel {left:20%;top:18%;width:60%;height:64%;perspective:1100px;}
+.mobile-about[data-orientation="landscape"] .mobile-about__wheel-slot {width:clamp(110px,36svh,310px);}
+
 @keyframes mobile-wheel-float {from {transform:translate(calc(-1 * var(--float-x)),calc(-1 * var(--float-y))) rotate(calc(-1 * var(--float-angle)));}to {transform:translate(var(--float-x),var(--float-y)) rotate(var(--float-angle));}}
 @media(prefers-reduced-motion:reduce) {.mobile-about__wheel .mobile-about__float {animation:none;transform:none;}}
 .mobile-about__wheel[data-awake="true"] .mobile-about__wheel-slot[aria-hidden="true"] .mobile-about__float {animation-play-state:paused;}
+
+/* Dedicated viewport owns gestures; decorations can be added as independent siblings. */
+.mobile-about__decorations {position:absolute;inset:0;pointer-events:none;}
+.mobile-about__intro [data-mobile-next] {left:50%;right:auto;top:-44px;transform:translateX(-50%);white-space:nowrap;}
+.mobile-about[data-state="stickers"] .mobile-about__hint {left:50%;right:auto;top:21%;bottom:auto;transform:translateX(-50%);white-space:nowrap;pointer-events:none;}
+.mobile-about__wheel-cue {display:none;position:absolute;left:50%;top:70%;transform:translateX(-50%);font-size:18px;line-height:1;opacity:.55;pointer-events:none;}
+.mobile-about[data-state="stickers"] .mobile-about__wheel-cue {display:block;}
+
+.mobile-about[data-orientation="landscape"][data-state="stickers"] .mobile-about__hint {top:5%;}
+.mobile-about[data-orientation="landscape"] .mobile-about__wheel-cue {top:85%;}
