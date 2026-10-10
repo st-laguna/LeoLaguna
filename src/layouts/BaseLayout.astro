@@ -93,7 +93,7 @@ const {
 
     if (!home || !homeHash || reduced || restored || document.documentElement.hasAttribute('data-cross-page')) return;
 
-    history.replaceState(null, '', location.pathname + location.search);
+    history.replaceState(history.state, '', location.pathname + location.search);
 
     document.documentElement.setAttribute('data-hero-intro', '');
     document.documentElement.setAttribute('data-home-entry', '');
@@ -105,7 +105,7 @@ const {
     setTimeout(() => {
       document.documentElement.removeAttribute('data-hero-intro');
       document.documentElement.removeAttribute('data-home-entry');
-      history.scrollRestoration = 'auto';
+      if (!document.documentElement.hasAttribute('data-section-history')) history.scrollRestoration = 'auto';
     }, 3500);
   })();
 </script>

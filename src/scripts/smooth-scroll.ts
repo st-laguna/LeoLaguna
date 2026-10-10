@@ -85,6 +85,69 @@ export function scrollPage( top: number, smooth = true, duration?: number ) {
   }
 }
 
+// Navigation waits for existing responsive rebuilds, rather than guessing their
+// duration. Holds are released by the code which actually completes the layout.
+const layoutHolds = new Set<symbol>();
+export function holdScrollLayout() {
+  const token = Symbol();
+  layoutHolds.add(token);
+  return () => { layoutHolds.delete(token); };
+}
+let destinationOperation = 0;
+export function trackScrollDestination(commit: () => void, onInvalidate: () => void) {
+  const operation = ++destinationOperation;
+  let disposed = false, revision = 0;
+  let portrait = matchMedia('(orientation: portrait)').matches;
+  let orientationPending = false;
+  let height = document.documentElement.scrollHeight;
+  const listeners = new AbortController();
+  const invalidate = () => {
+    revision++;
+    if (!disposed) onInvalidate();
+  };
+  window.addEventListener('resize', () => {
+    const next = matchMedia('(orientation: portrait)').matches;
+    if (next !== portrait) { portrait = next; orientationPending = true; }
+    invalidate();
+  }, {signal:listeners.signal});
+  window.addEventListener('leo:orientation-ready', () => {
+    orientationPending = false; invalidate();
+  }, {signal:listeners.signal});
+  const refreshed = () => { revision++; };
+  ScrollTrigger.addEventListener('refresh', refreshed);
+  const observer = new ResizeObserver(() => {
+    const next = document.documentElement.scrollHeight;
+    if (next !== height) { height = next; invalidate(); }
+  });
+  observer.observe(document.body);
+  const frame = () => new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+  const current = () => !disposed && operation === destinationOperation;
+  return {
+    async ready() {
+      await document.fonts.ready;
+      let stable = 0;
+      while (current()) {
+        if (layoutHolds.size || orientationPending) { stable = 0; await frame(); continue; }
+        const version = revision;
+        commitScrollJump(commit);
+        const position = window.scrollY;
+        const size = document.documentElement.scrollHeight;
+        await frame();
+        if (!current()) break;
+        if (version === revision && !layoutHolds.size && !orientationPending &&
+            size === document.documentElement.scrollHeight && Math.abs(window.scrollY-position) < 2) {
+          if (++stable === 2) return;
+        } else stable = 0;
+      }
+      throw new DOMException('Destination operation ended', 'AbortError');
+    },
+    dispose() {
+      disposed = true; listeners.abort(); observer.disconnect();
+      ScrollTrigger.removeEventListener('refresh', refreshed);
+    },
+  };
+}
+
 function configure() {
   gsap.ticker.remove(tick);
   lenis?.destroy();

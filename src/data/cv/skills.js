@@ -1,1 +1,1 @@
-export const skills = ["DaVinci Resolve", "Blender", "Gaea", "Adobe Suite", "Unreal Engine", "QGIS"];
+export const skills = ["DaVinci Resolve", "Blender", "Adobe Suite", "Unreal Engine", "QGIS"];

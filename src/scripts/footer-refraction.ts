@@ -1,14 +1,22 @@
 // A local edge-only pass. The marquee owns scheduling and supplies its existing geometry.
 // WebGL cannot sample the DOM backdrop; no page capture or second animation loop is used.
-const vertex = `attribute vec2 position; varying vec2 uv;
-void main(){uv=position*.5+.5;gl_Position=vec4(position,0.,1.);}`;
+const vertex = `attribute vec2 position; attribute float edgeSide;
+varying vec2 uv; varying float side;
+uniform mediump float blurPass;
+uniform float edgeFraction;
+void main(){
+ uv=position*.5+.5;side=edgeSide;
+ vec2 p=position;
+ if(blurPass<.5)p.x=mix(-1.,1.-2.*edgeFraction,side)+uv.x*2.*edgeFraction;
+ gl_Position=vec4(p,0.,1.);
+}`;
 const fragment = `precision mediump float;
-varying vec2 uv;
+varying vec2 uv; varying float side;
 uniform sampler2D source, blurred;
 uniform vec2 blurStep;
 uniform float blurPass;
 uniform vec2 sourceSize;
-uniform float band, padding, scale, side, height;
+uniform float band, padding, scale, height;
 uniform vec3 background, foreground;
 float lens(float t){
  if(t<.2)return mix(.45,.28,t/.2);
@@ -61,14 +69,18 @@ export function createFooterRefraction(host: HTMLElement) {
     if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(program)||'Glass shader link failed');
     gl.useProgram(program);
     buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
-    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
-    const position=gl.getAttribLocation(program,'position');gl.enableVertexAttribArray(position);gl.vertexAttribPointer(position,2,gl.FLOAT,false,0,0);
+    // Two disjoint edge quads share one composite draw, without shading the centre.
+    const quad=[-1,-1,1,-1,-1,1,-1,1,1,-1,1,1];
+    const vertices=[0,1].flatMap(side=>Array.from({length:6},(_,i)=>[quad[i*2],quad[i*2+1],side]).flat());
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.STATIC_DRAW);
+    const position=gl.getAttribLocation(program,'position');gl.enableVertexAttribArray(position);gl.vertexAttribPointer(position,2,gl.FLOAT,false,12,0);
+    const edgeSide=gl.getAttribLocation(program,'edgeSide');gl.enableVertexAttribArray(edgeSide);gl.vertexAttribPointer(edgeSide,1,gl.FLOAT,false,12,8);
     texture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,texture);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
   }catch(error){console.warn('Footer refraction: using lightweight fallback.',error);release();gl.getExtension('WEBGL_lose_context')?.loseContext();return null;}
-  const uniforms=Object.fromEntries(['source','blurred','blurPass','blurStep','sourceSize','band','padding','scale','side','height','background','foreground'].map(name=>[name,gl.getUniformLocation(program,name)]));
+  const uniforms=Object.fromEntries(['source','blurred','blurPass','blurStep','sourceSize','band','padding','scale','edgeFraction','height','background','foreground'].map(name=>[name,gl.getUniformLocation(program,name)]));
   const limit=Math.min(2048,gl.getParameter(gl.MAX_TEXTURE_SIZE),gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
   let width=0,height=0,band=0,padding=0,ratio=1,lost=false,blurWidth=0,blurHeight=0,softness=0;
   for(let i=0;i<2;i++){
@@ -121,6 +133,7 @@ export function createFooterRefraction(host: HTMLElement) {
     gl!.uniform2f(uniforms.sourceSize,iw/ratio,h/ratio);
     gl!.uniform1f(uniforms.band,band);gl!.uniform1f(uniforms.padding,padding);
     gl!.uniform1f(uniforms.height,height);gl!.uniform1f(uniforms.scale,scale);
+    gl!.uniform1f(uniforms.edgeFraction,Math.round(band*ratio)/canvas.width);
     const style=getComputedStyle(host);
     const bg=color((style.getPropertyValue('--footer-optics-background')||style.getPropertyValue('--background')).trim());const fg=color(style.getPropertyValue('--foreground').trim()||style.color);
     gl!.uniform3f(uniforms.background,bg[0],bg[1],bg[2]);gl!.uniform3f(uniforms.foreground,fg[0],fg[1],fg[2]);
@@ -143,15 +156,12 @@ export function createFooterRefraction(host: HTMLElement) {
     for(let i=0;i<2;i++){
       gl!.bindFramebuffer(gl!.FRAMEBUFFER,targets[i]);gl!.bindTexture(gl!.TEXTURE_2D,i?blurTextures[0]:texture);
       gl!.uniform2f(uniforms.blurStep,i?0:softness/(input.width/ratio),i?softness/(input.height/ratio):0);
-      gl!.drawArrays(gl!.TRIANGLE_STRIP,0,4);
+      gl!.drawArrays(gl!.TRIANGLES,0,6);
     }
     gl!.bindFramebuffer(gl!.FRAMEBUFFER,null);gl!.uniform1f(uniforms.blurPass,0);
     gl!.bindTexture(gl!.TEXTURE_2D,texture);gl!.activeTexture(gl!.TEXTURE1);gl!.bindTexture(gl!.TEXTURE_2D,blurTextures[1]);
     gl!.clearColor(0,0,0,0);gl!.clear(gl!.COLOR_BUFFER_BIT);
-    const bw=Math.round(band*ratio);
-    for(let side=0;side<2;side++){
-      gl!.viewport(side?canvas.width-bw:0,0,bw,canvas.height);gl!.uniform1f(uniforms.side,side);gl!.drawArrays(gl!.TRIANGLE_STRIP,0,4);
-    }
+    gl!.viewport(0,0,canvas.width,canvas.height);gl!.drawArrays(gl!.TRIANGLES,0,12);
     if(!host.hasAttribute('data-glass-gpu'))host.setAttribute('data-glass-gpu','');
   }
   return {get available(){return !lost;},resize,render,dispose(){events.abort();host.removeAttribute('data-glass-gpu');release();gl.getExtension('WEBGL_lose_context')?.loseContext();canvas.width=canvas.height=input.width=input.height=1;canvas.replaceWith(canvas.cloneNode(false));}};

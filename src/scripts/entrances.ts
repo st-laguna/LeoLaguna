@@ -8,7 +8,7 @@ media.add({motion:'(prefers-reduced-motion: no-preference)',portal:'(min-width:1
   const elements=Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]')).filter(el=>!(portal&&el.closest('.home-journey')) && !(document.querySelector('.hero') && el.closest('.site-header')));
   const regular=elements.filter(el=>!el.closest('.brands'));
   const reveal=(el:HTMLElement)=>gsap.to(el,{clipPath:'inset(0% 0% 0% 0%)',duration:.85,ease:'power3.inOut',overwrite:true});
-  gsap.set(elements,{clipPath:'inset(100% 0% 0% 0%)'});
+  if(elements.length)gsap.set(elements,{clipPath:'inset(100% 0% 0% 0%)'});
   regular.forEach((el,index)=>{
     if(el.closest('.hero')||el.closest('.site-header'))gsap.to(el,{clipPath:'inset(0% 0% 0% 0%)',duration:1.1,delay:index*.06,ease:'power3.inOut'});
     else gsap.to(el,{clipPath:'inset(0% 0% 0% 0%)',duration:.85,ease:'power3.inOut',scrollTrigger:{trigger:el,start:'top 90%',once:true}});
@@ -18,6 +18,6 @@ media.add({motion:'(prefers-reduced-motion: no-preference)',portal:'(min-width:1
     if(element)reveal(element);
   };
   document.addEventListener('focusin',focus);
-  return()=>{document.removeEventListener('focusin',focus);gsap.set(elements,{clearProps:'clipPath'});};
+  return()=>{document.removeEventListener('focusin',focus);if(elements.length)gsap.set(elements,{clearProps:'clipPath'});};
 });
 if(import.meta.hot)import.meta.hot.dispose(()=>media.revert());

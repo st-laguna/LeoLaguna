@@ -1,3 +1,4 @@
+@import "./header-ui.css";
 [data-home-curtain] {display:none;}
 html[data-home-entry] [data-home-curtain] {display:block;position:fixed;inset:0;background:#000;z-index:2147483647;pointer-events:none;}
 .hover-arrow-motion {display:inline-block;}
@@ -18,8 +19,8 @@ html[data-home-entry] [data-home-curtain] {display:block;position:fixed;inset:0;
 
 :root {--button-coral:#EF6C65;}
 html[data-theme="dark"] {--button-coral:var(--dark-coral);}
-html body .action-pill {display:inline-flex;align-items:center;justify-content:center;gap:3px;padding:8px 16px;border:0;border-radius:0;background:var(--button-coral);color:#000;font:700 14px/1.2 'Host Grotesk',sans-serif;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;}
-html body .projects-view-all.action-pill {font-size:14px!important;font-weight:700!important;}
+html body .action-pill {display:inline-flex;align-items:center;justify-content:center;gap:3px;padding:8px 16px;border:0;border-radius:0;background:var(--button-coral);color:#000;font:700 var(--ui-cta-size)/var(--ui-cta-line) 'Host Grotesk',sans-serif;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;}
+html body .projects-view-all.action-pill {font-size:var(--ui-cta-size)!important;font-weight:700!important;}
 html body .gallery-header .action-pill {font-size:14px;}
 html body .footer__back-top.action-pill {font-size:13px;}
 .roll-readable {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
@@ -55,7 +56,7 @@ html body .footer__back-top.action-pill {font-size:13px;}
 @media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
   .projects-paging button:hover:not(:disabled) .action-arrow > span {animation:action-arrow-roll 1.4s cubic-bezier(.76,0,.24,1) infinite;}
 }
-html body .action-pill {font-weight:700!important;font-size:14px!important;color:#000!important;}
+html body .action-pill {font-weight:700!important;font-size:var(--ui-cta-size)!important;color:#000!important;}
 
 html body .site-controls .action-pill {padding:8px 20px;}
 @media(hover:hover) and (pointer:fine) {.featured-work__cover {cursor:none;}}

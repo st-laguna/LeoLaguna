@@ -18,7 +18,7 @@ const { context, id, links, preferences = false, formal = false } = Astro.props;
   <nav class="site-nav" aria-label={context === 'site' ? 'Navegación principal' : 'Main navigation'}>
     <div class="site-nav__items hover-group" data-shared-menu-links>
       {links.map(link => <a class="hover-option" href={link.href} data-shared-nav-link>
-        <span class="nav-state" aria-hidden="true">[<span class="nav-plus">+</span>]</span><span data-i18n={link.i18n}>{link.label}</span>
+        <span class="nav-state" aria-hidden="true"><span data-nav-entry-bracket="left">[</span><span class="nav-plus">+</span><span data-nav-entry-bracket="right">]</span></span><span data-nav-entry-label data-i18n={link.i18n}>{link.label}</span>
       </a>)}
     </div>
     <slot name="submenu" />

@@ -1,4 +1,14 @@
 ---
+import { createHash } from 'node:crypto';
+import faviconLight from '../../public/favicon-light.svg?raw';
+import faviconDark from '../../public/favicon-dark.svg?raw';
+const faviconVersion=createHash('sha256').update(faviconLight+faviconDark).digest('hex').slice(0,8);
+import headerMaster from '../../public/icons/logo_horizontal.svg?raw';
+const headerMasterWidth=Number(headerMaster.match(/viewBox="[^"]+"/)![0].split(' ')[2]);
+const themeMasterWidth=Number(headerMaster.match(/<rect id="bo2"[^>]*width="([^"]+)"/)![1]);
+const languageMasterWidth=Number(headerMaster.match(/<rect id="bot1"[^>]*width="([^"]+)"/)![1]);
+const languageWidth=languageMasterWidth/headerMasterWidth*100+'vw';
+const themeWidth=themeMasterWidth/headerMasterWidth*100+'vw';
 import responsiveInit from '../scripts/responsive-init.js?raw';
 import '../styles/native-scroll.css';
 import motion from '../scripts/transition-motion.js?raw';
@@ -8,10 +18,29 @@ import '../styles/page-navigation.css';
 // Run before the first render: a deferred module can miss pagereveal.
 const source = `(() => {\n${homeEntrance.replace(/^export /gm, '')}\n${motion.replace(/^import .*home-entrance.*;$/gm, '').replace(/^export /gm, '')}\n${navigation}\n})();`;
 ---
+<style is:inline set:html={`:root {--ui-theme-width:${themeWidth};--ui-language-width:${languageWidth};}`} />
 <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 96x96 192x192 256x256" />
 <link rel="icon" type="image/png" href="/favicon.png" sizes="192x192" />
-<link rel="icon" type="image/svg+xml" href="/favicon-light.svg" media="(prefers-color-scheme: light)" />
-<link rel="icon" type="image/svg+xml" href="/favicon-dark.svg" media="(prefers-color-scheme: dark)" />
+<link rel="icon" type="image/svg+xml" sizes="any" href={`/favicon-light.svg?v=${faviconVersion}`} media="(prefers-color-scheme: light)" data-favicon-scheme="light" />
+<link rel="icon" type="image/svg+xml" sizes="any" href={`/favicon-dark.svg?v=${faviconVersion}`} media="(prefers-color-scheme: dark)" data-favicon-scheme="dark" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<script is:inline>
+  (() => {
+    const root=document.documentElement;
+    if(root.dataset.browserFaviconInit)return;
+    const icons=Array.from(document.querySelectorAll('link[data-favicon-scheme]'));
+    if(icons.length!==2)return;
+    root.dataset.browserFaviconInit='1';
+    const scheme=matchMedia('(prefers-color-scheme: dark)');
+    const update=()=>{
+      const selected=icons.find(icon=>icon.dataset.faviconScheme===(scheme.matches?'dark':'light'));
+      // Explicit selection also covers Chromium's cached/media icon handling.
+      icons.forEach(icon=>icon.media=icon===selected?'all':'not all');
+      document.head.append(selected);
+    };
+    update();
+    scheme.addEventListener('change',update);
+  })();
+</script>
 <script is:inline set:html={responsiveInit}></script>
 <script is:inline set:html={source}></script>

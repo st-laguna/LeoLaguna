@@ -20,6 +20,8 @@ export function openServiceCover(dialog:HTMLDialogElement,shell:HTMLElement,titl
   function shared(destination:HTMLElement|null,from:HTMLElement|null){
     if(!destination)return;
     const end=destination.getBoundingClientRect(),start=from?.getBoundingClientRect();
+    // Closing from the list/footer keeps the current scroll; only morph visible text.
+    if(reverse && (end.bottom<=0 || end.top>=innerHeight))return;
     const usable=from&&start&&start.width>0&&start.height>0&&start.top<innerHeight&&start.bottom>0;
     const style=getComputedStyle(usable?from:destination);
     const clone=document.createElement('div');clone.className='service-opening-shared';clone.setAttribute('aria-hidden','true');
@@ -110,4 +112,53 @@ export function openServiceCover(dialog:HTMLDialogElement,shell:HTMLElement,titl
   if(reverse){timeline.progress(1,true);timeline.reverse();}
   else timeline.play();
   return {finished,finish:()=>{timeline.pause(reverse?0:timeline.duration());clean();},dispose:()=>{timeline.kill();clean();}};
+}
+
+// Universal exits start at the current viewport after the intro handoff.
+export function closeServiceGallery(dialog:HTMLDialogElement,shell:HTMLElement,source:HTMLElement,index:number,scroller:HTMLElement){
+  const active=dialog.querySelector<HTMLElement>('[data-gallery]:not([hidden])')!;
+  const footer=active.querySelector<HTMLElement>('.gallery-footer')!;
+  const horizontal=source.hasAttribute('data-horizontal');
+  const origin=source.querySelector<HTMLElement>(horizontal?'.projects-footer':`[data-panel="${index}"] .project-mobile-copy`)!;
+  // Match the actual responsive/theme Services surface, including touch palettes.
+  const destinationColor=getComputedStyle(origin).backgroundColor;
+  const viewport=scroller.getBoundingClientRect();
+  const media=Array.from(active.querySelectorAll<HTMLElement>('.gallery-item,.service-grid-image')).filter(item=>{
+    const rect=item.getBoundingClientRect();
+    return rect.bottom>viewport.top && rect.top<viewport.bottom && rect.right>viewport.left && rect.left<viewport.right;
+  });
+  const footerRect=footer.getBoundingClientRect();
+  const footerVisible=footerRect.bottom>viewport.top&&footerRect.top<viewport.bottom;
+  const button=dialog.querySelector<HTMLElement>('.gallery-return-motion')!;
+  const copy=Array.from(origin.children).filter((node):node is HTMLElement=>node instanceof HTMLElement);
+  const previousInert=shell.inert;
+  shell.inert=true;
+  const block=(event:Event)=>{event.preventDefault();event.stopImmediatePropagation();};
+  dialog.addEventListener('wheel',block,{passive:false,capture:true});
+  dialog.addEventListener('touchmove',block,{passive:false,capture:true});
+  dialog.addEventListener('keydown',block,{capture:true});
+  let resolve!:()=>void,cleaned=false;
+  const finished=new Promise<void>(done=>resolve=done);
+  let timeline!:gsap.core.Timeline;
+  const context=gsap.context(()=>{
+    gsap.set(copy,{opacity:0});
+    timeline=gsap.timeline({paused:true,onComplete:clean})
+      .to(footerVisible?[footer,button]:[button],{y:footerVisible?'+=80':'-=20',opacity:0,duration:.45,ease:'power3.in'},0)
+      .to(media,{y:'-=60',opacity:0,duration:.45,stagger:{amount:.02},ease:'power3.in'},0)
+      // Start color after motion begins; never replace the gallery with an opaque panel.
+      .to(shell,{backgroundColor:destinationColor,duration:.4,ease:'power2.inOut'},.08)
+      .to(shell,{opacity:0,duration:.12,ease:'power2.inOut'},.46)
+      .fromTo(copy,{y:20,opacity:0},{y:0,opacity:1,duration:.5,ease:'power3.out'},.5);
+  });
+  function clean(){
+    if(cleaned)return;cleaned=true;
+    // The awaiting close controller removes the dialog in the same microtask turn.
+    context.revert();shell.inert=previousInert;
+    dialog.removeEventListener('wheel',block,true);
+    dialog.removeEventListener('touchmove',block,true);
+    dialog.removeEventListener('keydown',block,true);
+    resolve();
+  }
+  timeline.play();
+  return {finished,finish:()=>{timeline.progress(1);clean();},dispose:()=>{timeline.kill();clean();}};
 }

@@ -1,0 +1,22 @@
+/* Existing Home header values, shared with the editorial About toolbar. */
+:root {
+ --ui-nav-size:clamp(11px,.95vw,15px);
+ --ui-nav-weight:400;
+ --ui-nav-line:1.5;
+ --ui-nav-padding:8px;
+ --ui-nav-row-height:calc(var(--ui-nav-size) * 1.5 + 16px);
+ --ui-nav-gap:clamp(28px,6vw,100px);
+ --ui-cta-size:14px;
+ --ui-cta-line:1.2;
+ --ui-cta-padding-y:8px;
+ --ui-cta-padding-x:20px;
+ --ui-control-height:36px;
+ --ui-control-gap:12px;
+ --ui-header-top:clamp(12px,1.5svh,18px);
+}
+@media (min-width:1001px) and (max-width:1600px), (min-width:1001px) and (max-height:850px) {
+ :root {--ui-control-height:30px;--ui-control-gap:8px;}
+}
+@media (min-width:1101px) and (max-width:1366px) and (min-height:501px) and (max-height:720px) and (hover:hover) and (pointer:fine) and (any-pointer:fine) {
+ :root {--ui-control-height:28px;--ui-header-top:8px;--ui-cta-padding-y:4px;--ui-nav-row-height:28px;}
+}

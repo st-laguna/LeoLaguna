@@ -1,6 +1,15 @@
 ---
 import horizontal from '../../public/icons/logo_horizontal.svg?raw';
 import vertical from '../../public/icons/logo_vertical.svg?raw';
+import leo from '../../public/icons/leo.svg?raw';
+import laguna from '../../public/icons/laguna.svg?raw';
+
+// Reuse the exact vector letters and word viewBoxes: no typographic reflow.
+const titleWords = [leo, laguna].map((source, index) => ({
+  anchor: index === 0 ? 'leo' : 'laguna',
+  viewBox: source.match(/viewBox="([^"]+)"/)![1],
+  letters: Array.from(source.matchAll(/<path\b[^>]*\sd="([^"]+)"/g), match => match[1]),
+}));
 import { getHeroFrame } from '../scripts/responsive-layout';
 import presentation from '../scripts/hero-presentation.js?raw';
 import homeEntrance from '../scripts/home-entrance.js?raw';
@@ -36,9 +45,16 @@ const v = master(vertical, 'mask_vertical');
   <div class="hero__master hero__blend">
     <div class="hero__composition">
       <h1 class="hero__artwork" data-hero-part="title" aria-label="Leo Laguna">
-        <img data-hero-anchor="leo" src="/icons/leo.svg" alt="" />
-        <img data-hero-anchor="laguna" src="/icons/laguna.svg" alt="" />
+        {titleWords.map(word => (
+          <svg data-hero-anchor={word.anchor} viewBox={word.viewBox} fill="#fff" aria-hidden="true" focusable="false" overflow="hidden">
+            {word.letters.map(d => <path data-hero-char d={d} />)}
+          </svg>
+        ))}
       </h1>
+    </div>
+  </div>
+  <div class="hero__master hero__info hero__blend">
+    <div class="hero__composition">
       <div class="hero__details" data-hero-part="subtitle">
         <div data-hero-anchor="capabilities" class="hero__capabilities" role="group" aria-label="Scientific illustration, 3D visualization, visual communication">
           <span class="hero__progress" aria-hidden="true"></span><div class="hero__reel" aria-hidden="true"><span>SCIENTIFIC ILLUSTRATION</span><span>3D VISUALIZATION</span><span>VISUAL COMMUNICATION</span></div>
@@ -77,7 +93,7 @@ const v = master(vertical, 'mask_vertical');
   .hero__composition {position:absolute;left:0;top:0;transform-origin:0 0;}
   .hero__artwork,.hero__details {position:absolute;inset:0;margin:0;}
   [data-hero-anchor] {position:absolute;max-width:none;transform-origin:0 0;}
-  img[data-hero-anchor] {object-fit:contain;}
+  [data-hero-char] {transform-box:fill-box;}
   .hero__capabilities {overflow:visible;white-space:nowrap;font-weight:500;}
   .hero__capabilities {--reel-duration:9s;}
   .hero__reel {height:100%;position:relative;}

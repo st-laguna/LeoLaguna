@@ -50,3 +50,10 @@ export const PROPS = [
     position: [0, 2.4, 3.6],
   },
 ];
+
+// Focus zoom is an inverse-distance scale, not literal OrbitControls distance.
+export const FOCUS = {
+  referenceDistance: 7,
+  leo: { minZoom: 3, maxZoom: 7, targetBone: 'spine2', targetOffsetY: .04 },
+  object: { minZoom: 5, maxZoom: 10 },
+};

@@ -1,3 +1,4 @@
+import gsap from 'gsap';
 import { createFooterRefraction } from './footer-refraction';
 import { glyphs } from './footer-glyphs';
 
@@ -20,7 +21,8 @@ export function initFooterMarquee(host: HTMLElement) {
 
   const period = 1242.8 + FOOTER_MOTION.gap;
   let viewWidth = 1400, phase = -35, velocity = 1, active = -1, hovered = false;
-  let visible = false, raf = 0, previous = 0, anchor = 0;
+  let visible = false, ticking = false, previous = 0, anchor = 0;
+  let glassDirty = true, glassState = '';
   const amounts = glyphs.map(() => 0);
   const copies: {group: SVGGElement; paths: SVGPathElement[]}[] = [];
   const message=host.querySelector<HTMLElement>(':scope > .footer__mobile-message')!;
@@ -96,7 +98,12 @@ export function initFooterMarquee(host: HTMLElement) {
       ctx.restore();
     }
   }
-  function renderGlass(){if(visible&&!document.hidden)glass?.render(paintGlass);}
+  function renderGlass(){
+    if(!visible||document.hidden||!glass?.available)return;
+    const state=htmlSource?mobileRows.map(item=>`${item.px}/${item.py}`).join('|'):`${phase}/${shapeKey}`;
+    if(!glassDirty&&state===glassState)return;
+    glass.render(paintGlass);glassState=state;glassDirty=false;
+  }
   function pathData(index: number, amount: number) {
     const g = glyphs[index];
     if (g.id === 'N') {
@@ -118,7 +125,7 @@ export function initFooterMarquee(host: HTMLElement) {
     if(!glassInitialized){glassInitialized=true;glass=createFooterRefraction(host);}
     htmlSource=getComputedStyle(message).display!=='none';
     opticalScale=host.clientHeight/MARQUEE_VIEW.height;
-    glass?.resize(htmlSource);
+    glass?.resize(htmlSource);glassDirty=true;
     if(htmlSource){measureMobile();drawMobile();return;}
     const height=Math.max(1,host.clientHeight);
     viewWidth=host.clientWidth/height*MARQUEE_VIEW.height;
@@ -143,8 +150,11 @@ export function initFooterMarquee(host: HTMLElement) {
     const changed=key!==shapeKey;shapeKey=key;
     const paths=changed?glyphs.map((_,i)=>pathData(i,amounts[i])):[];
     if(changed)canvasPaths=paths.map(d=>new Path2D(d));
-    for(let k=0;k<copies.length;k++){
-      copies[k].group.setAttribute('transform',`translate(${phase+(k-1)*cycle-total/2} 0)`);
+    // Move the SVG as one composited layer; its overflow is already visible.
+    // Only letter expansion changes the geometry of the individual copies.
+    svg.style.transform=`translate3d(${phase*opticalScale}px,0,0)`;
+    for(let k=0;changed&&k<copies.length;k++){
+      copies[k].group.setAttribute('transform',`translate(${(k-1)*cycle-total/2} 0)`);
       let offset=0;
       if(changed)glyphs.forEach((_,i)=>{
         const a=amounts[i];
@@ -155,23 +165,32 @@ export function initFooterMarquee(host: HTMLElement) {
     }
     renderGlass();
   }
-  function frame(now:number){
-    raf=0;if(!visible||document.hidden||reduced.matches)return;
-    if(htmlSource){if(!glass?.available)return;drawMobile();raf=requestAnimationFrame(frame);return;}
+  function frame(time:number){
+    if(!visible||document.hidden||reduced.matches){stop();return;}
+    if(htmlSource){if(!glass?.available){stop();return;}drawMobile();return;}
+    const now=time*1000;
     const dt=Math.min((now-(previous||now))/1000,.04);previous=now;
     const ease=1-Math.exp(-FOOTER_MOTION.response*dt);
-    velocity+=((hovered?0:1)-velocity)*ease;
+    const targetVelocity=hovered?0:1;
+    velocity+=(targetVelocity-velocity)*ease;
+    if(Math.abs(targetVelocity-velocity)<.0001)velocity=targetVelocity;
     // Compensate the active copy so expansion pushes equally left and right.
     const oldCycle=period+amounts.reduce((a,b)=>a+b,0);
 
-    amounts.forEach((a,i)=>amounts[i]=a+((i===active?FOOTER_MOTION.expansion:0)-a)*ease);
+    amounts.forEach((a,i)=>{
+      const target=i===active?FOOTER_MOTION.expansion:0;
+      const next=a+(target-a)*ease;
+      amounts[i]=Math.abs(target-next)<.001?target:next;
+    });
     const cycle=period+amounts.reduce((a,b)=>a+b,0);
     phase-=anchor*(cycle-oldCycle)+FOOTER_MOTION.speed*velocity*dt;
     if(!hovered && amounts.every(a=>a<.01)){phase=((phase%cycle)+cycle)%cycle-cycle;anchor=0;}
-    draw();raf=requestAnimationFrame(frame);
+    draw();
+    if(hovered&&velocity===0&&amounts.every((a,i)=>a===(i===active?FOOTER_MOTION.expansion:0)))stop();
   }
-  function start(){if(!raf&&visible&&!document.hidden&&!reduced.matches){previous=0;raf=requestAnimationFrame(frame);}}
-  function stop(){cancelAnimationFrame(raf);raf=0;previous=0;}
+  // The page already owns GSAP's ticker; no second RAF loop is needed here.
+  function start(){if(!ticking&&visible&&!document.hidden&&!reduced.matches){previous=0;ticking=true;svg.style.willChange=htmlSource?'':'transform';gsap.ticker.add(frame);}}
+  function stop(){gsap.ticker.remove(frame);ticking=false;previous=0;svg.style.removeProperty('will-change');}
   host.addEventListener('pointermove',event=>{
     if(htmlSource||!fine.matches||reduced.matches)return;
     hovered=true;
@@ -182,20 +201,24 @@ export function initFooterMarquee(host: HTMLElement) {
     }
     let found=-1;
     copies.forEach((c,k)=>c.paths.forEach((p,i)=>{const b=p.getBoundingClientRect();if(event.clientX>=b.left&&event.clientX<=b.right){found=i;anchor=k-1;}}));
-    active=found;
+    active=found;start();
   },{signal});
-  host.addEventListener('pointerleave',()=>{hovered=false;active=-1;},{signal});
-  host.addEventListener('focusin',()=>{hovered=true;},{signal});
-  host.addEventListener('focusout',()=>{hovered=false;active=-1;},{signal});
+  host.addEventListener('pointerleave',()=>{hovered=false;active=-1;start();},{signal});
+  host.addEventListener('focusin',()=>{hovered=true;start();},{signal});
+  host.addEventListener('focusout',()=>{hovered=false;active=-1;start();},{signal});
   reduced.addEventListener('change',()=>{stop();amounts.fill(0);active=-1;draw();start();},{signal});
-  document.addEventListener('visibilitychange',()=>{stop();start();},{signal});
+  document.addEventListener('visibilitychange',()=>{
+    stop();
+    mobileRows.forEach(item=>{if(document.hidden)item.moving.style.animationPlayState='paused';else item.moving.style.removeProperty('animation-play-state');});
+    start();
+  },{signal});
 
   const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;host.toggleAttribute('data-optics-visible',visible);if(visible){resize();draw();start();}else stop();});observer.observe(host);
   resize();
   return {resize,dispose:()=>{
     stop();abort.abort();glassThemeObserver.disconnect();observer.disconnect();
     host.removeAttribute('data-optics-visible');
-    track.replaceChildren();glass?.dispose();
-    mobileRows.forEach(item=>item.baseline.remove());
+    track.replaceChildren();svg.style.removeProperty('transform');glass?.dispose();
+    mobileRows.forEach(item=>{item.baseline.remove();item.moving.style.removeProperty('animation-play-state');});
   }};
 }

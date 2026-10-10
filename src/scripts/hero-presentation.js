@@ -6,7 +6,7 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
   const stage = hero.closest('.journey-stage') || hero;
   const journey = hero.closest('.home-journey');
   const journeyReady = () => !journey || journey.hasAttribute('data-journey') || journey.hasAttribute('data-mobile-journey');
-  const composition = hero.querySelector('.hero__composition');
+  const compositions = Array.from(hero.querySelectorAll('.hero__composition'));
   const masters = JSON.parse(hero.dataset.heroMasters);
   const anchors = Array.from(hero.querySelectorAll('[data-hero-anchor]'));
   let lastWidth = 0, lastHeight = 0;
@@ -25,13 +25,13 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
     if (hero.dataset.heroFrame !== f.mode) hero.dataset.heroFrame = f.mode;
     hero.style.setProperty('--hero-mask-size', `${f.masterWidth * f.scale}px ${f.masterHeight * f.scale}px`);
     hero.style.setProperty('--hero-mask-position', `${f.x}px ${f.y - portraitOffset}px`);
-    composition.style.transform = `translate(${f.x}px,${f.y - portraitOffset}px) scale(${f.scale})`;
+    compositions.forEach(composition => composition.style.transform = `translate(${f.x}px,${f.y - portraitOffset}px) scale(${f.scale})`);
     // Authored anchors and the mask source only change with the artwork master.
     if (lastPortrait === f.portrait) { hero.setAttribute('data-hero-layout-ready', ''); return; }
     lastPortrait = f.portrait;
     hero.style.setProperty('--hero-mask', m.mask);
-    composition.style.width = `${f.masterWidth}px`;
-    composition.style.height = `${f.masterHeight}px`;
+    compositions.forEach(composition => composition.style.width = `${f.masterWidth}px`);
+    compositions.forEach(composition => composition.style.height = `${f.masterHeight}px`);
     anchors.forEach(element => {
       const name = element.dataset.heroAnchor;
       const id = f.portrait ? `anchor-${name === 'location' ? 'lima-peru' : name}_v` : `anchor-${name === 'hour' ? 'location' : name}_h`;
@@ -87,7 +87,7 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
     wipe?.cancel();
     root.removeAttribute('data-home-entry');
     hero.removeAttribute('data-hero-pending');
-    history.scrollRestoration = 'auto';
+    if (!root.hasAttribute('data-section-history')) history.scrollRestoration = 'auto';
     events.abort();
   }
   const options = { signal: events.signal };

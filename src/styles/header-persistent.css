@@ -1,10 +1,11 @@
+@import "./header-ui.css";
 /* Reuse the existing navigation; phone menu rules remain in force. */
 @media (min-width:701px) and (min-height:501px) {
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-toggle {display:none!important;}
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel {display:contents;visibility:visible;clip-path:none;pointer-events:auto;}
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav {position:fixed;top:24px;left:50vw;right:auto;width:max-content;transform:translateX(-50%);display:flex;color:#fff;mix-blend-mode:difference;pointer-events:auto;z-index:50;}
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items {display:flex!important;flex-direction:row;align-items:center!important;justify-content:flex-start;gap:clamp(28px,6vw,100px)!important;width:auto;}
-  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items>.hover-option {width:auto;padding:8px 0;border:0;background:none;color:inherit;font:inherit;font-size:clamp(11px,.95vw,15px);visibility:visible;pointer-events:auto;}
+  html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items>.hover-option {width:auto;padding:8px 0;border:0;background:none;color:inherit;font:inherit;font-size:var(--ui-nav-size);visibility:visible;pointer-events:auto;}
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__items>.mobile-only {display:none;}
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel [data-footer-work] {display:block!important;}
   html:not([data-tablet-portrait]) body .site-header .mobile-menu-panel .site-nav__submenu {display:flex!important;left:0;right:auto;top:100%;bottom:auto;}
@@ -57,7 +58,7 @@ html.footer-active body .footer .footer__heading {visibility:hidden!important;}
 }
 .workflow .workflow__cursor {display:none!important;}
 @media(min-width:1001px) and (orientation:landscape), (min-width:701px) and (min-height:501px) and (orientation:landscape) {
-  html:not([data-tablet-portrait]) .site-header {--header-row-top:clamp(12px,1.5svh,18px);}
+  html:not([data-tablet-portrait]) .site-header {--header-row-top:var(--ui-header-top);}
 }
 
 /* A single rotating plus replaces only the four main navigation markers. */
@@ -121,3 +122,7 @@ html[data-theme="dark"]{--featured-nav-blend:var(--dark-featured-blend)}
 @media(prefers-reduced-motion:reduce) {
  html body .site-header .mobile-menu-panel .site-nav {transition:none!important;}
 }
+
+/* The head's intro flag hides both parts before the inline Hero timeline exists. */
+html[data-hero-intro] .site-header [data-shared-nav-link] > :is(.nav-state,[data-nav-entry-label]) {opacity:0;}
+.site-header [data-nav-entry-label] {display:inline-block;}

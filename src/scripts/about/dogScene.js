@@ -10,7 +10,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { Dog } from './Dog.js';
 import { Leo } from './Leo.js';
 import { InteractiveProps } from './InteractiveProps.js';
-import { SCENE, PROPS } from './sceneConfig.js';
+import { SCENE, PROPS, FOCUS } from './sceneConfig.js';
 import { createLookShader } from './sceneShaders.js';
 import {
   damping,
@@ -50,6 +50,11 @@ export function createAboutScene(section, callbacks = {}) {
   controls.enablePan = false;
   controls.minDistance = editorial?1.6:0.8;
   controls.maxDistance = editorial?6:18;
+  const generalZoom={minDistance:controls.minDistance,maxDistance:controls.maxDistance};
+  function focusProfile(entry){return editorial?(entry?.id==='leo'?FOCUS.leo:entry?.kind==='prop'?FOCUS.object:null):null;}
+  function zoomLimits(entry){const profile=focusProfile(entry);return profile?{minDistance:FOCUS.referenceDistance/profile.maxZoom,maxDistance:FOCUS.referenceDistance/profile.minZoom}:generalZoom;}
+  function setZoomLimits(entry){Object.assign(controls,zoomLimits(entry));}
+  function focusTarget(entry){entry.track.getWorldPosition(world);if(editorial&&entry.id==='leo')world.y+=FOCUS.leo.targetOffsetY;}
   controls.maxPolarAngle = Math.PI * 0.49;
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
@@ -370,7 +375,7 @@ export function createAboutScene(section, callbacks = {}) {
     active = entry;
     hovered = null;
     entry.track.updateWorldMatrix(true, false);
-    entry.track.getWorldPosition(world);
+    focusTarget(entry);
     const from = camera.position.clone();
     const fromTarget = controls.target.clone();
     const offset = new THREE.Vector3().subVectors(
@@ -389,6 +394,8 @@ export function createAboutScene(section, callbacks = {}) {
       offset,
       returning: false,
       framingFrom:framing.offset,
+      zoomFrom:{minDistance:controls.minDistance,maxDistance:controls.maxDistance},
+      zoomTo:zoomLimits(active),
     };
     transition = travel;
     emitSelection();
@@ -415,6 +422,8 @@ export function createAboutScene(section, callbacks = {}) {
       fromTarget: controls.target.clone(),
       returning: true,
       framingFrom:framing.offset,
+      zoomFrom:{minDistance:controls.minDistance,maxDistance:controls.maxDistance},
+      zoomTo:zoomLimits(active),
     };
     transition = travel;
     emitSelection();
@@ -463,23 +472,25 @@ export function createAboutScene(section, callbacks = {}) {
     }
     if (transition) {
       const travel = transition;
+      if(editorial){controls.minDistance=THREE.MathUtils.lerp(travel.zoomFrom.minDistance,travel.zoomTo.minDistance,travel.progress);controls.maxDistance=THREE.MathUtils.lerp(travel.zoomFrom.maxDistance,travel.zoomTo.maxDistance,travel.progress);}
       if(editorial){framing.offset=THREE.MathUtils.lerp(travel.framingFrom,travel.returning?.1:.035,travel.progress);applyFraming();}
       if (travel.returning) {
         world.copy(defaultTarget);
         cameraGoal.copy(defaultCamera);
       } else {
-        active.track.getWorldPosition(world);
+        focusTarget(active);
         cameraGoal.copy(world).add(travel.offset);
       }
       camera.position.lerpVectors(travel.from, cameraGoal, travel.progress);
       controls.target.lerpVectors(travel.fromTarget, world, travel.progress);
       if (travel.finished || reduced) {
         transition = null;
+        setZoomLimits(active);
         controls.enabled = !leaving;
         if(editorial)callbacks.onTransitionEnd?.(active?{id:active.id,label:active.label}:null);
       }
     } else if (active) {
-      active.track.getWorldPosition(world);
+      focusTarget(active);
       movement
         .subVectors(world, controls.target)
         .multiplyScalar(damping(0.1, delta));
@@ -703,7 +714,7 @@ export function createAboutScene(section, callbacks = {}) {
                 root: model,
                 entrance,
                 head,
-                track: id === 'leo' ? findBone(model, 'spine1') : head,
+                track: id === 'leo' ? findBone(model, editorial?FOCUS.leo.targetBone:'spine1') : head,
                 meshes: actor.meshes,
                 label,
                 description,

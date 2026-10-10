@@ -89,7 +89,7 @@ const t = en as Record<string,string>;
   <div class="gallery-shell">
     <header class="gallery-header">
       <h2 id="gallery-heading" data-i18n="projects.gallery">{t['projects.gallery']}</h2>
-      <button type="button" class="action-pill" data-gallery-close><span data-roll-label data-i18n="projects.close">{t['projects.close']}</span> <span class="action-arrow" data-direction="up" aria-hidden="true"><span data-arrow="↑">↑</span></span></button>
+      <span class="gallery-return-motion"><span class="gallery-return-entry"><button type="button" class="action-pill" data-gallery-close><span data-roll-label data-i18n="projects.close">{t['projects.close']}</span> <span class="action-arrow" data-direction="up" aria-hidden="true"><span data-arrow="↑">↑</span></span></button></span></span>
     </header>
     <div class="gallery-scroll" tabindex="0" aria-label="Project gallery / Galería de proyectos">
       {projects.map((project,index)=>(
@@ -115,7 +115,7 @@ const t = en as Record<string,string>;
             </figure>
           ))}
           </div>
-          {index !== 3 ? <GalleryFooter /> : <div class="gallery-phone-footer"><GalleryFooter /></div>}
+          <GalleryFooter />
         </div>
       ))}
     </div>

@@ -1,3 +1,4 @@
+import { createHeroInfoTimeline } from './home-entrance.js';
 import { isTabletPortrait, getHeroFrame } from './responsive-layout';
 import { mountHeroDistortion } from './hero-distortion';
 import gsap from 'gsap';
@@ -98,7 +99,7 @@ if(root){
   const grid=workflow.querySelector<HTMLElement>('.workflow__grid')!;
   const slots=Array.from(workflow.querySelectorAll<HTMLElement>('.workflow__slot'));
   const track=workflow.querySelector<HTMLElement>('.workflow__track')!;
-  const texts=Array.from(hero.querySelectorAll<HTMLElement>('.hero__blend'));
+  const texts=Array.from(hero.querySelectorAll<HTMLElement>('.hero__blend:not(.hero__info):not(.hero__scroll)'));
   const cover=document.createElementNS('http://www.w3.org/2000/svg','svg');
   cover.classList.add('journey-cover');cover.setAttribute('aria-hidden','true');
   cover.setAttribute('preserveAspectRatio','none');
@@ -511,6 +512,19 @@ slots.forEach((slot, i) => {
       const url=mask.dataset.portalMask||'';mask.style.maskImage=url;mask.style.webkitMaskImage=url;
     };
   });
+  // Finite info choreography; the existing portal/card scroll animation is unchanged.
+  const infoMedia=gsap.matchMedia();
+  infoMedia.add('(prefers-reduced-motion:no-preference)',()=>{
+    const info=createHeroInfoTimeline(hero);
+    if(!document.documentElement.hasAttribute('data-home-entry'))info.show();
+    const infoTrigger=ScrollTrigger.create({
+      id:'hero-info-return',trigger:host,start:'top top',
+      end:()=>`+=${host.querySelector<HTMLElement>('.journey-stage')!.offsetHeight*.08}`,
+      onLeave:()=>info.reverse(),onEnterBack:()=>info.play(),
+      onRefresh:self=>{if(self.scroll()>self.end)info.hide();},
+    });
+    return()=>{infoTrigger.kill();info.show();};
+  });
     if (import.meta.hot) {
       import.meta.hot.dispose(() => {
         headerLogoMotion?.kill();
@@ -518,6 +532,7 @@ slots.forEach((slot, i) => {
         document.documentElement.removeAttribute('data-workflow-header');
         removeStaticStop();
         distortion.dispose();disposed=true;clearTimeout(warmupTimer);clearTimeout(imageQueueTimer);imageQueue.length=0;
+        infoMedia.revert();createHeroInfoTimeline(hero).dispose();
         media.revert();
         cover.remove();
         intermediateImages.forEach(image => image.remove());

@@ -1,8 +1,9 @@
 import gsap from 'gsap';
 import Lenis from 'lenis';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
-import {openServiceCover} from './service-cover-transition';
+import {openServiceCover,closeServiceGallery} from './service-cover-transition';
 import {mountServiceStickyGrid} from './service-sticky-grid';
+import {mountGalleryReturn} from './gallery-return';
 const gallery=document.querySelector<HTMLDialogElement>('.gallery-dialog');
 const lightbox=document.querySelector<HTMLDialogElement>('.project-lightbox');
 const section=document.querySelector<HTMLElement>('[data-projects]');
@@ -19,7 +20,8 @@ if(gallery&&lightbox&&section){
   let galleryBusy=false,lightboxBusy=false;
   let galleryOpener:HTMLElement|null=null,lightboxOpener:HTMLElement|null=null;
   let observer:IntersectionObserver|undefined;
-  let disposeSticky:(()=>void)|undefined;
+  let disposeSticky:ReturnType<typeof mountServiceStickyGrid>|undefined;
+  let disposeReturn:(()=>void)|undefined;
   let opening:ReturnType<typeof openServiceCover>|undefined;
   let clockTimer:ReturnType<typeof setInterval>|undefined;
   const mouseScroll=matchMedia('(hover:hover) and (pointer:fine)');
@@ -75,17 +77,13 @@ if(gallery&&lightbox&&section){
     const items=Array.from(g.querySelectorAll<HTMLElement>('[data-gallery]:not([hidden]) .gallery-item'));
     gsap.set(items.map(item=>item.firstElementChild),{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)'});
     observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
-      if(entry.target.classList.contains('gallery-footer-return')){g.toggleAttribute('data-gallery-footer-visible',entry.isIntersecting);return;}
       if(entry.isIntersecting){entry.target.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>img.src=img.dataset.src!);if(!reduced.matches)gsap.to(entry.target.firstElementChild,{clipPath:'inset(0% 0 0)',duration:.65,ease:'power3.inOut'});observer?.unobserve(entry.target);}
     }),{root:scroller,threshold:.05});
     items.forEach(item=>observer!.observe(item));
-    const footerReturn=g.querySelector<HTMLElement>('[data-gallery]:not([hidden]) .gallery-footer-return');
-    if(footerReturn)observer.observe(footerReturn);
   }
   async function openGallery(button:HTMLElement){
     if(galleryBusy||g.open)return;
     galleryBusy=true;galleryOpener=button;pause(s);
-    g.removeAttribute('data-gallery-footer-visible');
     const index=button.dataset.open==='current'?Number(s.dataset.current||0):Number(button.dataset.open);
     const preparation:Promise<void>[]=[];
     window.dispatchEvent(new CustomEvent('leo:prepare-gallery',{detail:{index,waitUntil:(promise:Promise<void>)=>preparation.push(promise)}}));
@@ -97,6 +95,8 @@ if(gallery&&lightbox&&section){
     gsap.set(shell,{yPercent:0});
     g.removeAttribute('data-media-closing');
     g.toggleAttribute('data-sticky-gallery',index!==3);closeGalleryButton.classList.toggle('action-pill',index===3);
+    // Prepare the return entrance before exposing the dialog (no visible flash).
+    gsap.set(g.querySelector('.gallery-return-entry'),{opacity:reduced.matches?1:0,y:reduced.matches?0:-12});
     lock();g.showModal();scroller.scrollTop=0;
     window.scrollTo({top:scroll,behavior:'instant'});
     const sticky=g.querySelector<HTMLElement>('[data-gallery]:not([hidden]) [data-service-sticky]');
@@ -112,24 +112,34 @@ if(gallery&&lightbox&&section){
       opening=undefined;
     }
     galleryBusy=false;configureGalleryScroll();
+    disposeReturn=mountGalleryReturn(g,scroller,reduced);
   }
   async function closeGallery(){
     if(galleryBusy||!g.open||l.open)return;
     destroyGalleryScroll();
-    galleryBusy=true;g.setAttribute('data-media-closing','');pause(g);disconnectItems();
+    galleryBusy=true;shell.inert=true;g.setAttribute('data-media-closing','');pause(g);disconnectItems();
     if(!reduced.matches){
-      // Return the current gallery to its intro before reversing the shared
-      // panel timeline; flush only this dialog's scrub animation.
-      if(scroller.scrollTop>0)await gsap.to(scroller,{scrollTop:0,duration:.35,ease:'power2.inOut',onUpdate:()=>ScrollTrigger.update()});
-      scroller.scrollTop=0;ScrollTrigger.update();
-      ScrollTrigger.getAll().filter(trigger=>trigger.vars.scroller===scroller).forEach(trigger=>trigger.getTween()?.progress(1));
+      // Choose the exit from the actual intro handoff, never from global page scroll.
       const active=g.querySelector<HTMLElement>('[data-gallery]:not([hidden])');
       const index=Number(active?.dataset.gallery||0);
       const title=active?.querySelector<HTMLElement>('[data-sticky-title]')||null;
-      opening=openServiceCover(g,shell,title,s,index,true);
-      await opening.finished;opening=undefined;
+      const viewport=scroller.getBoundingClientRect();
+      const videoIntro=active?.querySelector<HTMLElement>('.service-video-intro');
+      const videoRect=videoIntro?.getBoundingClientRect();
+      const nearIntro=disposeSticky?disposeSticky.isNearIntro():!!videoRect&&videoRect.top>=viewport.top-viewport.height*.5&&videoRect.bottom>viewport.top;
+      disposeSticky?.freeze();
+      if(nearIntro&&disposeSticky){
+        opening=disposeSticky.returnToIntro();
+        await opening.finished;opening=undefined;
+      }
+      if(!reduced.matches&&!document.hidden){
+        opening=nearIntro?openServiceCover(g,shell,title,s,index,true):closeServiceGallery(g,shell,s,index,scroller);
+        await opening.finished;opening=undefined;
+      }
+
     }
-    disposeSticky?.();disposeSticky=undefined;clearInterval(clockTimer);g.close();g.removeAttribute('data-gallery-footer-visible');clearItemAnimations();unlock();
+    disposeReturn?.();disposeReturn=undefined;
+    disposeSticky?.();disposeSticky=undefined;clearInterval(clockTimer);g.close();shell.inert=false;clearItemAnimations();unlock();
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','false'));
     galleryOpener?.focus({preventScroll:true});galleryOpener=null;galleryBusy=false;
   }
@@ -164,7 +174,7 @@ if(gallery&&lightbox&&section){
   mouseScroll.addEventListener('change',configureGalleryScroll,{signal:events.signal});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){opening?.finish();galleryScroll?.stop();}else if(!l.open&&!galleryBusy)galleryScroll?.start();},{signal:events.signal});
   if(import.meta.hot)import.meta.hot.dispose(()=>{
-    destroyGalleryScroll();opening?.dispose();
+    destroyGalleryScroll();opening?.dispose();disposeReturn?.();
     events.abort();clearInterval(clockTimer);disposeSticky?.();disconnectItems();clearItemAnimations();gsap.killTweensOf([shell,figure]);pause(g);
     if(l.open)l.close();if(g.open)g.close();while(locks)unlock();
   });

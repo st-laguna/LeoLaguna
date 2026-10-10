@@ -1,3 +1,4 @@
+@import "./header-ui.css";
 /* Rounded reference geometry: 21 / 65 / 14; shared gaps follow an 8px rhythm. */
 .about-editorial {display:none;}
 html body .about[data-editorial] {--about-left:clamp(280px,21vw,440px);--about-right:clamp(200px,14vw,280px);--about-band:clamp(64px,8vh,96px);--about-gap:clamp(24px,2vw,40px);height:100dvh;min-height:0;background:var(--light-base);--paper:#fff;}
@@ -137,3 +138,24 @@ html[data-theme="dark"] .about-editorial__context {color:#EDEDED;}
 .about-editorial__zoom input::-webkit-slider-runnable-track {height:2px;}
 .about-editorial__zoom input::-webkit-slider-thumb {margin-top:-4px;}
 .about-editorial__zoom input::-moz-range-track {height:2px;background:transparent;}
+
+/* Only the 3D toolbar changes; keep --about-band for the existing body/scene layout. */
+html:not([data-about-mobile]) body .about[data-editorial] {--about-top-band:calc(var(--ui-header-top) + max(var(--ui-nav-row-height),var(--ui-control-height),calc(var(--ui-cta-size) * 1.3 + var(--ui-cta-padding-y) * 2)) + 8px);}
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top {height:var(--about-top-band);padding-top:var(--ui-header-top);box-sizing:border-box;align-items:start;}
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top .about-editorial__cta-cell {padding:0;min-height:var(--ui-control-height);}
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top .about-editorial__navigation {min-height:var(--ui-control-height);}
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top .about-editorial__navigation>.about-editorial__links {font-size:var(--ui-nav-size);font-weight:var(--ui-nav-weight);line-height:var(--ui-nav-line);gap:var(--ui-nav-gap);justify-content:space-evenly;}
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top .about-editorial__navigation>.about-editorial__links a {padding-block:var(--ui-nav-padding);height:var(--ui-nav-row-height);box-sizing:border-box;gap:8px;}
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top .action-pill {font-size:var(--ui-cta-size)!important;line-height:var(--ui-cta-line);padding:var(--ui-cta-padding-y) var(--ui-cta-padding-x);}
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top .site-controls {gap:var(--ui-control-gap);}
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top .theme {width:max(48px,var(--ui-theme-width));height:var(--ui-control-height);}
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial__status {min-height:var(--ui-control-height);display:flex;align-items:center;}
+html:not([data-about-mobile]) body .about[data-editorial] .about__loading {gap:8px;}
+html:not([data-about-mobile]) body .about[data-editorial] .about__loading p {font-size:var(--ui-cta-size);line-height:var(--ui-cta-line);}
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial__clock :is(.clock__city,[data-local-time],.about-editorial__date),
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial__bio dd {font-weight:500;}
+html:not([data-about-mobile]) body .about[data-editorial] .line-top {top:var(--about-top-band);}
+html:not([data-about-mobile]) body .about[data-editorial] .line-right-top {height:var(--about-top-band);}
+html:not([data-about-mobile]) body .about[data-editorial] :is(.line-left,.line-right-middle) {top:var(--about-top-band);}
+html:not([data-about-mobile]) body .about[data-editorial] .about__loading progress {top:calc(var(--about-top-band) - 4px);}html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top .language {width:var(--ui-language-width);}
+html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top .language button {width:auto;flex:1;min-width:0;}

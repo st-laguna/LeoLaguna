@@ -1,5 +1,5 @@
 import { isTabletPortrait } from './responsive-layout';
-import { scrollPage, beginScrollTransition, endScrollTransition, commitScrollJump } from './smooth-scroll';
+import { scrollPage, beginScrollTransition, endScrollTransition, commitScrollJump, holdScrollLayout } from './smooth-scroll';
 import gsap from 'gsap';
 import {mountTabletHorizontalGesture} from './tablet-horizontal-gesture';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
@@ -461,7 +461,15 @@ if (brandsLayout) {
     }
   },{signal:events.signal});
   let configureTimer: ReturnType<typeof setTimeout>;
-  const scheduleConfigure = () => { clearTimeout(configureTimer); if(configuredPortrait===orientation.matches)configureTimer = setTimeout(configure, 180); };
+  let releaseLayout: (() => void) | undefined;
+  const finishConfigure = () => {
+    try { configure(); } finally { releaseLayout?.(); releaseLayout = undefined; }
+  };
+  const scheduleConfigure = () => {
+    clearTimeout(configureTimer);
+    releaseLayout?.(); releaseLayout = holdScrollLayout();
+    if(configuredPortrait===orientation.matches)configureTimer = setTimeout(finishConfigure, 180);
+  };
   motion.addEventListener('change',scheduleConfigure,{signal:events.signal});
   mobileMotion.addEventListener('change',scheduleConfigure,{signal:events.signal});
   tabletPortrait.addEventListener('change',scheduleConfigure,{signal:events.signal});
@@ -469,8 +477,10 @@ if (brandsLayout) {
   window.addEventListener('leo:orientation-ready',()=>{
     clearTimeout(configureTimer);
     // Do not collapse/recreate the scroll runway for an unchanged iPad mode.
-    if(document.documentElement.hasAttribute('data-ipad') && layoutMatchesViewport())return;
-    configure();
+    if(document.documentElement.hasAttribute('data-ipad') && layoutMatchesViewport()) {
+      releaseLayout?.(); releaseLayout = undefined; return;
+    }
+    finishConfigure();
   },{signal:events.signal});
   const resizeObserver=new ResizeObserver(()=>{if(!layoutMatchesViewport())return;checkedThumbs.clear();hydrateStaticPanels();measureLayout();if((motion.matches && !isTabletPortrait()))render();else if((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))renderMobile();});
   resizeObserver.observe(stage);
@@ -478,5 +488,5 @@ if (brandsLayout) {
   if(controlsElement)resizeObserver.observe(controlsElement);
   ScrollTrigger.addEventListener('refreshInit',measureLayout);
   configure();void document.fonts.ready.then(()=>{if(!events.signal.aborted)ScrollTrigger.refresh();});
-  if(import.meta.hot)import.meta.hot.dispose(()=>{clearTimeout(configureTimer);events.abort();imageObserver.disconnect();resizeObserver.disconnect();ScrollTrigger.removeEventListener('refreshInit',measureLayout);disposeScroll();});
+  if(import.meta.hot)import.meta.hot.dispose(()=>{clearTimeout(configureTimer);releaseLayout?.();events.abort();imageObserver.disconnect();resizeObserver.disconnect();ScrollTrigger.removeEventListener('refreshInit',measureLayout);disposeScroll();});
 }

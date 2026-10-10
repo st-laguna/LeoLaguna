@@ -8,7 +8,15 @@ gsap.registerPlugin(ScrollTrigger);
 export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLElement) {
   const events = new AbortController();
   const { signal } = events;
-  const media = gsap.matchMedia();
+  // This mount owns these listeners. Reverting a GSAP context alone does not
+  // unregister the native MediaQueryList listeners created by matchMedia().
+  const queries = {
+    phone: window.matchMedia(phoneMedia),
+    compact: window.matchMedia('(max-width:1100px), (any-pointer:coarse)'),
+    reduced: window.matchMedia('(prefers-reduced-motion:reduce)'),
+  };
+  let mediaContext: gsap.Context | undefined;
+  let mediaState = '';
   const grid = section.querySelector<HTMLElement>('[data-sticky-grid]')!;
   const columns = Array.from(section.querySelectorAll<HTMLElement>('[data-sticky-column]'));
   const title = section.querySelector<HTMLElement>('[data-sticky-title]')!;
@@ -24,6 +32,7 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
   const largeTablet=()=>document.documentElement.hasAttribute('data-large-tablet-landscape');
   let handedOff=false;
   function restoreRow(){if(!handedOff)return;lower.forEach((item,index)=>{columns[index].append(item);item.classList.remove('gallery-item');});handedOff=false;}
+  let returning:{finished:Promise<void>;finish():void;dispose():void}|undefined;
   let master: gsap.core.Timeline | undefined;
   let refreshGeometry:(()=>void)|undefined;
   let viewport = scroller.clientHeight;
@@ -34,11 +43,18 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
       if (image.parentElement?.getClientRects().length) { image.loading='eager';image.src=image.dataset.src!; }
     });
   }
-  media.add({ all:'(min-width:0px)', phone:phoneMedia, compact: '(max-width:1100px), (any-pointer:coarse)', reduced: '(prefers-reduced-motion:reduce)' }, context => {
-    const { compact, reduced } = context.conditions!;
-    const phone=!!context.conditions!.phone && isPhoneViewport();
+  function configureMedia() {
+    if (signal.aborted) return;
+    const state = `${queries.phone.matches}/${queries.compact.matches}/${queries.reduced.matches}`;
+    // Several queries can change in one resize; rebuild once for that state.
+    if (state === mediaState) return;
+    mediaState = state;
+    mediaContext?.revert();
+    mediaContext = gsap.context(() => {
+    const compact = queries.compact.matches, reduced = queries.reduced.matches;
+    const phone=queries.phone.matches && isPhoneViewport();
     restoreRow();section.removeAttribute('data-grid-revealed');slots.forEach(slot=>{slot.hidden=!!reduced;});hydrate();
-    if (reduced) return;
+    if (reduced) return () => { slots.forEach(slot=>slot.hidden=true); };
     section.setAttribute('data-animated', '');
     section.toggleAttribute('data-phone-intro',phone);
     const items = columns.map(column => Array.from(column.querySelectorAll<HTMLElement>('[data-sticky-item]')).filter(item => getComputedStyle(item).display !== 'none'));
@@ -90,6 +106,7 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
     gsap.set(content, { autoAlpha:0, y:20 });
     gsap.set(title, { xPercent:-50, yPercent:-50, y:0, scale:1, opacity:1 });
     gsap.set(eyebrow,{xPercent:-50,yPercent:-100,y:()=>-title.offsetHeight/2-24});
+    if(number&&!phone)gsap.set(number,{xPercent:-50,yPercent:-100,y:()=>-innerWidth*.07-54});
     gsap.set(hint,{xPercent:-50,y:()=>title.offsetHeight/2+24,autoAlpha:1});
     if(phone){
       gsap.set([title,eyebrow,content,...(number?[number]:[])],{xPercent:0,yPercent:0,x:0,y:0,scale:1,autoAlpha:1});
@@ -111,6 +128,7 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
     const finish = gsap.timeline();
     if(!phone)finish.to(eyebrow,{y:()=>shift()-(title.offsetHeight*.72+52),duration:.12,ease:'power2.inOut'},0).to(title,{scale:.72,y:()=>shift()-(title.offsetHeight*.72/2+28),duration:.12,ease:'power2.inOut'},0)
       .to(content, { autoAlpha:1, y:shift, duration:.12, ease:'power2.out' }, .04);
+    if(!phone&&number)finish.to(number,{y:()=>shift()-(title.offsetHeight*.72+52)-eyebrow.offsetHeight-12,duration:.12,ease:'power2.inOut'},0);
     const lift=()=>largeTablet()?Math.max(0,content.getBoundingClientRect().bottom-scene.getBoundingClientRect().top+32-(viewport-parseFloat(section.parentElement!.style.getPropertyValue('--service-lead-overlap')))):0;
     const handoff=gsap.timeline().to([title,eyebrow,content,...(number?[number]:[])],{y:(index,target)=>Number(gsap.getProperty(target,'y'))-lift(),duration:.22,ease:'power2.inOut'},0);lower.forEach((item,index)=>handoff.to(item,{x:()=>cell(index).x,y:()=>cell(index).y,yPercent:0,scale:()=>cell(index).scale,duration:.22,ease:'power2.inOut'},0));
     master = gsap.timeline({ scrollTrigger: {
@@ -125,12 +143,15 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
       gsap.set(item,{x:0,y:0,yPercent:0,scale:1,force3D:false,clearProps:'willChange'});
       // These already revealed cards do not participate in the list entrance.
       gsap.set(item.firstElementChild,{clearProps:'clipPath',autoAlpha:1});});handedOff=true;}else if(progress<.999&&handedOff)restoreRow();} })
-      .add(reveal,0).to(hint,{autoAlpha:0,duration:.04,ease:'none'},0).add(expand,.4).add(finish,.61).add(handoff,.88);
+      .add(reveal,0).to(hint,{autoAlpha:0,duration:.04,ease:'none'},0).add(expand,.4).add(finish,.61).addLabel('gallery-handoff',.88).add(handoff,'gallery-handoff');
     refreshGeometry=()=>{const progress=master!.progress();master!.progress(0);restoreRow();measureGeometry();master!.invalidate().progress(progress);master!.scrollTrigger?.refresh();};
     master.scrollTrigger?.refresh();
     promote(master.scrollTrigger?.isActive ?? false);
     return () => { restoreRow();slots.forEach(slot=>slot.hidden=true);master = undefined;refreshGeometry=undefined;section.parentElement!.style.removeProperty('--service-lead-overlap'); content.inert=false;grid.inert=false; promote(false); section.removeAttribute('data-animated');section.removeAttribute('data-phone-intro');if(phone)placement.style.removeProperty('clip-path');section.removeAttribute('data-grid-revealed'); };
-  });
+    });
+  }
+  Object.values(queries).forEach(query => query.addEventListener('change', configureMedia, {signal}));
+  configureMedia();
   // Width/orientation changes rebuild distances; mobile toolbar-only changes do not.
   let resizeTimer: ReturnType<typeof setTimeout>;
   const geometryObserver = new ResizeObserver(() => {
@@ -144,5 +165,24 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
   });
   geometryObserver.observe(scroller);
   geometryObserver.observe(intro);
-  return () => { geometryObserver.disconnect();clearTimeout(resizeTimer); events.abort(); media.revert();restoreRow(); section.style.removeProperty('--service-viewport'); };
+  function returnToIntro(){
+    master?.scrollTrigger?.getTween()?.pause();master?.scrollTrigger?.disable(false);
+    const block=(event:Event)=>{event.preventDefault();event.stopImmediatePropagation();};
+    scroller.addEventListener('wheel',block,{capture:true,passive:false});
+    scroller.addEventListener('touchmove',block,{capture:true,passive:false});
+    scroller.addEventListener('keydown',block,{capture:true});
+    let resolve!:()=>void,cleaned=false;
+    const finished=new Promise<void>(done=>resolve=done);
+    const clean=()=>{if(cleaned)return;cleaned=true;scroller.removeEventListener('wheel',block,true);scroller.removeEventListener('touchmove',block,true);scroller.removeEventListener('keydown',block,true);resolve();};
+    const tween=gsap.to(master??{}, {time:0,duration:master && master.time()>0 ? .35 : 0,ease:'power3.inOut',onComplete:clean});
+    returning={finished,finish:()=>{tween.progress(1);clean();},dispose:()=>{tween.kill();clean();}};
+    return returning;
+  }
+  const dispose=()=>{returning?.dispose();geometryObserver.disconnect();clearTimeout(resizeTimer);events.abort();mediaContext?.revert();mediaContext=undefined;restoreRow();section.style.removeProperty('--service-viewport');};
+  return Object.assign(dispose,{
+    // The handoff phase marks the switch from the intro composition to the list.
+    freeze(){master?.scrollTrigger?.getTween()?.pause();master?.scrollTrigger?.disable(false);},
+    isNearIntro:()=>{const trigger=master?.scrollTrigger;return !!master&&!!trigger&&!handedOff&&(trigger.scroll()-trigger.start)/(trigger.end-trigger.start)<master.labels['gallery-handoff']/master.duration();},
+    returnToIntro,
+  });
 }

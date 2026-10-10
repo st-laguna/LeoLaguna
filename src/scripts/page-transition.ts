@@ -1,7 +1,7 @@
 import gsap from 'gsap';
 import { isMobileAbout } from './about/mobileAboutDevice.js';
 import { prepareHomeEntrance } from './home-entrance.js';
-import { scrollPage, isScrollLocked, beginScrollTransition, endScrollTransition, commitScrollJump } from './smooth-scroll';
+import { scrollPage, isScrollLocked, beginScrollTransition, endScrollTransition, commitScrollJump, trackScrollDestination } from './smooth-scroll';
 
 import { SECTION_TRANSITION, smoothPulse, openingClip, prepareEntrances, snapshotFrames } from './transition-motion.js';
 export { SECTION_TRANSITION } from './transition-motion.js';
@@ -17,6 +17,41 @@ const snapshotAnimations: Animation[] = [];
 const events = new AbortController();
 const signal = events.signal;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+let destination: ReturnType<typeof trackScrollDestination> | undefined;
+const ownsSectionHistory = document.documentElement.hasAttribute('data-section-history');
+const sectionHash = (hash: string): string | null =>
+  ['', '#home', '#hero', '#hero-top'].includes(hash) ? '' :
+  ['#work', '#featured-works', '#contact'].includes(hash) ? hash : null;
+const sectionURL = (hash: string) => '/' + location.search + hash;
+let lastSectionURL = location.href;
+let historyOperation = 0;
+function commitSectionHistory(hash: string, category?: number) {
+  if (!ownsSectionHistory) return;
+  const url = sectionURL(hash);
+  const sameURL = location.pathname + location.search + location.hash === url;
+  const state = {...(history.state ?? {}), leoSection:{hash, category}};
+  // Recommits after resize and clicks on the current section never add entries.
+  if (!sameURL) history.pushState(state, '', url);
+  else if (history.state?.leoSection?.hash !== hash || history.state?.leoSection?.category !== category) {
+    history.replaceState(state, '', url);
+  }
+  lastSectionURL = location.href;
+}
+if (ownsSectionHistory) {
+  const hash = sectionHash(location.hash);
+  if (hash !== null) {
+    history.replaceState({...(history.state ?? {}), leoSection:{hash, category:history.state?.leoSection?.category}}, '', sectionURL(hash));
+    lastSectionURL = location.href;
+  }
+}
+window.addEventListener('leo:destination-request', ((event: CustomEvent) => {
+  const request = event.detail;
+  request.controller = trackScrollDestination(() => {
+    const target = document.querySelector<HTMLElement>(request.selector);
+    if (!target) throw new Error(`Destination missing: ${request.selector}`);
+    scrollPage(target.getBoundingClientRect().top + scrollY, false);
+  }, request.onInvalidate);
+}) as EventListener, {signal});
 
 // Native fragment scrolling can precede Lenis/ScrollTrigger initialization.
 // Align once after all page modules have mounted, before the destination reveal.
@@ -24,6 +59,8 @@ let entryAnchorSettled = false;
 let userMoved = false;
 for (const type of ['touchstart','wheel','keydown']) window.addEventListener(type, () => {userMoved=true;}, {once:true,passive:true,signal});
 function settleEntryAnchor(event?: Event) {
+  // Home's head coordinator owns direct hashes/reloads and the ready barrier.
+  if (ownsSectionHistory) return;
   // The destination can move while modules/fonts establish their sticky runway.
   // Re-align the explicit pre-reveal event, without fighting later user scrolling.
   if ((entryAnchorSettled && event?.type !== 'leo:page-position') || userMoved) return;
@@ -62,6 +99,7 @@ function announceReveal() {
 }
 
 function release() {
+  destination?.dispose(); destination = undefined;
   timeline?.kill(); timeline = null;
   if (watchdog) clearTimeout(watchdog);
   watchdog = undefined;
@@ -84,7 +122,7 @@ function release() {
 // fixed navigation and pinned project sections retain their rendered position.
 // The destination stays live inside the second snapshot while its text enters.
 
-function snapshotSequence(commit: () => void, focus?: HTMLElement | null) {
+function snapshotSequence(commit: () => void, focus?: HTMLElement | null, logical = false) {
   snapshotStyle = document.createElement('style');
   snapshotStyle.textContent = `
     html[data-section-transition] body * { view-transition-name: none !important; }
@@ -108,8 +146,24 @@ function snapshotSequence(commit: () => void, focus?: HTMLElement | null) {
   let entrance: ReturnType<typeof prepareEntrances> | undefined;
   let committed = false;
   let cancelled = false;
-  const transition = document.startViewTransition(() => {
+  let recovering = false;
+  let recoveryVersion = 0;
+  const recover = () => {
     if (cancelled) return;
+    recovering = true; recoveryVersion++;
+    const panel = getCurtain();
+    // Cover before dropping snapshots or cancelling a reveal after resize.
+    gsap.set(panel, {display:'block', clipPath:'inset(0% 0% 0% 0%)'});
+    panel.style.pointerEvents = 'auto';
+    timeline?.kill(); timeline = null;
+    transition.skipTransition();
+    snapshotAnimations.splice(0).forEach(animation => animation.cancel());
+    entrance?.clean();
+  };
+  if (logical) destination = trackScrollDestination(commit, recover);
+  const operation = destination;
+  const transition = document.startViewTransition(() => {
+    if (cancelled || recovering) return;
     commit(); committed = true;
     // Keep this callback synchronous: rendering (including animation frames)
     // is paused by the browser while it captures the destination.
@@ -123,33 +177,55 @@ function snapshotSequence(commit: () => void, focus?: HTMLElement | null) {
   // The new image follows the same path 160 ms behind: both coexist on screen.
   const {oldFrames,newFrames} = snapshotFrames();
   void transition.ready.then(() => {
-    if (cancelled) return;
+    if (cancelled || recovering) return;
     const root = document.documentElement;
     snapshotAnimations.push(
       root.animate(oldFrames, { duration, fill: 'both', pseudoElement: '::view-transition-old(root)' }),
       root.animate(newFrames, { duration, delay, fill: 'both', pseudoElement: '::view-transition-new(root)' }),
     );
     entrance?.play();
+    // Verify the logical destination while the original visual effect runs.
+    if (operation) void operation.ready().catch(() => {});
     // Footer's existing entrances also start before the new field fills the view.
     timeline = gsap.timeline().call(announceReveal, [], SECTION_TRANSITION.contentDelay);
   }).catch(error => {
     // A browser may skip snapshots (e.g. duplicate view-transition names).
     // Complete navigation and restore content instead of leaving it hidden.
-    if (!cancelled) console.warn('Snapshot transition skipped:', error);
+    if (!cancelled && !recovering) console.warn('Snapshot transition skipped:', error);
   });
   void transition.finished.catch(() => {}).then(async () => {
     if (cancelled) return;
     if (!committed) commit();
 
-    // Las capas ya terminaron: permitir scroll inmediatamente.
-    endScrollTransition();
-
-    await entrance?.finished();
+    if (operation) await operation.ready();
+    else endScrollTransition();
+    if (!recovering) await entrance?.finished();
     if (cancelled) return;
+    if (operation) await operation.ready();
+    while (recovering && !cancelled) {
+      const version = recoveryVersion;
+      await operation?.ready();
+      if (cancelled) return;
+      announceReveal();
+      await new Promise<void>(resolve => {
+        timeline = gsap.timeline({onComplete:resolve, onInterrupt:resolve}).to(getCurtain(), {
+          clipPath:'inset(0% 0% 100% 0%)', duration:SECTION_TRANSITION.reveal,
+          ease:(value:number) => smoothPulse(value, 0, 1),
+        });
+      });
+      if (version === recoveryVersion) break;
+    }
+    if (cancelled) return;
+    if (operation) await operation.ready();
     timeline?.kill(); timeline = null;
     release(); focusDestination(focus);
+  }).catch(error => {
+    if (cancelled || operation !== destination) return;
+    console.error('Section destination failed:', error);
+    release();
   });
   watchdog = setTimeout(() => {
+    if (operation) { recover(); return; }
     nativeTransition?.skipTransition();
     timeline?.kill(); timeline = null; release();
   }, 8000);
@@ -166,7 +242,7 @@ function focusDestination(element?: HTMLElement | null) {
 }
 
 // Navigation changes position only once the curtain covers the entire viewport.
-function transitionTo(changePosition: () => void, focus?: HTMLElement | null) {
+function transitionTo(changePosition: () => void, focus?: HTMLElement | null, logical = false) {
   if (transitioning || isScrollLocked()) return;
   const commit = () => commitScrollJump(changePosition);
   if (reduced.matches) {
@@ -179,12 +255,30 @@ function transitionTo(changePosition: () => void, focus?: HTMLElement | null) {
   document.documentElement.dataset.sectionTransition = 'covering';
   window.dispatchEvent(new Event('leo:section-cover'));
   if (typeof document.startViewTransition === 'function') {
-    snapshotSequence(commit, focus);
+    snapshotSequence(commit, focus, logical);
     return;
   }
   // Compatibility path for browsers without same-document view transitions.
   const panel = getCurtain();
   const motion = { cover: 0, reveal: 0 };
+  let recovery = 0;
+  const settleCovered = async (restart = false) => {
+    const version = ++recovery;
+    const operation = destination;
+    const visual = timeline;
+    visual?.pause();
+    panel.style.clipPath = 'inset(0% 0% 0% 0%)';
+    try {
+      await operation?.ready();
+      if (version !== recovery || operation !== destination || visual !== timeline) return;
+      if (restart) { motion.reveal = 0; visual?.play('destination-reveal'); }
+      else visual?.resume();
+    } catch (error) {
+      if (operation !== destination) return;
+      console.error('Section destination failed:', error); release();
+    }
+  };
+  if (logical) destination = trackScrollDestination(commit, () => { void settleCovered(true); });
   gsap.set(panel, {
     display: 'block', opacity: 1, yPercent: 0,
     clipPath: openingClip(0),
@@ -208,6 +302,7 @@ function transitionTo(changePosition: () => void, focus?: HTMLElement | null) {
       panel.style.clipPath = 'inset(0% 0% 0% 0%)';
       try {
         commit();
+        if (logical) void settleCovered();
         if (focus?.matches('.hero')) {
           const entrance = prepareHomeEntrance(focus);
           cleanupEntrance = entrance.clean;
@@ -220,6 +315,7 @@ function transitionTo(changePosition: () => void, focus?: HTMLElement | null) {
       }
     })
     .to({}, { duration: SECTION_TRANSITION.covered })
+    .addLabel('destination-reveal')
     .call(announceReveal)
     .to(motion, {
       reveal: 1, duration: SECTION_TRANSITION.reveal, ease: 'none',
@@ -232,6 +328,7 @@ function transitionTo(changePosition: () => void, focus?: HTMLElement | null) {
     });
   // Never leave the interface blocked after an interrupted animation.
   watchdog = setTimeout(() => {
+    if (logical) { void settleCovered(true); return; }
     timeline?.kill(); timeline = null; release();
   }, 8000);
 }
@@ -281,6 +378,7 @@ document.addEventListener('click', event => {
   if (sidebarMenu) sidebarMenu.inert = true;
   document.querySelector('[data-glass-sidebar]')?.removeAttribute('data-open');
   document.querySelector('.glass-toggle')?.setAttribute('aria-expanded', 'false');
+  let historyCommitted = false;
   transitionTo(() => {
     if (category) {
       // Existing projects.ts computes the exact desktop/mobile category stop.
@@ -288,8 +386,47 @@ document.addEventListener('click', event => {
     } else {
       scrollPage(isHome ? 0 : section!.getBoundingClientRect().top + window.scrollY, false);
     }
-  }, section);
+    if (!historyCommitted) {
+      historyCommitted = true;
+      commitSectionHistory(isHome ? '' : category ? '#work' : '#' + hash, category ? index : undefined);
+    }
+  }, section, !isHome);
 }, { capture: true, signal });
+
+// Traversal restores a logical section under coverage; it never writes history.
+// No hashchange handler: pushState does not cause a second native anchor jump.
+window.addEventListener('popstate', () => {
+  if (!ownsSectionHistory || location.href === lastSectionURL) return;
+  const hash = sectionHash(location.hash);
+  if (hash === null) return;
+  lastSectionURL = location.href;
+  const version = ++historyOperation;
+  nativeTransition?.skipTransition();
+  if (transitioning) release();
+  const target = hash ? document.getElementById(hash.slice(1)) : document.querySelector<HTMLElement>('.hero');
+  if (!target) return;
+  const saved = history.state?.leoSection;
+  const category = hash === '#work' && saved?.hash === hash && Number.isInteger(saved.category) && saved.category >= 0 && saved.category < 4 ? saved.category : undefined;
+  const panel = getCurtain();
+  gsap.set(panel, {display:'block', clipPath:'inset(0% 0% 0% 0%)'});
+  panel.style.pointerEvents = 'auto';
+  beginScrollTransition();
+  transitioning = true;
+  document.documentElement.dataset.sectionTransition = 'covering';
+  window.dispatchEvent(new Event('leo:section-cover'));
+  const operation = trackScrollDestination(() => {
+    if (category !== undefined) window.dispatchEvent(new CustomEvent('leo:project-jump', {detail:category}));
+    else scrollPage(hash ? target.getBoundingClientRect().top + scrollY : 0, false);
+  }, () => { panel.style.clipPath = 'inset(0% 0% 0% 0%)'; });
+  destination = operation;
+  void operation.ready().then(() => {
+    if (version !== historyOperation || destination !== operation) return;
+    release(); focusDestination(target);
+  }).catch(error => {
+    if (version !== historyOperation || destination !== operation) return;
+    console.error('History destination failed:', error); release();
+  });
+}, {signal});
 
 reduced.addEventListener('change', () => {
   if (reduced.matches) {
