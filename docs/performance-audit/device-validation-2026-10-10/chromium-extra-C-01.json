@@ -1,0 +1,132 @@
+[
+  {
+    "name": "C-01 slow module > watchdog keeps destination covered",
+    "pass": true,
+    "details": {
+      "samples": [
+        {
+          "time": 1027.6000000014901,
+          "y": 0,
+          "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-cross-page=\"\" data-page-transition=\"\" class=\"lenis\"",
+          "cover": {
+            "name": "<div data-navigation-coverage=\"\" aria-hidden=\"true\" style=\"position: fixed; inset: 0px; z-index: 214",
+            "display": "block",
+            "opacity": "1",
+            "visibility": "visible",
+            "clip": "none"
+          },
+          "ready": "interactive"
+        },
+        {
+          "time": 2032.3000000044703,
+          "y": 0,
+          "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-cross-page=\"\" data-page-transition=\"\" class=\"lenis\"",
+          "cover": {
+            "name": "<div data-navigation-coverage=\"\" aria-hidden=\"true\" style=\"position: fixed; inset: 0px; z-index: 214",
+            "display": "block",
+            "opacity": "1",
+            "visibility": "visible",
+            "clip": "none"
+          },
+          "ready": "interactive"
+        },
+        {
+          "time": 3038.89999999851,
+          "y": 0,
+          "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-cross-page=\"\" data-page-transition=\"\" class=\"lenis\"",
+          "cover": {
+            "name": "<div data-navigation-coverage=\"\" aria-hidden=\"true\" style=\"position: fixed; inset: 0px; z-index: 214",
+            "display": "block",
+            "opacity": "1",
+            "visibility": "visible",
+            "clip": "none"
+          },
+          "ready": "interactive"
+        },
+        {
+          "time": 4046.10000000149,
+          "y": 0,
+          "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-cross-page=\"\" data-page-transition=\"\" class=\"lenis\"",
+          "cover": {
+            "name": "<div data-navigation-coverage=\"\" aria-hidden=\"true\" style=\"position: fixed; inset: 0px; z-index: 214",
+            "display": "block",
+            "opacity": "1",
+            "visibility": "visible",
+            "clip": "none"
+          },
+          "ready": "interactive"
+        },
+        {
+          "time": 5056.20000000298,
+          "y": 0,
+          "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-cross-page=\"\" data-page-transition=\"\" class=\"lenis\"",
+          "cover": {
+            "name": "<div data-navigation-coverage=\"\" aria-hidden=\"true\" style=\"position: fixed; inset: 0px; z-index: 214",
+            "display": "block",
+            "opacity": "1",
+            "visibility": "visible",
+            "clip": "none"
+          },
+          "ready": "interactive"
+        },
+        {
+          "time": 6062.20000000298,
+          "y": 0,
+          "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-cross-page=\"\" data-page-transition=\"\" class=\"lenis\"",
+          "cover": {
+            "name": "<div data-navigation-coverage=\"\" aria-hidden=\"true\" style=\"position: fixed; inset: 0px; z-index: 214",
+            "display": "block",
+            "opacity": "1",
+            "visibility": "visible",
+            "clip": "none"
+          },
+          "ready": "interactive"
+        },
+        {
+          "time": 7069.89999999851,
+          "y": 0,
+          "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-cross-page=\"\" data-page-transition=\"\" class=\"lenis\"",
+          "cover": {
+            "name": "<div data-navigation-coverage=\"\" aria-hidden=\"true\" style=\"position: fixed; inset: 0px; z-index: 214",
+            "display": "block",
+            "opacity": "1",
+            "visibility": "visible",
+            "clip": "none"
+          },
+          "ready": "interactive"
+        },
+        {
+          "time": 8079.60000000149,
+          "y": 0,
+          "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-cross-page=\"\" data-page-transition=\"\" class=\"lenis\"",
+          "cover": {
+            "name": "<div data-navigation-coverage=\"\" aria-hidden=\"true\" style=\"position: fixed; inset: 0px; z-index: 214",
+            "display": "block",
+            "opacity": "1",
+            "visibility": "visible",
+            "clip": "none"
+          },
+          "ready": "interactive"
+        },
+        {
+          "time": 9089.89999999851,
+          "y": 0,
+          "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-cross-page=\"\" data-page-transition=\"\" class=\"lenis\"",
+          "cover": {
+            "name": "<div data-navigation-coverage=\"\" aria-hidden=\"true\" style=\"position: fixed; inset: 0px; z-index: 214",
+            "display": "block",
+            "opacity": "1",
+            "visibility": "visible",
+            "clip": "none"
+          },
+          "ready": "interactive"
+        }
+      ],
+      "final": {
+        "y": 4662,
+        "top": -0.265625,
+        "hash": "#work"
+      }
+    }
+  }
+]

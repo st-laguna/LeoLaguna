@@ -39,3 +39,12 @@ html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .projects[dat
 html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .site-header .site-controls {grid-template-columns:max(96px,var(--header-bot1-w)) var(--header-control-gap-1) max(92px,var(--header-bo2-w)) var(--header-control-gap-2) minmax(var(--header-bo3-w),max-content);}
 
 html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .about[data-editorial] .about-editorial .theme {width:92px;}
+
+/* Center the existing label boxes on the controls' axis without changing type or padding. */
+@media (min-width:701px) and (min-height:501px) and (orientation:landscape) {
+ html:is([data-ipad],[data-large-tablet-landscape]):not([data-tablet-portrait]) body .site-header .site-nav__items > a {top:calc((max(34.2px,var(--ui-control-height)) - var(--ui-nav-row-height)) / 2);}
+}
+/* Spend real space on the service strip and useful thumbnails, rather than image scaling. */
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .projects[data-horizontal] {--project-footer:clamp(240px,26svh,292px);}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .projects[data-horizontal] .project-panel {grid-template-columns:minmax(0,1fr) min(38vw,var(--gallery-height),600px);}
+html[data-large-tablet-landscape]:not([data-tablet-portrait]) body .gallery-footer {padding-block:30px 18px;}

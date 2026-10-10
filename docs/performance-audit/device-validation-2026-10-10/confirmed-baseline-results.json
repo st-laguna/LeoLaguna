@@ -1,0 +1,328 @@
+{
+  "functional": [
+    {
+      "name": "phone portrait — all four galleries, zoom and dock",
+      "pass": true,
+      "details": [
+        {
+          "i": 0,
+          "phone": true,
+          "animated": false,
+          "columns": "174px 174px",
+          "items": 10,
+          "order": [
+            {
+              "text": "01",
+              "y": 100
+            },
+            {
+              "text": "SELECTED WORK",
+              "y": 130
+            },
+            {
+              "text": "TECHNICAL VISUALS",
+              "y": 157
+            },
+            {
+              "text": "3D visualization, technical illustration and visual communication for scientific and industrial projects.",
+              "y": 201.75
+            }
+          ],
+          "overflow": false,
+          "dock": {
+            "deltaX": 0,
+            "deltaY": 0,
+            "meta": "none",
+            "social": "none",
+            "based": "none"
+          }
+        },
+        {
+          "i": 1,
+          "phone": true,
+          "animated": false,
+          "columns": "174px 174px",
+          "items": 14,
+          "order": [
+            {
+              "text": "02",
+              "y": 100
+            },
+            {
+              "text": "SELECTED WORK",
+              "y": 130
+            },
+            {
+              "text": "SCIENTIFIC ILLUSTRATION",
+              "y": 157
+            },
+            {
+              "text": "Research-informed illustrations that translate scientific knowledge into clear, accurate images.",
+              "y": 234.5
+            }
+          ],
+          "overflow": false,
+          "dock": {
+            "deltaX": 0,
+            "deltaY": 0,
+            "meta": "none",
+            "social": "none",
+            "based": "none"
+          }
+        },
+        {
+          "i": 2,
+          "phone": true,
+          "animated": false,
+          "columns": "174px 174px",
+          "items": 27,
+          "order": [
+            {
+              "text": "03",
+              "y": 100
+            },
+            {
+              "text": "SELECTED WORK",
+              "y": 130
+            },
+            {
+              "text": "EDUCATIONAL VISUALS",
+              "y": 157
+            },
+            {
+              "text": "Infographics and visual materials that make complex scientific information clear and engaging.",
+              "y": 234.5
+            }
+          ],
+          "overflow": false,
+          "dock": {
+            "deltaX": 0,
+            "deltaY": 0,
+            "meta": "none",
+            "social": "none",
+            "based": "none"
+          }
+        },
+        {
+          "i": 3,
+          "phone": true,
+          "animated": false,
+          "columns": "174px 174px",
+          "items": 10,
+          "order": [
+            {
+              "text": "04",
+              "y": 100
+            },
+            {
+              "text": "SELECTED WORK",
+              "y": 130
+            },
+            {
+              "text": "ANIMATION & VIDEO",
+              "y": 157
+            },
+            {
+              "text": "Animation and video bringing scientific, environmental and industrial stories into motion.",
+              "y": 201.75
+            }
+          ],
+          "overflow": false,
+          "dock": {
+            "deltaX": 0,
+            "deltaY": 0,
+            "meta": "none",
+            "social": "none",
+            "based": "none"
+          }
+        }
+      ]
+    },
+    {
+      "name": "C-02 resize during navigation",
+      "pass": true,
+      "details": {
+        "r": {
+          "hash": "#work",
+          "y": 15258,
+          "services": 0.21875,
+          "work": 8469.40625,
+          "history": 3
+        },
+        "next": {
+          "hash": "#featured-works",
+          "y": 23727,
+          "services": -8468.78125,
+          "work": 0.40625,
+          "history": 4
+        }
+      }
+    },
+    {
+      "name": "C-03 hash/history/back/forward/reload/direct entry",
+      "pass": true,
+      "details": {
+        "services": {
+          "hash": "#work",
+          "y": 4662,
+          "services": -0.265625,
+          "work": 5759.734375,
+          "history": 3
+        },
+        "repeat": {
+          "hash": "#work",
+          "y": 4662,
+          "services": -0.265625,
+          "work": 5759.734375,
+          "history": 3
+        },
+        "back": {
+          "hash": "#work",
+          "y": 4662,
+          "services": -0.265625,
+          "work": 5759.734375,
+          "history": 4
+        },
+        "forward": {
+          "hash": "#featured-works",
+          "y": 10422,
+          "services": -5760.265625,
+          "work": -0.265625,
+          "history": 4
+        },
+        "reload": {
+          "hash": "#featured-works",
+          "y": 10422,
+          "services": -5760.265625,
+          "work": -0.265625,
+          "history": 4
+        },
+        "direct": {
+          "hash": "#work",
+          "y": 4662,
+          "services": -0.265625,
+          "work": 5759.734375,
+          "history": 5
+        },
+        "reloadServices": {
+          "hash": "#work",
+          "y": 4662,
+          "services": -0.265625,
+          "work": 5759.734375,
+          "history": 5
+        }
+      }
+    },
+    {
+      "name": "iPad portrait footer single text, bands and natural stop",
+      "pass": true,
+      "details": {
+        "snap": "none",
+        "bg": "rgb(28, 28, 28)",
+        "native": "1",
+        "overlay": "none",
+        "overflow": false,
+        "stopY": 26917
+      }
+    },
+    {
+      "name": "P-01 footer draws only while visible",
+      "pass": true,
+      "details": {
+        "before": 0,
+        "active": 414,
+        "after": 0
+      }
+    },
+    {
+      "name": "P-03 CV idle/wheel/keyboard/programmatic",
+      "pass": true,
+      "details": [
+        {
+          "touch": false,
+          "idle": 0,
+          "wake": {
+            "raf": 20,
+            "y": 197
+          },
+          "keyboard": 1172,
+          "programmatic": 100,
+          "settled": 0
+        },
+        {
+          "touch": true,
+          "idle": 0,
+          "settled": 0
+        }
+      ]
+    }
+  ],
+  "extra": [
+    {
+      "name": "iPad footer dock clamped beyond scroll maximum",
+      "pass": true,
+      "details": {
+        "before": 1000.40625,
+        "beyond": 1000.40625,
+        "slot": 1000.40625,
+        "max": 2520
+      }
+    },
+    {
+      "name": "WWF canonical reset, gestures and coral canvas",
+      "pass": true,
+      "details": [
+        {
+          "name": "desktop",
+          "resetIdentical": true,
+          "coral": {
+            "active": true,
+            "root": "rgb(239, 108, 101)",
+            "body": "rgb(239, 108, 101)",
+            "end": "rgb(239, 108, 101)",
+            "overflow": false
+          },
+          "errors": []
+        },
+        {
+          "name": "ipad",
+          "resetIdentical": true,
+          "coral": {
+            "active": true,
+            "root": "rgb(239, 108, 101)",
+            "body": "rgb(239, 108, 101)",
+            "end": "rgb(239, 108, 101)",
+            "overflow": false
+          },
+          "errors": []
+        },
+        {
+          "name": "phone",
+          "resetIdentical": true,
+          "coral": {
+            "active": true,
+            "root": "rgb(239, 108, 101)",
+            "body": "rgb(239, 108, 101)",
+            "end": "rgb(239, 108, 101)",
+            "overflow": false
+          },
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "webkitPortrait": [
+    {
+      "name": "iPad portrait footer single text, bands and natural stop",
+      "pass": true,
+      "details": {
+        "snap": "none",
+        "bg": "rgb(28, 28, 28)",
+        "native": "1",
+        "overlay": "none",
+        "overflow": false,
+        "stopY": 26938
+      }
+    }
+  ]
+}

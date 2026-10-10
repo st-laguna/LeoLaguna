@@ -2,18 +2,21 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // One button exits above the header, relocates while hidden, and enters at the footer.
-export function mountGalleryReturn(dialog:HTMLDialogElement,scroller:HTMLElement,reduced:MediaQueryList) {
+export function mountGalleryReturn(dialog:HTMLDialogElement,scroller:HTMLElement,reduced:MediaQueryList,isCurrent:()=>boolean=()=>true) {
   const motion=dialog.querySelector<HTMLElement>('.gallery-return-motion')!;
   const entry=dialog.querySelector<HTMLElement>('.gallery-return-entry')!;
   const button=motion.querySelector<HTMLButtonElement>('button')!;
   const slot=dialog.querySelector<HTMLElement>('[data-gallery]:not([hidden]) [data-gallery-return-slot]');
   const footer=slot?.closest<HTMLElement>('.gallery-footer');
   const state={p:0};
+  let disposed=false;
+  const live=()=>!disposed&&isCurrent();
   let originX=0,originY=0,targetX=0,targetY=0,exitDistance=0;
   gsap.set(motion,{x:0,y:0});
   const entrance=gsap.fromTo(entry,{y:reduced.matches?0:-12,opacity:reduced.matches?1:0},{y:0,opacity:1,duration:reduced.matches?0:.6,ease:'power3.out'});
   if(!slot||!footer) return ()=>{entrance.kill();gsap.set([motion,entry],{clearProps:'transform,opacity'});};
   function measure(){
+    if(!live())return;
     // Reads happen only on refresh/resize, never in the scroll animation callback.
     const base=motion.getBoundingClientRect();
     originX=base.left-Number(gsap.getProperty(motion,'x'));
@@ -30,8 +33,11 @@ export function mountGalleryReturn(dialog:HTMLDialogElement,scroller:HTMLElement
   const setOpacity=gsap.quickSetter(motion,'opacity');
   const easeOut=gsap.parseEase('power3.out'),easeIn=gsap.parseEase('power3.in');
   function render(){
-    const p=state.p;
-    const dockY=targetY-scroller.scrollTop-originY;
+    if(!live())return;
+    const p=gsap.utils.clamp(0,1,state.p);
+    // Safari reports coordinates beyond both ends during rubber-banding.
+    const scroll=gsap.utils.clamp(0,Math.max(0,scroller.scrollHeight-scroller.clientHeight),scroller.scrollTop);
+    const dockY=targetY-scroll-originY;
     if(reduced.matches){
       setOpacity(1);setX(p<.5?0:targetX-originX);setY(p<.5?0:dockY);return;
     }
@@ -54,13 +60,14 @@ export function mountGalleryReturn(dialog:HTMLDialogElement,scroller:HTMLElement
   }}).to(state,{p:.4,duration:.3,ease:'none'})
     .to(state,{p:.5,duration:.05,ease:'none'})
     .to(state,{p:1,duration:.4,ease:'none'});
-  const resize=new ResizeObserver(()=>{measure();tween.scrollTrigger?.refresh();render();});
+  const resize=new ResizeObserver(()=>{if(!live())return;measure();tween.scrollTrigger?.refresh();render();});
   resize.observe(scroller);resize.observe(button);resize.observe(footer);
   // Lazy media can move the footer without resizing the footer itself.
   resize.observe(slot.closest<HTMLElement>('[data-gallery]')!);
-  const onMotionChange=()=>{entrance.progress(1);tween.scrollTrigger!.vars.scrub=reduced.matches?true:.3;tween.scrollTrigger!.refresh();};
+  const onMotionChange=()=>{if(!live())return;entrance.progress(1);tween.scrollTrigger!.vars.scrub=reduced.matches?true:.3;tween.scrollTrigger!.refresh();};
   reduced.addEventListener('change',onMotionChange);
   return ()=>{
+    if(disposed)return;disposed=true;
     resize.disconnect();reduced.removeEventListener('change',onMotionChange);
     tween.scrollTrigger?.kill();tween.kill();entrance.kill();
     gsap.set([motion,entry],{clearProps:'transform,opacity'});

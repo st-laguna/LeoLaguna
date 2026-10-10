@@ -1,0 +1,29 @@
+{
+  "out": [
+    {
+      "name": "stale callbacks cannot mutate new opening",
+      "unchanged": true,
+      "callbacks": 8,
+      "triggers": [
+        "service-sticky-grid",
+        "gallery-return-dock"
+      ],
+      "scroll": 2372
+    },
+    {
+      "name": "breakpoint",
+      "width": 844,
+      "phone": false,
+      "open": true,
+      "columns": "244.328px 244.328px 244.328px"
+    },
+    {
+      "name": "breakpoint",
+      "width": 390,
+      "phone": false,
+      "open": true,
+      "columns": "106.328px 106.328px 106.344px"
+    }
+  ],
+  "errors": []
+}

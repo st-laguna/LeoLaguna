@@ -1,0 +1,1507 @@
+[
+  {
+    "name": "desktop",
+    "geometry": {
+      "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-home-entry=\"\" class=\"lenis\" style=\"--footer-header-y: 19687.609375px;\"",
+      "nav": {
+        "x": 1043.390625,
+        "y": 16.1875,
+        "w": 128.21875,
+        "h": 38.5,
+        "center": 35.4375,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "block"
+      },
+      "cta": {
+        "x": 177.8125,
+        "y": 17.09375,
+        "w": 181.71875,
+        "h": 34.1875,
+        "center": 34.1875,
+        "bg": "rgb(239, 108, 101)",
+        "display": "flex"
+      },
+      "serviceFooter": {
+        "x": 0,
+        "y": 7341,
+        "w": 1905,
+        "h": 291.59375,
+        "center": 7486.796875,
+        "bg": "rgb(28, 28, 28)",
+        "display": "grid"
+      },
+      "preview": {
+        "x": 103.671875,
+        "y": 6631.78125,
+        "w": 1023.4375,
+        "h": 682.21875,
+        "center": 6972.890625,
+        "bg": "rgb(237, 237, 237)",
+        "display": "block"
+      },
+      "thumbs": {
+        "x": 1192.375,
+        "y": 6631.78125,
+        "w": 680,
+        "h": 682.21875,
+        "center": 6972.890625,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "grid"
+      },
+      "bands": {
+        "x": 0,
+        "y": 15735.59375,
+        "w": 1905,
+        "h": 3928.015625,
+        "center": 17699.6015625,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "flow-root"
+      },
+      "snap": "none"
+    },
+    "stages": [
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ]
+    ],
+    "perf": {
+      "decodeMs": 7.200000002980232,
+      "maxFrame": 22.299999999999272,
+      "framesOver32": 0,
+      "frames": 151,
+      "size": [
+        1920,
+        1080
+      ],
+      "src": "/img/EXO1.webp"
+    },
+    "errors": [],
+    "warnings": [],
+    "missing": []
+  },
+  {
+    "name": "laptop",
+    "geometry": {
+      "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-home-entry=\"\" class=\"lenis\" style=\"--footer-header-y: 14001.90625px;\"",
+      "nav": {
+        "x": 742.328125,
+        "y": 12,
+        "w": 91.21875,
+        "h": 35.46875,
+        "center": 29.734375,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "block"
+      },
+      "cta": {
+        "x": 133.765625,
+        "y": 12,
+        "w": 181.71875,
+        "h": 34.1875,
+        "center": 29.09375,
+        "bg": "rgb(239, 108, 101)",
+        "display": "flex"
+      },
+      "serviceFooter": {
+        "x": 0,
+        "y": 5216.734375,
+        "w": 1351,
+        "h": 210,
+        "center": 5321.734375,
+        "bg": "rgb(28, 28, 28)",
+        "display": "grid"
+      },
+      "preview": {
+        "x": 76,
+        "y": 4733.734375,
+        "w": 858.890625,
+        "h": 463,
+        "center": 4965.234375,
+        "bg": "rgb(237, 237, 237)",
+        "display": "block"
+      },
+      "thumbs": {
+        "x": 958.890625,
+        "y": 4733.734375,
+        "w": 368.09375,
+        "h": 463,
+        "center": 4965.234375,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "grid"
+      },
+      "bands": {
+        "x": 0,
+        "y": 11189.734375,
+        "w": 1351,
+        "h": 2788.171875,
+        "center": 12583.8203125,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "flow-root"
+      },
+      "snap": "none"
+    },
+    "stages": [
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ]
+    ],
+    "perf": {
+      "decodeMs": 7.399999998509884,
+      "maxFrame": 5.700000000000728,
+      "framesOver32": 0,
+      "frames": 155,
+      "size": [
+        1920,
+        1080
+      ],
+      "src": "/img/EXO1.webp"
+    },
+    "errors": [],
+    "warnings": [],
+    "missing": []
+  },
+  {
+    "name": "ipad-landscape",
+    "geometry": {
+      "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-ipad=\"\" data-theme=\"light\" data-section-history=\"\" style=\"--ipad-svh: 10.24px; --footer-header-y: 16770.796875px;\" data-home-entry=\"\"",
+      "nav": {
+        "x": 742.328125,
+        "y": 15.359375,
+        "w": 91.21875,
+        "h": 35.46875,
+        "center": 33.09375,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "block"
+      },
+      "cta": {
+        "x": 133.765625,
+        "y": 15.359375,
+        "w": 181.71875,
+        "h": 34.1875,
+        "center": 32.453125,
+        "bg": "rgb(239, 108, 101)",
+        "display": "flex"
+      },
+      "serviceFooter": {
+        "x": 0,
+        "y": 7026.671875,
+        "w": 1366,
+        "h": 210,
+        "center": 7131.671875,
+        "bg": "rgb(237, 237, 237)",
+        "display": "grid"
+      },
+      "preview": {
+        "x": 76,
+        "y": 6291.03125,
+        "w": 869.390625,
+        "h": 715.640625,
+        "center": 6648.8515625,
+        "bg": "rgb(237, 237, 237)",
+        "display": "block"
+      },
+      "thumbs": {
+        "x": 969.390625,
+        "y": 6291.03125,
+        "w": 372.59375,
+        "h": 715.640625,
+        "center": 6648.8515625,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "grid"
+      },
+      "bands": {
+        "x": 0,
+        "y": 13895.671875,
+        "w": 1366,
+        "h": 2851.125,
+        "center": 15321.234375,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "flow-root"
+      },
+      "snap": "none"
+    },
+    "stages": [
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ]
+    ],
+    "perf": {
+      "decodeMs": 9.100000001490116,
+      "maxFrame": 5.700000000000728,
+      "framesOver32": 0,
+      "frames": 155,
+      "size": [
+        1920,
+        1080
+      ],
+      "src": "/img/EXO1.webp"
+    },
+    "errors": [],
+    "warnings": [],
+    "missing": []
+  },
+  {
+    "name": "ipad-portrait",
+    "geometry": {
+      "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-ipad=\"\" data-tablet-portrait=\"\" data-theme=\"light\" data-section-history=\"\" style=\"--ipad-svh: 13.66px; --footer-header-y: 28970.96875px;\" data-home-entry=\"\"",
+      "nav": {
+        "x": 52,
+        "y": 88,
+        "w": 948,
+        "h": 71,
+        "center": 123.5,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "block"
+      },
+      "cta": {
+        "x": 818.28125,
+        "y": 1302.90625,
+        "w": 181.71875,
+        "h": 34.1875,
+        "center": 1320,
+        "bg": "rgb(239, 108, 101)",
+        "display": "flex"
+      },
+      "serviceFooter": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0,
+        "center": 0,
+        "bg": "rgb(237, 237, 237)",
+        "display": "none"
+      },
+      "preview": {
+        "x": 25,
+        "y": 15361.21875,
+        "w": 974,
+        "h": 1178,
+        "center": 15950.21875,
+        "bg": "rgb(237, 237, 237)",
+        "display": "block"
+      },
+      "thumbs": {
+        "x": 404.5,
+        "y": 16554.21875,
+        "w": 163,
+        "h": 32,
+        "center": 16570.21875,
+        "bg": "color(srgb 0.929412 0.929412 0.929412 / 0.82)",
+        "display": "flex"
+      },
+      "bands": {
+        "x": 0,
+        "y": 25093.40625,
+        "w": 1024,
+        "h": 3853.5625,
+        "center": 27020.1875,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "flow-root"
+      },
+      "snap": "none"
+    },
+    "stages": [
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ]
+    ],
+    "perf": {
+      "decodeMs": 8.299999997019768,
+      "maxFrame": 5.700000000000728,
+      "framesOver32": 0,
+      "frames": 155,
+      "size": [
+        1920,
+        1080
+      ],
+      "src": "/img/EXO1.webp"
+    },
+    "errors": [],
+    "warnings": [],
+    "missing": []
+  },
+  {
+    "name": "phone",
+    "geometry": {
+      "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-home-entry=\"\" data-scroll-pacing=\"native\" style=\"--footer-header-y: 17877.953125px;\"",
+      "nav": {
+        "x": 52,
+        "y": 88,
+        "w": 314,
+        "h": 58.09375,
+        "center": 117.046875,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "block"
+      },
+      "cta": {
+        "x": 184.28125,
+        "y": 781.8125,
+        "w": 181.71875,
+        "h": 34.1875,
+        "center": 798.90625,
+        "bg": "rgb(239, 108, 101)",
+        "display": "flex"
+      },
+      "serviceFooter": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0,
+        "center": 0,
+        "bg": "rgb(237, 237, 237)",
+        "display": "none"
+      },
+      "preview": {
+        "x": 25,
+        "y": 9530.46875,
+        "w": 340,
+        "h": 656,
+        "center": 9858.46875,
+        "bg": "rgb(237, 237, 237)",
+        "display": "block"
+      },
+      "thumbs": {
+        "x": 94,
+        "y": 10201.46875,
+        "w": 150,
+        "h": 32,
+        "center": 10217.46875,
+        "bg": "color(srgb 0.929412 0.929412 0.929412 / 0.82)",
+        "display": "flex"
+      },
+      "bands": {
+        "x": 0,
+        "y": 15504.265625,
+        "w": 390,
+        "h": 2349.6875,
+        "center": 16679.109375,
+        "bg": "rgb(237, 237, 237)",
+        "display": "flow-root"
+      },
+      "snap": "y"
+    },
+    "stages": [
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ]
+    ],
+    "perf": {
+      "decodeMs": 8.300000004470348,
+      "maxFrame": 5.700000000000728,
+      "framesOver32": 0,
+      "frames": 155,
+      "size": [
+        1920,
+        1080
+      ],
+      "src": "/img/EXO1.webp"
+    },
+    "errors": [],
+    "warnings": [],
+    "missing": []
+  },
+  {
+    "name": "small-phone",
+    "geometry": {
+      "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-home-entry=\"\" data-scroll-pacing=\"native\" style=\"--footer-header-y: 16905.890625px;\"",
+      "nav": {
+        "x": 52,
+        "y": 88,
+        "w": 284,
+        "h": 55.40625,
+        "center": 115.703125,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "block"
+      },
+      "cta": {
+        "x": 154.28125,
+        "y": 737.8125,
+        "w": 181.71875,
+        "h": 34.1875,
+        "center": 754.90625,
+        "bg": "rgb(239, 108, 101)",
+        "display": "flex"
+      },
+      "serviceFooter": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0,
+        "center": 0,
+        "bg": "rgb(237, 237, 237)",
+        "display": "none"
+      },
+      "preview": {
+        "x": 25,
+        "y": 9039,
+        "w": 310,
+        "h": 612,
+        "center": 9345,
+        "bg": "rgb(237, 237, 237)",
+        "display": "block"
+      },
+      "thumbs": {
+        "x": 79,
+        "y": 9666,
+        "w": 150,
+        "h": 32,
+        "center": 9682,
+        "bg": "color(srgb 0.929412 0.929412 0.929412 / 0.82)",
+        "display": "flex"
+      },
+      "bands": {
+        "x": 0,
+        "y": 14696,
+        "w": 360,
+        "h": 2185.890625,
+        "center": 15788.9453125,
+        "bg": "rgb(237, 237, 237)",
+        "display": "flow-root"
+      },
+      "snap": "y"
+    },
+    "stages": [
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ]
+    ],
+    "perf": {
+      "decodeMs": 6.299999997019768,
+      "maxFrame": 5.700000000000728,
+      "framesOver32": 0,
+      "frames": 154,
+      "size": [
+        1920,
+        1080
+      ],
+      "src": "/img/EXO1.webp"
+    },
+    "errors": [],
+    "warnings": [],
+    "missing": []
+  },
+  {
+    "name": "phone-landscape",
+    "geometry": {
+      "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-home-entry=\"\" data-scroll-pacing=\"native\" style=\"--footer-header-y: 10426.03125px;\"",
+      "nav": {
+        "x": 52,
+        "y": 60,
+        "w": 768,
+        "h": 44,
+        "center": 82,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "block"
+      },
+      "cta": {
+        "x": 638.28125,
+        "y": 340.90625,
+        "w": 181.71875,
+        "h": 34.1875,
+        "center": 358,
+        "bg": "rgb(239, 108, 101)",
+        "display": "flex"
+      },
+      "serviceFooter": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0,
+        "center": 0,
+        "bg": "rgb(237, 237, 237)",
+        "display": "none"
+      },
+      "preview": {
+        "x": 330.6875,
+        "y": 4383.296875,
+        "w": 490.3125,
+        "h": 288,
+        "center": 4527.296875,
+        "bg": "rgb(237, 237, 237)",
+        "display": "block"
+      },
+      "thumbs": {
+        "x": 477.84375,
+        "y": 4683.296875,
+        "w": 150,
+        "h": 32,
+        "center": 4699.296875,
+        "bg": "color(srgb 0.929412 0.929412 0.929412 / 0.82)",
+        "display": "flex"
+      },
+      "bands": {
+        "x": 0,
+        "y": 7164.296875,
+        "w": 844,
+        "h": 3237.734375,
+        "center": 8783.1640625,
+        "bg": "rgb(237, 237, 237)",
+        "display": "flow-root"
+      },
+      "snap": "y"
+    },
+    "stages": [
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ]
+    ],
+    "perf": {
+      "decodeMs": 7.899999998509884,
+      "maxFrame": 5.799999999999272,
+      "framesOver32": 0,
+      "frames": 155,
+      "size": [
+        1920,
+        1080
+      ],
+      "src": "/img/EXO1.webp"
+    },
+    "errors": [],
+    "warnings": [],
+    "missing": []
+  }
+]

@@ -18,6 +18,14 @@ if(host){
 if(host&&rail){
   const media=gsap.matchMedia();
   const endPanel=host.querySelector<HTMLElement>('.case-study__end');
+  // Safari can expose the document canvas while bouncing the coral end panel.
+  // Match that context only while the panel is substantially visible.
+  const root=document.documentElement;
+  const endSurface=new IntersectionObserver(([entry])=>{
+    root.toggleAttribute('data-case-coral',entry.isIntersecting&&entry.intersectionRatio>=.5);
+  },{threshold:[0,.5,1]});
+  if(endPanel)endSurface.observe(endPanel);
+  if(import.meta.hot)import.meta.hot.dispose(()=>{endSurface.disconnect();root.removeAttribute('data-case-coral');});
   function endEntrance(){
     if(!endPanel)return null;
     const items=endPanel.querySelectorAll<HTMLElement>('.case-study__others > span, .case-study__others > a > span:first-child, .case-study__next-label, .case-study__next-heading > *, .case-study__preview > img, .case-study__next-meta');

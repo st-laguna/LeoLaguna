@@ -26,9 +26,12 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   dialog.append(close);document.body.append(dialog);
   let placeholder:HTMLElement|undefined,savedScroll=0,savedOverflow='';
   const reduced=matchMedia('(prefers-reduced-motion:reduce)');
-  const scene=new THREE.Scene(),root=new THREE.Group();root.name='MODEL_ROOT';scene.add(root);
+  const scene=new THREE.Scene(),root=new THREE.Group(),base=new THREE.Group();
+  root.name='INTERACTION_PIVOT';base.name='CANONICAL_MODEL_FRAME';root.add(base);scene.add(root);
+  // GLB authoring axes: front +X, right -Z, up +Y. Keep its native orientation.
+  const canonicalOrientation=new THREE.Quaternion();base.quaternion.copy(canonicalOrientation);
   const camera=new THREE.PerspectiveCamera(35,1,.05,100);
-  camera.position.set(3,2.1,3.5);camera.lookAt(0,0,0);
+  camera.position.set(3,2.1,-3.5);camera.lookAt(0,0,0);
   const viewDirection=camera.position.clone().normalize();
   const orbitCamera=camera.clone();
   let defaultDistance=4.6;
@@ -53,7 +56,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const screenUp=new THREE.Vector3(0,1,0).applyQuaternion(camera.quaternion);
   let drag:{id:number;x:number;y:number}|undefined;
   function rotateModel(dx:number,dy:number){
-    dragRotation.setFromAxisAngle(screenUp,dx).multiply(new THREE.Quaternion().setFromAxisAngle(screenRight,-dy));
+    dragRotation.setFromAxisAngle(screenUp,dx).multiply(new THREE.Quaternion().setFromAxisAngle(screenRight,dy));
     modelRotation.premultiply(dragRotation).normalize();request();
   }
   canvas.addEventListener('pointerdown',event=>{
@@ -73,13 +76,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   scene.add(new THREE.HemisphereLight(0xffffff,0x777777,2.0));
   const light=new THREE.DirectionalLight(0xffffff,2.5);light.position.set(3,5,4);scene.add(light);
   function updateInteraction(){
-    const wasPreview=preview;
     preview=touchCapable()&&!dialog.open;
-    if(wasPreview&&!preview){
-      // Preserve the displayed preview angle while changing interaction owner.
-      previewRotation.setFromAxisAngle(verticalAxis,previewAngle);
-      modelRotation.premultiply(previewRotation).normalize();previewAngle=0;
-    }
     viewport.toggleAttribute('data-touch-preview',preview);controls.enabled=!preview;
     canvas.style.touchAction=preview?'auto':dialog.open?'none':'pan-y';canvas.tabIndex=preview?-1:0;
     canvas.dataset.i18nAriaLabel=preview?'model.preview':'model.canvas';canvas.setAttribute('aria-label',translated(canvas.dataset.i18nAriaLabel));
@@ -90,10 +87,11 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     placeholder.replaceWith(viewport);placeholder=undefined;
     document.documentElement.style.overflow=savedOverflow;
     window.scrollTo(0,savedScroll);
-    updateInteraction();resize();explore.focus({preventScroll:true});
+    resetExperience();updateInteraction();resize();explore.focus({preventScroll:true});
   }
   explore.addEventListener('click',()=>{
     if(!loaded||!touchCapable()||dialog.open)return;
+    resetExperience();
     savedScroll=scrollY;savedOverflow=document.documentElement.style.overflow;
     placeholder=document.createElement('section');placeholder.className=viewport.className;placeholder.setAttribute('aria-hidden','true');
     viewport.before(placeholder);dialog.append(viewport);
@@ -188,20 +186,20 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     try{
       const gltf=await loader.loadAsync(viewport.dataset.model!);
       if(disposed){disposeObject(gltf.scene);return;}
-      root.add(gltf.scene);gltf.scene.updateMatrixWorld(true);
+      base.add(gltf.scene);base.updateMatrixWorld(true);
       gltf.scene.traverse(object=>{
         if(!(object instanceof THREE.Mesh))return;
         object.castShadow=/^(wall_|techo_top|front_door)/.test(object.name);
         object.receiveShadow=/^(wall_|techo_top|zocalo_)/.test(object.name);
       });
       const center=new THREE.Box3().setFromObject(gltf.scene).getCenter(new THREE.Vector3());
-      gltf.scene.position.sub(root.worldToLocal(center));gltf.scene.updateMatrixWorld(true);
+      gltf.scene.position.sub(base.worldToLocal(center));gltf.scene.updateMatrixWorld(true);
       Object.entries(specs).forEach(([name,[x,y,z,distance,delay]],index)=>{
         const object=gltf.scene.getObjectByName(name);if(!object)throw new Error('Missing model part: '+name);
         const inverseParent=new THREE.Matrix3().setFromMatrix4(object.parent!.matrixWorld.clone().invert());
         parts.push({object,position:object.position.clone(),quaternion:object.quaternion.clone(),scale:object.scale.clone(),offset:new THREE.Vector3(x,y,z).multiplyScalar(distance).applyMatrix3(inverseParent),progress:0,delay,phase:index*2.399,period:22+index*.65});
       });
-      loaded=true;explore.disabled=false;button.disabled=false;zoom.disabled=false;zoomSteps.forEach(step=>step.disabled=false);delete status.dataset.i18n;status.textContent='';viewport.dataset.modelReady='';request();
+      loaded=true;resetExperience();explore.disabled=false;button.disabled=false;zoom.disabled=false;zoomSteps.forEach(step=>step.disabled=false);delete status.dataset.i18n;status.textContent='';viewport.dataset.modelReady='';request();
     }catch(error){setStatus('model.error');console.error(error);}
   }
   const proximity=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){void load();proximity.disconnect();}},{rootMargin:'300px'});proximity.observe(viewport);
@@ -214,7 +212,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     if(visible){motion?.resume();request();}
     else{
       motion?.pause();cancelAnimationFrame(frame);frame=0;
-      if(!exploded)restoreAssembly();
+      if(!dialog.open)resetExperience();
     }
   },{threshold:[0,.6,1]});
   visibility.observe(viewport);
@@ -222,6 +220,14 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   function restoreAssembly(){
     motion?.kill();floating.amount=0;
     parts.forEach(part=>{part.progress=0;part.object.position.copy(part.position);part.object.quaternion.copy(part.quaternion);part.object.scale.copy(part.scale);});
+  }
+  function resetExperience(){
+    drag=undefined;previewAngle=0;modelRotation.identity();root.quaternion.identity();
+    base.quaternion.copy(canonicalOrientation);last=0;
+    zoomMotion?.kill();zoomState.amount=0;zoom.value='0';applyZoom();
+    exploded=false;expandedWasInView=false;restoreAssembly();
+    button.setAttribute('aria-pressed','false');button.dataset.i18nAriaLabel='model.explode';
+    button.setAttribute('aria-label',translated('model.explode'));request();
   }
   function setExploded(next:boolean){
     if(!loaded||exploded===next)return;

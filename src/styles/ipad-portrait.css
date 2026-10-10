@@ -119,3 +119,5 @@
  html[data-tablet-portrait] .projects[data-mobile-stack] {margin-block:8svh 12svh;}
  html[data-tablet-portrait] .projects[data-mobile-stack] .projects-stage {height:100dvh;min-height:100dvh;padding:8px;box-sizing:border-box;}
  html[data-tablet-portrait] .projects[data-mobile-stack] .project-panel {box-sizing:border-box;}
+/* The native sticky handoff owns the spacer below Work and behind Brands. */
+html[data-ipad][data-tablet-portrait] .featured-brands {background:#1C1C1C;}

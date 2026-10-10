@@ -1,0 +1,144 @@
+[
+  {
+    "name": "C-01 internal",
+    "hash": "#work",
+    "samples": [
+      {
+        "y": 0,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(10.4396% 6.06651% 10.0134%)"
+      },
+      {
+        "y": 4370,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 4370,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 4370,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 4370,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 4370,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 4370,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 4370,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 4370,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      }
+    ],
+    "final": {
+      "hash": "#work",
+      "y": 4370,
+      "top": 0.390625
+    }
+  },
+  {
+    "name": "C-01 internal",
+    "hash": "#featured-works",
+    "samples": [
+      {
+        "y": 0,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(10.5514% 6.09572% 10.0641%)"
+      },
+      {
+        "y": 9770,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 9770,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 9770,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 9770,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 9770,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 9770,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 9770,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      },
+      {
+        "y": 9770,
+        "display": "block",
+        "opacity": "1",
+        "clip": "inset(0%)"
+      }
+    ],
+    "final": {
+      "hash": "#featured-works",
+      "y": 9770,
+      "top": 0.390625
+    }
+  },
+  {
+    "name": "portrait native gestures",
+    "hero": {
+      "y": 735,
+      "footer": 28925.015625
+    },
+    "stops": [
+      28347,
+      28262,
+      28317
+    ]
+  }
+]

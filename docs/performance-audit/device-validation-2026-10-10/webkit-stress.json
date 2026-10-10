@@ -1,0 +1,1859 @@
+{
+  "out": [
+    {
+      "cycle": 0,
+      "speed": "slow",
+      "rotation": false,
+      "reducedToggle": false,
+      "samples": [
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, -169.568756, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1.35, 0, 0, 1.35, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.095400498398,
+              "stdev": 96.45203320670085
+            },
+            {
+              "mean": 150.05302717455797,
+              "stdev": 79.84894640225835
+            },
+            {
+              "mean": 155.56601696926546,
+              "stdev": 78.19441525497115
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 169.574997, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1.35, 0, 0, 1.35, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.095400498398,
+              "stdev": 96.45203320670085
+            },
+            {
+              "mean": 150.05302717455797,
+              "stdev": 79.84894640225835
+            },
+            {
+              "mean": 155.56601696926546,
+              "stdev": 78.19441525497115
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.095400498398,
+              "stdev": 96.45203320670085
+            },
+            {
+              "mean": 150.05302717455797,
+              "stdev": 79.84894640225835
+            },
+            {
+              "mean": 155.56601696926546,
+              "stdev": 78.19441525497115
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.095400498398,
+              "stdev": 96.45203320670085
+            },
+            {
+              "mean": 150.05302717455797,
+              "stdev": 79.84894640225835
+            },
+            {
+              "mean": 155.56601696926546,
+              "stdev": 78.19441525497115
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.095400498398,
+              "stdev": 96.45203320670085
+            },
+            {
+              "mean": 150.05302717455797,
+              "stdev": 79.84894640225835
+            },
+            {
+              "mean": 155.56601696926546,
+              "stdev": 78.19441525497115
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cycle": 1,
+      "speed": "rapid",
+      "rotation": true,
+      "reducedToggle": false,
+      "samples": [
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, -169.568756, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1.35, 0, 0, 1.35, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.09536133855464,
+              "stdev": 96.45190668911924
+            },
+            {
+              "mean": 150.0529880147146,
+              "stdev": 79.84880483667848
+            },
+            {
+              "mean": 155.5659778094221,
+              "stdev": 78.19427345488923
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 169.574997, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1.35, 0, 0, 1.35, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.09536133855464,
+              "stdev": 96.45190668911924
+            },
+            {
+              "mean": 150.0529880147146,
+              "stdev": 79.84880483667848
+            },
+            {
+              "mean": 155.5659778094221,
+              "stdev": 78.19427345488923
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.09536133855464,
+              "stdev": 96.45190668911924
+            },
+            {
+              "mean": 150.0529880147146,
+              "stdev": 79.84880483667848
+            },
+            {
+              "mean": 155.5659778094221,
+              "stdev": 78.19427345488923
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.09536133855464,
+              "stdev": 96.45190668911924
+            },
+            {
+              "mean": 150.0529880147146,
+              "stdev": 79.84880483667848
+            },
+            {
+              "mean": 155.5659778094221,
+              "stdev": 78.19427345488923
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.09536133855464,
+              "stdev": 96.45190668911924
+            },
+            {
+              "mean": 150.0529880147146,
+              "stdev": 79.84880483667848
+            },
+            {
+              "mean": 155.5659778094221,
+              "stdev": 78.19427345488923
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cycle": 2,
+      "speed": "slow",
+      "rotation": false,
+      "reducedToggle": true,
+      "samples": [
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, -169.568756, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1.35, 0, 0, 1.35, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.32696155215379,
+              "stdev": 96.44763999611807
+            },
+            {
+              "mean": 150.26236917052333,
+              "stdev": 79.78543032735325
+            },
+            {
+              "mean": 155.76282544203156,
+              "stdev": 78.12033470983963
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 169.574997, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1.35, 0, 0, 1.35, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.32696155215379,
+              "stdev": 96.44763999611807
+            },
+            {
+              "mean": 150.26236917052333,
+              "stdev": 79.78543032735325
+            },
+            {
+              "mean": 155.76282544203156,
+              "stdev": 78.12033470983963
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.32696155215379,
+              "stdev": 96.44763999611807
+            },
+            {
+              "mean": 150.26236917052333,
+              "stdev": 79.78543032735325
+            },
+            {
+              "mean": 155.76282544203156,
+              "stdev": 78.12033470983963
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.32696155215379,
+              "stdev": 96.44763999611807
+            },
+            {
+              "mean": 150.26236917052333,
+              "stdev": 79.78543032735325
+            },
+            {
+              "mean": 155.76282544203156,
+              "stdev": 78.12033470983963
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.32696155215379,
+              "stdev": 96.44763999611807
+            },
+            {
+              "mean": 150.26236917052333,
+              "stdev": 79.78543032735325
+            },
+            {
+              "mean": 155.76282544203156,
+              "stdev": 78.12033470983963
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cycle": 3,
+      "speed": "rapid",
+      "rotation": false,
+      "reducedToggle": false,
+      "samples": [
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, -169.568756, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1.35, 0, 0, 1.35, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.09537795182153,
+              "stdev": 96.451917179585
+            },
+            {
+              "mean": 150.0530046279815,
+              "stdev": 79.8488127319005
+            },
+            {
+              "mean": 155.565994422689,
+              "stdev": 78.19428034586987
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 169.574997, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1.35, 0, 0, 1.35, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.09537795182153,
+              "stdev": 96.451917179585
+            },
+            {
+              "mean": 150.0530046279815,
+              "stdev": 79.8488127319005
+            },
+            {
+              "mean": 155.565994422689,
+              "stdev": 78.19428034586987
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.09537795182153,
+              "stdev": 96.451917179585
+            },
+            {
+              "mean": 150.0530046279815,
+              "stdev": 79.8488127319005
+            },
+            {
+              "mean": 155.565994422689,
+              "stdev": 78.19428034586987
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.09537795182153,
+              "stdev": 96.451917179585
+            },
+            {
+              "mean": 150.0530046279815,
+              "stdev": 79.8488127319005
+            },
+            {
+              "mean": 155.565994422689,
+              "stdev": 78.19428034586987
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "ancestors": [
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            },
+            {
+              "opacity": "1",
+              "transform": "none",
+              "filter": "none",
+              "clipPath": "none",
+              "maskImage": "none",
+              "mixBlendMode": "normal",
+              "visibility": "visible",
+              "zIndex": "auto",
+              "backfaceVisibility": "visible",
+              "willChange": "auto"
+            }
+          ],
+          "pixels": [
+            {
+              "mean": 127.09537795182153,
+              "stdev": 96.451917179585
+            },
+            {
+              "mean": 150.0530046279815,
+              "stdev": 79.8488127319005
+            },
+            {
+              "mean": 155.565994422689,
+              "stdev": 78.19428034586987
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "missing": []
+}

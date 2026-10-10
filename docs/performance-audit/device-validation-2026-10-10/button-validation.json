@@ -1,0 +1,144 @@
+{
+  "out": [
+    {
+      "touch": false,
+      "route": "/",
+      "selector": ".site-header a[href=\"#work\"]",
+      "text": "[+]ServiceService",
+      "glyph": "matrix(1, 0, 0, 1, 0, -20)",
+      "pseudo": "\"S\"",
+      "native": "0",
+      "overlay": "block",
+      "siblings": [
+        {
+          "text": "[+]AboutAbout",
+          "opacity": "0.42"
+        },
+        {
+          "text": "[+]WorksWorks",
+          "opacity": "0.42"
+        },
+        {
+          "text": "[+]ContactContact",
+          "opacity": "0.42"
+        }
+      ]
+    },
+    {
+      "touch": false,
+      "route": "/",
+      "selector": ".footer__social a",
+      "text": "InstagramInstagram ↗",
+      "glyph": "matrix(1, 0, 0, 1, 0, -32.25)",
+      "pseudo": "\"I\"",
+      "native": null,
+      "overlay": null,
+      "siblings": [
+        {
+          "text": "LinkedInLinkedIn ↗",
+          "opacity": "0.42"
+        }
+      ]
+    },
+    {
+      "touch": false,
+      "route": "/",
+      "selector": ".footer__contact-email",
+      "text": "hello@leolaguna.comhello@leolaguna.com",
+      "glyph": "matrix(1, 0, 0, 1, 0, -26)",
+      "pseudo": "\"h\"",
+      "native": "0",
+      "overlay": "block",
+      "siblings": []
+    },
+    {
+      "touch": false,
+      "route": "/cv/",
+      "selector": ".action-pill",
+      "text": "Start a ProjectStart a Project",
+      "glyph": "matrix(1, 0, 0, 1, 0, -16.7969)",
+      "pseudo": "\"S\"",
+      "native": null,
+      "overlay": null,
+      "siblings": [
+        {
+          "text": "GmailGmail",
+          "opacity": "1"
+        },
+        {
+          "text": "LinkedInLinkedIn",
+          "opacity": "1"
+        },
+        {
+          "text": "InstagramInstagram",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "touch": false,
+      "route": "/work/wwf/",
+      "selector": ".case-study__next",
+      "text": "Next Case StudyNext Case Study ↗Cataloguing Dominica’s Sperm WhalesSperm Whales of DominicaSCIENTIFIC ILLUSTRATION2022-2025",
+      "glyph": "matrix(1, 0, 0, 1, 0, -16)",
+      "pseudo": "\"N\"",
+      "native": "0",
+      "overlay": "block",
+      "siblings": []
+    },
+    {
+      "touch": true,
+      "route": "/",
+      "selector": ".footer a[data-roll-link]:visible",
+      "text": "InstagramInstagram ↗",
+      "glyph": "none",
+      "pseudo": "\"I\"",
+      "native": null,
+      "overlay": null,
+      "siblings": [
+        {
+          "text": "LinkedInLinkedIn ↗",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "touch": true,
+      "route": "/cv/",
+      "selector": ".action-pill",
+      "text": "Start a ProjectStart a Project",
+      "glyph": "none",
+      "pseudo": "\"S\"",
+      "native": null,
+      "overlay": null,
+      "siblings": [
+        {
+          "text": "GmailGmail",
+          "opacity": "1"
+        },
+        {
+          "text": "LinkedInLinkedIn",
+          "opacity": "1"
+        },
+        {
+          "text": "InstagramInstagram",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "touch": true,
+      "route": "/work/wwf/",
+      "selector": ".case-study__next",
+      "text": "Next Case StudyNext Case Study ↗Cataloguing Dominica’s Sperm WhalesSperm Whales of DominicaSCIENTIFIC ILLUSTRATION2022-2025",
+      "glyph": "none",
+      "pseudo": "\"N\"",
+      "native": "1",
+      "overlay": "none",
+      "siblings": []
+    }
+  ],
+  "errors": [],
+  "missing": [],
+  "warnings": []
+}

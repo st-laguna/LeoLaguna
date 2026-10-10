@@ -1,5 +1,7 @@
 export const isTabletPortrait = () => document.documentElement.hasAttribute('data-tablet-portrait');
 export const phoneMedia = '(max-width:700px), (max-width:1000px) and (max-height:500px)';
+export const phonePortraitMedia = '(max-width:700px) and (orientation:portrait)';
+export const isPhonePortrait = () => isPhoneViewport() && matchMedia(phonePortraitMedia).matches;
 export const isPhoneViewport = () => !document.documentElement.hasAttribute('data-ipad') && !isTabletPortrait() && matchMedia(phoneMedia).matches;
 // Hero-only camera: keep the responsive behavior of the other sections intact.
 // References are authored in logo_horizontal.svg and logo_vertical.svg.

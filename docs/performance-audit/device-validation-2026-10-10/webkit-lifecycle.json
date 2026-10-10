@@ -1,0 +1,1039 @@
+{
+  "out": [
+    {
+      "name": "A-0",
+      "open": true,
+      "scroll": 3498,
+      "progress": 1,
+      "triggers": [
+        "service-sticky-grid",
+        "gallery-return-dock"
+      ],
+      "animated": true,
+      "reduced": false,
+      "images": [
+        {
+          "src": "http://127.0.0.1:4337/img/EXO1.webp",
+          "loaded": true,
+          "rect": {
+            "x": -207.32875061035156,
+            "y": 407.54998779296875,
+            "width": 376.734375,
+            "height": 376.734375,
+            "top": 407.54998779296875,
+            "right": 169.40562438964844,
+            "bottom": 784.2843627929688,
+            "left": -207.32875061035156
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 341.6656188964844,
+            "y": 30.899999618530273,
+            "width": 376.7344055175781,
+            "height": 376.734375,
+            "top": 30.899999618530273,
+            "right": 718.4000244140625,
+            "bottom": 407.6343746185303,
+            "left": 341.6656188964844
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO3.webp",
+          "loaded": true,
+          "rect": {
+            "x": 890.6599731445312,
+            "y": 407.54998779296875,
+            "width": 376.73443603515625,
+            "height": 376.734375,
+            "top": 407.54998779296875,
+            "right": 1267.3944091796875,
+            "bottom": 784.2843627929688,
+            "left": 890.6599731445312
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO4.webp",
+          "loaded": true,
+          "rect": {
+            "x": 24,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 345.328125,
+            "bottom": 1127.09375,
+            "left": 24
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO.webp",
+          "loaded": true,
+          "rect": {
+            "x": 369.328125,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 690.65625,
+            "bottom": 1127.09375,
+            "left": 369.328125
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 714.65625,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 1035.984375,
+            "bottom": 1127.09375,
+            "left": 714.65625
+          },
+          "visible": "visible",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "name": "B-0",
+      "open": true,
+      "scroll": 3498,
+      "progress": 1,
+      "triggers": [
+        "service-sticky-grid",
+        "gallery-return-dock"
+      ],
+      "animated": true,
+      "reduced": false,
+      "images": [
+        {
+          "src": "http://127.0.0.1:4337/img/EXO1.webp",
+          "loaded": true,
+          "rect": {
+            "x": -207.32875061035156,
+            "y": 407.54998779296875,
+            "width": 376.734375,
+            "height": 376.734375,
+            "top": 407.54998779296875,
+            "right": 169.40562438964844,
+            "bottom": 784.2843627929688,
+            "left": -207.32875061035156
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 341.6656188964844,
+            "y": 30.899999618530273,
+            "width": 376.7344055175781,
+            "height": 376.734375,
+            "top": 30.899999618530273,
+            "right": 718.4000244140625,
+            "bottom": 407.6343746185303,
+            "left": 341.6656188964844
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO3.webp",
+          "loaded": true,
+          "rect": {
+            "x": 890.6599731445312,
+            "y": 407.54998779296875,
+            "width": 376.73443603515625,
+            "height": 376.734375,
+            "top": 407.54998779296875,
+            "right": 1267.3944091796875,
+            "bottom": 784.2843627929688,
+            "left": 890.6599731445312
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO4.webp",
+          "loaded": true,
+          "rect": {
+            "x": 24,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 345.328125,
+            "bottom": 1127.09375,
+            "left": 24
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO.webp",
+          "loaded": true,
+          "rect": {
+            "x": 369.328125,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 690.65625,
+            "bottom": 1127.09375,
+            "left": 369.328125
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 714.65625,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 1035.984375,
+            "bottom": 1127.09375,
+            "left": 714.65625
+          },
+          "visible": "visible",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "name": "C-back-0",
+      "open": true,
+      "scroll": 2332,
+      "progress": 1,
+      "triggers": [
+        "service-sticky-grid",
+        "gallery-return-dock"
+      ],
+      "animated": true,
+      "reduced": false,
+      "images": [
+        {
+          "src": "http://127.0.0.1:4337/img/EXO1.webp",
+          "loaded": true,
+          "rect": {
+            "x": -314.0662536621094,
+            "y": -53.20000076293945,
+            "width": 572.2945556640625,
+            "height": 572.2945556640625,
+            "top": -53.20000076293945,
+            "right": 258.2283020019531,
+            "bottom": 519.094554901123,
+            "left": -314.0662536621094
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO3.webp",
+          "loaded": true,
+          "rect": {
+            "x": 1331.6639404296875,
+            "y": -53.20000076293945,
+            "width": 572.3155517578125,
+            "height": 572.3156127929688,
+            "top": -53.20000076293945,
+            "right": 1903.9794921875,
+            "bottom": 519.1156120300293,
+            "left": 1331.6639404296875
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO4.webp",
+          "loaded": true,
+          "rect": {
+            "x": 24,
+            "y": 540.703125,
+            "width": 498,
+            "height": 498,
+            "top": 540.703125,
+            "right": 522,
+            "bottom": 1038.703125,
+            "left": 24
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO.webp",
+          "loaded": true,
+          "rect": {
+            "x": 546,
+            "y": 540.703125,
+            "width": 498,
+            "height": 498,
+            "top": 540.703125,
+            "right": 1044,
+            "bottom": 1038.703125,
+            "left": 546
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 1068,
+            "y": 540.703125,
+            "width": 498,
+            "height": 498,
+            "top": 540.703125,
+            "right": 1566,
+            "bottom": 1038.703125,
+            "left": 1068
+          },
+          "visible": "visible",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "name": "C-reopen-0",
+      "open": true,
+      "scroll": 2372,
+      "progress": 1,
+      "triggers": [
+        "service-sticky-grid",
+        "gallery-return-dock"
+      ],
+      "animated": true,
+      "reduced": false,
+      "images": [
+        {
+          "src": "http://127.0.0.1:4337/img/EXO1.webp",
+          "loaded": true,
+          "rect": {
+            "x": -314.0662536621094,
+            "y": -93.2001953125,
+            "width": 572.2945556640625,
+            "height": 572.294921875,
+            "top": -93.2001953125,
+            "right": 258.2283020019531,
+            "bottom": 479.0947265625,
+            "left": -314.0662536621094
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO3.webp",
+          "loaded": true,
+          "rect": {
+            "x": 1331.6639404296875,
+            "y": -93.2001953125,
+            "width": 572.3155517578125,
+            "height": 572.31591796875,
+            "top": -93.2001953125,
+            "right": 1903.9794921875,
+            "bottom": 479.11572265625,
+            "left": 1331.6639404296875
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO4.webp",
+          "loaded": true,
+          "rect": {
+            "x": 24,
+            "y": 500.703125,
+            "width": 498,
+            "height": 498,
+            "top": 500.703125,
+            "right": 522,
+            "bottom": 998.703125,
+            "left": 24
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO.webp",
+          "loaded": true,
+          "rect": {
+            "x": 546,
+            "y": 500.703125,
+            "width": 498,
+            "height": 498,
+            "top": 500.703125,
+            "right": 1044,
+            "bottom": 998.703125,
+            "left": 546
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 1068,
+            "y": 500.703125,
+            "width": 498,
+            "height": 498,
+            "top": 500.703125,
+            "right": 1566,
+            "bottom": 998.703125,
+            "left": 1068
+          },
+          "visible": "visible",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "name": "D-reduced-0",
+      "open": true,
+      "scroll": 0,
+      "triggers": [
+        "gallery-return-dock"
+      ],
+      "animated": false,
+      "reduced": true,
+      "images": [
+        {
+          "src": "http://127.0.0.1:4337/img/EXO1.webp",
+          "loaded": true,
+          "rect": {
+            "x": 95.40625,
+            "y": 197.78125,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 197.78125,
+            "right": 374.46875,
+            "bottom": 476.84375,
+            "left": 95.40625
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO4.webp",
+          "loaded": true,
+          "rect": {
+            "x": 95.40625,
+            "y": 492.84375,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 492.84375,
+            "right": 374.46875,
+            "bottom": 771.90625,
+            "left": 95.40625
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 390.46875,
+            "y": 197.78125,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 197.78125,
+            "right": 669.53125,
+            "bottom": 476.84375,
+            "left": 390.46875
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO.webp",
+          "loaded": true,
+          "rect": {
+            "x": 390.46875,
+            "y": 492.84375,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 492.84375,
+            "right": 669.53125,
+            "bottom": 771.90625,
+            "left": 390.46875
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO3.webp",
+          "loaded": true,
+          "rect": {
+            "x": 685.53125,
+            "y": 197.78125,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 197.78125,
+            "right": 964.59375,
+            "bottom": 476.84375,
+            "left": 685.53125
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 685.53125,
+            "y": 492.84375,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 492.84375,
+            "right": 964.59375,
+            "bottom": 771.90625,
+            "left": 685.53125
+          },
+          "visible": "visible",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "name": "A-1",
+      "open": true,
+      "scroll": 3498,
+      "progress": 1,
+      "triggers": [
+        "service-sticky-grid",
+        "gallery-return-dock"
+      ],
+      "animated": true,
+      "reduced": false,
+      "images": [
+        {
+          "src": "http://127.0.0.1:4337/img/EXO1.webp",
+          "loaded": true,
+          "rect": {
+            "x": -207.32875061035156,
+            "y": 407.54998779296875,
+            "width": 376.734375,
+            "height": 376.734375,
+            "top": 407.54998779296875,
+            "right": 169.40562438964844,
+            "bottom": 784.2843627929688,
+            "left": -207.32875061035156
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 341.6656188964844,
+            "y": 30.899999618530273,
+            "width": 376.7344055175781,
+            "height": 376.734375,
+            "top": 30.899999618530273,
+            "right": 718.4000244140625,
+            "bottom": 407.6343746185303,
+            "left": 341.6656188964844
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO3.webp",
+          "loaded": true,
+          "rect": {
+            "x": 890.6599731445312,
+            "y": 407.54998779296875,
+            "width": 376.73443603515625,
+            "height": 376.734375,
+            "top": 407.54998779296875,
+            "right": 1267.3944091796875,
+            "bottom": 784.2843627929688,
+            "left": 890.6599731445312
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO4.webp",
+          "loaded": true,
+          "rect": {
+            "x": 24,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 345.328125,
+            "bottom": 1127.09375,
+            "left": 24
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO.webp",
+          "loaded": true,
+          "rect": {
+            "x": 369.328125,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 690.65625,
+            "bottom": 1127.09375,
+            "left": 369.328125
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 714.65625,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 1035.984375,
+            "bottom": 1127.09375,
+            "left": 714.65625
+          },
+          "visible": "visible",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "name": "B-1",
+      "open": true,
+      "scroll": 3498,
+      "progress": 1,
+      "triggers": [
+        "service-sticky-grid",
+        "gallery-return-dock"
+      ],
+      "animated": true,
+      "reduced": false,
+      "images": [
+        {
+          "src": "http://127.0.0.1:4337/img/EXO1.webp",
+          "loaded": true,
+          "rect": {
+            "x": -207.32875061035156,
+            "y": 407.54998779296875,
+            "width": 376.734375,
+            "height": 376.734375,
+            "top": 407.54998779296875,
+            "right": 169.40562438964844,
+            "bottom": 784.2843627929688,
+            "left": -207.32875061035156
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 341.6656188964844,
+            "y": 30.899999618530273,
+            "width": 376.7344055175781,
+            "height": 376.734375,
+            "top": 30.899999618530273,
+            "right": 718.4000244140625,
+            "bottom": 407.6343746185303,
+            "left": 341.6656188964844
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO3.webp",
+          "loaded": true,
+          "rect": {
+            "x": 890.6599731445312,
+            "y": 407.54998779296875,
+            "width": 376.73443603515625,
+            "height": 376.734375,
+            "top": 407.54998779296875,
+            "right": 1267.3944091796875,
+            "bottom": 784.2843627929688,
+            "left": 890.6599731445312
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO4.webp",
+          "loaded": true,
+          "rect": {
+            "x": 24,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 345.328125,
+            "bottom": 1127.09375,
+            "left": 24
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO.webp",
+          "loaded": true,
+          "rect": {
+            "x": 369.328125,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 690.65625,
+            "bottom": 1127.09375,
+            "left": 369.328125
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 714.65625,
+            "y": 805.765625,
+            "width": 321.328125,
+            "height": 321.328125,
+            "top": 805.765625,
+            "right": 1035.984375,
+            "bottom": 1127.09375,
+            "left": 714.65625
+          },
+          "visible": "visible",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "name": "C-back-1",
+      "open": true,
+      "scroll": 2332,
+      "progress": 1,
+      "triggers": [
+        "service-sticky-grid",
+        "gallery-return-dock"
+      ],
+      "animated": true,
+      "reduced": false,
+      "images": [
+        {
+          "src": "http://127.0.0.1:4337/img/EXO1.webp",
+          "loaded": true,
+          "rect": {
+            "x": -314.0662536621094,
+            "y": -53.20000076293945,
+            "width": 572.2945556640625,
+            "height": 572.2945556640625,
+            "top": -53.20000076293945,
+            "right": 258.2283020019531,
+            "bottom": 519.094554901123,
+            "left": -314.0662536621094
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO3.webp",
+          "loaded": true,
+          "rect": {
+            "x": 1331.6639404296875,
+            "y": -53.20000076293945,
+            "width": 572.3155517578125,
+            "height": 572.3156127929688,
+            "top": -53.20000076293945,
+            "right": 1903.9794921875,
+            "bottom": 519.1156120300293,
+            "left": 1331.6639404296875
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO4.webp",
+          "loaded": true,
+          "rect": {
+            "x": 24,
+            "y": 540.703125,
+            "width": 498,
+            "height": 498,
+            "top": 540.703125,
+            "right": 522,
+            "bottom": 1038.703125,
+            "left": 24
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO.webp",
+          "loaded": true,
+          "rect": {
+            "x": 546,
+            "y": 540.703125,
+            "width": 498,
+            "height": 498,
+            "top": 540.703125,
+            "right": 1044,
+            "bottom": 1038.703125,
+            "left": 546
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 1068,
+            "y": 540.703125,
+            "width": 498,
+            "height": 498,
+            "top": 540.703125,
+            "right": 1566,
+            "bottom": 1038.703125,
+            "left": 1068
+          },
+          "visible": "visible",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "name": "C-reopen-1",
+      "open": true,
+      "scroll": 2372,
+      "progress": 1,
+      "triggers": [
+        "service-sticky-grid",
+        "gallery-return-dock"
+      ],
+      "animated": true,
+      "reduced": false,
+      "images": [
+        {
+          "src": "http://127.0.0.1:4337/img/EXO1.webp",
+          "loaded": true,
+          "rect": {
+            "x": -314.0662536621094,
+            "y": -93.2001953125,
+            "width": 572.2945556640625,
+            "height": 572.294921875,
+            "top": -93.2001953125,
+            "right": 258.2283020019531,
+            "bottom": 479.0947265625,
+            "left": -314.0662536621094
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO3.webp",
+          "loaded": true,
+          "rect": {
+            "x": 1331.6639404296875,
+            "y": -93.2001953125,
+            "width": 572.3155517578125,
+            "height": 572.31591796875,
+            "top": -93.2001953125,
+            "right": 1903.9794921875,
+            "bottom": 479.11572265625,
+            "left": 1331.6639404296875
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO4.webp",
+          "loaded": true,
+          "rect": {
+            "x": 24,
+            "y": 500.703125,
+            "width": 498,
+            "height": 498,
+            "top": 500.703125,
+            "right": 522,
+            "bottom": 998.703125,
+            "left": 24
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO.webp",
+          "loaded": true,
+          "rect": {
+            "x": 546,
+            "y": 500.703125,
+            "width": 498,
+            "height": 498,
+            "top": 500.703125,
+            "right": 1044,
+            "bottom": 998.703125,
+            "left": 546
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 1068,
+            "y": 500.703125,
+            "width": 498,
+            "height": 498,
+            "top": 500.703125,
+            "right": 1566,
+            "bottom": 998.703125,
+            "left": 1068
+          },
+          "visible": "visible",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "name": "D-reduced-1",
+      "open": true,
+      "scroll": 0,
+      "triggers": [
+        "gallery-return-dock"
+      ],
+      "animated": false,
+      "reduced": true,
+      "images": [
+        {
+          "src": "http://127.0.0.1:4337/img/EXO1.webp",
+          "loaded": true,
+          "rect": {
+            "x": 95.40625,
+            "y": 197.78125,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 197.78125,
+            "right": 374.46875,
+            "bottom": 476.84375,
+            "left": 95.40625
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO4.webp",
+          "loaded": true,
+          "rect": {
+            "x": 95.40625,
+            "y": 492.84375,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 492.84375,
+            "right": 374.46875,
+            "bottom": 771.90625,
+            "left": 95.40625
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 390.46875,
+            "y": 197.78125,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 197.78125,
+            "right": 669.53125,
+            "bottom": 476.84375,
+            "left": 390.46875
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO.webp",
+          "loaded": true,
+          "rect": {
+            "x": 390.46875,
+            "y": 492.84375,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 492.84375,
+            "right": 669.53125,
+            "bottom": 771.90625,
+            "left": 390.46875
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/EXO3.webp",
+          "loaded": true,
+          "rect": {
+            "x": 685.53125,
+            "y": 197.78125,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 197.78125,
+            "right": 964.59375,
+            "bottom": 476.84375,
+            "left": 685.53125
+          },
+          "visible": "visible",
+          "opacity": "1"
+        },
+        {
+          "src": "http://127.0.0.1:4337/img/GRO2.webp",
+          "loaded": true,
+          "rect": {
+            "x": 685.53125,
+            "y": 492.84375,
+            "width": 279.0625,
+            "height": 279.0625,
+            "top": 492.84375,
+            "right": 964.59375,
+            "bottom": 771.90625,
+            "left": 685.53125
+          },
+          "visible": "visible",
+          "opacity": "1"
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "missing": []
+}

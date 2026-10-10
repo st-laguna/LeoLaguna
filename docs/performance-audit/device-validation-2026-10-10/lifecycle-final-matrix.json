@@ -1,0 +1,217 @@
+[
+  {
+    "name": "phone-landscape",
+    "geometry": {
+      "flags": "<html lang=\"en\" data-browser-favicon-init=\"1\" data-theme=\"light\" data-section-history=\"\" data-home-entry=\"\" data-scroll-pacing=\"native\" style=\"--footer-header-y: 10426.03125px;\"",
+      "nav": {
+        "x": 52,
+        "y": 60,
+        "w": 768,
+        "h": 44,
+        "center": 82,
+        "bg": "rgba(0, 0, 0, 0)",
+        "display": "block"
+      },
+      "cta": {
+        "x": 638.28125,
+        "y": 340.90625,
+        "w": 181.71875,
+        "h": 34.1875,
+        "center": 358,
+        "bg": "rgb(239, 108, 101)",
+        "display": "flex"
+      },
+      "serviceFooter": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0,
+        "center": 0,
+        "bg": "rgb(237, 237, 237)",
+        "display": "none"
+      },
+      "preview": {
+        "x": 330.6875,
+        "y": 4383.296875,
+        "w": 490.3125,
+        "h": 288,
+        "center": 4527.296875,
+        "bg": "rgb(237, 237, 237)",
+        "display": "block"
+      },
+      "thumbs": {
+        "x": 477.84375,
+        "y": 4683.296875,
+        "w": 150,
+        "h": 32,
+        "center": 4699.296875,
+        "bg": "color(srgb 0.929412 0.929412 0.929412 / 0.82)",
+        "display": "flex"
+      },
+      "bands": {
+        "x": 0,
+        "y": 7164.296875,
+        "w": 844,
+        "h": 3237.734375,
+        "center": 8783.1640625,
+        "bg": "rgb(237, 237, 237)",
+        "display": "flow-root"
+      },
+      "snap": "y"
+    },
+    "stages": [
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        },
+        {
+          "hidden": false,
+          "html": 0,
+          "images": []
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "hidden": false,
+          "html": 482,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 449,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        },
+        {
+          "hidden": false,
+          "html": 452,
+          "images": [
+            {
+              "loaded": true,
+              "transform": "matrix(1, 0, 0, 1, 0, 0)",
+              "clip": "none"
+            }
+          ]
+        }
+      ]
+    ],
+    "perf": {
+      "decodeMs": 2.9000000059604645,
+      "maxFrame": 11.099999999998545,
+      "framesOver32": 0,
+      "frames": 153,
+      "size": [
+        1920,
+        1080
+      ],
+      "src": "/img/EXO1.webp"
+    },
+    "errors": [],
+    "warnings": [],
+    "missing": []
+  }
+]

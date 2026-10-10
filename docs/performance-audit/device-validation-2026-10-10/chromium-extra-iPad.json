@@ -1,0 +1,12 @@
+[
+  {
+    "name": "iPad footer dock clamped beyond scroll maximum",
+    "pass": true,
+    "details": {
+      "before": 1000.40625,
+      "beyond": 1000.40625,
+      "slot": 1000.40625,
+      "max": 2520
+    }
+  }
+]

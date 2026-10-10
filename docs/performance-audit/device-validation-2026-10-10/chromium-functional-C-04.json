@@ -1,0 +1,74 @@
+[
+  {
+    "name": "C-04 repeated gallery cleanup",
+    "pass": true,
+    "details": [
+      {
+        "documents": 21,
+        "nodes": 7684,
+        "jsEventListeners": 303,
+        "triggers": 15
+      },
+      {
+        "documents": 21,
+        "nodes": 7684,
+        "jsEventListeners": 303,
+        "triggers": 15
+      },
+      {
+        "documents": 21,
+        "nodes": 7684,
+        "jsEventListeners": 303,
+        "triggers": 15
+      },
+      {
+        "documents": 21,
+        "nodes": 7684,
+        "jsEventListeners": 303,
+        "triggers": 15
+      },
+      {
+        "documents": 21,
+        "nodes": 7684,
+        "jsEventListeners": 303,
+        "triggers": 15
+      },
+      {
+        "documents": 21,
+        "nodes": 7684,
+        "jsEventListeners": 303,
+        "triggers": 15
+      },
+      {
+        "documents": 21,
+        "nodes": 7684,
+        "jsEventListeners": 303,
+        "triggers": 15
+      },
+      {
+        "documents": 21,
+        "nodes": 7684,
+        "jsEventListeners": 303,
+        "triggers": 15
+      },
+      {
+        "documents": 21,
+        "nodes": 7684,
+        "jsEventListeners": 303,
+        "triggers": 15
+      },
+      {
+        "documents": 21,
+        "nodes": 7684,
+        "jsEventListeners": 303,
+        "triggers": 15
+      },
+      {
+        "documents": 21,
+        "nodes": 7684,
+        "jsEventListeners": 303,
+        "triggers": 15
+      }
+    ]
+  }
+]

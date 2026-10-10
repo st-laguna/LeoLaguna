@@ -155,3 +155,9 @@ html[data-theme="dark"] .case-model-dialog {background:var(--dark-base);color:va
 .case-model-dialog__close {position:absolute;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));z-index:2;min-height:44px;padding:10px 22px;border:1px solid currentColor;border-radius:0;background:inherit;color:inherit;font:600 14px/1.2 'Host Grotesk',sans-serif;}
 .case-model-dialog .case-study__model-controls {bottom:max(24px,env(safe-area-inset-bottom));}
 .case-model-dialog .case-study__model canvas {touch-action:none;}
+
+/* Contextual canvas for native bounce; no gesture cancellation or extra scroll layer. */
+html[data-page="case-study"] {--case-page-surface:var(--light-base);background-color:var(--case-page-surface);}
+html[data-page="case-study"][data-theme="dark"] {--case-page-surface:var(--dark-base);}
+html[data-page="case-study"][data-case-coral] {--case-page-surface:var(--button-coral);}
+html[data-page="case-study"] body {background-color:var(--case-page-surface);}

@@ -1,0 +1,37 @@
+{
+  "out": [
+    {
+      "width": 844,
+      "phone": false,
+      "open": true,
+      "animated": true,
+      "triggers": 1,
+      "columns": "249.328px 249.328px 249.328px"
+    },
+    {
+      "width": 390,
+      "phone": true,
+      "open": true,
+      "animated": false,
+      "triggers": 0,
+      "columns": "174px 174px"
+    },
+    {
+      "width": 844,
+      "phone": false,
+      "open": true,
+      "animated": true,
+      "triggers": 1,
+      "columns": "249.328px 249.328px 249.328px"
+    },
+    {
+      "width": 390,
+      "phone": true,
+      "open": true,
+      "animated": false,
+      "triggers": 0,
+      "columns": "174px 174px"
+    }
+  ],
+  "errors": []
+}

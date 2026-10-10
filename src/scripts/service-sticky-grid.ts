@@ -1,21 +1,23 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { isPhoneViewport, phoneMedia } from './responsive-layout';
+import { isPhoneViewport, phoneMedia, isPhonePortrait, phonePortraitMedia } from './responsive-layout';
 gsap.registerPlugin(ScrollTrigger);
 
 // Original portfolio implementation of Codrops' reveal → expand → content concept.
 // It uses the existing gallery's native scroller, never a second Lenis instance.
-export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLElement) {
+export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLElement, isCurrent: () => boolean = () => true) {
   const events = new AbortController();
   const { signal } = events;
   // This mount owns these listeners. Reverting a GSAP context alone does not
   // unregister the native MediaQueryList listeners created by matchMedia().
   const queries = {
     phone: window.matchMedia(phoneMedia),
+    portrait: window.matchMedia(phonePortraitMedia),
     compact: window.matchMedia('(max-width:1100px), (any-pointer:coarse)'),
     reduced: window.matchMedia('(prefers-reduced-motion:reduce)'),
   };
-  let mediaContext: gsap.Context | undefined;
+  let mediaCleanup: (() => void) | undefined;
+  let mediaGeneration = 0;
   let mediaState = '';
   const grid = section.querySelector<HTMLElement>('[data-sticky-grid]')!;
   const columns = Array.from(section.querySelectorAll<HTMLElement>('[data-sticky-column]'));
@@ -37,6 +39,12 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
   let refreshGeometry:(()=>void)|undefined;
   let viewport = scroller.clientHeight;
   let width = scroller.clientWidth;
+  let resizePosition: {progress:number;tail:number} | undefined;
+  window.addEventListener('resize',()=>{
+    if(signal.aborted||!isCurrent()||!master||resizePosition)return;
+    if(width===scroller.clientWidth&&viewport===scroller.clientHeight)return;
+    resizePosition={progress:master.progress(),tail:Math.max(0,scroller.scrollTop-(master.scrollTrigger?.end??0))};
+  },{capture:true,signal});
   section.style.setProperty('--service-viewport', `${viewport}px`);
   function hydrate() {
     grid.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(image => {
@@ -44,17 +52,33 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
     });
   }
   function configureMedia() {
-    if (signal.aborted) return;
-    const state = `${queries.phone.matches}/${queries.compact.matches}/${queries.reduced.matches}`;
+    if (signal.aborted || !isCurrent()) return;
+    const state = `${queries.phone.matches}/${isPhonePortrait()}/${queries.compact.matches}/${queries.reduced.matches}`;
     // Several queries can change in one resize; rebuild once for that state.
     if (state === mediaState) return;
     mediaState = state;
-    mediaContext?.revert();
-    mediaContext = gsap.context(() => {
+    mediaCleanup?.();
+    const generation = ++mediaGeneration;
+    const live = () => !signal.aborted && isCurrent() && generation === mediaGeneration;
+    // Own timelines and styles directly: page matchMedia contexts cannot adopt
+    // or revert this dialog's animation when their breakpoints change.
+    const build = () => {
+    let cleaned = false;
+    const targets = [grid, ...columns, ...columns.flatMap(column => Array.from(column.children) as HTMLElement[]), title, content, eyebrow, intro, hint, placement, ...(number ? [number] : []), ...lower.map(item => item.firstElementChild as HTMLElement)];
+    const properties = ['transform','translate','scale','rotate','transform-origin','height','justify-content','opacity','visibility','will-change','clip-path'];
+    const saved = targets.map(target => properties.map(property => [property, target.style.getPropertyValue(property), target.style.getPropertyPriority(property)]));
+    const restoreStyles = () => targets.forEach((target, index) => {
+      gsap.set(target, {clearProps: properties.join(',')});
+      saved[index].forEach(([property, value, priority]) => {if(value)target.style.setProperty(property,value,priority);});
+    });
     const compact = queries.compact.matches, reduced = queries.reduced.matches;
     const phone=queries.phone.matches && isPhoneViewport();
-    restoreRow();section.removeAttribute('data-grid-revealed');slots.forEach(slot=>{slot.hidden=!!reduced;});hydrate();
-    if (reduced) return () => { slots.forEach(slot=>slot.hidden=true); };
+    restoreRow();section.removeAttribute('data-grid-revealed');
+    // Phone portrait has a normal-flow intro and the complete two-column list.
+    // Do not create a timeline or hydrate the hidden cinematic sample.
+    if(isPhonePortrait()){slots.forEach(slot=>slot.hidden=true);return;}
+    slots.forEach(slot=>{slot.hidden=!!reduced;});hydrate();
+    if (reduced) return () => { if(cleaned)return;cleaned=true;slots.forEach(slot=>slot.hidden=true); };
     section.setAttribute('data-animated', '');
     section.toggleAttribute('data-phone-intro',phone);
     const items = columns.map(column => Array.from(column.querySelectorAll<HTMLElement>('[data-sticky-item]')).filter(item => getComputedStyle(item).display !== 'none'));
@@ -133,30 +157,50 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
     const handoff=gsap.timeline().to([title,eyebrow,content,...(number?[number]:[])],{y:(index,target)=>Number(gsap.getProperty(target,'y'))-lift(),duration:.22,ease:'power2.inOut'},0);lower.forEach((item,index)=>handoff.to(item,{x:()=>cell(index).x,y:()=>cell(index).y,yPercent:0,scale:()=>cell(index).scale,duration:.22,ease:'power2.inOut'},0));
     master = gsap.timeline({ scrollTrigger: {
       id:'service-sticky-grid', trigger:section, scroller, start:'top top', end:'bottom bottom', scrub:compact?.3:.65, invalidateOnRefresh:true,
-      onToggle:self => promote(self.isActive),
+      onToggle:self => {if(live())promote(self.isActive);},
+      // Refresh restores the timeline with suppressed callbacks. Reconcile its
+      // DOM handoff/inert state with that restored progress before painting.
+      onRefresh:()=>{if(live())master?.eventCallback('onUpdate')?.();},
       // Finish the handoff before normal scrolling leaves the clipped scene.
       // A fast scroll must not wait for the scrub tail to reparent this row.
-      onLeave:self=>{self.getTween()?.progress(1);master?.progress(1);},
-    }, onUpdate:()=>{const progress=master?.progress()??0;if(phone){const safeTop=Math.max(0,viewport/2+introHeight/2+Number(gsap.getProperty(intro,'y'))+12);placement.style.clipPath=`inset(${safeTop}px 0 0)`;}section.toggleAttribute('data-grid-revealed',progress>0);content.inert=progress<.65;grid.inert=progress<.005;if(progress>=.999&&!handedOff){lower.forEach((item,index)=>{slots[index].append(item);item.classList.add('gallery-item');
+      onLeave:self=>{if(!live())return;self.getTween()?.progress(1);master?.progress(1);},
+    }, onUpdate:()=>{if(!live())return;const progress=master?.progress()??0;if(phone){const safeTop=Math.max(0,viewport/2+introHeight/2+Number(gsap.getProperty(intro,'y'))+12);placement.style.clipPath=`inset(${safeTop}px 0 0)`;}section.toggleAttribute('data-grid-revealed',progress>0);content.inert=progress<.65;grid.inert=progress<.005;if(progress>=.999&&!handedOff){lower.forEach((item,index)=>{slots[index].append(item);item.classList.add('gallery-item');
       // The real row owns natural layout after handoff, not a forced CSS
       // transform competing with the scrub tween's composited state.
       gsap.set(item,{x:0,y:0,yPercent:0,scale:1,force3D:false,clearProps:'willChange'});
       // These already revealed cards do not participate in the list entrance.
       gsap.set(item.firstElementChild,{clearProps:'clipPath',autoAlpha:1});});handedOff=true;}else if(progress<.999&&handedOff)restoreRow();} })
       .add(reveal,0).to(hint,{autoAlpha:0,duration:.04,ease:'none'},0).add(expand,.4).add(finish,.61).addLabel('gallery-handoff',.88).add(handoff,'gallery-handoff');
-    refreshGeometry=()=>{const progress=master!.progress();master!.progress(0);restoreRow();measureGeometry();master!.invalidate().progress(progress);master!.scrollTrigger?.refresh();};
+    refreshGeometry=()=>{
+      if(!live())return;
+      const position=resizePosition;resizePosition=undefined;
+      const progress=position?.progress??master!.progress();
+      master!.progress(0);restoreRow();measureGeometry();
+      master!.invalidate().progress(progress);
+      const trigger=master!.scrollTrigger;trigger?.refresh();
+      if(position&&trigger){
+        scroller.scrollTop=trigger.start+progress*(trigger.end-trigger.start)+position.tail;
+        trigger.update();trigger.getTween()?.progress(1);
+      }
+      master!.eventCallback('onUpdate')?.();
+    };
     master.scrollTrigger?.refresh();
     promote(master.scrollTrigger?.isActive ?? false);
-    return () => { restoreRow();slots.forEach(slot=>slot.hidden=true);master = undefined;refreshGeometry=undefined;section.parentElement!.style.removeProperty('--service-lead-overlap'); content.inert=false;grid.inert=false; promote(false); section.removeAttribute('data-animated');section.removeAttribute('data-phone-intro');if(phone)placement.style.removeProperty('clip-path');section.removeAttribute('data-grid-revealed'); };
-    });
+    // Cleanup belongs only to this media generation and runs once.
+    return () => { if(cleaned)return;cleaned=true;master?.scrollTrigger?.kill();master?.kill();reveal.kill();expand.kill();finish.kill();handoff.kill();restoreRow();restoreStyles();slots.forEach(slot=>slot.hidden=true);master = undefined;refreshGeometry=undefined;section.parentElement!.style.removeProperty('--service-lead-overlap'); content.inert=false;grid.inert=false; promote(false); section.removeAttribute('data-animated');section.removeAttribute('data-phone-intro');if(phone)placement.style.removeProperty('clip-path');section.removeAttribute('data-grid-revealed'); };
+    };
+    const parentContext = gsap.context();
+    if (parentContext) parentContext.ignore(() => {mediaCleanup = build();}); else mediaCleanup = build();
   }
   Object.values(queries).forEach(query => query.addEventListener('change', configureMedia, {signal}));
   configureMedia();
   // Width/orientation changes rebuild distances; mobile toolbar-only changes do not.
   let resizeTimer: ReturnType<typeof setTimeout>;
   const geometryObserver = new ResizeObserver(() => {
+    if(signal.aborted || !isCurrent())return;
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
+      if(signal.aborted || !isCurrent())return;
       if((!section.hasAttribute('data-phone-intro') || introHeight===intro.offsetHeight) && width === scroller.clientWidth && (!document.documentElement.hasAttribute('data-large-tablet-landscape') || viewport===scroller.clientHeight)) return;
       width = scroller.clientWidth; viewport = scroller.clientHeight;
       section.style.setProperty('--service-viewport', `${viewport}px`);
@@ -178,7 +222,7 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
     returning={finished,finish:()=>{tween.progress(1);clean();},dispose:()=>{tween.kill();clean();}};
     return returning;
   }
-  const dispose=()=>{returning?.dispose();geometryObserver.disconnect();clearTimeout(resizeTimer);events.abort();mediaContext?.revert();mediaContext=undefined;restoreRow();section.style.removeProperty('--service-viewport');};
+  const dispose=()=>{if(signal.aborted)return;returning?.dispose();geometryObserver.disconnect();clearTimeout(resizeTimer);events.abort();mediaCleanup?.();mediaCleanup=undefined;mediaGeneration++;restoreRow();section.style.removeProperty('--service-viewport');};
   return Object.assign(dispose,{
     // The handoff phase marks the switch from the intro composition to the list.
     freeze(){master?.scrollTrigger?.getTween()?.pause();master?.scrollTrigger?.disable(false);},

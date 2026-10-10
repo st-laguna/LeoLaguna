@@ -48,3 +48,12 @@
 html[data-contact-hidden] body .site-header .site-nav__items > a[data-roll-link][href="#contact"] {
  transition:opacity 250ms ease,translate .7s cubic-bezier(.76,0,.24,1),visibility 0s .7s;
 }
+
+/* Touch shows the original shaped text, never its decorative measured overlay. */
+@media (hover:none), (pointer:coarse) {
+ [data-roll-preserve] > .roll-overlay {display:none!important;}
+ [data-roll-preserve] > .roll-native {opacity:1!important;}
+ .roll-glyph::after {content:none;}
+ [data-roll-link] .roll-glyph {transform:none!important;}
+ [data-roll-link] [data-roll-label] {translate:none!important;}
+}

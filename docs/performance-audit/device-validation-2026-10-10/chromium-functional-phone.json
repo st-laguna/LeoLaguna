@@ -1,0 +1,140 @@
+[
+  {
+    "name": "phone portrait — all four galleries, zoom and dock",
+    "pass": true,
+    "details": [
+      {
+        "i": 0,
+        "phone": true,
+        "animated": false,
+        "columns": "174px 174px",
+        "items": 10,
+        "order": [
+          {
+            "text": "01",
+            "y": 100
+          },
+          {
+            "text": "SELECTED WORK",
+            "y": 130
+          },
+          {
+            "text": "TECHNICAL VISUALS",
+            "y": 157
+          },
+          {
+            "text": "3D visualization, technical illustration and visual communication for scientific and industrial projects.",
+            "y": 201.75
+          }
+        ],
+        "overflow": false,
+        "dock": {
+          "deltaX": 0,
+          "deltaY": 0,
+          "meta": "none",
+          "social": "none",
+          "based": "none"
+        }
+      },
+      {
+        "i": 1,
+        "phone": true,
+        "animated": false,
+        "columns": "174px 174px",
+        "items": 14,
+        "order": [
+          {
+            "text": "02",
+            "y": 100
+          },
+          {
+            "text": "SELECTED WORK",
+            "y": 130
+          },
+          {
+            "text": "SCIENTIFIC ILLUSTRATION",
+            "y": 157
+          },
+          {
+            "text": "Research-informed illustrations that translate scientific knowledge into clear, accurate images.",
+            "y": 234.5
+          }
+        ],
+        "overflow": false,
+        "dock": {
+          "deltaX": 0,
+          "deltaY": 0,
+          "meta": "none",
+          "social": "none",
+          "based": "none"
+        }
+      },
+      {
+        "i": 2,
+        "phone": true,
+        "animated": false,
+        "columns": "174px 174px",
+        "items": 27,
+        "order": [
+          {
+            "text": "03",
+            "y": 100
+          },
+          {
+            "text": "SELECTED WORK",
+            "y": 130
+          },
+          {
+            "text": "EDUCATIONAL VISUALS",
+            "y": 157
+          },
+          {
+            "text": "Infographics and visual materials that make complex scientific information clear and engaging.",
+            "y": 234.5
+          }
+        ],
+        "overflow": false,
+        "dock": {
+          "deltaX": 0,
+          "deltaY": 0,
+          "meta": "none",
+          "social": "none",
+          "based": "none"
+        }
+      },
+      {
+        "i": 3,
+        "phone": true,
+        "animated": false,
+        "columns": "174px 174px",
+        "items": 10,
+        "order": [
+          {
+            "text": "04",
+            "y": 100
+          },
+          {
+            "text": "SELECTED WORK",
+            "y": 130
+          },
+          {
+            "text": "ANIMATION & VIDEO",
+            "y": 157
+          },
+          {
+            "text": "Animation and video bringing scientific, environmental and industrial stories into motion.",
+            "y": 201.75
+          }
+        ],
+        "overflow": false,
+        "dock": {
+          "deltaX": 0,
+          "deltaY": 0,
+          "meta": "none",
+          "social": "none",
+          "based": "none"
+        }
+      }
+    ]
+  }
+]

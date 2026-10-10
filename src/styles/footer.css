@@ -604,6 +604,7 @@ html[data-tablet-portrait] .footer .footer__heading {color:var(--background);z-i
 html[data-tablet-portrait] .footer__strip-window {display:none;}
 /* Social glyphs retain the link typography, not the compact row's metadata style. */
 .footer .footer__contact-info a[data-roll-link] span {color:inherit;opacity:1;font-size:inherit;font-weight:inherit;}
+.footer .footer__contact-info a[data-roll-link] [data-roll-measured] > .roll-native {opacity:0;}
 .footer .footer__contact-info a[data-roll-link] > .link-state {font-size:13px;font-weight:500;}
 
 @media(max-width:700px) and (orientation:portrait) {

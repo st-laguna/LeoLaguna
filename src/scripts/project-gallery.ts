@@ -1,3 +1,4 @@
+import {isPhonePortrait,phonePortraitMedia} from './responsive-layout';
 import gsap from 'gsap';
 import Lenis from 'lenis';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
@@ -11,6 +12,9 @@ if(gallery&&lightbox&&section){
   const g=gallery,l=lightbox,s=section;
   const events=new AbortController();
   const reduced=matchMedia('(prefers-reduced-motion:reduce)');
+  const portrait=matchMedia(phonePortraitMedia);
+  const configurePhone=()=>g.toggleAttribute('data-phone-portrait',isPhonePortrait());
+  configurePhone();portrait.addEventListener('change',configurePhone,{signal:events.signal});
   const shell=g.querySelector<HTMLElement>('.gallery-shell')!;
   const scroller=g.querySelector<HTMLElement>('.gallery-scroll')!;
   const image=l.querySelector<HTMLImageElement>('[data-lightbox-image]')!;
@@ -20,6 +24,10 @@ if(gallery&&lightbox&&section){
   let galleryBusy=false,lightboxBusy=false;
   let galleryOpener:HTMLElement|null=null,lightboxOpener:HTMLElement|null=null;
   let observer:IntersectionObserver|undefined;
+  let generation=0;
+  type GalleryOwner={id:number;events:AbortController};
+  let activeOwner:GalleryOwner|undefined;
+  const owns=(owner:GalleryOwner)=>activeOwner===owner&&!owner.events.signal.aborted;
   let disposeSticky:ReturnType<typeof mountServiceStickyGrid>|undefined;
   let disposeReturn:(()=>void)|undefined;
   let opening:ReturnType<typeof openServiceCover>|undefined;
@@ -72,23 +80,26 @@ if(gallery&&lightbox&&section){
   function clearItemAnimations(){
     gsap.killTweensOf(Array.from(g.querySelectorAll('[data-gallery] .gallery-item')).map(item=>item.firstElementChild));
   }
-  function animateItems(){
+  function animateItems(owner:GalleryOwner){
     disconnectItems();
     const items=Array.from(g.querySelectorAll<HTMLElement>('[data-gallery]:not([hidden]) .gallery-item'));
     gsap.set(items.map(item=>item.firstElementChild),{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)'});
-    observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
-      if(entry.isIntersecting){entry.target.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>img.src=img.dataset.src!);if(!reduced.matches)gsap.to(entry.target.firstElementChild,{clipPath:'inset(0% 0 0)',duration:.65,ease:'power3.inOut'});observer?.unobserve(entry.target);}
+    const itemObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+      if(!owns(owner))return;
+      if(entry.isIntersecting){entry.target.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>img.src=img.dataset.src!);if(!reduced.matches)gsap.to(entry.target.firstElementChild,{clipPath:'inset(0% 0 0)',duration:.65,ease:'power3.inOut'});itemObserver.unobserve(entry.target);}
     }),{root:scroller,threshold:.05});
-    items.forEach(item=>observer!.observe(item));
+    observer=itemObserver;items.forEach(item=>itemObserver.observe(item));
   }
   async function openGallery(button:HTMLElement){
     if(galleryBusy||g.open)return;
+    const owner:GalleryOwner={id:++generation,events:new AbortController()};
+    activeOwner=owner;
     galleryBusy=true;galleryOpener=button;pause(s);
     const index=button.dataset.open==='current'?Number(s.dataset.current||0):Number(button.dataset.open);
     const preparation:Promise<void>[]=[];
     window.dispatchEvent(new CustomEvent('leo:prepare-gallery',{detail:{index,waitUntil:(promise:Promise<void>)=>preparation.push(promise)}}));
     await Promise.all(preparation);
-    if(events.signal.aborted){galleryBusy=false;return;}
+    if(events.signal.aborted||!owns(owner))return;
     g.querySelectorAll<HTMLElement>('[data-gallery]').forEach((grid,i)=>{
       grid.hidden=i!==index;
     });
@@ -100,25 +111,27 @@ if(gallery&&lightbox&&section){
     lock();g.showModal();scroller.scrollTop=0;
     window.scrollTo({top:scroll,behavior:'instant'});
     const sticky=g.querySelector<HTMLElement>('[data-gallery]:not([hidden]) [data-service-sticky]');
-    if(sticky)disposeSticky=mountServiceStickyGrid(sticky,scroller);
-    updateGalleryClock();clockTimer=setInterval(updateGalleryClock,1000);
-    animateItems();
+    if(sticky)disposeSticky=mountServiceStickyGrid(sticky,scroller,()=>owns(owner));
+    updateGalleryClock();clockTimer=setInterval(()=>{if(owns(owner))updateGalleryClock();},1000);
+    animateItems(owner);
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','true'));
     closeGalleryButton.focus({preventScroll:true});
-    if(!reduced.matches){
+    if(!reduced.matches&&!isPhonePortrait()){
       const title=g.querySelector<HTMLElement>('[data-gallery]:not([hidden]) [data-sticky-title]');
       opening=openServiceCover(g,shell,title,s,index);
       await opening.finished;
+      if(!owns(owner))return;
       opening=undefined;
     }
     galleryBusy=false;configureGalleryScroll();
-    disposeReturn=mountGalleryReturn(g,scroller,reduced);
+    disposeReturn=mountGalleryReturn(g,scroller,reduced,()=>owns(owner));
   }
   async function closeGallery(){
-    if(galleryBusy||!g.open||l.open)return;
+    if(galleryBusy||!g.open||l.open||!activeOwner)return;
+    const owner=activeOwner;
     destroyGalleryScroll();
     galleryBusy=true;shell.inert=true;g.setAttribute('data-media-closing','');pause(g);disconnectItems();
-    if(!reduced.matches){
+    if(!reduced.matches&&!isPhonePortrait()){
       // Choose the exit from the actual intro handoff, never from global page scroll.
       const active=g.querySelector<HTMLElement>('[data-gallery]:not([hidden])');
       const index=Number(active?.dataset.gallery||0);
@@ -130,16 +143,17 @@ if(gallery&&lightbox&&section){
       disposeSticky?.freeze();
       if(nearIntro&&disposeSticky){
         opening=disposeSticky.returnToIntro();
-        await opening.finished;opening=undefined;
+        await opening.finished;if(!owns(owner))return;opening=undefined;
       }
       if(!reduced.matches&&!document.hidden){
         opening=nearIntro?openServiceCover(g,shell,title,s,index,true):closeServiceGallery(g,shell,s,index,scroller);
-        await opening.finished;opening=undefined;
+        await opening.finished;if(!owns(owner))return;opening=undefined;
       }
 
     }
     disposeReturn?.();disposeReturn=undefined;
-    disposeSticky?.();disposeSticky=undefined;clearInterval(clockTimer);g.close();shell.inert=false;clearItemAnimations();unlock();
+    disposeSticky?.();disposeSticky=undefined;clearInterval(clockTimer);
+    owner.events.abort();activeOwner=undefined;g.close();shell.inert=false;clearItemAnimations();unlock();
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','false'));
     galleryOpener?.focus({preventScroll:true});galleryOpener=null;galleryBusy=false;
   }
@@ -175,7 +189,7 @@ if(gallery&&lightbox&&section){
   document.addEventListener('visibilitychange',()=>{if(document.hidden){opening?.finish();galleryScroll?.stop();}else if(!l.open&&!galleryBusy)galleryScroll?.start();},{signal:events.signal});
   if(import.meta.hot)import.meta.hot.dispose(()=>{
     destroyGalleryScroll();opening?.dispose();disposeReturn?.();
-    events.abort();clearInterval(clockTimer);disposeSticky?.();disconnectItems();clearItemAnimations();gsap.killTweensOf([shell,figure]);pause(g);
+    activeOwner?.events.abort();activeOwner=undefined;events.abort();clearInterval(clockTimer);disposeSticky?.();disconnectItems();clearItemAnimations();gsap.killTweensOf([shell,figure]);pause(g);
     if(l.open)l.close();if(g.open)g.close();while(locks)unlock();
   });
 }

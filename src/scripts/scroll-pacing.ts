@@ -64,7 +64,8 @@ export function createScrollPacing(blocked: () => boolean) {
   let native = true, nativeInput = false, bypass = false, frame = 0;
   let stops: number[] = [], viewportHeight = innerHeight;
   function apply() {
-    const enabled = (native || nativeInput) && !bypass && !blocked() && !reduced.matches && stops.length > 0;
+    const tabletTouch = root.hasAttribute('data-tablet-portrait') && (navigator.maxTouchPoints > 0 || matchMedia('(any-pointer:coarse)').matches);
+    const enabled = !tabletTouch && (native || nativeInput) && !bypass && !blocked() && !reduced.matches && stops.length > 0;
     if (enabled && root.getAttribute('data-scroll-pacing') !== 'native') root.setAttribute('data-scroll-pacing', 'native');
     else if (!enabled && root.hasAttribute('data-scroll-pacing')) root.removeAttribute('data-scroll-pacing');
   }
