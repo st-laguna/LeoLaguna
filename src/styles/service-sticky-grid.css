@@ -55,7 +55,7 @@ html[data-theme="dark"] .service-grid-content .action-pill {color:#fff;}
 .gallery-dialog[data-sticky-gallery] .gallery-header {background:none;border:0;justify-content:flex-end;align-items:flex-end;pointer-events:none;color:#fff;mix-blend-mode:difference;}
 .gallery-dialog[data-sticky-gallery] .gallery-header h2 {display:none;}
 .gallery-dialog[data-sticky-gallery] [data-gallery-close] {pointer-events:auto;border:0!important;border-radius:0!important;background:none!important;color:inherit!important;padding:8px 0;}
-.gallery-dialog[data-sticky-gallery] [data-gallery-close]:is(:hover,:focus-visible) .roll-glyph {transform:translateY(-100%);}
+
 .gallery-dialog[data-sticky-gallery] [data-gallery-close]:is(:hover,:focus-visible) .action-arrow>span {animation:action-arrow-roll 1.4s cubic-bezier(.76,0,.24,1) infinite;}
 .service-grid-eyebrow {position:absolute;left:50%;top:50%;font-size:12px;letter-spacing:.04em;color:#fff;mix-blend-mode:difference;z-index:2;white-space:nowrap;}
 .service-grid-scroll-hint {top:50%;bottom:auto;font-size:13px;white-space:nowrap;}

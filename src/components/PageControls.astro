@@ -3,7 +3,7 @@ import SiteControls from './SiteControls.astro';
 const { home = false, project = true } = Astro.props;
 ---
 <div class="page-controls">
-  {home && <a class="home-link" href="/" data-i18n="nav.home">HOME</a>}
+  {home && <a class="home-link" href="/" data-roll-link><span data-roll-label data-roll-preserve data-i18n="nav.home">HOME</span></a>}
   <SiteControls project={project} />
 </div>
 <style>

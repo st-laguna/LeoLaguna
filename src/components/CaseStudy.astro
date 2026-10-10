@@ -57,8 +57,8 @@ const previewSize=await dimensions(preview);
       </div>
       <section class="case-study__end" aria-label="More case studies">
         <nav class="case-study__others" aria-label="Other Cases"><span data-i18n="case.other">Other Cases</span>{others.map(item=><a href={'/work/'+item.slug+'/'}><span><span data-i18n={'case.'+item.slug+'.title'}>{labels['case.'+item.slug+'.title']||item.title}</span> — {item.client}</span><span class="case-study__other-arrow" aria-hidden="true"><span class="action-arrow" data-direction="diagonal"><span data-arrow="↗">↗</span></span></span></a>)}</nav>
-      <a class="case-study__next" href={'/work/'+next.slug+'/'} aria-label={'Next Case Study: '+next.title} data-i18n-aria-label={'case.'+next.slug+'.title'}>
-        <span class="case-study__next-label"><span data-i18n="case.next">Next Case Study</span> <span aria-hidden="true">↗</span></span>
+      <a class="case-study__next" data-roll-link href={'/work/'+next.slug+'/'} aria-label={'Next Case Study: '+next.title} data-i18n-aria-label={'case.'+next.slug+'.title'}>
+        <span class="case-study__next-label"><span data-roll-label data-roll-preserve data-i18n="case.next">Next Case Study</span> <span aria-hidden="true">↗</span></span>
         <div class="case-study__next-heading"><h2 data-i18n={'case.'+next.slug+'.title'}>{labels['case.'+next.slug+'.title']||next.title}</h2><span>{next.client}</span></div>
         <div class="case-study__preview">
           <img data-case-src={preview} width={previewSize.width} height={previewSize.height} alt={next.client} loading="eager" fetchpriority="low" decoding="async" />

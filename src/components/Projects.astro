@@ -122,7 +122,7 @@ const t = en as Record<string,string>;
   </div>
 </dialog>
 <dialog class="project-lightbox" aria-label="Vista ampliada / Enlarged image">
-  <button type="button" class="lightbox-close" data-lightbox-close><span data-i18n="projects.closeImage">{t['projects.closeImage']}</span> ×</button>
+  <button type="button" class="lightbox-close" data-lightbox-close><span data-roll-label data-roll-preserve data-i18n="projects.closeImage">{t['projects.closeImage']}</span> <span aria-hidden="true">×</span></button>
   <figure class="lightbox-figure"><img data-lightbox-image alt="" /><figcaption></figcaption></figure>
 </dialog>
 <script>

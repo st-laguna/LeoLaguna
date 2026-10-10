@@ -1,0 +1,50 @@
+/* Footer reference: 700ms / 18ms glyph stagger, 6px / 300ms movement,
+   0.42 / 250ms sibling opacity. No animation owns the parent button's layout. */
+[data-roll-label] {display:inline-block;}
+[data-roll-link]:not(.hover-option) :is([data-roll-label],[data-roll-label] + .action-arrow,[data-roll-label] + [aria-hidden]) {transition:translate 300ms ease;}
+[data-roll-group] > [data-roll-link] {transition:opacity 250ms ease;}
+[data-roll-preserve] {position:relative;white-space:nowrap;}
+.roll-native {white-space:pre;}
+.roll-overlay {position:absolute;inset:0;pointer-events:none;visibility:hidden;}
+[data-roll-measured] > .roll-native {opacity:0;}
+[data-roll-measured] > .roll-overlay {visibility:visible;}
+.roll-overlay .roll-letter {position:absolute;vertical-align:initial;}
+.roll-overlay .roll-glyph {line-height:inherit;}
+@media(prefers-reduced-motion:no-preference) {
+  .roll-glyph {transition:transform .7s cubic-bezier(.76,0,.24,1);transition-delay:calc(var(--letter-index) * 18ms);}
+  [data-roll-link]:focus-visible .roll-glyph {transform:translateY(-100%);}
+}
+[data-roll-link]:not(.hover-option):focus-visible :is([data-roll-label],[data-roll-label] + .action-arrow,[data-roll-label] + [aria-hidden]) {translate:6px 0;}
+.hover-option:focus-visible {translate:6px 0;}
+[data-roll-group]:has(> [data-roll-link]:focus-visible) > [data-roll-link]:not(:focus-visible) {opacity:.42;}
+@media(hover:hover) and (pointer:fine) {
+  [data-roll-link]:not(.hover-option):hover :is([data-roll-label],[data-roll-label] + .action-arrow,[data-roll-label] + [aria-hidden]) {translate:6px 0;}
+  [data-roll-group]:has(> [data-roll-link]:hover) > [data-roll-link]:not(:hover) {opacity:.42;}
+  /* Contact uses its parent's translate for the header exit; move only its label. */
+  .site-header [data-roll-link][href="#contact"]:hover [data-roll-label] {translate:6px 0;transition:translate 300ms ease;}
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  [data-roll-link]:hover .roll-glyph {transform:translateY(-100%);}
+}
+@media(prefers-reduced-motion:reduce) {
+  .roll-glyph {transition:none;transform:none!important;}
+  [data-roll-link] [data-roll-label] {transition:none;}
+}
+/* Replace About's scale-only link feedback without touching icons or brackets. */
+.about[data-editorial] .about-editorial [data-roll-link] {scale:1!important;transition:opacity 250ms ease;}
+.about-editorial__links[data-roll-group]:has(> [data-roll-link]:focus-visible) > [data-roll-link]:not(:focus-visible) {opacity:.42;}
+@media(hover:hover) and (pointer:fine) {
+ .about-editorial__links[data-roll-group]:has(> [data-roll-link]:hover) > [data-roll-link]:not(:hover) {opacity:.42;}
+}
+.site-header [data-roll-link][href="#contact"] [data-roll-label] {transition:translate 300ms ease;}
+.site-header [data-roll-link][href="#contact"]:focus-visible [data-roll-label] {translate:6px 0;}
+@media(hover:none) {
+ .about-editorial__links[data-roll-group] > [data-roll-link]:not(:focus-visible) {opacity:1;}
+}
+/* Keep Contact's existing exit transition and restore the group's opacity timing. */
+.site-header .site-nav__items > a[data-roll-link][href="#contact"] {
+ transition:opacity 250ms ease,translate .7s cubic-bezier(.76,0,.24,1),visibility 0s;
+}
+html[data-contact-hidden] body .site-header .site-nav__items > a[data-roll-link][href="#contact"] {
+ transition:opacity 250ms ease,translate .7s cubic-bezier(.76,0,.24,1),visibility 0s .7s;
+}
