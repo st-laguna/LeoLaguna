@@ -1,4 +1,5 @@
 import { aboutInterests } from './mobileAboutContent';
+import { mountMobileAboutWheel } from './mobileAboutWheel';
 
 type State = 'closed' | 'opening' | 'intro' | 'leaving-intro' | 'stickers' | 'closing';
 type Point = [number, number];
@@ -49,8 +50,11 @@ export function mountMobileAbout(section: HTMLElement) {
   }
   function clearTimers() { timers.forEach(clearTimeout); timers.clear(); }
   const busy = () => state === 'opening' || state === 'closing' || state === 'leaving-intro';
+  const wheel = mountMobileAboutWheel(stickers, openInterest, text => {status.textContent = text;});
+  const wheelHint = () => orientation.matches ? 'swipe left / right · tap to explore' : 'swipe up / down on a sticker · tap to explore';
   function setState(value: State) {
     state = value;
+    wheel.setEnabled(value === 'stickers');
     root.dataset.state = value;
     root.setAttribute('aria-busy', String(busy()));
     artwork.disabled = busy() || !ready;
@@ -60,7 +64,7 @@ export function mountMobileAbout(section: HTMLElement) {
     menuToggle.disabled = !ready;
     intro.inert = value !== 'intro'; intro.setAttribute('aria-hidden', String(value !== 'intro'));
     stickers.inert = value !== 'stickers'; stickers.setAttribute('aria-hidden', String(value !== 'stickers'));
-    hint.textContent = value === 'closed' ? 'tap to explore' : value === 'stickers' ? 'tap a sticker' : '';
+    hint.textContent = value === 'closed' ? 'tap to explore' : value === 'stickers' ? wheelHint() : '';
     hintAction.hidden = value !== 'closed' && value !== 'stickers';
     hintAction.disabled = value !== 'closed' || !ready;
     artwork.setAttribute('aria-expanded', String(root.dataset.open === 'true'));
@@ -123,6 +127,7 @@ export function mountMobileAbout(section: HTMLElement) {
     if (sizeKey === lastSize || !size.width || !size.height) return;
     lastSize = sizeKey;
     root.dataset.orientation = mode;
+    if(state === 'stickers')hint.textContent = wheelHint();
     // Read geometry once per resize; no animation-frame measurements.
     const scale = head.getBoundingClientRect().width / W;
     const style = getComputedStyle(root);
@@ -174,7 +179,7 @@ export function mountMobileAbout(section: HTMLElement) {
     if (state !== 'intro') return;
     loadStickers(); setState('leaving-intro');
     later(() => {
-      setState('stickers'); status.textContent = 'Six interests. Tap a sticker to learn more.';
+      setState('stickers'); status.textContent = 'Six interests. Swipe to choose; tap the centered sticker to learn more.';
       if (document.activeElement === next) query<HTMLButtonElement>('[data-mobile-interest]').focus({ preventScroll: true });
     }, reduced.matches ? 0 : 260);
   }
@@ -194,8 +199,7 @@ export function mountMobileAbout(section: HTMLElement) {
     const transition = event as TransitionEvent;
     if (transition.propertyName === 'transform' && (event.target as Element).matches('.mobile-about__piece.first')) settleLayer((event.target as Element).closest<SVGGElement>('[data-mobile-layer]')!);
   });
-  on(stickers, 'click', event => {
-    const button = (event.target as Element).closest<HTMLButtonElement>('[data-mobile-interest]');
+  function openInterest(button: HTMLButtonElement) {
     const interest = aboutInterests.find(item => item.id === button?.dataset.mobileInterest);
     if (!button || !interest || state !== 'stickers') return;
     lastLauncher = button;
@@ -204,11 +208,11 @@ export function mountMobileAbout(section: HTMLElement) {
     const image = query<HTMLImageElement>('[data-mobile-info-image]');
     image.alt = `${interest.title.toLowerCase()} — a little part of my life`;
     image.src = `/about/img/about_mobile/${interest.photo}.webp`;
-    if (!dialog.open) dialog.showModal();
-  });
+    if (!dialog.open) {wheel.setObscured(true);dialog.showModal();}
+  }
   on(query('[data-mobile-info-close]'), 'click', () => dialog.close());
   on(dialog, 'click', event => { if (event.target !== dialog) return; const mouse = event as MouseEvent; const box = dialog.getBoundingClientRect(); if (mouse.clientX < box.left || mouse.clientX > box.right || mouse.clientY < box.top || mouse.clientY > box.bottom) dialog.close(); });
-  on(dialog, 'close', () => { if (!destroyed && state === 'stickers') lastLauncher?.focus({ preventScroll: true }); });
+  on(dialog, 'close', () => { wheel.setObscured(false); if (!destroyed && state === 'stickers') lastLauncher?.focus({ preventScroll: true }); });
   on(root, 'keydown', event => {
     const key = event as KeyboardEvent;
     if (root.hasAttribute('data-menu-open')) return; // Shared menu owns its keys.
@@ -240,7 +244,7 @@ export function mountMobileAbout(section: HTMLElement) {
   return {
     mode: 'mobile',
     dispose() {
-      destroyed = true; abort.abort(); observer.disconnect(); clearTimers(); dialog.close();
+      destroyed = true; wheel.dispose(); abort.abort(); observer.disconnect(); clearTimers(); dialog.close();
       
       desktopComposition.inert = originalDesktopInert;
       if (originalLabel) section.setAttribute('aria-labelledby', originalLabel);
