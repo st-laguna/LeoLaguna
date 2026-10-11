@@ -27,6 +27,10 @@ export function createAboutScene(section, callbacks = {}) {
   const abort = new AbortController();
   const resources = new Resources();
   const editorial=section.hasAttribute('data-editorial');
+  const desktopFloats = editorial && matchMedia('(hover:hover) and (pointer:fine)').matches
+    && !document.documentElement.hasAttribute('data-ipad')
+    && !document.documentElement.hasAttribute('data-large-tablet-landscape')
+    && !document.documentElement.hasAttribute('data-tablet-portrait');
   const scene = new THREE.Scene();
   const mobilePortrait = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)');
   const isMobilePortrait = mobilePortrait.matches;
@@ -121,7 +125,7 @@ export function createAboutScene(section, callbacks = {}) {
     turnSpeed: 3.5,
   });
   const leo = new Leo();
-  const props = new InteractiveProps();
+  const props = new InteractiveProps({ desktop: desktopFloats });
   const actors = [simba, morena, leo];
   const entries = new Map();
   const meshEntries = new WeakMap();
@@ -727,10 +731,15 @@ export function createAboutScene(section, callbacks = {}) {
     if(!isMobilePortrait) await runPool(
       PROPS.map(
         (config) => () =>
-          asset(modelURL(config.id), async (gltf) => {
-            if(editorial)gltf.scene.scale.multiplyScalar(.4);
-            const placements={laptop:[-2.2,2.5,-.5],ipad:[.2,2.8,-1.2],cuadro:[2,2.3,-1],libro1:[-1.4,2.6,-1.5],libro2:[1.4,2.7,-1.8]};
-            const entry = props.attach(gltf, editorial?{...config,position:placements[config.id]}:config);
+          asset(config.model, async (gltf) => {
+            gltf.scene.rotation.set(...config.rotation);
+            const bounds = new THREE.Box3().setFromObject(gltf.scene);
+            const size = bounds.getSize(new THREE.Vector3());
+            const center = bounds.getCenter(new THREE.Vector3());
+            const scale = config.sceneSize * (desktopFloats ? .55 : 1) / Math.max(size.x,size.y,size.z);
+            gltf.scene.scale.multiplyScalar(scale);
+            gltf.scene.position.addScaledVector(center,-scale);
+            const entry = props.attach(gltf, editorial?{...config,position:config.editorialPosition}:config);
             resources.track(entry.root);
             await renderer.compileAsync(entry.root, camera, scene);
             if (disposed) return;

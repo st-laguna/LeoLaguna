@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { PROPS } from './sceneConfig.js';
 import { message } from './messages.js';
 
 export const editorialMedia = '(min-width:1001px) and (min-height:501px) and (hover:hover) and (pointer:fine), (min-width:1367px) and (min-height:701px) and (orientation:landscape) and (any-pointer:coarse)';
@@ -53,8 +54,9 @@ export function mountEditorialAbout(section, getScene, on, reduced) {
     if(item){
       panel.tabIndex=-1;
       // Entries intentionally reserve final image, alt, description and metadata.
-      const data=content.get(item.id)||{id:item.id,displayName:item.label,image:null,alt:'',description:null,metadata:null};content.set(item.id,data);
-      query('[data-context-title]').textContent=message(item.label);const description=query('[data-context-description]');description.textContent=data.description||'Content to be provided.';description.removeAttribute('data-en');description.removeAttribute('data-es');const media=query('.about-editorial__image-placeholder');media.replaceChildren();if(data.description){const img=document.createElement('img');img.src='/about/img/'+item.id+'.webp';img.alt=item.label;img.width=400;img.height=400;media.append(img);}else media.textContent='IMAGE TO BE PROVIDED';
+      const personal=PROPS.find(entry=>entry.id===item.id);
+      const data=personal?{description:personal.text,image:personal.image}:content.get(item.id)||{id:item.id,displayName:item.label,image:null,alt:'',description:null,metadata:null};content.set(item.id,data);
+      query('[data-context-title]').textContent=message(item.label);const description=query('[data-context-description]');description.textContent=data.description||'Content to be provided.';description.removeAttribute('data-en');description.removeAttribute('data-es');const media=query('.about-editorial__image-placeholder');media.removeAttribute('data-en');media.removeAttribute('data-es');media.replaceChildren();if(data.description){const img=document.createElement('img');img.src=data.image||'/about/img/'+item.id+'.webp';img.alt=item.label;img.width=400;img.height=400;media.append(img);}else media.textContent='IMAGE TO BE PROVIDED';
       section.setAttribute('data-context-open','');panel.inert=false;panel.setAttribute('aria-hidden','false');
       back.tabIndex=0;back.setAttribute('aria-hidden','false');gsap.set(back,{autoAlpha:1,y:0});
       setState('object-transitioning');

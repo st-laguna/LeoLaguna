@@ -1,3 +1,4 @@
+import { PROPS } from './sceneConfig.js';
 import gsap from 'gsap';
 import { message } from './messages.js';
 import { mountMobileAbout } from './mobileAbout';
@@ -165,6 +166,10 @@ function mount(section) {
     if (item) {
       query('[data-prop-title]').textContent = message(item.label);
       query('[data-prop-description]').textContent = message(item.description || '');
+      const personal = PROPS.find(entry => entry.id === item.id);
+      const photo = query('[data-prop-image]');
+      photo.hidden = !personal;
+      if(personal){photo.src = personal.image;photo.alt = personal.title;}else photo.removeAttribute('src');
       tooltip.setAttribute('aria-hidden', 'false');
       gsap.set(tooltipCard, { y: reduced ? 0 : 10 });
       tween(tooltipCard, { autoAlpha: 1, y: 0, duration: 0.3 });

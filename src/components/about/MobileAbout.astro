@@ -35,8 +35,8 @@ const introLines = ['I CREATE SCIENTIFIC', 'ILLUSTRATIONS, TECHNICAL', 'VISUALS,
       <button data-mobile-next type="button" aria-label="Explore my interests">Tap to explore <span class="mobile-about__tap-arrow" aria-hidden="true">↗</span></button>
     </section>
     <div class="mobile-about__stickers mobile-about__wheel" id="mobile-about-stickers" role="region" aria-roledescription="carousel" aria-label="Explore my interests" aria-hidden="true" inert>
-      {aboutInterests.map((interest, index) => <div class="mobile-about__wheel-slot" data-wheel-slot style={`--sticker-index:${index}`}><div class="mobile-about__float"><button class="mobile-about__sticker" type="button" data-mobile-interest={interest.id} aria-label={`Explore ${interest.title.toLowerCase()}`} aria-haspopup="dialog" aria-controls="mobile-about-info" style={`--sticker-index:${index};--sticker-rotation:${interest.rotation}`}>
-        <img data-sticker-asset={interest.asset} alt={interest.title} decoding="async" width="640" height="640" />
+      {aboutInterests.map((interest, index) => <div class="mobile-about__wheel-slot" data-wheel-slot style={`--sticker-index:${index}`}><div class="mobile-about__float"><button class="mobile-about__sticker" type="button" data-mobile-interest={interest.id} aria-label={`Explore ${interest.title.toLowerCase()}`} aria-haspopup="dialog" aria-controls="mobile-about-info">
+        <img data-wheel-model={interest.model} src={interest.image} alt={interest.title} loading="lazy" fetchpriority="low" decoding="async" width="640" height="640" />
       </button></div></div>)}
     </div>
     <div class="mobile-about__decorations" aria-hidden="true"></div>

@@ -29,7 +29,7 @@ const mobileAboutPrepaint = '(() => {\n' + mobileAboutDevice.replace(/^export /g
     <PageNavigation />
     <script is:inline set:html={mobileAboutPrepaint}></script>
     <script is:inline>
-      document.documentElement.setAttribute('data-about-loading', '');
+      if (!document.documentElement.hasAttribute('data-about-mobile')) document.documentElement.setAttribute('data-about-loading', '');
       // A failed runtime must never leave the biography or navigation hidden.
       window.__aboutLoadingFallback=setTimeout(()=>{
         document.documentElement.removeAttribute('data-about-loading');

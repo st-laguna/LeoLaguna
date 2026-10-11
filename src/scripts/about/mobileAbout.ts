@@ -133,14 +133,14 @@ export function mountMobileAbout(section: HTMLElement) {
     root.style.setProperty('--split-distance-landscape', `${size.width * parseFloat(style.getPropertyValue('--landscape-gap')) / (2 * scale)}px`);
     syncAssets();
   }
+  let modelViews: {dispose:()=>void} | undefined;
+  let preparingModels = false, anatomicalReady = false;
   function loadStickers() {
-    root.querySelectorAll<HTMLImageElement>('[data-sticker-asset]').forEach(image => {
-      if (image.hasAttribute('src')) return;
-      const asset = image.dataset.stickerAsset;
-      image.sizes = orientation.matches ? '42vw' : '20vw';
-      image.srcset = `/about/img/about_mobile/responsive/${asset}-640.webp 640w, /about/img/about_mobile/responsive/${asset}-960.webp 960w`;
-      image.src = `/about/img/about_mobile/responsive/${asset}-640.webp`;
-    });
+    if(preparingModels || destroyed || !anatomicalReady)return;
+    preparingModels = true;
+    void import('./mobileAboutModels').then(({prepareMobileAboutModels})=>{
+      if(!destroyed)modelViews=prepareMobileAboutModels(root, aboutInterests);
+    }).catch(()=>{if(!destroyed)status.textContent='Model views unavailable. All interest cards remain available.';});
   }
   const milliseconds = (value: string) => parseFloat(value) * (value.endsWith('ms') ? 1 : 1000);
   function totalTime(piece: Element) {
@@ -177,7 +177,7 @@ export function mountMobileAbout(section: HTMLElement) {
     if (state !== 'intro') return;
     loadStickers(); setState('leaving-intro');
     later(() => {
-      setState('stickers'); status.textContent = 'Six interests. Swipe to choose; tap the centered sticker to learn more.';
+      setState('stickers'); status.textContent = `${aboutInterests.length} interests. Tap the centered object to learn more.`;
       if (document.activeElement === next) query<HTMLButtonElement>('[data-active="true"] [data-mobile-interest]').focus({ preventScroll: true });
     }, reduced.matches ? 0 : 260);
   }
@@ -202,10 +202,10 @@ export function mountMobileAbout(section: HTMLElement) {
     if (!button || !interest || state !== 'stickers') return;
     lastLauncher = button;
     query('#mobile-about-info-title').textContent = interest.title;
-    query('[data-mobile-info-copy]').textContent = interest.copy;
+    query('[data-mobile-info-copy]').textContent = interest.text;
     const image = query<HTMLImageElement>('[data-mobile-info-image]');
     image.alt = `${interest.title.toLowerCase()} — a little part of my life`;
-    image.src = `/about/img/about_mobile/${interest.photo}.webp`;
+    image.src = interest.image;
     if (!dialog.open) {wheel.setObscured(true);dialog.showModal();}
   }
   on(query('[data-mobile-info-close]'), 'click', () => dialog.close());
@@ -237,18 +237,19 @@ export function mountMobileAbout(section: HTMLElement) {
     // No second entrance overlay or waiting for a tap: open as soon as ready.
     ready = true; setState(state); autoOpen();
   };
-  const revealFallback = later(reveal, 4000);
-  Promise.allSettled(assets).then(() => { clearTimeout(revealFallback); timers.delete(revealFallback); reveal(); });
+  // Reveal immediately; anatomical decoding and model preparation never gate entry.
+  reveal();
+  Promise.allSettled(assets).then(()=>{anatomicalReady=true;loadStickers();});
   return {
     mode: 'mobile',
     dispose() {
-      destroyed = true; wheel.dispose(); abort.abort(); observer.disconnect(); clearTimers(); dialog.close();
+      destroyed = true; modelViews?.dispose(); wheel.dispose(); abort.abort(); observer.disconnect(); clearTimers(); dialog.close();
       
       desktopComposition.inert = originalDesktopInert;
       if (originalLabel) section.setAttribute('aria-labelledby', originalLabel);
       section.removeAttribute('data-mobile-about');
       root.dataset.state = 'closed'; root.dataset.open = 'false'; root.dataset.settled = 'true';
-      root.querySelectorAll<HTMLImageElement>('[data-sticker-asset]').forEach(image => { image.removeAttribute('src'); image.removeAttribute('srcset'); });
+
     },
   };
 }
