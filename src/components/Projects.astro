@@ -36,7 +36,7 @@ const t = en as Record<string,string>;
                     {asset.kind === 'image' ? (
                       <button class="project-enlarge" type="button" data-zoom-src={asset.src} data-zoom-alt={projectAssetLabel(asset, project)} aria-label={`Ampliar / Enlarge: ${projectAssetLabel(asset, project)}`}><img src={index===0 && j===0 ? asset.src : undefined} data-src={asset.src} alt={projectAssetLabel(asset, project)} loading="lazy" decoding="async" /></button>
                     ) : (
-                      <video data-auto-video src={asset.src} poster={asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={projectAssetLabel(asset, project)} ></video>
+                      <video data-auto-video width={asset.width || 1920} height={asset.height || 1080} style={`--video-aspect:${asset.width || 1920}/${asset.height || 1080}`} src={asset.src} poster={asset.poster || asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={projectAssetLabel(asset, project)} ></video>
                     )}
                   </figure>
                 ))}
@@ -111,7 +111,7 @@ const t = en as Record<string,string>;
                 <button type="button" data-zoom-src={asset.src} data-zoom-alt={projectAssetLabel(asset, project)} aria-label={`Ampliar / Enlarge: ${projectAssetLabel(asset, project)}`}>
                   <img data-src={asset.src} {...projectImageSize(asset.src)} alt={projectAssetLabel(asset, project)} loading="lazy" decoding="async" />
                 </button>
-              ) : <video data-auto-video src={asset.src} poster={asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={projectAssetLabel(asset, project)} ></video>}
+              ) : <video data-auto-video width={asset.width || 1920} height={asset.height || 1080} style={`--video-aspect:${asset.width || 1920}/${asset.height || 1080}`} src={asset.src} poster={asset.poster || asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={projectAssetLabel(asset, project)} ></video>}
               {asset.client && <figcaption>{asset.client}</figcaption>}
             </figure>
           ))}

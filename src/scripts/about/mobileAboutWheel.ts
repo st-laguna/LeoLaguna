@@ -16,10 +16,12 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
   const modulo = (n: number) => ((n % count) + count) % count;
   const offset = (n: number) => modulo(n + count / 2) - count / 2;
   const clamp = (n:number,min:number,max:number) => Math.max(min,Math.min(max,n));
-  const awake = () => enabled && visible && !obscured && !document.hidden && !disposed;
+  const host=root.closest<HTMLElement>('[data-mobile-about-ui]')!;
+  const awake = () => enabled && visible && !obscured && !host.hasAttribute('data-menu-open') && !document.hidden && !disposed;
   function render() {
     const active = modulo(Math.round(position));
     root.dataset.activeInterest = buttons[active].dataset.mobileInterest;
+    const layouts: {distance:number;x:number;z:number;scale:number;opacity:number;visible:boolean}[]=[];
     slots.forEach((slot, index) => {
       const distance = offset(index - position), absolute = Math.abs(distance);
       const shown = absolute < 1.6;
@@ -30,6 +32,7 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
       const displacement = Math.sin(radians) * radius;
       const depth = (Math.cos(radians) - 1) * radius;
       const scale = 1 - Math.min(absolute, 2) * .17;
+      layouts.push({distance,x:displacement,z:depth,scale,opacity:1-Math.min(absolute,2)*.23,visible:shown});
       // All orientations share X/Z + rotateY; only the viewport dimensions change.
       slot.style.transform = `translate(-50%, -50%) translate3d(${displacement}px,0px,${depth}px) rotateY(${angle}deg) scale(${scale})`;
       slot.style.opacity = String(1 - Math.min(absolute, 2) * .23);
@@ -39,6 +42,7 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
       if(index === active)buttons[index].setAttribute('aria-current','true');
       else buttons[index].removeAttribute('aria-current');
     });
+    root.dispatchEvent(new CustomEvent('wheel:layout',{detail:layouts}));
   }
   function cancelMotion() { cancelAnimationFrame(frame); frame = 0; previousTime = 0; }
   function releasePointer() {
@@ -70,6 +74,8 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
   }
   function syncAwake() {
     root.dataset.awake = String(awake());
+    root.closest<HTMLElement>('[data-mobile-about-ui]')!.dataset.wheelAwake=String(awake());
+    root.dispatchEvent(new Event('wheel:awake'));
     if(!awake()) { releasePointer(); target = Math.round(position); finish(); }
   }
   function measure() {
@@ -134,13 +140,15 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
   },{signal});
   reduced.addEventListener('change',()=>{releasePointer();settle(Math.round(position));},{signal});
   document.addEventListener('visibilitychange',syncAwake,{signal});
+  root.addEventListener('wheel:measure',measure,{signal});
   root.addEventListener('dragstart',event=>event.preventDefault(),{signal});
   const resize=new ResizeObserver(measure);resize.observe(root);
   const intersection=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;syncAwake();});intersection.observe(root);
+  const menu=new MutationObserver(syncAwake);menu.observe(host,{attributes:true,attributeFilter:['data-menu-open']});
   measure();syncAwake();
   return {
     setEnabled(value:boolean){enabled=value;syncAwake();},
     setObscured(value:boolean){obscured=value;syncAwake();},
-    dispose(){disposed=true;releasePointer();cancelMotion();events.abort();resize.disconnect();intersection.disconnect();root.dataset.awake='false';root.dataset.motion='idle';},
+    dispose(){disposed=true;releasePointer();cancelMotion();events.abort();resize.disconnect();intersection.disconnect();menu.disconnect();host.dataset.wheelAwake='false';root.dataset.awake='false';root.dataset.motion='idle';},
   };
 }

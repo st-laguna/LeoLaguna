@@ -9,6 +9,7 @@ import mobileAboutDevice from '../scripts/about/mobileAboutDevice.js?raw';
 // Keep the desktop preload behavior without fetching 3D assets on mobile/iPad.
 const mobileAboutPrepaint = '(() => {\n' + mobileAboutDevice.replace(/^export /gm, '') + `
   document.documentElement.toggleAttribute('data-about-mobile', isMobileAbout());
+  document.documentElement.dataset.theme=isMobileAbout()?'dark':'light';
   if (!isMobileAbout()) {
     for (const name of ['leo', 'simba', 'morena']) {
       const link = document.createElement('link');
@@ -24,7 +25,7 @@ const mobileAboutPrepaint = '(() => {\n' + mobileAboutDevice.replace(/^export /g
 <html lang="en" data-page="about">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>About — Leo Laguna</title>
     <PageNavigation />
     <script is:inline set:html={mobileAboutPrepaint}></script>

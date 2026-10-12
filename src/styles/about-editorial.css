@@ -159,3 +159,14 @@ html:not([data-about-mobile]) body .about[data-editorial] .line-right-top {heigh
 html:not([data-about-mobile]) body .about[data-editorial] :is(.line-left,.line-right-middle) {top:var(--about-top-band);}
 html:not([data-about-mobile]) body .about[data-editorial] .about__loading progress {top:calc(var(--about-top-band) - 4px);}html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top .language {width:var(--ui-language-width);}
 html:not([data-about-mobile]) body .about[data-editorial] .about-editorial .about-editorial__top .language button {width:auto;flex:1;min-width:0;}
+/* Measured baseline: Host Grotesk 400, clamp(12px,.85vw,16px), line-height 1.25. */
+html:not([data-about-mobile]) .about-editorial__copy {font-size:calc(clamp(12px,.85vw,16px) + 3px);font-weight:300;line-height:1.25;}
+html:not([data-about-mobile]) .about-editorial__context-content>p {font-size:16px;font-weight:300;}
+html:not([data-about-mobile]) .about-editorial__context-title h2 {font-size:16px;}
+/* Leave room for the larger description above the footer on short desktops. */
+@media (max-height:800px) {
+  html:not([data-about-mobile]) .about-editorial__context-content {top:18%;}
+}
+@media (min-width:1101px) and (max-width:1366px) and (min-height:501px) and (max-height:720px) and (hover:hover) and (pointer:fine) and (any-pointer:fine) {
+  html:not([data-ipad]):not([data-about-mobile]) body .about[data-editorial] .about-editorial__context-content>p {font-size:14px;}
+}

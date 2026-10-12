@@ -1,4 +1,4 @@
-export type ProjectAsset = { src: string; client: string; kind: 'image' | 'video' };
+export type ProjectAsset = { src: string; client: string; kind: 'image' | 'video'; poster?: string; width?: number; height?: number };
 export type Project = { id: string; assets: ProjectAsset[] };
 
 const images = (names: string[]): ProjectAsset[] => names.map(name => ({
@@ -52,7 +52,7 @@ export const projects: Project[] = [
     id: '04',
     assets: [
       { src: '/videos/havida.webm', client: 'HAVIDA', kind: 'video' },
-      ...Array.from({ length: 9 }, (_, i) => ({ src: `/videos/${i + 1}.webm`, client: '', kind: 'video' as const })),
+      ...[1,2,3,4,5,10,7,8,9].map(id => ({ src: `/videos/${id}.webm`, poster: `/videos/mini/${id===10?6:id}.webp`, width: id===7||id===9?1440:1920, height:1080, client: '', kind: 'video' as const })),
     ],
   },
 ];

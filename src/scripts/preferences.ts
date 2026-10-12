@@ -1,3 +1,4 @@
+import { isMobileAbout } from './about/mobileAboutDevice.js';
 
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   import en from '../i18n/en.json';
@@ -37,10 +38,11 @@
 
   function initialTheme(): Theme {
     const saved=readPreference('leo-theme');
-    return saved==='dark'||saved==='light'?saved:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    return saved==='dark'||saved==='light'?saved:'dark';
   }
   function applyTheme(theme: Theme) {
-    root.dataset.theme = theme;
+    root.dataset.globalTheme = theme;
+    root.dataset.theme = document.querySelector('[data-about]') ? (isMobileAbout()?'dark':'light') : theme;
 
     themeButton?.setAttribute(
       'aria-checked',
@@ -49,6 +51,7 @@
     window.dispatchEvent(new CustomEvent('leo:theme-change', {detail:theme}));
   }
 
+  window.addEventListener('leo:orientation-ready',()=>applyTheme(initialTheme()));
   function applyLanguage(language: Language) {
     root.lang = language;
 
@@ -112,6 +115,7 @@
   async function transitionTheme(theme: Theme) {
     if (themeTransitioning) return;
     const commit = () => { applyTheme(theme); savePreference('leo-theme', theme); };
+    if(document.querySelector('[data-about]')){commit();return;}
     if (!themeWipe || matchMedia('(prefers-reduced-motion: reduce)').matches) {
       commit();
       return;
@@ -166,7 +170,7 @@
   // Keep one wipe in flight; all theme side effects still live in applyTheme.
   themeButton?.addEventListener('click', () => {
     if (themeTransitioning) return;
-    void transitionTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
+    void transitionTheme(root.dataset.globalTheme === 'dark' ? 'light' : 'dark');
   });
   // Cambia entre inglés y español.
   languageButtons.forEach((button) => {

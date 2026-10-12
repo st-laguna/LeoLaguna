@@ -733,6 +733,7 @@ export function createAboutScene(section, callbacks = {}) {
         (config) => () =>
           asset(config.model, async (gltf) => {
             gltf.scene.rotation.set(...config.rotation);
+            if(config.baseRotation)gltf.scene.quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(...config.baseRotation)));
             const bounds = new THREE.Box3().setFromObject(gltf.scene);
             const size = bounds.getSize(new THREE.Vector3());
             const center = bounds.getCenter(new THREE.Vector3());

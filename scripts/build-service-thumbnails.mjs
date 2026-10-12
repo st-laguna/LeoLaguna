@@ -6,7 +6,7 @@ const folder='public/img/service-thumbs';await mkdir(folder,{recursive:true});
 let originalBytes=0,smallBytes=0,largeBytes=0,count=0;
 for(const project of projects){
  for(const asset of project.assets.slice(0,project.id==='04'?8:9)){
-  const src=asset.kind==='video'?asset.src.replace('/videos/','/videos/mini/').replace(/\.webm$/i,'.webp'):asset.src;
+  const src=asset.kind==='video'?(asset.poster || asset.src.replace('/videos/','/videos/mini/').replace(/\.webm$/i,'.webp')):asset.src;
   const name=src.split('/').pop().replace(/\.webp$/i,'');
   originalBytes+=(await stat('public'+src)).size;
   for(const size of [320,640]){

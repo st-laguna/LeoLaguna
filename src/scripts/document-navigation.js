@@ -19,12 +19,14 @@ window.addEventListener('error', event => {
 function restorePreferences() {
   try {
     const saved=localStorage.getItem('leo-theme');
-    root.dataset.theme = saved==='light'||saved==='dark'?saved:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    root.dataset.theme = saved==='light'||saved==='dark'?saved:'dark';
     root.lang = localStorage.getItem('leo-language') === 'es' ? 'es' : 'en';
   } catch {
-    root.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    root.dataset.theme = 'dark';
     root.lang = 'en';
   }
+  root.dataset.globalTheme=root.dataset.theme;
+  if(/^\/about\/?$/.test(location.pathname))root.dataset.theme=root.hasAttribute('data-about-mobile')?'dark':'light';
 }
 restorePreferences();
 // Prepare only the destination document on explicit pointer/keyboard intent.

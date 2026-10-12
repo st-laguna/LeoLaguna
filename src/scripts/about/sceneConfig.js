@@ -22,6 +22,7 @@ export const SCENE = {
 export const PROPS = [
   {
     "id": "laptop",
+    "objectName": {"en":"Laptop","es":"Laptop"},
     "model": "/about/models/laptop.glb",
     "image": "/about/img/PC_PIC.webp",
     "title": "ONE MORE UPGRADE",
@@ -45,6 +46,7 @@ export const PROPS = [
   },
   {
     "id": "book",
+    "objectName": {"en":"Book","es":"Libro"},
     "model": "/about/models/libro1.glb",
     "image": "/about/img/BOOK_PIC.webp",
     "title": "OFFLINE REFERENCES",
@@ -68,6 +70,7 @@ export const PROPS = [
   },
   {
     "id": "ipad",
+    "objectName": {"en":"iPad","es":"iPad"},
     "model": "/about/models/ipad.glb",
     "image": "/about/img/IPAD_PIC.webp",
     "title": "PEN & SCREEN",
@@ -91,7 +94,10 @@ export const PROPS = [
   },
   {
     "id": "painting",
+    "objectName": {"en":"Artwork","es":"Cuadro"},
     "model": "/about/models/cuadro2.glb",
+    // Mesh lies in X/Z; Y is its local face normal. Verified with front renders.
+    "baseRotation": [0, Math.PI, 0],
     "image": "/about/img/PAINT_PIC.webp",
     "title": "NO EMPTY WALLS",
     "text": "I love art, so empty walls don’t last very long around me. Most of my studio is covered with work from artists I admire, especially scientific illustrators, and a few of my own pieces have slowly made their way in too.",
@@ -114,6 +120,7 @@ export const PROPS = [
   },
   {
     "id": "controller",
+    "objectName": {"en":"Controller","es":"Mando"},
     "model": "/about/models/mando.glb",
     "image": "/about/img/GAMING_PIC.webp",
     "title": "GAME BREAK",
@@ -137,6 +144,7 @@ export const PROPS = [
   },
   {
     "id": "luggage",
+    "objectName": {"en":"Suitcase","es":"Maleta"},
     "model": "/about/models/maleta.glb",
     "image": "/about/img/TRAVEL_PIC.webp",
     "title": "OUT OF LIMA",
@@ -160,6 +168,7 @@ export const PROPS = [
   },
   {
     "id": "dog-bone",
+    "objectName": {"en":"Dog Bone","es":"Hueso"},
     "model": "/about/models/hueso.glb",
     "image": "/about/img/DOG_PIC.webp",
     "title": "ALWAYS A DOG AROUND",

@@ -103,7 +103,7 @@ html[data-about-mobile] body .about>.mobile-about {display:block;}
 .mobile-about__info>img {display:block;width:100%;height:min(32svh,280px);object-fit:cover;}
 .mobile-about__info h2 {margin:18px 0 8px;font:700 18px 'Archivo',sans-serif;}
 .mobile-about__info p {margin:0;font-size:14px;line-height:1.5;}
-.mobile-about__info-close {position:sticky;top:0;display:block;margin:-12px -12px 4px auto;min-width:44px;min-height:44px;border:0;background:#F3EEDF;color:#FF675F;font-size:28px!important;line-height:1;}
+.mobile-about__info-close {position:sticky;top:0;display:block;margin:-12px -12px 4px auto;min-width:44px;min-height:44px;border:0;background:transparent;color:#FF675F;font-size:28px!important;line-height:1;}
 .mobile-about[data-orientation="landscape"] .mobile-about__intro {left:22%;top:12%;width:56%;height:76%;padding:clamp(14px,4cqh,36px);}
 .mobile-about[data-orientation="landscape"] .mobile-about__intro-copy {font-size:clamp(10px,2.9cqh,20px);}
 .mobile-about[data-orientation="landscape"] .mobile-about__ampersand {font-size:clamp(32px,8cqh,72px);}
@@ -151,3 +151,15 @@ html[data-about-mobile] body .about>.mobile-about {display:block;}
 
 .mobile-about[data-orientation="landscape"][data-state="stickers"] .mobile-about__hint {top:5%;}
 .mobile-about[data-orientation="landscape"] .mobile-about__wheel-cue {top:85%;}
+
+/* The single canvas owns model motion; slot wrappers retain hit targets only. */
+.mobile-about__models {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.mobile-about__wheel[data-model-system="live"] .mobile-about__float {animation:none;transform:none;}
+.mobile-about__wheel[data-model-system="live"] [data-wheel-model] {visibility:hidden;}
+.mobile-about[data-state="stickers"] .mobile-about__wheel-cue {display:flex;gap:34px;}
+.mobile-about[data-state="stickers"] .mobile-about__wave {animation:anatomical-wave 8s ease-in-out infinite;animation-delay:calc(var(--layer-index) * -1.1s);animation-play-state:paused;}
+.mobile-about[data-state="stickers"][data-wheel-awake="true"] .mobile-about__wave {animation-play-state:running;}
+@keyframes anatomical-wave {0%,100% {translate:0 0;}50% {translate:0 calc((var(--layer-index) + 1) * 1px);}}
+@media(prefers-reduced-motion:reduce) {.mobile-about[data-state="stickers"] .mobile-about__wave {animation:none;}}
+
+.mobile-about__wheel [data-mobile-interest]:focus-visible {outline:2px solid #FF675F;outline-offset:4px;}

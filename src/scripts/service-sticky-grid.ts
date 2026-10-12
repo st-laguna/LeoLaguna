@@ -32,6 +32,8 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
   const slots=Array.from(section.parentElement!.querySelectorAll<HTMLElement>('[data-service-lead]'));
   const lower=columns.map(column=>column.lastElementChild as HTMLElement);
   const largeTablet=()=>document.documentElement.hasAttribute('data-large-tablet-landscape');
+  // Handoff only at the exact end. A .999 tolerance leaves reversed tween
+  // transforms on nodes still in list coordinates, causing a visible jump.
   let handedOff=false;
   function restoreRow(){if(!handedOff)return;lower.forEach((item,index)=>{columns[index].append(item);item.classList.remove('gallery-item');});handedOff=false;}
   let returning:{finished:Promise<void>;finish():void;dispose():void}|undefined;
@@ -164,12 +166,12 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
       // Finish the handoff before normal scrolling leaves the clipped scene.
       // A fast scroll must not wait for the scrub tail to reparent this row.
       onLeave:self=>{if(!live())return;self.getTween()?.progress(1);master?.progress(1);},
-    }, onUpdate:()=>{if(!live())return;const progress=master?.progress()??0;if(phone){const safeTop=Math.max(0,viewport/2+introHeight/2+Number(gsap.getProperty(intro,'y'))+12);placement.style.clipPath=`inset(${safeTop}px 0 0)`;}section.toggleAttribute('data-grid-revealed',progress>0);content.inert=progress<.65;grid.inert=progress<.005;if(progress>=.999&&!handedOff){lower.forEach((item,index)=>{slots[index].append(item);item.classList.add('gallery-item');
+    }, onUpdate:()=>{if(!live())return;const progress=master?.progress()??0;if(phone){const safeTop=Math.max(0,viewport/2+introHeight/2+Number(gsap.getProperty(intro,'y'))+12);placement.style.clipPath=`inset(${safeTop}px 0 0)`;}section.toggleAttribute('data-grid-revealed',progress>0);content.inert=progress<.65;grid.inert=progress<.005;if(progress===1&&!handedOff){lower.forEach((item,index)=>{slots[index].append(item);item.classList.add('gallery-item');
       // The real row owns natural layout after handoff, not a forced CSS
       // transform competing with the scrub tween's composited state.
       gsap.set(item,{x:0,y:0,yPercent:0,scale:1,force3D:false,clearProps:'willChange'});
       // These already revealed cards do not participate in the list entrance.
-      gsap.set(item.firstElementChild,{clearProps:'clipPath',autoAlpha:1});});handedOff=true;}else if(progress<.999&&handedOff)restoreRow();} })
+      gsap.set(item.firstElementChild,{clearProps:'clipPath',autoAlpha:1});});handedOff=true;}else if(progress<1&&handedOff)restoreRow();} })
       .add(reveal,0).to(hint,{autoAlpha:0,duration:.04,ease:'none'},0).add(expand,.4).add(finish,.61).addLabel('gallery-handoff',.88).add(handoff,'gallery-handoff');
     refreshGeometry=()=>{
       if(!live())return;

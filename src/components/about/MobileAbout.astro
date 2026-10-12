@@ -20,9 +20,9 @@ const introLines = ['I CREATE SCIENTIFIC', 'ILLUSTRATIONS, TECHNICAL', 'VISUALS,
         {/* Back to front: 4 → 1. The front layer remains the occluder. */}
         {[4, 3, 2, 1].map(layer => <g class="mobile-about__layer" data-mobile-layer={layer} style={`--layer-index:${layer - 1}`}>
           {['first', 'second'].map(side => <g class={`mobile-about__piece ${side}`}>
-            <image width="1200" height="1330" preserveAspectRatio="none" />
+            <g class="mobile-about__wave"><image width="1200" height="1330" preserveAspectRatio="none" />
             {layer < 4 && <g class="mobile-about__shadow" mask={`url(#ma-contact-alpha-${layer})`}><g class="mobile-about__shadow-portrait" /><g class="mobile-about__shadow-landscape" /></g>}
-          </g>)}
+          </g></g>)}
         </g>)}
       </svg>
     </button>
@@ -40,7 +40,7 @@ const introLines = ['I CREATE SCIENTIFIC', 'ILLUSTRATIONS, TECHNICAL', 'VISUALS,
       </button></div></div>)}
     </div>
     <div class="mobile-about__decorations" aria-hidden="true"></div>
-    <span class="mobile-about__wheel-cue" aria-hidden="true">›</span>
+    <span class="mobile-about__wheel-cue" aria-hidden="true"><span>←</span><span>→</span></span>
     <button class="mobile-about__hint" data-mobile-hint-action type="button" aria-label="Explore About"><span data-mobile-hint>tap to explore</span> <span class="mobile-about__tap-arrow" aria-hidden="true">↗</span></button>
     <p class="mobile-about__sr" data-mobile-status role="status" aria-live="polite"></p>
   </div>

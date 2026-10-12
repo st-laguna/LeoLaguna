@@ -320,7 +320,7 @@ slots.forEach((slot, i) => {
     intermediateImages.forEach(image=>image.addEventListener('load',render));
     const animation=gsap.to(state,{p:1,ease:'none',scrollTrigger:{trigger:host,start:'top top',end:()=>`+=${host.querySelector<HTMLElement>('.journey-stage')!.offsetHeight*3.2}`,scrub:1,invalidateOnRefresh:true,onRefresh:measure},onUpdate:render});
     // Separate from card turns/drag: only the heading and grid collect on exit.
-    const exit = gsap.timeline({scrollTrigger:{id:'workflow-exit',trigger:host,start:'bottom bottom',end:'bottom 35%',scrub:true,invalidateOnRefresh:true}})
+    const exit = gsap.timeline({scrollTrigger:{id:'workflow-exit',trigger:host,start:'bottom bottom',end:'bottom 35%',scrub:true,invalidateOnRefresh:true,onUpdate:self=>{if(self.direction>0&&self.progress>.5&&workflow.querySelector('.workflow__card[aria-pressed="true"]'))workflow.dispatchEvent(new Event('workflow:reset'));}}})
       .to(heading,{y:touchTablet?-22:-38,scale:.98,ease:'none'},0)
       .to(grid,{y:touchTablet?-16:-28,scale:touchTablet?.98:.96,ease:'none'},0);
     const resize=new ResizeObserver(measure);resize.observe(host.querySelector('.journey-stage')!);

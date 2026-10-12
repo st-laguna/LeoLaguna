@@ -33,3 +33,7 @@ html body [data-shared-menu-panel][data-menu-compact] .site-controls {position:s
 @media (prefers-reduced-motion:reduce) {
   html body [data-shared-menu-panel][data-menu-compact],html body [data-shared-menu-toggle] span,html body [data-shared-menu-panel][data-menu-compact] [data-shared-nav-link],html body [data-shared-menu-panel][data-menu-compact] .nav-plus {transition:none;}
 }
+
+html body [data-shared-menu-panel][data-menu-compact] {height:100dvh;min-height:100%;max-height:none;padding-bottom:calc(28px + env(safe-area-inset-bottom));padding-left:max(24px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right));background:#000;color:#fff;}
+html.mobile-menu-open,html.mobile-menu-open body {background:#000!important;}
+@media(orientation:landscape) and (max-height:500px) {html body [data-shared-menu-panel][data-menu-compact] {padding-bottom:calc(14px + env(safe-area-inset-bottom));}}

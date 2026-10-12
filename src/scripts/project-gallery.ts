@@ -1,3 +1,5 @@
+import { transitionDialog } from './page-transition';
+import { isMobileAbout } from './about/mobileAboutDevice.js';
 import {isPhonePortrait,phonePortraitMedia} from './responsive-layout';
 import gsap from 'gsap';
 import Lenis from 'lenis';
@@ -105,9 +107,11 @@ if(gallery&&lightbox&&section){
     });
     gsap.set(shell,{yPercent:0});
     g.removeAttribute('data-media-closing');
-    g.toggleAttribute('data-sticky-gallery',index!==3);closeGalleryButton.classList.toggle('action-pill',index===3);
+    g.setAttribute('data-sticky-gallery','');closeGalleryButton.classList.remove('action-pill');
+    g.toggleAttribute('data-footer-only-return',index===3);
     // Prepare the return entrance before exposing the dialog (no visible flash).
     gsap.set(g.querySelector('.gallery-return-entry'),{opacity:reduced.matches?1:0,y:reduced.matches?0:-12});
+    const revealGallery=()=>{
     lock();g.showModal();scroller.scrollTop=0;
     window.scrollTo({top:scroll,behavior:'instant'});
     const sticky=g.querySelector<HTMLElement>('[data-gallery]:not([hidden]) [data-service-sticky]');
@@ -115,8 +119,13 @@ if(gallery&&lightbox&&section){
     updateGalleryClock();clockTimer=setInterval(()=>{if(owns(owner))updateGalleryClock();},1000);
     animateItems(owner);
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','true'));
-    closeGalleryButton.focus({preventScroll:true});
-    if(!reduced.matches&&!isPhonePortrait()){
+    scroller.focus({preventScroll:true});
+    };
+    if(isMobileAbout()){
+      opening=transitionDialog(revealGallery,g);
+      await opening.finished;if(!owns(owner))return;opening=undefined;
+    }else revealGallery();
+    if(!reduced.matches&&!isMobileAbout()){
       const title=g.querySelector<HTMLElement>('[data-gallery]:not([hidden]) [data-sticky-title]');
       opening=openServiceCover(g,shell,title,s,index);
       await opening.finished;

@@ -7,6 +7,7 @@ import { SECTION_TRANSITION, smoothPulse, openingClip, prepareEntrances, snapsho
 export { SECTION_TRANSITION } from './transition-motion.js';
 
 let transitioning = false;
+let completion: (()=>void) | undefined;
 let timeline: gsap.core.Timeline | null = null;
 let curtain: HTMLDivElement | null = null;
 let watchdog: ReturnType<typeof setTimeout> | undefined;
@@ -116,6 +117,8 @@ function release() {
   delete document.documentElement.dataset.sectionTransition;
   if (wasTransitioning) endScrollTransition();
   if (wasTransitioning) window.dispatchEvent(new Event('leo:section-reveal'));
+  if(curtain?.parentElement!==document.body&&curtain)document.body.append(curtain);
+  const done=completion;completion=undefined;done?.();
 }
 
 // The old viewport is a browser snapshot, not a DOM clone. Videos/canvas,
@@ -242,21 +245,22 @@ function focusDestination(element?: HTMLElement | null) {
 }
 
 // Navigation changes position only once the curtain covers the entire viewport.
-function transitionTo(changePosition: () => void, focus?: HTMLElement | null, logical = false) {
-  if (transitioning || isScrollLocked()) return;
+function transitionTo(changePosition: () => void, focus?: HTMLElement | null, logical = false, done?:()=>void) {
+  if (transitioning || isScrollLocked()) return false;
   const commit = () => commitScrollJump(changePosition);
   if (reduced.matches) {
     commit();
     focusDestination(focus);
-    return;
+    done?.();return true;
   }
-  if (!beginScrollTransition()) return;
+  if (!beginScrollTransition()) return false;
+  completion=done;
   transitioning = true;
   document.documentElement.dataset.sectionTransition = 'covering';
   window.dispatchEvent(new Event('leo:section-cover'));
   if (typeof document.startViewTransition === 'function') {
     snapshotSequence(commit, focus, logical);
-    return;
+    return true;
   }
   // Compatibility path for browsers without same-document view transitions.
   const panel = getCurtain();
@@ -302,6 +306,7 @@ function transitionTo(changePosition: () => void, focus?: HTMLElement | null, lo
       panel.style.clipPath = 'inset(0% 0% 0% 0%)';
       try {
         commit();
+        if(focus instanceof HTMLDialogElement && focus.open)focus.append(panel);
         if (logical) void settleCovered();
         if (focus?.matches('.hero')) {
           const entrance = prepareHomeEntrance(focus);
@@ -331,6 +336,18 @@ function transitionTo(changePosition: () => void, focus?: HTMLElement | null, lo
     if (logical) { void settleCovered(true); return; }
     timeline?.kill(); timeline = null; release();
   }, 8000);
+  return true;
+}
+
+// Dialog destinations reuse the exact section navigation sequence and entrances.
+export function transitionDialog(change:()=>void, dialog:HTMLDialogElement) {
+  let resolve!:()=>void,committed=false,finishedAlready=false;
+  const finished=new Promise<void>(done=>resolve=done);
+  const commit=()=>{if(!committed){committed=true;change();}};
+  const done=()=>{finishedAlready=true;resolve();};
+  if(!transitionTo(commit,dialog,false,done)){commit();done();}
+  const finish=()=>{if(finishedAlready)return;commit();nativeTransition?.skipTransition();release();};
+  return {finished,finish,dispose:finish};
 }
 
 // Capture runs before the older footer/sidebar handlers: no duplicate jump.

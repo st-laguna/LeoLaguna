@@ -1,3 +1,15 @@
+let chromeRestore:(()=>void)|undefined;
+function syncMenuChrome(open:boolean){
+  if(open&&!chromeRestore){
+    const root=document.documentElement,previous=root.style.colorScheme;
+    let metas=[...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')];
+    const created=!metas.length;
+    if(created){const meta=document.createElement('meta');meta.name='theme-color';document.head.append(meta);metas=[meta];}
+    const saved=metas.map(meta=>meta.getAttribute('content'));
+    metas.forEach(meta=>meta.content='#000000');root.style.colorScheme='dark';
+    chromeRestore=()=>{metas.forEach((meta,i)=>{if(created)meta.remove();else if(saved[i]===null)meta.removeAttribute('content');else meta.content=saved[i]!;});root.style.colorScheme=previous;};
+  }else if(!open&&chromeRestore){chromeRestore();chromeRestore=undefined;}
+}
 const mounted = new Map<HTMLButtonElement, { dispose(): void }>();
 const compactMedia = '(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait)';
 
@@ -26,6 +38,7 @@ function mount(toggle: HTMLButtonElement) {
     panel.inert = enabled() ? !open : about;
     if (enabled() || about) panel.setAttribute('aria-hidden', String(!open)); else panel.removeAttribute('aria-hidden');
     root.classList.toggle('mobile-menu-open', !!document.querySelector('[data-shared-menu-panel][data-shared-menu-open]'));
+    syncMenuChrome(root.classList.contains('mobile-menu-open'));
     if (!open) select(null);
     if (focus) toggle.focus({ preventScroll: true });
   }

@@ -9,6 +9,7 @@ const mounted = new Map();
 
 function mount(section) {
   document.documentElement.toggleAttribute('data-about-mobile', isMobileAbout());
+  document.documentElement.dataset.theme=isMobileAbout()?'dark':'light';
   if (isMobileAbout()) return mountMobileAbout(section);
   const abort = new AbortController();
   const on = (target, name, handler, options = {}) =>

@@ -89,7 +89,7 @@ export function mountMobileAbout(section: HTMLElement) {
   const softness = parseFloat(tuning.getPropertyValue('--contact-shadow-softness')) || 0;
   const inset = parseFloat(tuning.getPropertyValue('--contact-shadow-offset')) || 0;
   root.querySelectorAll<SVGGElement>('.mobile-about__shadow').forEach(shadow => {
-    const first = shadow.parentElement!.classList.contains('first');
+    const first = shadow.closest('.mobile-about__piece')!.classList.contains('first');
     for (const landscape of [false, true]) {
       const runs = landscape ? landscapeRuns : portraitRuns;
       const target = shadow.querySelector(landscape ? '.mobile-about__shadow-landscape' : '.mobile-about__shadow-portrait')!;

@@ -8,6 +8,12 @@ export function mountGalleryReturn(dialog:HTMLDialogElement,scroller:HTMLElement
   const button=motion.querySelector<HTMLButtonElement>('button')!;
   const slot=dialog.querySelector<HTMLElement>('[data-gallery]:not([hidden]) [data-gallery-return-slot]');
   const footer=slot?.closest<HTMLElement>('.gallery-footer');
+  // Video uses only the actual footer control, with the same button DOM/style.
+  if(dialog.hasAttribute('data-footer-only-return')&&slot){
+    const marker=document.createComment('gallery-return-home');motion.before(marker);slot.append(motion);
+    gsap.set([motion,entry],{clearProps:'transform,opacity'});
+    return ()=>{marker.replaceWith(motion);};
+  }
   const state={p:0};
   let disposed=false;
   const live=()=>!disposed&&isCurrent();
