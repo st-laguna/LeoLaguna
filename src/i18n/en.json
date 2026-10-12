@@ -90,8 +90,8 @@
   "case.wwf.location": "Peru",
   "case.sperm-whales-of-dominica.title": "Cataloguing Dominica’s Sperm Whales",
   "case.sperm-whales-of-dominica.location": "USA and Dominica",
-  "workflow.1.step": "Step 1",
-  "workflow.2.step": "Step 2",
-  "workflow.3.step": "Step 3",
-  "workflow.4.step": "Step 4"
+  "workflow.1.step": "Step 01",
+  "workflow.2.step": "Step 02",
+  "workflow.3.step": "Step 03",
+  "workflow.4.step": "Step 04"
 }

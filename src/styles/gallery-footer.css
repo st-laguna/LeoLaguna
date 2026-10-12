@@ -1,0 +1,18 @@
+/* Shared View All footer. The page's global footer is unaffected. */
+#projects-expanded .service-gallery .gallery-footer--compact {
+  display:grid;grid-template-columns:minmax(64px,.8fr) minmax(0,1fr) 44px;
+  grid-template-areas:none;align-items:center;gap:clamp(12px,3vw,48px);
+  min-height:0;padding:clamp(28px,4vw,64px) clamp(16px,4vw,64px);
+  background:#f7f7f7;color:#111;
+}
+#projects-expanded .gallery-footer--compact .gallery-footer-logo {width:100%;max-width:280px;justify-self:end;}
+#projects-expanded .gallery-footer--compact .gallery-contact {min-width:0;font-size:clamp(12px,2.4vw,24px);line-height:1.4;}
+#projects-expanded .gallery-footer--compact .gallery-footer-label {font-size:clamp(10px,1.4vw,16px);margin-bottom:2px;}
+#projects-expanded .gallery-footer--compact .gallery-contact>a {white-space:nowrap;}
+#projects-expanded .gallery-footer--compact .gallery-contact-networks {display:grid;gap:8px;margin-top:clamp(12px,2vw,28px);}
+#projects-expanded .gallery-footer--compact .gallery-contact-networks a {width:fit-content;}
+#projects-expanded .gallery-footer--compact .gallery-return-slot {margin:0;width:44px;height:44px;justify-self:end;align-self:center;pointer-events:auto;}
+#projects-expanded .gallery-footer--compact [data-gallery-close] {display:grid;place-items:center;width:44px;height:44px;min-width:44px;padding:0;border:0;border-radius:0;background:#fa777b!important;color:#171717!important;cursor:pointer;}
+#projects-expanded .gallery-footer--compact [data-gallery-close]>span {display:none;}
+#projects-expanded .gallery-footer--compact [data-gallery-close]:after {content:'';display:block;width:26px;height:26px;background:currentColor;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M13 5 4 14l9 9M5 14h19v12' fill='none' stroke='black' stroke-width='2.5'/%3E%3C/svg%3E") center/contain no-repeat;}
+#projects-expanded .gallery-footer--compact :is(button,a):focus-visible {outline:2px solid #111;outline-offset:4px;}

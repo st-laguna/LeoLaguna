@@ -108,7 +108,7 @@ if(gallery&&lightbox&&section){
     gsap.set(shell,{yPercent:0});
     g.removeAttribute('data-media-closing');
     g.setAttribute('data-sticky-gallery','');closeGalleryButton.classList.remove('action-pill');
-    g.toggleAttribute('data-footer-only-return',index===3);
+    g.setAttribute('data-footer-only-return','');
     // Prepare the return entrance before exposing the dialog (no visible flash).
     gsap.set(g.querySelector('.gallery-return-entry'),{opacity:reduced.matches?1:0,y:reduced.matches?0:-12});
     const revealGallery=()=>{

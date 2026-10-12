@@ -1,0 +1,40 @@
+.av-editor[hidden] {display:none;}
+.av-editor {margin:0 clamp(16px,4vw,56px) 48px;background:#171717;color:#fff;--av-coral:#ff715b;}
+.av-screen {background:#090909;aspect-ratio:1;}
+.av-screen video {display:block;width:100%;height:100%;object-fit:cover;border-radius:0;}
+.av-controls {display:grid;grid-template-columns:1fr 44px 60px 44px 1fr;align-items:center;gap:clamp(4px,2vw,24px);padding:12px 8px;border-bottom:1px solid #ffffff26;}
+.av-controls button {display:grid;place-items:center;position:relative;width:44px;height:44px;padding:0;border:0;border-radius:0;background:transparent;color:#fff;cursor:pointer;}
+.av-controls button:last-child {justify-self:end;}
+.av-controls svg {width:44px;height:44px;}
+.av-controls button[data-av-action=play] {width:60px;}
+.av-controls button:disabled {opacity:.25;cursor:default;}
+.av-controls button:focus-visible,.av-clips button:focus-visible {outline:2px solid var(--av-coral);outline-offset:2px;}
+.av-controls button:hover:not(:disabled) {background:#ffffff0a;}
+.av-pause {display:none;gap:5px;}
+.av-pause i {width:4px;height:14px;background:var(--av-coral);}
+.av-editor[data-playing] [data-av-action=play] svg {display:none;}
+.av-editor[data-playing] .av-pause {display:flex;}
+.av-timecode {display:flex;justify-content:space-between;padding:16px 10px 12px;font:10px/1.2 monospace;letter-spacing:.06em;color:#bcbcbc;}
+.av-timeline {position:relative;padding-bottom:12px;overflow:hidden;}
+.av-ruler {height:27px;display:flex;justify-content:space-between;align-items:flex-start;border-top:1px solid #777;}
+.av-ruler i {height:5px;width:1px;background:#666;}
+.av-ruler .medium {height:10px;background:#888;}
+.av-ruler .major {height:16px;background:#aaa;}
+.av-clips {display:flex;gap:3px;overflow-x:auto;padding:2px 1px 4px;scrollbar-width:thin;scrollbar-color:#777 #222;overscroll-behavior-x:contain;}
+.av-clips button {position:relative;flex:0 0 calc((100% - 6px)/3);min-width:0;padding:0;border:1px solid #484848;border-radius:0;background:#222;color:#fff;cursor:pointer;}
+.av-clips img {display:block;width:100%;aspect-ratio:16/10;object-fit:cover;}
+.av-clips button[aria-pressed=true] {outline:1px solid var(--av-coral);outline-offset:-1px;border-color:var(--av-coral);}
+.av-clips button span {display:block;padding:5px 7px;text-align:left;font:10px/1 monospace;border-top:1px solid #ffffff26;}
+.av-playhead {position:absolute;z-index:2;left:clamp(1px,var(--av-progress,0%),calc(100% - 1px));top:0;bottom:12px;width:1px;background:var(--av-coral);pointer-events:none;}
+.av-playhead:before {content:'';position:absolute;top:0;left:-5px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid var(--av-coral);}
+.av-status {margin:0;font-size:12px;}.av-status:empty {display:none;}
+.av-editor:fullscreen {margin:0;overflow:auto;padding:16px;}.av-editor:fullscreen .av-screen {max-height:70vh;}
+html body .gallery-dialog [data-av-layout] > .gallery-masonry {display:none;}
+html body .gallery-dialog [data-av-layout] .service-video-intro {display:grid;grid-template-columns:1fr auto;gap:24px 12px;min-height:0;height:auto;padding:clamp(32px,6vw,72px) clamp(20px,4vw,56px) 32px;}
+html body .gallery-dialog [data-av-layout] .service-video-intro > * {position:static;inset:auto;transform:none;margin:0;width:auto;color:var(--foreground);mix-blend-mode:normal;text-align:left;}
+html body .gallery-dialog [data-av-layout] .service-intro-number {grid-column:2;grid-row:1;font:12px monospace;}
+html body .gallery-dialog [data-av-layout] .service-grid-eyebrow {grid-column:1;grid-row:1;display:flex;align-items:center;gap:16px;font:10px monospace;}
+html body .gallery-dialog [data-av-layout] .service-grid-eyebrow:after {content:'';height:1px;background:currentColor;opacity:.3;flex:1;}
+html body .gallery-dialog [data-av-layout] .service-grid-title {grid-column:1/-1;font-size:clamp(38px,7vw,80px);line-height:.98;max-width:850px;}
+html body .gallery-dialog [data-av-layout] .service-video-description {grid-column:1/-1;max-width:480px;font-size:14px;line-height:1.55;}
+html body .gallery-dialog [data-av-layout] .service-grid-scroll-hint {display:none;}

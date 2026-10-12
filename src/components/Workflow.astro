@@ -1,5 +1,16 @@
 ---
 import en from '../i18n/en.json';
+import step1 from '../../public/icons/stp1.svg?raw';
+import step2 from '../../public/icons/stp2.svg?raw';
+import step3 from '../../public/icons/stp3.svg?raw';
+import step4 from '../../public/icons/stp4.svg?raw';
+
+// Luminance masks need a white reveal surface; keep the source artwork intact.
+const icons = [step1, step2, step3, step4].map(svg =>
+  'data:image/svg+xml;base64,' + Buffer.from(svg.replace(
+    /(<mask\b[^>]*>\s*<rect\b[^>]*\bfill=)"#1c1c1c"/g, '$1"#fff"'
+  )).toString('base64')
+);
 
 const dictionary = en as Record<string, string>;
 const steps = [1, 2, 3, 4];
@@ -43,7 +54,8 @@ const steps = [1, 2, 3, 4];
 
             <span class="workflow__back" aria-hidden="true">
               <span class="workflow__step" data-i18n={`workflow.${step}.step`}>Step {step}</span>
-              <span data-i18n={`workflow.${step}.body`}>
+              <img class="workflow__icon" src={icons[step - 1]} alt="" aria-hidden="true" decoding="async" draggable="false" />
+              <span class="workflow__description" data-i18n={`workflow.${step}.body`}>
                 {dictionary[`workflow.${step}.body`]}
               </span>
             </span>
