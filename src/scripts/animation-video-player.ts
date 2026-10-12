@@ -76,7 +76,7 @@ if(editor){
  control('fullscreen').addEventListener('click',async()=>{
    if(!video)return;
    const fallback=()=>{const native=video as HTMLVideoElement & {webkitEnterFullscreen?:()=>void};if(native.webkitEnterFullscreen)native.webkitEnterFullscreen();else status.textContent='Fullscreen unavailable / Pantalla completa no disponible';};
-   try{if(document.fullscreenElement)await document.exitFullscreen();else if(root.requestFullscreen)await root.requestFullscreen();else fallback();}catch{try{fallback();}catch{status.textContent='Fullscreen unavailable / Pantalla completa no disponible';}}
+   try{if(document.fullscreenElement)await document.exitFullscreen();else if(video.requestFullscreen)await video.requestFullscreen();else fallback();}catch{try{fallback();}catch{status.textContent='Fullscreen unavailable / Pantalla completa no disponible';}}
  },options);
  const mutation=new MutationObserver(()=>{configure();if(!allowed())video?.pause();});
  mutation.observe(dialog,{attributes:true,attributeFilter:['open','data-media-closing']});
