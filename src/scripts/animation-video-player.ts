@@ -57,7 +57,7 @@ if(editor){
  const observer=new IntersectionObserver(entries=>{visible=entries[0].intersectionRatio>=.05;if(!visible)video?.pause();sync();},{threshold:[0,.05,.25,.5,1]});
  function configure(){
    const mobile=isMobileAbout();gallery.toggleAttribute('data-av-layout',mobile);root.hidden=!mobile;
-   desktopVideos.forEach(({original,poster})=>{if(mobile&&original.isConnected){original.pause();original.replaceWith(poster);}else if(!mobile&&poster.isConnected)poster.replaceWith(original);});
+   desktopVideos.forEach(({original,poster})=>{if(original.isConnected){original.pause();original.replaceWith(poster);}});
    if(!mobile){if(video){observer.unobserve(video);video.pause();video.removeAttribute('src');video.load();video.remove();video=undefined;}stopFrame();return;}
    if(video||!dialog.open||gallery.hidden)return;
    video=document.createElement('video');video.playsInline=true;video.controls=false;video.preload='metadata';video.muted=muted;video.setAttribute('aria-label','Animation & Video');

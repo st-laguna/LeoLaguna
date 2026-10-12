@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isPhoneViewport, phoneMedia, isPhonePortrait, phonePortraitMedia } from './responsive-layout';
+import { isMobileAbout } from './about/mobileAboutDevice.js';
 gsap.registerPlugin(ScrollTrigger);
 
 // Original portfolio implementation of Codrops' reveal → expand → content concept.
@@ -73,7 +74,9 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
       gsap.set(target, {clearProps: properties.join(',')});
       saved[index].forEach(([property, value, priority]) => {if(value)target.style.setProperty(property,value,priority);});
     });
-    const compact = queries.compact.matches, reduced = queries.reduced.matches;
+    // The compact editorial header has no title reveal: show the image grid
+    // directly on touch layouts instead of retaining an empty intro scene.
+    const compact = queries.compact.matches, reduced = queries.reduced.matches || isMobileAbout();
     const phone=queries.phone.matches && isPhoneViewport();
     restoreRow();section.removeAttribute('data-grid-revealed');
     // Phone portrait has a normal-flow intro and the complete two-column list.

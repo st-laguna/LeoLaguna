@@ -117,7 +117,7 @@ const t = en as Record<string,string>;
             </figure>
           ))}
           </div>
-          {index === 3 && <AnimationVideoPlayer project={project} />}
+          {index === 3 && <><AnimationVideoPlayer project={project} /><AnimationVideoPlayer project={project} desktop /></>}
           <GalleryFooter />
         </div>
       ))}
