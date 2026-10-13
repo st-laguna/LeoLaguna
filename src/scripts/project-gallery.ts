@@ -4,7 +4,7 @@ import {isPhonePortrait,phonePortraitMedia} from './responsive-layout';
 import gsap from 'gsap';
 import Lenis from 'lenis';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
-import {openServiceCover,closeServiceGallery} from './service-cover-transition';
+import {openServiceCover,closeServiceGallery,reverseVideoCover} from './service-cover-transition';
 import {mountServiceStickyGrid} from './service-sticky-grid';
 import {mountGalleryReturn} from './gallery-return';
 const gallery=document.querySelector<HTMLDialogElement>('.gallery-dialog');
@@ -140,7 +140,9 @@ if(gallery&&lightbox&&section){
     const owner=activeOwner;
     destroyGalleryScroll();
     galleryBusy=true;shell.inert=true;g.setAttribute('data-media-closing','');pause(g);disconnectItems();
-    if(!reduced.matches&&!isPhonePortrait()){
+    const videoReverse=reverseVideoCover(g);
+    if(videoReverse){opening=videoReverse;if(reduced.matches||document.hidden)opening.finish();await opening.finished;if(!owns(owner))return;opening=undefined;}
+    else if(!reduced.matches&&!isPhonePortrait()){
       // Choose the exit from the actual intro handoff, never from global page scroll.
       const active=g.querySelector<HTMLElement>('[data-gallery]:not([hidden])');
       const index=Number(active?.dataset.gallery||0);
@@ -155,14 +157,14 @@ if(gallery&&lightbox&&section){
         await opening.finished;if(!owns(owner))return;opening=undefined;
       }
       if(!reduced.matches&&!document.hidden){
-        opening=nearIntro?openServiceCover(g,shell,title,s,index,true):closeServiceGallery(g,shell,s,index,scroller);
+        opening=nearIntro&&!active?.hasAttribute('data-av-desktop-layout')?openServiceCover(g,shell,title,s,index,true):closeServiceGallery(g,shell,s,index,scroller);
         await opening.finished;if(!owns(owner))return;opening=undefined;
       }
 
     }
     disposeReturn?.();disposeReturn=undefined;
     disposeSticky?.();disposeSticky=undefined;clearInterval(clockTimer);
-    owner.events.abort();activeOwner=undefined;g.close();shell.inert=false;clearItemAnimations();unlock();
+    owner.events.abort();activeOwner=undefined;g.close();s.removeAttribute('data-video-title-owned');g.removeAttribute('data-video-title-owner');shell.inert=false;clearItemAnimations();unlock();
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','false'));
     galleryOpener?.focus({preventScroll:true});galleryOpener=null;galleryBusy=false;
   }
