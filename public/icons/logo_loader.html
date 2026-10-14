@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Logo loader</title>
+<style>
+:root{--bg:#ededed;--ink:#1c1c1c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1c1c;--ink:#ededed}}
+:root[data-theme="dark"]{--bg:#1c1c1c;--ink:#ededed}
+:root[data-theme="light"]{--bg:#ededed;--ink:#1c1c1c}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--bg)}
+svg{position:fixed;inset:0;width:100%;height:100%;display:block}
+polygon{fill:var(--ink)}
+</style>
+</head>
+<body>
+<svg id="s" role="img" aria-label="Cargando">
+<g id="logo">
+<g>
+<polygon class="foot" points="1242.8,1961.3 2899.7,1961.3 2377.3,2846.1 717.7,2846.1"/>
+<polygon class="stem" points="1172.9,0 2418,0 1242.8,1961.3 0,1961.3"/>
+</g>
+<g transform="rotate(180 2566.45 1665.75)">
+<polygon class="foot" points="1242.8,1961.3 2899.7,1961.3 2377.3,2846.1 717.7,2846.1"/>
+<polygon class="stem" points="1172.9,0 2418,0 1242.8,1961.3 0,1961.3"/>
+</g>
+</g>
+</svg>
+<script>
+/* ===== Ajustes ===== */
+const LOGO_W = 60;      // ancho del logo en px
+const T = 9.0;          // duración del ciclo (s)
+/* tiempos [inicio, duración] en segundos */
+const TIM = {
+  stemHead:{i:[0,1.8],   o:[5.0,1.8]},
+  stemTail:{i:[0.5,2.1], o:[5.4,1.8]},
+  footHead:{i:[1.4,1.8], o:[6.3,1.6]},
+  footTail:{i:[1.95,2.1],o:[6.7,1.6]}
+};
+/* ==================== */
+const q = new URLSearchParams(location.search).get('theme');
+if (q === 'dark' || q === 'light') document.documentElement.dataset.theme = q;
+
+const CX = 2566.45, CY = 1665.75, FULL = 5132.9;
+const kl = 1172.9/1961.3, kr = 1175.2/1961.3, ks = (kl+kr)/2;
+const xl = y => 1172.9 - kl*y, xr = y => 2418 - kr*y;
+
+const bez = (x1,y1,x2,y2) => {
+  const cx=3*x1, bx=3*(x2-x1)-cx, ax=1-cx-bx, cy=3*y1, by=3*(y2-y1)-cy, ay=1-cy-by;
+  const X=t=>((ax*t+bx)*t+cx)*t, Y=t=>((ay*t+by)*t+cy)*t, dX=t=>(3*ax*t+2*bx)*t+cx;
+  return x => {
+    if (x<=0) return 0; if (x>=1) return 1;
+    let t=x;
+    for (let i=0;i<8;i++){ const e=X(t)-x; if (Math.abs(e)<1e-6) return Y(t); const d=dX(t); if (Math.abs(d)<1e-6) break; t-=e/d; }
+    let lo=0, hi=1; t=x;
+    for (let i=0;i<40;i++){ if (X(t)<x) lo=t; else hi=t; t=(lo+hi)/2; }
+    return Y(t);
+  };
+};
+const IN = bez(.42,0,.06,1);   // entrada: arranque rápido tipo bala, frenada larga
+const OUT = bez(.7,0,.84,0);   // salida: acelera hasta salir de pantalla
+
+const svg = document.getElementById('s'), logo = document.getElementById('logo');
+const stems = [...document.querySelectorAll('.stem')], foots = [...document.querySelectorAll('.foot')];
+let G = {};
+
+function layout(){
+  const W = innerWidth, H = innerHeight, s = LOGO_W/FULL;
+  logo.setAttribute('transform', `translate(${W/2} ${H/2}) scale(${s}) translate(${-CX} ${-CY})`);
+  const hw = W/(2*s), hh = H/(2*s), m = 1800;
+  G = {
+    ys: Math.max(CY-hh-m, (1795.45-(CX+hw+m))/ks),   // fuera de pantalla, arriba/derecha
+    ye: Math.min(CY+hh+m, (1795.45-CX+hw+m)/ks),     // fuera de pantalla, abajo/izquierda
+    fs: CX-hw-m-2899.7,                              // pie: fuera por la izquierda
+    fe: CX+hw+m-717.7                                // pie: fuera por la derecha
+  };
+}
+
+const val = (t,k,v0,v1,v2) => {
+  if (t < k.i[0]+k.i[1]) return v0 + (v1-v0)*IN((t-k.i[0])/k.i[1]);
+  if (t < k.o[0]) return v1;
+  return v1 + (v2-v1)*OUT(Math.min(1,(t-k.o[0])/k.o[1]));
+};
+
+function draw(t){
+  const y2 = val(t,TIM.stemHead,G.ys,1961.3,G.ye), y1 = val(t,TIM.stemTail,G.ys,0,G.ye);
+  const sp = `${xl(y1)},${y1} ${xr(y1)},${y1} ${xr(y2)},${y2} ${xl(y2)},${y2}`;
+  const hh = val(t,TIM.footHead,G.fs,0,G.fe), tt = val(t,TIM.footTail,G.fs,0,G.fe);
+  const fp = `${1242.8+tt},1961.3 ${2899.7+hh},1961.3 ${2377.3+hh},2846.1 ${717.7+tt},2846.1`;
+  stems.forEach(p => p.setAttribute('points', sp));
+  foots.forEach(p => p.setAttribute('points', fp));
+}
+
+layout();
+addEventListener('resize', layout);
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  const t0 = performance.now();
+  (function loop(now){ draw(((now-t0)/1000) % T); requestAnimationFrame(loop); })(t0);
+}
+</script>
+</body>
+</html>

@@ -185,6 +185,22 @@ function openVideoCover(dialog:HTMLDialogElement,shell:HTMLElement,title:HTMLEle
   gsap.set(panel,{x:0,y:rect?Math.max(0,rect.top):innerHeight,width:innerWidth,height:rect?.height||1,backgroundColor:origin?getComputedStyle(origin).backgroundColor:surface});
   const clone=document.createElement('div');clone.className='service-opening-shared';clone.dataset.videoTitleClone='';clone.setAttribute('aria-hidden','true');clone.textContent=title.textContent;
   Object.assign(clone.style,{position:'absolute',left:`${end.left}px`,top:`${end.top}px`,width:`${end.width/ratio}px`,...typography,fontSize:css.fontSize,whiteSpace:'nowrap',transformOrigin:'0 0',margin:'0'});
+  // Copy the rendered source composition before ownership hides its originals.
+  const companions:Array<{original:HTMLElement;wrapper:HTMLElement;copy:HTMLElement;style:string|null;kind:string;rect:DOMRect}>=[];
+  for(const [kind,selector] of [['number','.projects-number'],['paragraph','[data-copy="3"] p'],['button','.projects-view-all']] as const){
+    const original=source.querySelector<HTMLElement>(selector);if(!original)continue;
+    const r=original.getBoundingClientRect();if(!r.width||!r.height)continue;
+    const copy=original.cloneNode(true) as HTMLElement;
+    const originals=[original,...original.querySelectorAll<HTMLElement>('*')],copies=[copy,...copy.querySelectorAll<HTMLElement>('*')];
+    originals.forEach((node,i)=>{const computed=getComputedStyle(node);for(const property of computed)copies[i].style.setProperty(property,computed.getPropertyValue(property));copies[i].removeAttribute('id');copies[i].removeAttribute('data-i18n');});
+    Object.assign(copy.style,{position:'relative',left:'0',top:'0',right:'auto',bottom:'auto',margin:'0',width:`${r.width}px`,height:`${r.height}px`,transform:'none',translate:'none',visibility:'visible'});
+    copy.removeAttribute('data-open');copy.setAttribute('tabindex','-1');
+    const wrapper=document.createElement('div');wrapper.dataset.videoComposition=kind;wrapper.setAttribute('aria-hidden','true');wrapper.inert=true;
+    Object.assign(wrapper.style,{position:'absolute',left:`${r.left}px`,top:`${r.top}px`,width:`${r.width}px`,height:`${r.height}px`,overflow:'hidden',zIndex:'5',pointerEvents:'none',transformOrigin:'0 0'});
+    wrapper.append(copy);dialog.append(wrapper);
+    companions.push({original,wrapper,copy,style:original.getAttribute('style'),kind,rect:r});
+    original.style.setProperty('visibility','hidden','important');
+  }
   source.setAttribute('data-video-title-owned','');dialog.setAttribute('data-video-title-owner','clone');dialog.setAttribute('data-service-opening','');
   gsap.set(shell,{visibility:'hidden'});dialog.append(panel,clone);
   gsap.set(clone,{x:valid?start.left-end.left:0,y:valid?start.top-end.top:0,scale:valid?1:ratio});
@@ -194,7 +210,7 @@ function openVideoCover(dialog:HTMLDialogElement,shell:HTMLElement,title:HTMLEle
   const block=(e:Event)=>e.preventDefault();
   function lock(){dialog.addEventListener('wheel',block,{passive:false});dialog.addEventListener('touchmove',block,{passive:false});}
   function unlock(){dialog.removeEventListener('wheel',block);dialog.removeEventListener('touchmove',block);}
-  function clean(){if(cleaned)return;cleaned=true;timeline.kill();panel.remove();clone.remove();if(savedTitleStyle===null)title.removeAttribute('style');else title.setAttribute('style',savedTitleStyle);gsap.set(shell,{clearProps:'visibility'});if(footer)gsap.set(footer,{clearProps:'transform'});dialog.removeAttribute('data-service-opening');dialog.removeAttribute('data-video-title-owner');source.removeAttribute('data-video-title-owned');videoCovers.delete(dialog);unlock();resolve();resolveExit?.();}
+  function clean(){if(cleaned)return;cleaned=true;timeline.kill();panel.remove();clone.remove();companions.forEach(({original,wrapper,style})=>{wrapper.remove();if(style===null)original.removeAttribute('style');else original.setAttribute('style',style);});if(savedTitleStyle===null)title.removeAttribute('style');else title.setAttribute('style',savedTitleStyle);gsap.set(shell,{clearProps:'visibility'});if(footer)gsap.set(footer,{clearProps:'transform'});dialog.removeAttribute('data-service-opening');dialog.removeAttribute('data-video-title-owner');source.removeAttribute('data-video-title-owned');videoCovers.delete(dialog);unlock();resolve();resolveExit?.();}
   lock();
   const timeline=gsap.timeline({onComplete:()=>{dialog.removeAttribute('data-service-opening');unlock();resolve();},onReverseComplete:clean});
   timeline.to(panel,{backgroundColor:surface,y:0,height:innerHeight,duration:.95,ease:'power3.inOut'},0)
@@ -202,6 +218,13 @@ function openVideoCover(dialog:HTMLDialogElement,shell:HTMLElement,title:HTMLEle
     .set(shell,{visibility:'visible'},.95)
     .call(()=>dialog.setAttribute('data-video-title-owner',timeline.reversed()?'clone':'final'),[],.95)
     .set(clone,{visibility:'hidden'},.95).set(panel,{visibility:'hidden'},.95);
+  companions.forEach(({wrapper,copy,kind,rect:r})=>{
+    const number=kind==='number';
+    const scale=number?Math.min(1,24/parseFloat(getComputedStyle(copy).fontSize)):1;
+    timeline.to(wrapper,{x:number?innerWidth-24-r.width*scale-r.left:0,y:number?end.top-r.top:end.top-(start?.top||end.top),scale,duration:.95,ease:'power3.inOut'},0);
+    // Slide behind each own clipping window; reversing returns exact source geometry.
+    timeline.to(copy,{y:-r.height,duration:number?.3:.45,ease:'power3.inOut'},number?.65:.15);
+  });
   if(footer)timeline.fromTo(footer,{y:80},{y:0,duration:.45,ease:'power3.out'},.95);
   videoCovers.set(dialog,{reverse:()=>{
     const finished=new Promise<void>(done=>resolveExit=done);lock();

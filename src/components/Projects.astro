@@ -65,6 +65,12 @@ const t = en as Record<string,string>;
         </div>
       </div>
       <div class="projects-footer">
+        <nav class="service-preview-nav" aria-label="Services">
+          <div class="service-preview-progress" aria-hidden="true"><span></span></div>
+          {[1,2,3,4].map((n)=><button type="button" data-service-preview={n-1} aria-label={`Service 0${n}`} aria-pressed={n===1?'true':'false'}>
+            {n===4?<video data-service-preview-video data-src="/img/service-thumbs/a_mini4.webm" muted loop playsinline preload="metadata" />:<img src={`/img/service-thumbs/a_mini${n}.webp`} alt="" loading="lazy" />}
+          </button>)}
+        </nav>
         <div class="projects-number" aria-hidden="true"><span>0</span><span class="projects-digit-window"><span class="projects-digits"><span>1</span><span>2</span><span>3</span><span>4</span></span></span></div>
         <div class="projects-copy-stack">
           {projects.map((project,index)=>(
@@ -130,4 +136,5 @@ const t = en as Record<string,string>;
 <script>
   import '../scripts/projects';
   import '../scripts/project-videos';
+  import '../scripts/service-preview-nav';
 </script>

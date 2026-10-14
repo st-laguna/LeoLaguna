@@ -9,7 +9,6 @@ const mounted = new Map();
 
 function mount(section) {
   document.documentElement.toggleAttribute('data-about-mobile', isMobileAbout());
-  document.documentElement.dataset.theme=isMobileAbout()?'dark':'light';
   if (isMobileAbout()) return mountMobileAbout(section);
   const abort = new AbortController();
   const on = (target, name, handler, options = {}) =>
@@ -110,14 +109,14 @@ function mount(section) {
       });
       if(destroyed)return;
       clearTimeout(window.__aboutLoadingFallback);
-      // Establish the first reveal frame before removing the pre-paint gate.
-      // Fade only the scene in editorial mode: an opacity ancestor isolates difference text.
+      // The opaque loader wipe owns the reveal, including the scene beneath it.
+      const logoWipe=!!document.querySelector('.about-loading-indicator[data-loader-visible]');
       const content=section.hasAttribute('data-editorial') ? section.querySelector('.about__scene-shell') : section.closest('[data-page-content]');
-      if(content&&!reduced)gsap.set(content,{opacity:0});
+      if(content&&!reduced&&!logoWipe)gsap.set(content,{opacity:0});
       root.removeAttribute('data-about-loading');
       // One entrance owns the complete interface; the scene is already rendered.
       enter();
-      if(content&&!reduced)tween(content,{opacity:1,duration:.45,ease:'power2.out',onComplete:()=>content.style.removeProperty('opacity')});
+      if(content&&!reduced&&!logoWipe)tween(content,{opacity:1,duration:.45,ease:'power2.out',onComplete:()=>content.style.removeProperty('opacity')});
     })();
     return initialReveal;
   }
@@ -127,7 +126,9 @@ function mount(section) {
     editorial?.enter();
     for (const animation of [...animations]) animation.kill();
     leaving = false;
+    const logoWipe=!!document.querySelector('.about-loading-indicator[data-loader-visible]');
     boxes.forEach((box, index) => {
+      if(logoWipe){gsap.set(box,{autoAlpha:1,y:0});return;}
       gsap.set(box, { autoAlpha: reduced ? 1 : 0, y: reduced ? 0 : 18 });
       tween(box, {
         autoAlpha: 1,

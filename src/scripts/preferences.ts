@@ -1,3 +1,4 @@
+import {fitDesktopServiceCopy} from './service-copy';
 import { isMobileAbout } from './about/mobileAboutDevice.js';
 
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -36,13 +37,15 @@ import { isMobileAbout } from './about/mobileAboutDevice.js';
     }
   }
 
+  const isAboutPage = root.dataset.page === 'about';
   function initialTheme(): Theme {
+    if(isAboutPage)return root.dataset.theme === 'dark' ? 'dark' : 'light';
     const saved=readPreference('leo-theme');
     return saved==='dark'||saved==='light'?saved:'dark';
   }
   function applyTheme(theme: Theme) {
-    root.dataset.globalTheme = theme;
-    root.dataset.theme = document.querySelector('[data-about]') ? (isMobileAbout()?'dark':'light') : theme;
+    if(!isAboutPage)root.dataset.globalTheme = theme;
+    root.dataset.theme = theme;
 
     themeButton?.setAttribute(
       'aria-checked',
@@ -62,7 +65,8 @@ import { isMobileAbout } from './about/mobileAboutDevice.js';
         const key = element.dataset.i18n;
         if (!key) return;
 
-        const text = dictionary[key];
+        const desktopKey=!isMobileAbout()&&element.matches('.projects-copy h2,.projects-copy p,[data-sticky-title],.service-grid-content p')?key.replace('projects.','projects.desktop.'):key;
+        const text = dictionary[desktopKey] ?? dictionary[key];
 
         if (text !== undefined) {
           element.textContent = text;
@@ -83,6 +87,7 @@ import { isMobileAbout } from './about/mobileAboutDevice.js';
         String(button.dataset.language === language)
       );
     });
+    fitDesktopServiceCopy(translations);
     window.dispatchEvent(new CustomEvent('leo:language-change', {detail:language}));
     // Translated headings and labels can change the existing scroll geometry.
     if(ScrollTrigger.getAll().length)ScrollTrigger.refresh();
@@ -109,12 +114,24 @@ import { isMobileAbout } from './about/mobileAboutDevice.js';
     applyLanguage(readPreference('leo-language') === 'es' ? 'es' : 'en');
   });
 
+  // Refit both languages together, and restore original copy when crossing device modes.
+  const copyStack=document.querySelector<HTMLElement>('.projects-copy-stack');
+  let copyMobile=isMobileAbout();
+  const refitCopy=()=>{
+    const mobile=isMobileAbout();
+    if(mobile!==copyMobile){copyMobile=mobile;applyLanguage(root.lang==='es'?'es':'en');}
+    else fitDesktopServiceCopy(translations);
+  };
+  if(copyStack){new ResizeObserver(refitCopy).observe(copyStack);document.fonts.ready.then(refitCopy);}
+  window.addEventListener('resize',refitCopy);
+  window.addEventListener('leo:orientation-ready',refitCopy);
+
   const themeWipe = document.querySelector<HTMLElement>('[data-theme-wipe]');
   let themeTransitioning = false;
 
   async function transitionTheme(theme: Theme) {
     if (themeTransitioning) return;
-    const commit = () => { applyTheme(theme); savePreference('leo-theme', theme); };
+    const commit = () => { applyTheme(theme); if(!isAboutPage)savePreference('leo-theme', theme); };
     if(document.querySelector('[data-about]')){commit();return;}
     if (!themeWipe || matchMedia('(prefers-reduced-motion: reduce)').matches) {
       commit();
@@ -170,7 +187,7 @@ import { isMobileAbout } from './about/mobileAboutDevice.js';
   // Keep one wipe in flight; all theme side effects still live in applyTheme.
   themeButton?.addEventListener('click', () => {
     if (themeTransitioning) return;
-    void transitionTheme(root.dataset.globalTheme === 'dark' ? 'light' : 'dark');
+    void transitionTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
   });
   // Cambia entre inglés y español.
   languageButtons.forEach((button) => {

@@ -5,6 +5,7 @@ import PageNavigation from '../components/PageNavigation.astro';
 import '../styles/about.css';
 import '../styles/compact-laptop.css';
 import '../styles/large-tablet-landscape.css';
+import aboutLogoLoader from '../scripts/about/about-logo-loader.js?raw';
 import mobileAboutDevice from '../scripts/about/mobileAboutDevice.js?raw';
 // Keep the desktop preload behavior without fetching 3D assets on mobile/iPad.
 const mobileAboutPrepaint = '(() => {\n' + mobileAboutDevice.replace(/^export /gm, '') + `
@@ -41,7 +42,21 @@ const mobileAboutPrepaint = '(() => {\n' + mobileAboutDevice.replace(/^export /g
     <link rel="preload" href="/fonts/Archivo.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
-    <p class="about-loading-indicator" role="status" aria-live="polite">Loading…</p>
+    <div class="about-loading-indicator" role="status" aria-live="polite" aria-label="Loading">
+      <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+        <g data-loader-logo>
+          <g>
+            <polygon data-loader-foot points="1242.8,1961.3 2899.7,1961.3 2377.3,2846.1 717.7,2846.1" />
+            <polygon data-loader-stem points="1172.9,0 2418,0 1242.8,1961.3 0,1961.3" />
+          </g>
+          <g transform="rotate(180 2566.45 1665.75)">
+            <polygon data-loader-foot points="1242.8,1961.3 2899.7,1961.3 2377.3,2846.1 717.7,2846.1" />
+            <polygon data-loader-stem points="1172.9,0 2418,0 1242.8,1961.3 0,1961.3" />
+          </g>
+        </g>
+      </svg>
+    </div>
+    <script is:inline set:html={aboutLogoLoader}></script>
     <main data-page-content><AboutSection /></main>
     <script>import '../scripts/preferences';</script>
     <ContactCard />

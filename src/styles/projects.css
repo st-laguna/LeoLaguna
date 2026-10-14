@@ -17,7 +17,7 @@
 .project-slide figcaption {position:absolute;right:14px;bottom:14px;max-width:min(350px,60%);padding:12px 14px;background:#0009;backdrop-filter:blur(8px);color:#fff;border-radius:0;text-align:right;pointer-events:none;}
 .project-slide figcaption strong {display:block;font-size:13px;}
 .project-slide figcaption span {display:block;font-size:10px;line-height:1.3;margin-top:4px;}
-.project-thumbs {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(7px,1vw,16px);align-content:start;min-width:0;}
+.project-thumbs {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--service-grid-gap,clamp(7px,1vw,16px));align-content:start;min-width:0;}
 .project-thumbs button {display:block;aspect-ratio:1;min-width:0;width:100%;padding:0;border:0;background:var(--surface);border-radius:0;overflow:hidden;transition:translate 300ms ease;}
 .project-thumbs button[aria-selected="true"] {outline:2px solid currentColor;outline-offset:3px;}
 .project-thumbs button:hover:not(:disabled) {translate:0 -4px;}
@@ -275,3 +275,110 @@ html[data-theme="dark"] .gallery-dialog {--background:var(--dark-black);--servic
 .service-video-intro .service-grid-scroll-hint {transform:translate(-50%,calc(7vw + 24px));}
 
 .gallery-scroll-content {display:flow-root;min-width:0;}
+
+.service-preview-nav {display:none;}
+.projects[data-service-preview] {--service-grid-gap:clamp(7px,1vw,16px);}
+.projects[data-service-preview] .projects-footer {position:relative;grid-template-columns:auto minmax(0,1fr) auto min(38vw,var(--gallery-height),680px);--gallery-height:calc(100svh - var(--project-footer) - 3px - var(--project-top) - var(--project-bottom));gap:var(--service-grid-gap);padding-top:var(--service-grid-gap);padding-bottom:var(--service-grid-gap);align-items:end;}
+.projects[data-service-preview] .projects-number {grid-column:1;grid-row:1;}
+.projects[data-service-preview] .projects-copy-stack {grid-column:2;grid-row:1;}
+.projects[data-service-preview] .projects-copy h2 {font-size:clamp(20px,2vw,48px);}
+.projects[data-service-preview] .projects-actions {grid-column:3;grid-row:1;align-self:stretch;display:flex;flex-direction:column;justify-content:space-between;margin-right:calc(var(--project-gap) - var(--service-grid-gap));}
+.projects[data-service-preview] .projects-paging {justify-content:flex-end;}
+.projects[data-service-preview] .service-preview-nav {grid-column:4;grid-row:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--service-grid-gap);align-self:center;position:relative;padding-top:4px;}
+.service-preview-nav button {padding:0;border:0;border-radius:0;overflow:hidden;aspect-ratio:1.2;min-width:0;background:#1c1c1c;cursor:pointer;}
+.service-preview-nav :is(img,video) {width:100%;height:100%;object-fit:cover;filter:grayscale(1);transform:translateX(calc(var(--service-preview-position,0) * -3px)) scale(1.12);transition:filter .4s ease;}
+.service-preview-nav [aria-pressed="true"] :is(img,video) {filter:grayscale(0);}
+.service-preview-progress {position:absolute;top:0;left:0;right:0;height:2px;background:#8884;}
+.service-preview-progress span {display:block;width:100%;height:100%;background:var(--button-coral,var(--accent));transform-origin:left;transform:scaleX(var(--service-preview-progress,.25));transition:transform .4s ease;}
+@media(prefers-reduced-motion:reduce){.service-preview-nav :is(img,video) {transform:none;transition:none;}.service-preview-progress span {transition:none;}}
+
+html body .projects[data-service-preview] .projects-footer {grid-template-columns:auto minmax(0,1fr) auto var(--service-preview-width);padding-left:var(--service-preview-left);padding-right:var(--service-preview-right);padding-bottom:calc(var(--service-grid-gap) + 24px);}
+.projects[data-service-preview] .service-preview-nav {gap:var(--service-grid-gap);}
+.projects[data-service-preview] .service-preview-nav :is(img,video) {transform:translate(calc((var(--service-preview-position,0) - 1.5) * -2px + var(--service-hover-x,0px)),var(--service-hover-y,0px)) scale(1.12);}
+.projects[data-service-preview-hover] .service-preview-nav :is(img,video) {pointer-events:none;}
+@media(prefers-reduced-motion:reduce){.projects[data-service-preview] .service-preview-nav :is(img,video) {transform:scale(1.12);}}
+
+/* Existing guide coordinates are the sole desktop cell boundaries. */
+html body .projects[data-service-cells] .project-panel {position:relative;}
+html body .projects[data-service-cells] .project-media,
+html body .projects[data-service-cells] .project-thumbs {position:absolute;top:calc(var(--cell-y2) + var(--cell-gap));height:calc(var(--cell-y3) - var(--cell-y2) - 2 * var(--cell-gap));min-height:0;}
+html body .projects[data-service-cells] .project-media {left:calc(var(--cell-x1) + var(--cell-gap));width:calc(var(--cell-x2) - var(--cell-x1) - 2 * var(--cell-gap));}
+html body .projects[data-service-cells] .project-thumbs {left:calc(var(--cell-x2) + var(--cell-gap));width:calc(var(--cell-x3) - var(--cell-x2) - 2 * var(--cell-gap));}
+html body .projects[data-service-cells] .projects-footer {position:absolute;left:var(--cell-x1);top:var(--cell-y3);width:calc(var(--cell-x3) - var(--cell-x1));height:calc(var(--cell-y4) - var(--cell-y3));padding:var(--cell-gap);display:block;}
+html body .projects[data-service-cells] .projects-number {position:absolute;left:var(--cell-gap);bottom:var(--cell-gap);}
+html body .projects[data-service-cells] .projects-copy-stack {position:absolute;left:calc(var(--cell-gap) + clamp(85px,7.4vw,180px) * 1.15 + var(--cell-gap));bottom:var(--cell-gap);width:calc(var(--cell-x2) - var(--cell-x1) - clamp(85px,7.4vw,180px) * 1.15 - 180px - 3 * var(--cell-gap));}
+html body .projects[data-service-cells] .projects-copy h2 {font-size:clamp(26px,2.45vw,62px);}
+html body .projects[data-service-cells] .projects-actions {position:absolute;inset:var(--cell-gap) calc(var(--cell-x3) - var(--cell-x2) + var(--cell-gap)) var(--cell-gap) auto;margin:0;}
+html body .projects[data-service-cells] .service-preview-nav {position:absolute;left:calc(var(--cell-x2) - var(--cell-x1) + var(--cell-gap));right:var(--cell-gap);top:var(--cell-gap);bottom:var(--cell-gap);padding-top:4px;gap:var(--cell-gap);}
+html body .projects[data-service-cells] .service-preview-nav button {aspect-ratio:auto;height:100%;}
+html body .projects[data-service-cells] .project-guide--v {top:var(--guide-y2);}
+html:not([data-ipad]) body .projects[data-service-cells][data-horizontal] :is(.project-media,.project-thumbs,.projects-actions,.service-preview-nav) {grid-column:auto;grid-row:auto;align-self:stretch;justify-self:stretch;}
+html body .projects[data-service-cells] .projects-actions {height:auto;justify-content:space-between;}
+html body .projects[data-service-cells] .service-preview-nav {height:calc(var(--cell-y4) - var(--cell-y3) - 2 * var(--cell-gap));min-height:0;grid-template-rows:minmax(0,1fr);}
+html body .projects[data-service-cells] .service-preview-nav button {min-height:0;}
+html:not([data-ipad]) body .projects[data-service-cells][data-horizontal] .projects-actions {height:auto;justify-content:space-between;gap:0;padding:0;}
+
+/* Extend the actual desktop caption row, keeping every child on its guide coordinates. */
+html body .projects[data-service-cells] .projects-footer {
+  --band-tail:calc(100svh - var(--cell-y4) - 1px);
+  --foreground:var(--light-base);
+  --service-strip-background:var(--light-ink);
+  left:0;width:100%;height:calc(100svh - var(--cell-y3) - 1px);
+  background-color:var(--service-strip-background);color:var(--foreground);
+}
+html body .projects[data-service-cells] .projects-number { left:calc(var(--cell-x1) + var(--cell-gap)); bottom:calc(var(--cell-gap) + var(--band-tail) - 20px); }
+html body .projects[data-service-cells] .projects-copy-stack { left:calc(var(--cell-x1) + 2 * var(--cell-gap) + clamp(85px,7.4vw,180px) * 1.15); bottom:calc(var(--cell-gap) + var(--band-tail) + 5px); }
+html body .projects[data-service-cells] .projects-actions {right:calc(100% - var(--cell-x2) + var(--cell-gap));bottom:calc(var(--cell-gap) + var(--band-tail));}
+html body .projects[data-service-cells] .service-preview-nav {left:calc(var(--cell-x2) + var(--cell-gap));right:calc(100% - var(--cell-x3) + var(--cell-gap));bottom:calc(var(--cell-gap) + var(--band-tail));}
+html body .projects[data-service-cells] .projects-footer button {color:var(--foreground)!important;}
+html[data-theme="dark"] body .projects[data-service-cells] .projects-footer {--foreground:var(--dark-base);--service-strip-background:var(--dark-service-light);}
+html body .projects[data-service-cells] .projects-footer .action-arrow {color:inherit;}
+html body .projects[data-service-cells] .projects-progress {display:none;}
+html body .projects[data-service-cells] .projects-paging button:not(:disabled) {display:grid;visibility:visible;transform:translateY(0);}
+
+/* Desktop x1 shares the existing gap; override the measured inline coordinate only. */
+html body .projects[data-service-cells] {--cell-x1:var(--cell-gap)!important;}
+html body .projects[data-service-cells] .project-guide--v1 {left:var(--cell-x1);}
+
+/* Desktop Services: preserve the existing columns/gaps; square previews vertically. */
+html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .service-preview-nav button {
+  width:100%;height:auto;aspect-ratio:1;align-self:center;
+}
+
+/* Selection grows visually without changing grid tracks or adding a border. */
+html:not([data-ipad]) body .projects[data-service-preview] .project-thumbs button {
+  transform:scale(1);transition:translate 300ms ease,transform 300ms ease;
+}
+html:not([data-ipad]) body .projects[data-service-preview] .project-thumbs button[aria-selected="true"] {
+  outline:none;outline-offset:0;border:0;box-shadow:none;transform:scale(1.03);
+}
+/* Center the progress bar and square previews as one desktop group. */
+html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .service-preview-nav {
+  --preview-square:calc((var(--cell-x3) - var(--cell-x2) - 5 * var(--cell-gap)) / 4);
+  height:calc(var(--preview-square) + 2px);
+  top:calc((var(--cell-y4) - var(--cell-y3) - var(--preview-square) - 2px) / 2);
+  bottom:auto;padding-top:2px;
+}
+
+/* Center the left caption pair without changing the number or horizontal anchors. */
+html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] :is(.projects-number,.projects-copy-stack) {
+  top:50%;bottom:auto;transform:translateY(-50%);
+}
+html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .projects-copy h2 {
+  font-size:calc(clamp(26px,2.45vw,62px) * 1.25);margin-bottom:15px;
+}
+html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .projects-copy p {
+  font-size:calc(clamp(11px,.68vw,16px) * 1.25);
+}
+@media (min-width:1001px) and (max-width:1600px), (min-width:1001px) and (max-height:850px) {
+  html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .projects-copy h2 {margin-bottom:10px;}
+  html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .projects-copy p {font-size:13.75px;}
+}
+/* Desktop copy uses two complete, balanced lines; no truncation or clamping. */
+html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .projects-copy h2 {white-space:nowrap;line-height:1.04;}
+html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .projects-copy p {max-width:none;white-space:pre;line-height:1.3;text-transform:none;}
+/* Desktop glyph alignment and independent title/paragraph animation layers. */
+html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .projects-copy-stack {height:var(--service-copy-height);overflow:visible;}
+html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .projects-copy {position:relative;height:100%;}
+html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .projects-copy h2 {position:absolute;top:var(--title-top);left:0;width:100%;}
+html:not([data-ipad]) body .projects[data-service-preview][data-service-cells] .projects-copy p {position:absolute;top:var(--paragraph-top);left:0;width:100%;}

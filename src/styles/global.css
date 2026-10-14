@@ -231,7 +231,7 @@ html[data-theme-switching] *::after {transition:none!important;}
 
 /* Section palette: dark mode only; shared theme defaults stay unchanged. */
 html[data-theme="dark"] :is(.hero,.journey-stage,.workflow) {background-color:var(--dark-base);}
-html[data-theme="dark"] .workflow {--back-background:var(--dark-base);--back-text:var(--dark-white);--workflow-icon-invert:1;}
+html[data-theme="dark"] .workflow {--back-background:var(--dark-service-light);--back-text:var(--light-ink);--workflow-icon-invert:1;}
 html[data-theme="dark"] .workflow .workflow__front {background-color:var(--dark-base)!important;}
 html[data-theme="dark"] .workflow .workflow__heading em {color:var(--dark-coral);}
 html[data-theme="dark"] :is(.services-transition,.services-intro) {background-color:var(--dark-black);color:var(--dark-white);}
@@ -252,7 +252,7 @@ html[data-theme="dark"] .footer {background-color:var(--dark-base);}
 html[data-theme="dark"] .footer .footer__strip-window::before {background-color:var(--dark-base);}
 html[data-theme="dark"] .hero {background-color:var(--dark-base)!important;}
 html[data-theme="dark"] .hero .journey-cover > :is(rect,path) {fill:var(--dark-base);}
-html[data-theme="dark"] .workflow .workflow__back {background-color:var(--dark-base);color:var(--dark-white);}
+html[data-theme="dark"] .workflow .workflow__back {background-color:var(--dark-service-light);color:var(--light-ink);}
 
 /* Local polish: retain the existing layout and animation owners. */
 html body .workflow .workflow__back {
@@ -266,7 +266,7 @@ html body .workflow .workflow__back {
 }
 .workflow .workflow__back .workflow__icon {
   display:block;width:68%;height:28cqh;max-width:190px;object-fit:contain;
-  filter:brightness(0) invert(var(--workflow-icon-invert,0));pointer-events:none;
+  filter:none;pointer-events:none;
 }
 .workflow .workflow__back .workflow__description {
   width:100%;max-width:24ch;margin:0;font-size:clamp(12px,5.2cqw,20px);line-height:1.45;
@@ -299,8 +299,8 @@ html body .projects[data-horizontal] .glass-toggle {display:none!important;}
 /* Light palette: section consumers; dark selectors and tokens are unchanged. */
 html[data-theme="light"] :is(.hero,.journey-stage,.workflow,.projects,.brands,.footer,.case-study) {--background:var(--light-base);}
 html[data-theme="light"] :is(.hero,.journey-stage,.workflow,.projects,.projects-stage,.project-panel,.project-media,.brands,.footer) {background-color:var(--light-base);}
-html[data-theme="light"] .workflow {--back-background:var(--light-white);--back-text:var(--light-ink);--workflow-icon-invert:0;}
-html[data-theme="light"] .workflow .workflow__back {background-color:var(--light-white);color:var(--light-ink);}
+html[data-theme="light"] .workflow {--back-background:var(--light-featured);--back-text:var(--light-ink);--workflow-icon-invert:0;}
+html[data-theme="light"] .workflow .workflow__back {background-color:var(--light-featured);color:var(--light-ink);}
 html[data-theme="light"] .workflow .workflow__heading em {color:var(--light-coral);}
 html[data-theme="light"] :is(.services-transition,.services-intro) {background-color:var(--light-ink);color:var(--light-white);}
 html[data-theme="light"] .projects {--surface:var(--light-base);}
@@ -362,3 +362,7 @@ html[data-theme="dark"] .footer {--background:var(--dark-base);--footer-optics-b
 /* Tablet touch areas, including the shared CV/About controls. */
 html[data-ipad] body .site-controls .language button {min-width:44px;}
 html body .projects[data-horizontal] .projects-view-all {padding-inline:20px;}
+
+/* Back-face artwork and copy retain their ink in either theme. */
+html body .workflow .workflow__back,
+html body .workflow .workflow__back * {color:#1c1c1c;mix-blend-mode:normal;}

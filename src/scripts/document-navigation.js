@@ -16,17 +16,20 @@ window.addEventListener('error', event => {
     rejectInitialization(event.error);
   }
 }, true);
+let aboutThemeInitialized = false;
 function restorePreferences() {
   try {
     const saved=localStorage.getItem('leo-theme');
-    root.dataset.theme = saved==='light'||saved==='dark'?saved:'dark';
+    root.dataset.globalTheme = saved==='light'||saved==='dark'?saved:'dark';
     root.lang = localStorage.getItem('leo-language') === 'es' ? 'es' : 'en';
   } catch {
-    root.dataset.theme = 'dark';
+    root.dataset.globalTheme = 'dark';
     root.lang = 'en';
   }
-  root.dataset.globalTheme=root.dataset.theme;
-  if(/^\/about\/?$/.test(location.pathname))root.dataset.theme=root.hasAttribute('data-about-mobile')?'dark':'light';
+  if(root.dataset.page === 'about') {
+    if(!aboutThemeInitialized)root.dataset.theme=isMobileAbout()?'dark':'light';
+    aboutThemeInitialized=true;
+  } else root.dataset.theme=root.dataset.globalTheme;
 }
 restorePreferences();
 // Prepare only the destination document on explicit pointer/keyboard intent.
@@ -73,6 +76,9 @@ if (navType === 'back_forward') root.setAttribute('data-cross-page', '');
 let activeTransition, activeNavigation, entrance, timer, coverage;
 let navigationId = 0, restoredFromCache = false;
 let animations = [];
+let aboutCovering = false;
+// Reuse the site's geometric mask, without its optional brightness adjustment.
+if (root.dataset.page === 'about') window.__aboutLoaderWipeFrames = snapshotFrames().oldFrames.map(({offset,clipPath})=>({offset,clipPath}));
 function coverNavigation() {
   if (!coverage?.isConnected) {
     coverage = document.createElement('div');
@@ -147,7 +153,7 @@ window.addEventListener('pageswap', event => {
     } catch { /* Optional Hero-intro suppression only. */ }
   }
   if (!event.viewTransition) return;
-  if (reduced.matches) { event.viewTransition.skipTransition(); return; }
+  if (aboutCovering || reduced.matches) { event.viewTransition.ready.catch(() => {}); event.viewTransition.skipTransition(); return; }
   root.setAttribute('data-page-transition', '');
   // The browser owns unload/BFCache; do not replace the document or its history.
 });
@@ -159,9 +165,28 @@ document.addEventListener('click', event => {
   const url = new URL(link.href, location.href);
   if (url.origin !== location.origin || url.pathname === location.pathname) return;
   try { sessionStorage.setItem('leo-page-destination', JSON.stringify({path:url.pathname,time:Date.now()})); } catch {}
+  if (/^\/about\/?$/.test(url.pathname) && !isMobileAbout() && !reduced.matches) {
+    event.preventDefault();
+    if (aboutCovering) return;
+    aboutCovering = true;
+    coverNavigation();
+    coverage.style.background = (root.dataset.theme || root.dataset.globalTheme) === 'dark' ? '#1C1C1C' : '#EDEDED';
+    const wipe = coverage.animate(snapshotFrames().newFrames, {duration:300,fill:'both'});
+    animations.push(wipe);
+    wipe.finished.then(() => location.assign(url.href)).catch(() => { aboutCovering=false; });
+  }
 }, {capture:true});
 function revealPage(event) {
   restorePreferences();
+  // About's existing readiness gate owns its logo cover. A browser snapshot
+  // would hide that animation and impose a second, fixed-duration entrance.
+  if (root.dataset.page === 'about' && root.hasAttribute('data-about-loading') && !root.hasAttribute('data-about-mobile')) {
+    // Skipping rejects ready; consume that expected cancellation.
+    event.viewTransition?.ready.catch(() => {});
+    event.viewTransition?.skipTransition();
+    cleanNavigation();
+    return;
+  }
   // Direct loads/reloads have no browser snapshot. Reuse destination readiness
   // under the physical cover installed in the head.
   const initialDestination = retryDestination || (!restoredFromCache ? entryDestination : null);
@@ -232,7 +257,9 @@ window.addEventListener('pagereveal', revealPage);
 // through the same initialization barrier, after their deferred modules mount.
 if (!('onpagereveal' in window)) void documentReady.then(() => revealPage({}));
 window.addEventListener('pageshow', event => {
+  if(event.persisted)aboutThemeInitialized=false;
   restorePreferences();
+  aboutCovering = false;
   if (event.persisted) root.setAttribute('data-cross-page', '');
   restoredFromCache = event.persisted;
   // pagereveal starts the new animation after BFCache restoration.
@@ -245,6 +272,7 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden && activeNavigation) recoverNavigation(activeNavigation);
 });
 window.addEventListener('pagehide', () => {
+  if (aboutCovering) { animations.forEach(animation => animation.cancel()); animations=[]; }
   clearTimeout(timer);
   activeNavigation?.controller?.dispose();
   activeNavigation = undefined;

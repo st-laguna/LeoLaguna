@@ -1,3 +1,4 @@
+import {isMobileAbout} from './about/mobileAboutDevice.js';
 import { isTabletPortrait } from './responsive-layout';
 import { scrollPage, beginScrollTransition, endScrollTransition, commitScrollJump, holdScrollLayout } from './smooth-scroll';
 import gsap from 'gsap';
@@ -10,6 +11,7 @@ if(section){
   const panels=Array.from(section.querySelectorAll<HTMLElement>('[data-panel]'));
   const copies=Array.from(section.querySelectorAll<HTMLElement>('[data-copy]'));
   const rail=section.querySelector<HTMLElement>('.projects-rail')!;
+  const copyLayers=copies.map(copy=>[copy.querySelector<HTMLElement>('h2')!,copy.querySelector<HTMLElement>('p')!]);
   const digits=section.querySelector<HTMLElement>('.projects-digits')!;
   const bar=section.querySelector<HTMLElement>('.projects-progress > span')!;
   const main=section.querySelector<HTMLElement>('.projects-main')!;
@@ -94,6 +96,7 @@ if(section){
     if(!layoutMatchesViewport())return;
     sidebarTravel=sidebar.offsetLeft+sidebar.offsetWidth+16;
     if(!(motion.matches && !isTabletPortrait()))return;
+    section!.removeAttribute('data-service-cells');
     const height=main.clientHeight;
     const stageTop=parseFloat(getComputedStyle(stage).top)||0;
     // Frame the entire header row, including the logo and tallest control.
@@ -127,6 +130,12 @@ if(section){
       };
       return {guide,values};
     });
+    if(!isMobileAbout()&&measurements[0]){
+      const v=measurements[0].values;
+      const gap=parseFloat(getComputedStyle(panels[0].querySelector('.project-thumbs')!).columnGap);
+      for(const [name,value] of Object.entries({x1:v['--guide-x1'],x2:v['--guide-x2'],x3:v['--guide-x3'],y2:v['--guide-y2'],y3:v['--guide-y3'],y4:v['--guide-y4'],gap}))section!.style.setProperty(`--cell-${name}`,`${value}px`);
+      section!.setAttribute('data-service-cells','');
+    }
     measurements.forEach(measurement=>{
       if(!measurement)return;
       const {guide,values}=measurement;
@@ -173,12 +182,28 @@ if(section){
     const rounded=Math.max(0,Math.min(3,Math.round(state.position)));
     if(rounded!==current)pause();current=rounded;
     if(section!.dataset.current!==String(current))section!.dataset.current=String(current);
+    section!.style.setProperty('--service-preview-position',String(state.position));
     rail.style.transform=`translate3d(${-state.position*100}%,0,0)`;
     guidesRail.style.transform=rail.style.transform;
     digits.style.transform=`translateY(${-state.position*25}%)`;
     bar.style.transform=`scaleX(${state.position/3})`;
+    const desktopCopy=!isMobileAbout();
+    const segment=Math.floor(state.position),fraction=state.position-segment;
+    const titlePosition=segment+ease(fraction/.9);
+    const paragraphPosition=segment+ease((fraction-.06)/.94);
     copies.forEach((copy,i)=>{
-      copy.style.transform=`translateY(${(i-state.position)*115}%)`;
+      if(desktopCopy){
+        copy.style.removeProperty('transform');
+        copyLayers[i].forEach((layer,j)=>{
+          const distance=Math.max(-1,Math.min(1,i-(j===0?titlePosition:paragraphPosition)));
+          layer.style.transform=`translateY(${distance*(j===0?24:14)}px)`;
+          layer.style.opacity=String(1-Math.abs(distance));
+          layer.style.clipPath=`inset(${distance>0?Math.abs(distance)*100:0}% 0 ${distance<0?Math.abs(distance)*100:0}% 0)`;
+        });
+      }else{
+        copy.style.transform=`translateY(${(i-state.position)*115}%)`;
+        copyLayers[i].forEach(layer=>{layer.style.removeProperty('transform');layer.style.removeProperty('opacity');layer.style.removeProperty('clip-path');});
+      }
       const hidden=String(i!==current);
       if(copy.getAttribute('aria-hidden')!==hidden)copy.setAttribute('aria-hidden',hidden);
     });
@@ -299,6 +324,7 @@ if (brandsLayout) {
   }
   function configure(){
     disposeScroll();pause();closeMenu();checkedThumbs.clear();
+    copyLayers.flat().forEach(layer=>{layer.style.removeProperty('transform');layer.style.removeProperty('opacity');layer.style.removeProperty('clip-path');});
     configuredPortrait=orientation.matches;
     const videoPanel=panels.find(panel=>panel.classList.contains('project-panel--video'));
     if(videoPanel) {
@@ -335,12 +361,12 @@ if (brandsLayout) {
     state.position=0;state.exit=0;entrance=0;
     entry=ScrollTrigger.create({trigger:section,start:'top 100%',end:'top top',onUpdate:self=>{entrance=self.progress;render();},onRefresh:self=>{entrance=self.progress;render();}});
     timeline=gsap.timeline({onUpdate:render,scrollTrigger:{trigger:section,start:'top top',end:featured ? 'bottom bottom' : 'bottom top',scrub:.7,invalidateOnRefresh:true}});
-    timeline.to(state,{position:.035,duration:.9,ease:'none'},0)
-      .to(state,{position:.965,duration:.9,ease:'power3.inOut'},.9)
-      .to(state,{position:1.035,duration:.9,ease:'none'},1.8)
-      .to(state,{position:1.965,duration:.9,ease:'power3.inOut'},2.7)
-      .to(state,{position:2.035,duration:.9,ease:'none'},3.6)
-      .to(state,{position:2.965,duration:.9,ease:'power3.inOut'},4.5)
+    timeline.to(state,{position:isMobileAbout()?.035:0,duration:.9,ease:'none'},0)
+      .to(state,{position:isMobileAbout()?.965:1,duration:.9,ease:'power3.inOut'},.9)
+      .to(state,{position:isMobileAbout()?1.035:1,duration:.9,ease:'none'},1.8)
+      .to(state,{position:isMobileAbout()?1.965:2,duration:.9,ease:'power3.inOut'},2.7)
+      .to(state,{position:isMobileAbout()?2.035:2,duration:.9,ease:'none'},3.6)
+      .to(state,{position:isMobileAbout()?2.965:3,duration:.9,ease:'power3.inOut'},4.5)
       .to(state, { position: 3, duration: 1.1, ease: 'none' }, 5.4)
       .to(state, { exit: 1, duration: 1, ease: 'none' }, 6.5);
     removeGesture=mountTabletHorizontalGesture(section!,()=>timeline?.scrollTrigger,[0,6.5/7.5]);
@@ -410,7 +436,8 @@ if (brandsLayout) {
     if (!Number.isInteger(index) || !panels[index]) return;
     const trigger = timeline?.scrollTrigger;
     if ((motion.matches && !isTabletPortrait()) && trigger) {
-      scrollPage(trigger.start + stops[index] / total * (trigger.end - trigger.start));
+      const destination=trigger.start + stops[index] / total * (trigger.end - trigger.start);
+      if(!isMobileAbout()){commitScrollJump(()=>scrollPage(destination,false));ScrollTrigger.update();trigger.getTween()?.progress(1);timeline?.time(stops[index]);render();}else scrollPage(destination);
     } else if ((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)) && mobileTimeline?.scrollTrigger) {
       const mobileTrigger = mobileTimeline.scrollTrigger;
       scrollPage(mobileTrigger.start + (index / 3 * .86) * (mobileTrigger.end - mobileTrigger.start));
