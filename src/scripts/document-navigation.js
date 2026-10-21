@@ -69,6 +69,7 @@ try {
   sessionStorage.removeItem('leo-page-destination');
   if (navType !== 'reload' && pending?.path === location.pathname && Date.now()-pending.time < 30000) {
     root.setAttribute('data-cross-page', '');
+    if (pending.projectReturn) root.setAttribute('data-project-return', '');
   }
 } catch { /* Navigation and preferences still work without storage. */ }
 if (navType === 'back_forward') root.setAttribute('data-cross-page', '');
@@ -76,6 +77,7 @@ let activeTransition, activeNavigation, entrance, timer, coverage;
 let navigationId = 0, restoredFromCache = false;
 let animations = [];
 let aboutCovering = false;
+let coveredNavigationDuration=650;
 // Reuse the site's geometric mask, without its optional brightness adjustment.
 if (root.dataset.page === 'about') window.__aboutLoaderWipeFrames = snapshotFrames().oldFrames.map(({offset,clipPath})=>({offset,clipPath}));
 function coverNavigation() {
@@ -85,18 +87,19 @@ function coverNavigation() {
     coverage.setAttribute('aria-hidden', 'true');
     Object.assign(coverage.style, {
       position:'fixed', inset:'0', zIndex:'2147483647',
-      background:'var(--page-transition-contrast, #000)', pointerEvents:'auto',
+      background:'var(--foreground, #1C1C1C)', pointerEvents:'auto',
     });
     root.append(coverage);
   }
 }
-// Restore the physical mobile cover in the head, before any destination paint.
+// Restore an explicit navigation cover before the destination can paint.
 try {
-  const pending=JSON.parse(sessionStorage.getItem('leo-mobile-navigation')||'null');
-  sessionStorage.removeItem('leo-mobile-navigation');
-  if(pending?.path===location.pathname&&Date.now()-pending.time<30000&&navType!=='reload'&&isMobileAbout()){
-    root.setAttribute('data-mobile-navigation-entry','');root.setAttribute('data-page-transition','');
+  const pending=JSON.parse(sessionStorage.getItem('leo-covered-navigation')||'null');
+  sessionStorage.removeItem('leo-covered-navigation');
+  if(pending?.path===location.pathname&&Date.now()-pending.time<30000&&navType!=='reload'){
+    root.setAttribute('data-covered-navigation-entry','');root.setAttribute('data-page-transition','');
     coverNavigation();coverage.style.background=pending.color;
+    coveredNavigationDuration=pending.duration||650;
   }
 } catch { /* Ordinary navigation still works without storage. */ }
 function recoverNavigation(nav) {
@@ -121,7 +124,8 @@ function cleanNavigation(nav) {
   activeTransition = undefined;
   coverage?.remove(); coverage = undefined;
   root.removeAttribute('data-page-transition');
-  root.removeAttribute('data-mobile-navigation-entry');
+  root.removeAttribute('data-covered-navigation-entry');
+  root.removeAttribute('data-project-return');
   window.dispatchEvent(new Event('leo:page-reveal'));
 }
 function failNavigation(nav, error) {
@@ -158,7 +162,9 @@ window.addEventListener('pageswap', event => {
   const destination = event.activation?.entry?.url;
   if (destination) {
     try {
-      sessionStorage.setItem('leo-page-destination', JSON.stringify({path:new URL(destination).pathname,time:Date.now()}));
+      const url = new URL(destination);
+      const projectReturn = root.dataset.page === 'case-study' && ['/', '/index.html'].includes(url.pathname) && ['', '#home', '#work', '#featured-works', '#contact'].includes(url.hash);
+      sessionStorage.setItem('leo-page-destination', JSON.stringify({path:url.pathname,time:Date.now(),projectReturn}));
     } catch { /* Optional Hero-intro suppression only. */ }
   }
   if (!event.viewTransition) return;
@@ -173,7 +179,10 @@ document.addEventListener('click', event => {
   if (!link || link.hasAttribute('download') || (link.target && link.target !== '_self')) return;
   const url = new URL(link.href, location.href);
   if (url.origin !== location.origin || url.pathname === location.pathname) return;
-  try { sessionStorage.setItem('leo-page-destination', JSON.stringify({path:url.pathname,time:Date.now()})); } catch {}
+  const projectReturn = root.dataset.page === 'case-study' && ['/', '/index.html'].includes(url.pathname) && ['', '#home', '#work', '#featured-works', '#contact'].includes(url.hash);
+  try { sessionStorage.setItem('leo-page-destination', JSON.stringify({path:url.pathname,time:Date.now(),projectReturn})); } catch {}
+  // Desktop project exits follow the same native snapshot sequence as entries.
+  // Keep the established physical compatibility path only for mobile.
   if(isMobileAbout()&&!reduced.matches){
     event.preventDefault();
     if(aboutCovering)return;
@@ -181,10 +190,11 @@ document.addEventListener('click', event => {
     coverNavigation();
     const color=getComputedStyle(root).getPropertyValue('--background').trim()||'#1C1C1C';
     coverage.style.background=color;
-    const wipe=coverage.animate(snapshotFrames().newFrames.map(({offset,clipPath})=>({offset,clipPath})),{duration:650,fill:'both'});
+    const duration=650;
+    const wipe=coverage.animate(snapshotFrames().newFrames.map(({offset,clipPath})=>({offset,clipPath})),{duration,fill:'both'});
     animations.push(wipe);
     wipe.finished.then(()=>{
-      try{sessionStorage.setItem('leo-mobile-navigation',JSON.stringify({path:url.pathname,color,time:Date.now()}));}catch{}
+      try{sessionStorage.setItem('leo-covered-navigation',JSON.stringify({path:url.pathname,color,duration,time:Date.now()}));}catch{}
       location.assign(url.href);
     }).catch(()=>{aboutCovering=false;cleanNavigation();});
     return;
@@ -215,18 +225,19 @@ function revealPage(event) {
   // Direct loads/reloads have no browser snapshot. Reuse destination readiness
   // under the physical cover installed in the head.
   const initialDestination = retryDestination || (!restoredFromCache ? entryDestination : null);
-  const mobileEntry=root.hasAttribute('data-mobile-navigation-entry');
-  if(mobileEntry){event.viewTransition?.ready.catch(()=>{});event.viewTransition?.skipTransition();}
-  const transition = (!mobileEntry&&event.viewTransition) || ((initialDestination||mobileEntry) ? {
+  const coveredEntry=root.hasAttribute('data-covered-navigation-entry');
+  const projectReturn=root.hasAttribute('data-project-return');
+  if(coveredEntry){event.viewTransition?.ready.catch(()=>{});event.viewTransition?.skipTransition();}
+  const transition = (!coveredEntry&&event.viewTransition) || ((initialDestination||coveredEntry||projectReturn) ? {
     skipTransition() {}, ready:Promise.resolve(), finished:Promise.resolve(),
   } : null);
   if (!transition) { cleanNavigation(); return; }
   root.setAttribute('data-cross-page', '');
   root.removeAttribute('data-hero-intro');
   if (reduced.matches && !initialDestination) { transition.skipTransition(); cleanNavigation(); return; }
-  if ((initialDestination||mobileEntry) && (!event.viewTransition || reduced.matches || mobileEntry)) coverNavigation();
+  if ((initialDestination||coveredEntry||projectReturn) && (!event.viewTransition || reduced.matches || coveredEntry)) coverNavigation();
   activeTransition = transition;
-  const nav = {id:++navigationId, transition, fallback:mobileEntry || !!retryDestination || !event.viewTransition || reduced.matches, failed:false, controller:undefined};
+  const nav = {id:++navigationId, transition, fallback:coveredEntry || !!retryDestination || !event.viewTransition || reduced.matches, failed:false, visualStarted:false, controller:undefined};
   activeNavigation = nav;
   root.setAttribute('data-page-transition', '');
   // Content enters inside the new snapshot; it is not a second page overlay.
@@ -235,13 +246,17 @@ function revealPage(event) {
   retryDestination = null;
   restoredFromCache = false;
   const destinationReady = (async () => {
-    if(mobileEntry)await Promise.race([documentReady,initializationFailed]);
+    if(coveredEntry||projectReturn)await Promise.race([documentReady,initializationFailed]);
     if (!anchorHash) return;
     await Promise.race([documentReady, initializationFailed]);
     if (activeNavigation !== nav) return;
     // The module supplies the same logical-destination guard as section links.
     // Its absence after DOMContentLoaded is a real initialization failure.
-    const request = {selector:anchorHash, onInvalidate:() => recoverNavigation(nav), controller:undefined};
+    const request = {selector:anchorHash, onInvalidate:() => {
+      // Initial font/layout changes belong to preparation, not recovery.
+      // The destination controller waits for these changes to settle itself.
+      if (nav.visualStarted) recoverNavigation(nav);
+    }, controller:undefined};
     window.dispatchEvent(new CustomEvent('leo:destination-request', {detail:request}));
     if (!request.controller) throw new Error('Destination controller is unavailable.');
     nav.controller = request.controller;
@@ -258,12 +273,13 @@ function revealPage(event) {
       root.animate(oldFrames,{duration:SECTION_TRANSITION.duration*1000,fill:'both',pseudoElement:'::view-transition-old(root)'}),
       root.animate(newFrames,{duration:SECTION_TRANSITION.duration*1000,delay:SECTION_TRANSITION.followDelay*1000,fill:'both',pseudoElement:'::view-transition-new(root)'}),
     ];
-    if (anchorHash) animations.forEach(animation => animation.pause());
+    animations.forEach(animation => animation.pause());
     await destinationReady;
     if (activeNavigation !== nav || nav.fallback || nav.failed) return;
     const anchor = anchorHash ? document.querySelector(anchorHash) : null;
     window.dispatchEvent(new Event('leo:page-position'));
     entrance = root.dataset.page === 'about' ? undefined : prepareEntrances(anchor || document.querySelector('[data-page-content], .hero'));
+    nav.visualStarted = true;
     animations.forEach(animation => animation.play());
     entrance?.play();
   }).catch(() => recoverNavigation(nav));
@@ -276,8 +292,11 @@ function revealPage(event) {
     if (!nav.fallback) await entrance?.finished();
     // Resize can invalidate layout during the text entrance as well.
     await nav.controller?.ready();
-    if(mobileEntry&&nav.fallback&&coverage&&!reduced.matches){
-      const wipe=coverage.animate(snapshotFrames().oldFrames.map(({offset,clipPath})=>({offset,clipPath})),{duration:650,fill:'both'});
+    if(nav.fallback&&coverage&&!reduced.matches){
+      // A skipped/unsupported native snapshot must still reveal geometrically.
+      // Never remove an opaque recovery cover in a single frame.
+      window.dispatchEvent(new Event('leo:section-reveal'));
+      const wipe=coverage.animate(snapshotFrames().oldFrames.map(({offset,clipPath})=>({offset,clipPath})),{duration:coveredEntry ? coveredNavigationDuration : SECTION_TRANSITION.duration*1000,fill:'both'});
       animations.push(wipe);await wipe.finished.catch(()=>{});
     }
     if (activeNavigation === nav) cleanNavigation(nav);

@@ -21,22 +21,21 @@ export function mountBrandsFooterHandoff(brands:HTMLElement){
     context=gsap.context(()=>{
       const footerInert=footer!.inert,brandsInert=brands.inert;
       host!.setAttribute('data-footer-handoff','');
-      const progress={value:0};
       const geometry={width:80,startTop:75,startBottom:25};
       gsap.set(footer!,{clipPath:openingClip(0,geometry)});
-      const render=()=>{
-        footer!.style.clipPath=openingClip(progress.value,geometry);
-        footer!.dataset.handoffProgress=String(progress.value);
-        footer!.inert=progress.value<.99;
-        brands.inert=progress.value>=.99;
+      const render=(progress:number)=>{
+        footer!.style.clipPath=openingClip(progress,geometry);
+        footer!.dataset.handoffProgress=String(progress);
+        footer!.inert=progress<.99;
+        brands.inert=progress>=.99;
       };
       const timeline=gsap.timeline({scrollTrigger:{
         id:'brands-footer-handoff',trigger:runway!,start:'top -80%',end:'bottom bottom',
-        scrub:true,invalidateOnRefresh:true,onRefresh:render,
+        scrub:true,invalidateOnRefresh:true,
+        onUpdate:self=>render(self.progress),onRefresh:self=>render(self.progress),
       }});
-      timeline.fromTo(footer!,{y:()=>-innerHeight},{y:0,duration:1,ease:'none'},0)
-        .to(progress,{value:1,duration:1,ease:'none',onUpdate:render},0);
-      render();
+      timeline.fromTo(footer!,{y:()=>-innerHeight},{y:0,duration:1,ease:'none'},0);
+      render(timeline.scrollTrigger?.progress||0);
       return ()=>{
         host!.removeAttribute('data-footer-handoff');
         delete footer!.dataset.handoffProgress;

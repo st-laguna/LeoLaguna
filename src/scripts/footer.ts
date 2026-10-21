@@ -285,6 +285,15 @@ function setFooterNavigation(active: boolean) {
     // A short footer can finish below the top edge when browser chrome retracts.
     const finalTop=viewportTop+Math.max(0,visibleHeight-rect.height);
     const inView=rect.top<viewportTop+visibleHeight && rect.bottom>viewportTop+100;
+    // Direct section jumps and refreshes can miss an IntersectionObserver edge.
+    // Reconcile the visible footer instead of leaving its marquee at opacity 0.
+    if(handoffVisible&&inView){
+      entranceElements.forEach(element=>{
+        if(element.hasAttribute('data-entered'))return;
+        const box=element.getBoundingClientRect();
+        if(box.width&&box.height&&box.bottom>viewportTop&&box.top<viewportTop+visibleHeight)reveal(element,Number(element.dataset.footerEnter)||0);
+      });
+    }
     const directMenu=nav && getComputedStyle(nav).position==='fixed' && !root.hasAttribute('data-tablet-portrait');
     const active=handoffVisible&&(directMenu ? inView : inView&&(rect.top<=finalTop+24||remaining<=8));
     if((rect.top>innerHeight+40||rect.bottom<0)&&!reduced.matches){
@@ -319,6 +328,7 @@ window.addEventListener('scroll', schedule, {
   passive: true,
   signal,
 });
+['leo:page-position','leo:page-reveal','leo:section-reveal'].forEach(name=>window.addEventListener(name,schedule,{signal}));
 
 window.visualViewport?.addEventListener('resize',schedule,{passive:true,signal});
 window.visualViewport?.addEventListener('scroll',schedule,{passive:true,signal});
