@@ -12,6 +12,8 @@ export function prepareMobileAboutModels(root:HTMLElement, items:Item[]) {
   const reduced=matchMedia('(prefers-reduced-motion:reduce)');
   const scene=new THREE.Scene(), camera=new THREE.PerspectiveCamera(35,1,.1,5000);
   const groups=items.map(()=>new THREE.Group());
+  const rotations=items.map(()=>new THREE.Quaternion());
+  const dragRotation=new THREE.Quaternion();
   groups.forEach(group=>scene.add(group));
   scene.add(new THREE.HemisphereLight(0xffffff,0x777788,2.5));
   const key=new THREE.DirectionalLight(0xffffff,3);key.position.set(3,6,5);scene.add(key);
@@ -37,6 +39,7 @@ export function prepareMobileAboutModels(root:HTMLElement, items:Item[]) {
         const motion=reduced.matches?0:1;
         group.position.set(slot.x+Math.sin(t*.31+phase)*size*.012*motion,Math.sin(t*.37+phase)*size*.018*motion,slot.z+Math.cos(t*.29+phase)*size*.018*motion);
         group.rotation.set(Math.sin(t*.28+phase)*.055*motion,slot.distance*.26+Math.sin(t*.32+phase)*.085*motion,Math.cos(t*.26+phase)*.045*motion);
+        group.quaternion.premultiply(rotations[index]);
         group.scale.setScalar(size*slot.scale);
       });
       renderer.render(scene,camera);
@@ -51,6 +54,12 @@ export function prepareMobileAboutModels(root:HTMLElement, items:Item[]) {
     camera.aspect=width/height;camera.position.set(0,0,height/(2*Math.tan(THREE.MathUtils.degToRad(35/2))));camera.updateProjectionMatrix();invalidate();
   }
   const receive=(event:Event)=>{layout=(event as CustomEvent<Layout[]>).detail;invalidate();};
+  wheel.addEventListener('wheel:rotate-model',event=>{
+    const {index,deltaX,deltaY}=(event as CustomEvent<{index:number;deltaX:number;deltaY:number}>).detail;
+    if(index<0||index>=groups.length||!Number.isFinite(deltaX)||!Number.isFinite(deltaY))return;
+    dragRotation.setFromEuler(new THREE.Euler(deltaY,deltaX,0,'YXZ'));
+    rotations[index].premultiply(dragRotation).normalize();invalidate();
+  },{signal:abort.signal});
   wheel.addEventListener('wheel:layout',receive,{signal:abort.signal});
   wheel.addEventListener('wheel:awake',sync,{signal:abort.signal});
   document.addEventListener('visibilitychange',sync,{signal:abort.signal});
@@ -68,6 +77,9 @@ export function prepareMobileAboutModels(root:HTMLElement, items:Item[]) {
         if(disposed){const late=new Resources();late.track(gltf.scene);late.dispose();break;}
         const model=gltf.scene;resources.track(model);
         model.rotation.set(item.rotation[0],item.rotation[1],item.rotation[2]);
+        // Mobile presentation offsets only; desktop sceneConfig stays authoritative.
+        if(item.id==='laptop'){model.rotation.x=-.3;model.rotation.y+=.42;model.rotation.z=-.04;}
+        if(item.id==='dog-bone'){model.rotation.x=.25;model.rotation.y=Math.PI/2+.25;model.rotation.z=-.18;}
         if(item.baseRotation)model.quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(...item.baseRotation as [number,number,number])));
         const box=new THREE.Box3().setFromObject(model),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
         const scale=1/Math.max(size.x,size.y,size.z);model.scale.multiplyScalar(scale);model.position.addScaledVector(center,-scale);

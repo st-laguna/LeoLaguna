@@ -163,3 +163,12 @@ html[data-about-mobile] body .about>.mobile-about {display:block;}
 @media(prefers-reduced-motion:reduce) {.mobile-about[data-state="stickers"] .mobile-about__wave {animation:none;}}
 
 .mobile-about__wheel [data-mobile-interest]:focus-visible {outline:2px solid #FF675F;outline-offset:4px;}
+
+/* Carousel controls remain separate from the object rotation gesture. */
+.mobile-about[data-state="stickers"] .mobile-about__wheel-cue {display:flex;gap:12px;}
+.mobile-about__wheel-cue button {display:inline-grid;place-items:center;width:44px;height:44px;padding:0;border:0;background:transparent;color:inherit;pointer-events:auto;touch-action:manipulation;}
+.mobile-about__wheel-cue button:focus-visible {outline:1px solid currentColor;outline-offset:-4px;}
+
+/* The ready central object owns rotation; surrounding areas retain vertical scroll. */
+.mobile-about__wheel[data-model-system="live"] [data-wheel-slot][data-active="true"] .mobile-about__sticker[data-model-ready="true"] {touch-action:none;cursor:grab;}
+.mobile-about__wheel[data-motion="dragging"] [data-wheel-slot][data-active="true"] .mobile-about__sticker {cursor:grabbing;}

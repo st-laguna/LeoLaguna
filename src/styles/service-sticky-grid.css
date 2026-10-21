@@ -2,7 +2,7 @@
 .gallery-dialog[data-sticky-gallery] .gallery-shell {position:relative;display:block;}
 .gallery-dialog[data-sticky-gallery] .gallery-header {position:absolute;inset:0 0 auto;z-index:3;padding:24px clamp(24px,4vw,64px);background:var(--background);}
 .gallery-dialog[data-sticky-gallery] .gallery-header h2 {font-size:clamp(18px,2vw,28px);}
-.gallery-dialog[data-sticky-gallery] .gallery-scroll {height:100%;padding:0;scrollbar-gutter:auto;}
+.gallery-dialog[data-sticky-gallery] .gallery-scroll {height:100%;padding:0;scrollbar-gutter:stable;}
 .service-gallery-list {padding:clamp(24px,4vw,64px);}
 .service-sticky-grid {--service-viewport:100svh;position:relative;height:calc(var(--service-viewport) * 3.2);color:var(--foreground);background:var(--background);}
 .service-sticky-scene {background:var(--background);position:sticky;top:0;height:var(--service-viewport);overflow:hidden;display:grid;place-items:center;}

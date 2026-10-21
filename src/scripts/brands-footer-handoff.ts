@@ -1,0 +1,55 @@
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { openingClip } from './transition-motion.js';
+
+// Keep the native sticky Brands layer; no wheel interception or second scroller.
+export function mountBrandsFooterHandoff(brands:HTMLElement){
+  const host=brands.closest<HTMLElement>('[data-featured-brands]');
+  const runway=host?.querySelector<HTMLElement>('[data-brands-footer-handoff]');
+  const footer=runway?.querySelector<HTMLElement>('.footer');
+  if(!host||!runway||!footer)return ()=>{};
+  let context:gsap.Context|undefined;
+  let enabled=false,frame=0,disposed=false;
+  const conditions=matchMedia('(min-width:1001px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)');
+  function configure(){
+    frame=0;if(disposed)return;
+    const fits=brands.scrollHeight<=innerHeight+1;
+    const next=conditions.matches&&!brands.hasAttribute('data-mobile-streams')&&fits;
+    if(next===enabled)return;
+    context?.revert();context=undefined;enabled=next;
+    if(!next){ScrollTrigger.refresh();return;}
+    context=gsap.context(()=>{
+      const footerInert=footer!.inert,brandsInert=brands.inert;
+      host!.setAttribute('data-footer-handoff','');
+      const progress={value:0};
+      const geometry={width:80,startTop:75,startBottom:25};
+      gsap.set(footer!,{clipPath:openingClip(0,geometry)});
+      const render=()=>{
+        footer!.style.clipPath=openingClip(progress.value,geometry);
+        footer!.dataset.handoffProgress=String(progress.value);
+        footer!.inert=progress.value<.99;
+        brands.inert=progress.value>=.99;
+      };
+      const timeline=gsap.timeline({scrollTrigger:{
+        id:'brands-footer-handoff',trigger:runway!,start:'top -80%',end:'bottom bottom',
+        scrub:true,invalidateOnRefresh:true,onRefresh:render,
+      }});
+      timeline.fromTo(footer!,{y:()=>-innerHeight},{y:0,duration:1,ease:'none'},0)
+        .to(progress,{value:1,duration:1,ease:'none',onUpdate:render},0);
+      render();
+      return ()=>{
+        host!.removeAttribute('data-footer-handoff');
+        delete footer!.dataset.handoffProgress;
+        footer!.inert=footerInert;brands.inert=brandsInert;
+      };
+    });
+    ScrollTrigger.refresh();
+  }
+  const schedule=()=>{if(!frame&&!disposed)frame=requestAnimationFrame(configure);};
+  const observer=new ResizeObserver(schedule);observer.observe(brands);
+  conditions.addEventListener('change',schedule);
+  window.addEventListener('resize',schedule,{passive:true});
+  // The rest of Brands' responsive setup runs synchronously before this frame.
+  schedule();
+  return ()=>{disposed=true;cancelAnimationFrame(frame);observer.disconnect();conditions.removeEventListener('change',schedule);window.removeEventListener('resize',schedule);context?.revert();};
+}

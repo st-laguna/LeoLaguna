@@ -24,6 +24,13 @@ const sectionHash = (hash: string): string | null =>
   ['', '#home', '#hero', '#hero-top'].includes(hash) ? '' :
   ['#work', '#featured-works', '#contact'].includes(hash) ? hash : null;
 const sectionURL = (hash: string) => '/' + location.search + hash;
+function sectionScrollTop(target:HTMLElement){
+  const runway=target.closest<HTMLElement>('[data-brands-footer-handoff]');
+  if(target.id==='contact'&&runway?.parentElement?.hasAttribute('data-footer-handoff')){
+    return runway.getBoundingClientRect().bottom+scrollY-innerHeight;
+  }
+  return target.getBoundingClientRect().top+scrollY;
+}
 let lastSectionURL = location.href;
 let historyOperation = 0;
 function commitSectionHistory(hash: string, category?: number) {
@@ -50,7 +57,7 @@ window.addEventListener('leo:destination-request', ((event: CustomEvent) => {
   request.controller = trackScrollDestination(() => {
     const target = document.querySelector<HTMLElement>(request.selector);
     if (!target) throw new Error(`Destination missing: ${request.selector}`);
-    scrollPage(target.getBoundingClientRect().top + scrollY, false);
+    scrollPage(sectionScrollTop(target), false);
   }, request.onInvalidate);
 }) as EventListener, {signal});
 
@@ -70,7 +77,7 @@ function settleEntryAnchor(event?: Event) {
   const id = location.hash.slice(1);
   if (id !== 'work' && id !== 'featured-works' && id !== 'contact') return;
   const target = document.getElementById(id);
-  if (target) { entryAnchorSettled=true; commitScrollJump(() => scrollPage(target.getBoundingClientRect().top + scrollY, false)); }
+  if (target) { entryAnchorSettled=true; commitScrollJump(() => scrollPage(sectionScrollTop(target), false)); }
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', settleEntryAnchor, {once:true,signal});
@@ -87,7 +94,7 @@ function getCurtain() {
   Object.assign(curtain.style, {
     position: 'fixed', inset: '0', zIndex: '2147483647',
     display: 'none', pointerEvents: 'none',
-    background: 'var(--foreground, #171717)',
+    background: isMobileAbout() ? 'var(--background, #1C1C1C)' : 'var(--foreground, #171717)',
     willChange: 'clip-path',
   });
   document.body.append(curtain);
@@ -258,7 +265,7 @@ function transitionTo(changePosition: () => void, focus?: HTMLElement | null, lo
   transitioning = true;
   document.documentElement.dataset.sectionTransition = 'covering';
   window.dispatchEvent(new Event('leo:section-cover'));
-  if (typeof document.startViewTransition === 'function') {
+  if (!isMobileAbout() && typeof document.startViewTransition === 'function') {
     snapshotSequence(commit, focus, logical);
     return true;
   }
@@ -401,7 +408,7 @@ document.addEventListener('click', event => {
       // Existing projects.ts computes the exact desktop/mobile category stop.
       window.dispatchEvent(new CustomEvent('leo:project-jump', { detail: index }));
     } else {
-      scrollPage(isHome ? 0 : section!.getBoundingClientRect().top + window.scrollY, false);
+      scrollPage(isHome ? 0 : sectionScrollTop(section!), false);
     }
     if (!historyCommitted) {
       historyCommitted = true;
@@ -433,7 +440,7 @@ window.addEventListener('popstate', () => {
   window.dispatchEvent(new Event('leo:section-cover'));
   const operation = trackScrollDestination(() => {
     if (category !== undefined) window.dispatchEvent(new CustomEvent('leo:project-jump', {detail:category}));
-    else scrollPage(hash ? target.getBoundingClientRect().top + scrollY : 0, false);
+    else scrollPage(hash ? sectionScrollTop(target) : 0, false);
   }, () => { panel.style.clipPath = 'inset(0% 0% 0% 0%)'; });
   destination = operation;
   void operation.ready().then(() => {

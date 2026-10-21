@@ -1,6 +1,7 @@
 .featured-brands {position:relative;display:flow-root;}
 /* The existing native sticky handoff; no pin or extra animation controller. */
-.featured-brands::after {content:'';display:block;height:100svh;}
+.featured-brands::after {display:none;}
+@media(prefers-reduced-motion:no-preference){[data-brands-footer-handoff]{padding-top:100svh;}}
 html body [data-featured-brands] > .brands[data-brands] {position:sticky;top:0;z-index:1;margin-top:-100svh;margin-bottom:0;}
 .featured-works {
   position:relative;z-index:2;margin-top:-100svh;min-height:100svh;box-sizing:border-box;
@@ -83,3 +84,21 @@ html body [data-featured-brands] > .brands[data-brands] {position:sticky;top:0;z
  html:not([data-ipad]):not([data-tablet-portrait]) .featured-work:not(.featured-work--sperm-whales-of-dominica) .featured-work__cover {width:min(100%,calc(78svh * var(--phone-frame-aspect,var(--phone-cover-aspect))));max-height:78svh;margin-inline:auto;}
  html:not([data-ipad]):not([data-tablet-portrait]) .featured-work[data-phone-square] {--phone-frame-aspect:1;}
 }
+
+/* An opaque #1C1C1C endpoint, shared by both themes and both overlaps. */
+@media(prefers-reduced-motion:no-preference) {
+  [data-projects] .projects-stage::after,
+  [data-featured-brands] > [data-brands]::after {
+    content:'';position:absolute;inset:0;z-index:100;
+    background:#1C1C1C;opacity:var(--handoff-shade,0);pointer-events:none;
+  }
+}
+
+/* Extend the existing sticky stack only when its desktop composition fits. */
+[data-featured-brands][data-footer-handoff]::after {display:none;}
+[data-featured-brands][data-footer-handoff] > [data-brands-footer-handoff] {
+  position:relative;z-index:3;padding-top:180svh;
+}
+[data-featured-brands][data-footer-handoff] > [data-brands] {scroll-margin-top:0;}
+/* The footer must paint above Works in the ordinary/reduced-motion flow too. */
+[data-brands-footer-handoff] {position:relative;z-index:3;}

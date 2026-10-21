@@ -21,12 +21,12 @@ export function smoothPulse(progress, start, end) {
   return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
-export function openingClip(progress) {
+export function openingClip(progress, geometry = SECTION_TRANSITION) {
   const rise = smoothPulse(progress, 0, 0.76);
   const spread = smoothPulse(progress, 0.38, 1);
-  const top = SECTION_TRANSITION.startTop * (1 - 0.88 * rise - 0.12 * spread);
-  const side = (100 - SECTION_TRANSITION.width) / 2 * (1 - 0.16 * rise - 0.84 * spread);
-  const bottom = SECTION_TRANSITION.startBottom * (1 - 0.28 * rise - 0.72 * spread);
+  const top = geometry.startTop * (1 - 0.88 * rise - 0.12 * spread);
+  const side = (100 - geometry.width) / 2 * (1 - 0.16 * rise - 0.84 * spread);
+  const bottom = geometry.startBottom * (1 - 0.28 * rise - 0.72 * spread);
   return `inset(${Math.max(0, top)}% ${Math.max(0, side)}% ${Math.max(0, bottom)}%)`;
 }
 

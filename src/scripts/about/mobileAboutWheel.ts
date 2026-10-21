@@ -11,7 +11,7 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
   let position = 0, target = 0, velocity = 0, frame = 0, previousTime = 0;
   let radius = 180, pixelsPerItem = 150;
   let suppressClick = false;
-  type Drag = {id:number; capture:HTMLElement; x:number; y:number; origin:number; last:number; time:number; locked:boolean; rejected:boolean};
+  type Drag = {id:number; capture:HTMLElement; x:number; y:number; origin:number; last:number; lastY:number; time:number; locked:boolean; rejected:boolean; rotateIndex:number};
   let drag: Drag | undefined;
   const modulo = (n: number) => ((n % count) + count) % count;
   const offset = (n: number) => modulo(n + count / 2) - count / 2;
@@ -94,7 +94,9 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
     if(!awake()||!event.isPrimary||event.button!==0||drag)return;
     const capture = (event.target as Element).closest<HTMLElement>('[data-mobile-interest]') || root;
     cancelMotion(); velocity = 0; suppressClick = false;
-    drag = {id:event.pointerId,capture,x:event.clientX,y:event.clientY,origin:position,last:event.clientX,time:event.timeStamp,locked:false,rejected:false};
+    const index=buttons.indexOf(capture as HTMLButtonElement);
+    const rotateIndex=index>=0&&slots[index].dataset.active==='true'&&Math.abs(offset(index-position))<.025&&capture.dataset.modelReady==='true'?index:-1;
+    drag = {id:event.pointerId,capture,x:event.clientX,y:event.clientY,origin:position,last:event.clientX,lastY:event.clientY,time:event.timeStamp,locked:false,rejected:false,rotateIndex};
     capture.setPointerCapture(event.pointerId);
   },{signal});
   root.addEventListener('pointermove', event => {
@@ -103,12 +105,16 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
     const primary=dx,cross=dy;
     if(!drag.locked){
       if(Math.max(Math.abs(primary),Math.abs(cross))<10)return;
-      if(Math.abs(primary)<Math.abs(cross)*1.25){drag.rejected=true;suppressClick=true;return;}
+      if(drag.rotateIndex<0&&Math.abs(primary)<Math.abs(cross)*1.25){drag.rejected=true;suppressClick=true;return;}
       drag.locked=true;suppressClick=true;root.dataset.motion='dragging';
     }
     // This handler is local to a gesture begun inside the wheel viewport, never the document.
     if(event.cancelable)event.preventDefault();
     const coordinate=event.clientX;
+    if(drag.rotateIndex>=0){
+      root.dispatchEvent(new CustomEvent('wheel:rotate-model',{detail:{index:drag.rotateIndex,deltaX:(coordinate-drag.last)*.012,deltaY:(event.clientY-drag.lastY)*.012}}));
+      drag.last=coordinate;drag.lastY=event.clientY;drag.time=event.timeStamp;return;
+    }
     const dt=Math.max(8,event.timeStamp-drag.time)/1000;
     velocity=velocity*.3+(-(coordinate-drag.last)/pixelsPerItem/dt)*.7;
     position=drag.origin-primary/pixelsPerItem;
@@ -119,6 +125,7 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
     const locked=drag.locked,old=drag;
     const speed=cancelled||event.timeStamp-old.time>100?0:velocity;
     releasePointer();
+    if(old.rotateIndex>=0){root.dataset.motion='idle';return;}
     if(locked)settle(Math.round(position+(reduced.matches?0:clamp(speed*.18,-1.7,1.7))),speed);
     else if(cancelled)settle(Math.round(position));
   }
@@ -132,6 +139,11 @@ export function mountMobileAboutWheel(root: HTMLElement, open: (button: HTMLButt
     const index=buttons.indexOf(button),distance=offset(index-position);
     if(Math.abs(distance)<.025 && !frame)open(button);
     else settle(position+distance);
+  },{signal});
+  host.addEventListener('click',event=>{
+    const step=(event.target as Element).closest<HTMLElement>('[data-wheel-step]');
+    if(!step||!awake())return;
+    event.preventDefault();suppressClick=false;settle(Math.round(position)+Number(step.dataset.wheelStep));
   },{signal});
   root.addEventListener('keydown',event=>{
     if(!awake())return;

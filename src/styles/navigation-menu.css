@@ -37,3 +37,8 @@ html body [data-shared-menu-panel][data-menu-compact] .site-controls {position:s
 html body [data-shared-menu-panel][data-menu-compact] {height:100dvh;min-height:100%;max-height:none;padding-bottom:calc(28px + env(safe-area-inset-bottom));padding-left:max(24px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right));background:#000;color:#fff;}
 html.mobile-menu-open,html.mobile-menu-open body {background:#000!important;}
 @media(orientation:landscape) and (max-height:500px) {html body [data-shared-menu-panel][data-menu-compact] {padding-bottom:calc(14px + env(safe-area-inset-bottom));}}
+
+/* The current Contact destination has no row in the compact menu. */
+html:is([data-contact-hidden],.footer-active) body .site-header [data-shared-menu-panel][data-menu-compact] a[href="#contact"] {
+  display:none!important;
+}

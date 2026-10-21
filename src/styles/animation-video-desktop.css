@@ -11,7 +11,7 @@ html[data-services-desktop] #projects-expanded .gallery-contact {display:none;}
 html[data-services-desktop] #projects-expanded .gallery-desktop-links {display:flex;justify-content:space-evenly;align-items:center;gap:24px;font-size:13px;}
 html[data-services-desktop] #projects-expanded .gallery-project-link {background:#fa777b;padding:12px 20px;}
 html[data-services-desktop] #projects-expanded .gallery-footer-logo {width:70px;}
-#projects-expanded:has([data-av-desktop-layout]:not([hidden])) .gallery-scroll {overflow:hidden;height:100%;padding:0;}
+#projects-expanded:has([data-av-desktop-layout]:not([hidden])) .gallery-scroll {overflow:hidden;height:100%;padding:0;scrollbar-gutter:auto;}
 #projects-expanded [data-av-desktop-layout]:not([hidden]) {height:100dvh;display:grid;grid-template-rows:clamp(88px,15dvh,156px) minmax(0,1fr) 84px;background:#1c1c1c;color:#f7f7f7;}
 #projects-expanded [data-av-desktop-layout]>.gallery-masonry {display:none;}
 #projects-expanded [data-av-desktop-layout] .service-video-intro {min-height:0;height:auto;padding:24px;display:grid;grid-template-columns:auto minmax(200px,520px) 1fr;align-items:center;gap:32px;background:#1c1c1c;}
@@ -88,5 +88,16 @@ html[data-services-desktop] #projects-expanded .gallery-footer--compact .gallery
 [data-video-title-owned] :is([data-copy="3"] h2,.projects-number,[data-panel="3"] .project-mobile-copy h2,[data-panel="3"] .project-mobile-copy>span) * {visibility:hidden!important;}
 #projects-expanded[data-video-title-owner="clone"] [data-gallery="3"] [data-sticky-title],
 #projects-expanded[data-video-title-owner="clone"] [data-gallery="3"] [data-sticky-title] * {visibility:hidden!important;}
-#projects-expanded [data-av-desktop-layout] [data-service-number] {display:none!important;}
+#projects-expanded [data-av-desktop-layout] .service-video-intro {grid-template-columns:auto auto minmax(0,1fr);column-gap:clamp(10px,1.5vw,32px);}
+#projects-expanded [data-av-desktop-layout] .service-video-description {grid-column:3;max-width:520px;}
+#projects-expanded [data-av-desktop-layout] [data-service-number] {display:block!important;grid-column:2;align-self:center;justify-self:start;transform:translateY(-.65em);font-size:12px;}
+#projects-expanded[data-video-title-owner="clone"] [data-av-desktop-layout] [data-service-number] {visibility:hidden!important;}
 #projects-expanded [data-av-desktop-layout] [data-sticky-title] {color:#fff;mix-blend-mode:difference;-webkit-text-stroke-width:0;-webkit-text-fill-color:currentColor;}
+
+/* Shared desktop number motion owns visibility; no competing CSS entrance. */
+html[data-services-desktop] #projects-expanded [data-service-number] {animation:none!important;opacity:1;translate:none;}
+/* Each layout keeps its destination; only bracket motion is shared. */
+#projects-expanded [data-service-number]::before,
+#projects-expanded [data-service-number]::after,
+#projects-expanded [data-service-number-morph]::before,
+#projects-expanded [data-service-number-morph]::after {display:inline-block;clip-path:inset(0 0 var(--number-bracket-reveal,0%) 0);transform:translateY(var(--number-bracket-offset,0em));}

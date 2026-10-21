@@ -106,18 +106,18 @@
  html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-more::before{content:'+';font-size:26px;font-weight:400;line-height:1;color:var(--foreground);}
  html[data-tablet-portrait] .projects[data-mobile-stack] .projects-footer,html[data-tablet-portrait] .projects[data-mobile-stack] .projects-progress,html[data-tablet-portrait] .projects[data-mobile-stack] .projects-guides{display:none;}
 
- html[data-tablet-portrait] .projects[data-mobile-stack] .project-panel {padding-block:calc(18px - 10px * var(--compression,0));grid-template-rows:calc(66px - 24px * var(--compression,0)) minmax(0,1fr) calc(48px * (1 - var(--compression,0)));gap:calc(10px * (1 - var(--compression,0)));}
- html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-copy {grid-template-columns:calc(76px - 10px * var(--compression,0)) minmax(0,1fr);grid-template-rows:auto auto;min-height:0;height:100%;align-items:center;align-content:center;}
+ html[data-tablet-portrait] .projects[data-mobile-stack] .project-panel {padding-block:calc(18px - 10px * var(--compression,0));grid-template-rows:auto minmax(0,1fr) calc(48px * (1 - var(--compression,0)));gap:calc(10px * (1 - var(--compression,0)));}
+ html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-copy {grid-template-columns:calc(76px - 10px * var(--compression,0)) minmax(0,1fr);grid-template-rows:auto auto;min-height:0;height:auto;align-items:center;align-content:center;}
  html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-copy>span {font-size:calc(66px - 23px * var(--compression,0));line-height:1;align-self:stretch;display:flex;align-items:center;}
  html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-copy h2 {font-size:calc(clamp(18px,5.1vw,26px) - 2px * var(--compression,0));line-height:1;margin:0 0 4px;align-self:end;}
- html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-copy p {font-size:clamp(8px,2.1vw,10px);line-height:1.2;align-self:start;opacity:calc(1 - var(--compression,0));max-height:calc(48px * (1 - var(--compression,0)));overflow:hidden;}
+ html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-copy p {font-size:clamp(12px,2.1vw,14px);line-height:1.25;align-self:start;opacity:calc(1 - var(--compression,0));max-height:calc(160px * (1 - var(--compression,0)));overflow:hidden;}
  html[data-tablet-portrait] .projects[data-mobile-stack] .project-media,html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-controls {opacity:calc(1 - var(--compression,0));min-height:0;}
  html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-more {margin-left:auto;box-shadow:none;position:relative;}
  html[data-tablet-portrait] .projects[data-mobile-stack] .project-mobile-more::before {content:'';position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:22px;height:22px;background:var(--foreground);-webkit-mask:url('/icons/arrow.svg') center/contain no-repeat;mask:url('/icons/arrow.svg') center/contain no-repeat;}
  html[data-tablet-portrait] .projects[data-mobile-stack] .project-thumbs {margin-left:auto;box-shadow:none;height:32px;padding:0 12px;gap:6px;}
  html[data-tablet-portrait] .projects[data-mobile-stack] .project-thumbs button[aria-selected='true'] {width:20px;}
  html[data-tablet-portrait] .projects[data-mobile-stack] {margin-block:8svh 12svh;}
- html[data-tablet-portrait] .projects[data-mobile-stack] .projects-stage {height:100dvh;min-height:100dvh;padding:8px;box-sizing:border-box;}
+ html[data-tablet-portrait] .projects[data-mobile-stack] .projects-stage {height:100dvh;min-height:100dvh;padding:calc(76px + env(safe-area-inset-top,0px)) 8px 8px;box-sizing:border-box;}
  html[data-tablet-portrait] .projects[data-mobile-stack] .project-panel {box-sizing:border-box;}
 /* The native sticky handoff owns the spacer below Work and behind Brands. */
 html[data-ipad][data-tablet-portrait] .featured-brands {background:#1C1C1C;}

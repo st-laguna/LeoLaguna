@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { animateServiceNumber } from './service-number-transition';
 import { isPhoneViewport } from './responsive-layout';
 
 export function openServiceCover(dialog:HTMLDialogElement,shell:HTMLElement,title:HTMLElement|null,source:HTMLElement,index:number,reverse=false){
@@ -80,7 +81,10 @@ export function openServiceCover(dialog:HTMLDialogElement,shell:HTMLElement,titl
     gsap.set(clone,{x:0,y:0,scale:1});
     lineTargets.forEach(({node})=>{if(clone.contains(node))gsap.set(node,{x:0});});
   }
-  shared(title,sourceTitle);shared(number,sourceNumber);
+  const sharedNumber=!!number&&!!sourceNumber&&document.documentElement.hasAttribute('data-services-desktop');
+  let restoreNumber:(()=>void)|undefined;
+  shared(title,sourceTitle);
+  if(!sharedNumber)shared(number,sourceNumber);
   const originals=[sourceTitle,sourceNumber].filter((node):node is HTMLElement=>!!node);
   const originalVisibility=originals.map(node=>node.style.visibility);
   originals.forEach(node=>node.style.visibility="hidden");
@@ -96,7 +100,7 @@ export function openServiceCover(dialog:HTMLDialogElement,shell:HTMLElement,titl
   const prevent=(event:Event)=>event.preventDefault();dialog.addEventListener('wheel',prevent,{passive:false});dialog.addEventListener('touchmove',prevent,{passive:false});
   let resolve!:()=>void;const finished=new Promise<void>(done=>resolve=done);let cleaned=false;
   function clean(){
-    if(cleaned)return;cleaned=true;originals.forEach((node,i)=>node.style.visibility=originalVisibility[i]);panel.remove();clones.forEach(node=>node.remove());hidden.forEach(node=>node.style.removeProperty('visibility'));
+    if(cleaned)return;cleaned=true;restoreNumber?.();originals.forEach((node,i)=>node.style.visibility=originalVisibility[i]);panel.remove();clones.forEach(node=>node.remove());hidden.forEach(node=>node.style.removeProperty('visibility'));
     labels.forEach(node=>node.style.removeProperty('opacity'));controls.forEach((node,i)=>node.style.opacity=saved[i]);
     gsap.set(shell,{yPercent:0,clearProps:'visibility'});shell.style.removeProperty('--service-opening-background');dialog.removeAttribute('data-service-opening');dialog.removeEventListener('wheel',prevent);dialog.removeEventListener('touchmove',prevent);resolve();
   }
@@ -114,6 +118,7 @@ export function openServiceCover(dialog:HTMLDialogElement,shell:HTMLElement,titl
   if(outgoing)timeline.to(outgoing,{y:-20,opacity:0,clipPath:'inset(0 0 100%)',duration:.4,ease:'power2.in'},0);
   lineTargets.forEach(({node,x})=>timeline.to(node,{x,duration:.95,ease:'power3.inOut'},.08));
   targets.forEach(({clone,x,y,scale})=>timeline.to(clone,{x,y,scale,duration:.95,ease:'power3.inOut'},.08));
+  if(sharedNumber)restoreNumber=animateServiceNumber(dialog,number!,sourceNumber!,timeline,.08);
   if(reverse){timeline.progress(1,true);timeline.reverse();}
   else timeline.play();
   return {finished,finish:()=>{timeline.pause(reverse?0:timeline.duration());clean();},dispose:()=>{timeline.kill();clean();}};
@@ -186,8 +191,8 @@ function openVideoCover(dialog:HTMLDialogElement,shell:HTMLElement,title:HTMLEle
   const clone=document.createElement('div');clone.className='service-opening-shared';clone.dataset.videoTitleClone='';clone.setAttribute('aria-hidden','true');clone.textContent=title.textContent;
   Object.assign(clone.style,{position:'absolute',left:`${end.left}px`,top:`${end.top}px`,width:`${end.width/ratio}px`,...typography,fontSize:css.fontSize,whiteSpace:'nowrap',transformOrigin:'0 0',margin:'0'});
   // Copy the rendered source composition before ownership hides its originals.
-  const companions:Array<{original:HTMLElement;wrapper:HTMLElement;copy:HTMLElement;style:string|null;kind:string;rect:DOMRect}>=[];
-  for(const [kind,selector] of [['number','.projects-number'],['paragraph','[data-copy="3"] p'],['button','.projects-view-all']] as const){
+  const companions:Array<{original:HTMLElement;wrapper:HTMLElement;copy:HTMLElement;style:string|null;rect:DOMRect}>=[];
+  for(const [kind,selector] of [['paragraph','[data-copy="3"] p'],['button','.projects-view-all']] as const){
     const original=source.querySelector<HTMLElement>(selector);if(!original)continue;
     const r=original.getBoundingClientRect();if(!r.width||!r.height)continue;
     const copy=original.cloneNode(true) as HTMLElement;
@@ -198,7 +203,7 @@ function openVideoCover(dialog:HTMLDialogElement,shell:HTMLElement,title:HTMLEle
     const wrapper=document.createElement('div');wrapper.dataset.videoComposition=kind;wrapper.setAttribute('aria-hidden','true');wrapper.inert=true;
     Object.assign(wrapper.style,{position:'absolute',left:`${r.left}px`,top:`${r.top}px`,width:`${r.width}px`,height:`${r.height}px`,overflow:'hidden',zIndex:'5',pointerEvents:'none',transformOrigin:'0 0'});
     wrapper.append(copy);dialog.append(wrapper);
-    companions.push({original,wrapper,copy,style:original.getAttribute('style'),kind,rect:r});
+    companions.push({original,wrapper,copy,style:original.getAttribute('style'),rect:r});
     original.style.setProperty('visibility','hidden','important');
   }
   source.setAttribute('data-video-title-owned','');dialog.setAttribute('data-video-title-owner','clone');dialog.setAttribute('data-service-opening','');
@@ -206,11 +211,13 @@ function openVideoCover(dialog:HTMLDialogElement,shell:HTMLElement,title:HTMLEle
   gsap.set(clone,{x:valid?start.left-end.left:0,y:valid?start.top-end.top:0,scale:valid?1:ratio});
   const footer=title.closest('[data-gallery]')!.querySelector('.gallery-footer');
   let resolve!:()=>void,resolveExit:(()=>void)|undefined,cleaned=false;
+  let playerExit:gsap.core.Tween|undefined;
+  let restoreNumber:(()=>void)|undefined;
   const finished=new Promise<void>(done=>resolve=done);
   const block=(e:Event)=>e.preventDefault();
   function lock(){dialog.addEventListener('wheel',block,{passive:false});dialog.addEventListener('touchmove',block,{passive:false});}
   function unlock(){dialog.removeEventListener('wheel',block);dialog.removeEventListener('touchmove',block);}
-  function clean(){if(cleaned)return;cleaned=true;timeline.kill();panel.remove();clone.remove();companions.forEach(({original,wrapper,style})=>{wrapper.remove();if(style===null)original.removeAttribute('style');else original.setAttribute('style',style);});if(savedTitleStyle===null)title.removeAttribute('style');else title.setAttribute('style',savedTitleStyle);gsap.set(shell,{clearProps:'visibility'});if(footer)gsap.set(footer,{clearProps:'transform'});dialog.removeAttribute('data-service-opening');dialog.removeAttribute('data-video-title-owner');source.removeAttribute('data-video-title-owned');videoCovers.delete(dialog);unlock();resolve();resolveExit?.();}
+  function clean(){if(cleaned)return;cleaned=true;playerExit?.kill();timeline.kill();restoreNumber?.();panel.remove();clone.remove();companions.forEach(({original,wrapper,style})=>{wrapper.remove();if(style===null)original.removeAttribute('style');else original.setAttribute('style',style);});if(savedTitleStyle===null)title.removeAttribute('style');else title.setAttribute('style',savedTitleStyle);gsap.set(shell,{clearProps:'visibility'});if(footer)gsap.set(footer,{clearProps:'transform'});dialog.removeAttribute('data-service-opening');dialog.removeAttribute('data-video-title-owner');source.removeAttribute('data-video-title-owned');videoCovers.delete(dialog);unlock();resolve();resolveExit?.();}
   lock();
   const timeline=gsap.timeline({onComplete:()=>{dialog.removeAttribute('data-service-opening');unlock();resolve();},onReverseComplete:clean});
   timeline.to(panel,{backgroundColor:surface,y:0,height:innerHeight,duration:.95,ease:'power3.inOut'},0)
@@ -218,17 +225,19 @@ function openVideoCover(dialog:HTMLDialogElement,shell:HTMLElement,title:HTMLEle
     .set(shell,{visibility:'visible'},.95)
     .call(()=>dialog.setAttribute('data-video-title-owner',timeline.reversed()?'clone':'final'),[],.95)
     .set(clone,{visibility:'hidden'},.95).set(panel,{visibility:'hidden'},.95);
-  companions.forEach(({wrapper,copy,kind,rect:r})=>{
-    const number=kind==='number';
-    const scale=number?Math.min(1,24/parseFloat(getComputedStyle(copy).fontSize)):1;
-    timeline.to(wrapper,{x:number?innerWidth-24-r.width*scale-r.left:0,y:number?end.top-r.top:end.top-(start?.top||end.top),scale,duration:.95,ease:'power3.inOut'},0);
-    // Slide behind each own clipping window; reversing returns exact source geometry.
-    timeline.to(copy,{y:-r.height,duration:number?.3:.45,ease:'power3.inOut'},number?.65:.15);
+  companions.forEach(({wrapper,copy,rect:r})=>{
+    timeline.to(wrapper,{y:end.top-(start?.top||end.top),duration:.95,ease:'power3.inOut'},0);
+    timeline.to(copy,{y:-r.height,duration:.45,ease:'power3.inOut'},.15);
   });
+  const number=title.closest('[data-gallery]')!.querySelector<HTMLElement>('[data-service-number]');
+  const sourceNumber=source.querySelector<HTMLElement>('.projects-number');
+  if(number&&sourceNumber)restoreNumber=animateServiceNumber(dialog,number,sourceNumber,timeline);
   if(footer)timeline.fromTo(footer,{y:80},{y:0,duration:.45,ease:'power3.out'},.95);
   videoCovers.set(dialog,{reverse:()=>{
     const finished=new Promise<void>(done=>resolveExit=done);lock();
-    timeline.reverse();
+    const player=dialog.querySelector<HTMLElement>('[data-av-desktop]');
+    if(player){gsap.killTweensOf(player);playerExit=gsap.to(player,{clipPath:'inset(0 0 100% 0)',duration:.8,ease:'power2.inOut',onComplete:()=>{timeline.reverse();}});}
+    else timeline.reverse();
     return {finished,finish:()=>{timeline.progress(0);clean();},dispose:clean};
   }});
   return {finished,finish:()=>{timeline.progress(1);dialog.removeAttribute('data-service-opening');unlock();resolve();},dispose:clean};

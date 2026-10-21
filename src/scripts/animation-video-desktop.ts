@@ -38,7 +38,7 @@ if(root){
  function parallax(){scrollFrame=0;const center=track.scrollLeft+width/2;media.forEach((node,i)=>{const offset=reduced.matches?0:Math.max(-1,Math.min(1,(centers[i]-center)/width))*8;node.style.transform=`translateX(${offset}%)`;});}
  function clipGeometry(){clipStart=clips[active].offsetLeft-strip.offsetLeft;clipWidth=clips[active].offsetWidth;stripCycle=clips[10].offsetLeft-clips[0].offsetLeft;draw();}
  function measure(){width=track.clientWidth;centers=items.map(item=>item.offsetLeft+item.offsetWidth/2);if(width&&!moving){track.scrollLeft=centers[active]-width/2;parallax();clipGeometry();strip.scrollLeft=stripCycle;}}
- function activate(index:number){active=10+((index%10)+10)%10;index=active;moving=false;items.forEach((item,i)=>item.setAttribute('aria-pressed',String(i%10===index%10)));clips.forEach((clip,i)=>clip.setAttribute('aria-pressed',String(i%10===index%10)));media[index].append(video);video.poster=clips[index].dataset.poster!;video.src=clips[index].dataset.src!;video.load();track.scrollLeft=centers[index]-width/2;parallax();clipGeometry();strip.scrollLeft=stripCycle;draw();void play();}
+ function activate(index:number){active=10+((index%10)+10)%10;index=active;moving=false;items.forEach((item,i)=>item.setAttribute('aria-pressed',String(i%10===index%10)));clips.forEach((clip,i)=>clip.setAttribute('aria-pressed',String(i%10===index%10)));(zoom.open?zoom.querySelector('div')!:media[index]).append(video);video.poster=clips[index].dataset.poster!;video.src=clips[index].dataset.src!;video.load();track.scrollLeft=centers[index]-width/2;parallax();clipGeometry();strip.scrollLeft=stripCycle;draw();void play();}
  function go(index:number){index=Math.max(0,Math.min(29,index));video.pause();moving=true;tween?.kill();clearTimeout(settle);const position={x:track.scrollLeft};tween=gsap.to(position,{x:centers[index]-width/2,duration:reduced.matches?0:.65,ease:'power3.inOut',onUpdate:()=>{track.scrollLeft=position.x;parallax();},onComplete:()=>{tween=undefined;activate(index);}});}
  function onScroll(){if(!enabled())return;if(!moving && Math.abs(track.scrollLeft-(centers[active]-width/2))<2)return;if(!scrollFrame)scrollFrame=requestAnimationFrame(parallax);if(tween)return;video.pause();moving=true;clearTimeout(settle);settle=setTimeout(()=>{const center=track.scrollLeft+width/2;const index=centers.reduce((best,n,i)=>Math.abs(n-center)<Math.abs(centers[best]-center)?i:best,0);go(index);},140);}
  track.addEventListener('scroll',onScroll,options);
@@ -53,11 +53,15 @@ if(root){
  control('fullscreen').setAttribute('aria-label','Enlarge video / Ampliar video');
  control('fullscreen').addEventListener('click',()=>{const playing=!video.paused;zoom.querySelector('div')!.append(video);zoom.showModal();if(playing)void play();},options);
  for(const event of ['play','pause','ended','loadedmetadata','timeupdate','emptied'])video.addEventListener(event,sync,options);
+ // Advance through the same carousel sweep used by Next; the last clip wraps
+ // through the bounded copies. Explicit single-video Loop retains precedence.
+ video.addEventListener('ended',()=>{if(!video.loop&&allowed())go(active+1);},options);
  video.addEventListener('volumechange',sound,options);
  const intersection=new IntersectionObserver(entries=>{const latest=entries[entries.length-1];visible=latest.intersectionRatio>.25;if(entering||dialog.hasAttribute('data-service-opening'))return;if(!visible&&!zoom.open)video.pause();else if(opened&&video.currentTime===0)void play();},{threshold:[0,.25,.5]});intersection.observe(track);
  function configure(){const desktop=enabled();document.documentElement.toggleAttribute('data-services-desktop',desktop);root!.hidden=!desktop;gallery.toggleAttribute('data-av-desktop-layout',desktop);const open=desktop&&dialog.open&&!gallery.hidden&&!dialog.hasAttribute('data-media-closing');if(open&&!opened){opened=true;measure();go(active);}else if(!open){opened=false;video.pause();tween?.kill();tween=undefined;clearTimeout(settle);moving=false;if(!desktop)video.remove();}}
  const mutation=new MutationObserver(()=>{
    configure();
+   if(dialog.open&&dialog.hasAttribute('data-media-closing')){closeZoom();entering=false;return;}
    if(!opened){closeZoom();entering=false;gsap.killTweensOf(root);root!.removeAttribute('data-entered');root!.style.removeProperty('clip-path');return;}
    if(dialog.hasAttribute('data-service-opening')){entering=true;video.pause();gsap.killTweensOf(root);root!.removeAttribute('data-entered');gsap.set(root,{clipPath:'inset(0 0 100% 0)'});return;}
    requestAnimationFrame(measure);

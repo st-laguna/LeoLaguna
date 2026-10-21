@@ -267,8 +267,9 @@ function setFooterNavigation(active: boolean) {
     const remaining=Math.max(0,scroller.scrollHeight-scroller.clientHeight-scroller.scrollTop);
     // Read before reveal() changes attributes and starts entrance animations.
     const rect=footer!.getBoundingClientRect();
+    const handoffVisible=footer!.dataset.handoffProgress===undefined||Number(footer!.dataset.handoffProgress)>=.99;
     const headerBottom=document.querySelector('.site-header .site-nav')?.getBoundingClientRect().bottom ?? 60;
-    root.toggleAttribute('data-contact-hidden',rect.top<=viewportTop+headerBottom+24 && rect.bottom>viewportTop);
+    root.toggleAttribute('data-contact-hidden',handoffVisible&&rect.top<=viewportTop+headerBottom+24 && rect.bottom>viewportTop);
 
       if (remaining <= 4 && getComputedStyle(footer!.querySelector('.footer__compact-piece')!).display === 'contents') {
         const name = footer?.querySelector<HTMLElement>('.footer__name');
@@ -285,7 +286,7 @@ function setFooterNavigation(active: boolean) {
     const finalTop=viewportTop+Math.max(0,visibleHeight-rect.height);
     const inView=rect.top<viewportTop+visibleHeight && rect.bottom>viewportTop+100;
     const directMenu=nav && getComputedStyle(nav).position==='fixed' && !root.hasAttribute('data-tablet-portrait');
-    const active=directMenu ? inView : inView&&(rect.top<=finalTop+24||remaining<=8);
+    const active=handoffVisible&&(directMenu ? inView : inView&&(rect.top<=finalTop+24||remaining<=8));
     if((rect.top>innerHeight+40||rect.bottom<0)&&!reduced.matches){
       animations.forEach(a=>a.cancel());animations.clear();
       entranceElements.forEach(el=>el.removeAttribute('data-entered'));

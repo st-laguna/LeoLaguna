@@ -2,7 +2,7 @@ import gsap from 'gsap';
 import { PROPS } from './sceneConfig.js';
 import { message } from './messages.js';
 
-export const editorialMedia = '(min-width:1001px) and (min-height:501px) and (hover:hover) and (pointer:fine), (min-width:1367px) and (min-height:701px) and (orientation:landscape) and (any-pointer:coarse)';
+export const editorialMedia = '(min-width:701px) and (hover:hover) and (pointer:fine), (min-width:1367px) and (min-height:701px) and (orientation:landscape) and (any-pointer:coarse)';
 export function isEditorialAbout() {
   const root=document.documentElement;
   return !root.hasAttribute('data-tablet-portrait') && (root.hasAttribute('data-large-tablet-landscape') || (matchMedia(editorialMedia).matches&&!root.hasAttribute('data-ipad')));
@@ -32,10 +32,26 @@ export function mountEditorialAbout(section, getScene, on, reduced) {
   const originalArrow=back.firstElementChild.textContent;back.firstElementChild.textContent='←';
   function setState(next){state=next;section.dataset.aboutState=next;const busy=next==='object-transitioning'||next==='returning';zoom.disabled=busy||next==='loading';back.disabled=!selected||busy;close.disabled=busy;query('[data-explore]').inert=busy;for(const button of roller.querySelectorAll('button'))button.disabled=busy||next==='loading';}
   const title=query('#about-editorial-title');
-  let fittedWidth=-1;
+  let fittedWidth=-1, bioScale=1;
   // Ignore height-only observer notifications caused by our own font fitting.
-  function fitTitle(){const widthNow=title.clientWidth;if(widthNow===fittedWidth)return;fittedWidth=widthNow;for(const line of title.children){line.style.fontSize='100px';const range=document.createRange();range.selectNodeContents(line);const width=range.getBoundingClientRect().width;line.style.fontSize=(100*title.clientWidth/width)+'px';for(let i=0;i<3;i++){const measured=range.getBoundingClientRect().width;line.style.fontSize=(parseFloat(line.style.fontSize)*title.clientWidth/measured)+'px';}const originalSize=parseFloat(line.style.fontSize);line.style.lineHeight=(originalSize*.95)+'px';line.style.fontSize=(originalSize-1)+'px';}}
-  const titleObserver=new ResizeObserver(fitTitle);titleObserver.observe(title);document.fonts.ready.then(()=>{if(section.hasAttribute('data-editorial')){fittedWidth=-1;fitTitle();}});
+  function fitTitle(){const desktopFit=!document.documentElement.hasAttribute('data-large-tablet-landscape');const widthNow=title.clientWidth*bioScale*(desktopFit?Math.min(1,.55+innerHeight/2000):1);if(widthNow===fittedWidth)return;fittedWidth=widthNow;for(const line of title.children){line.style.fontSize='100px';const range=document.createRange();range.selectNodeContents(line);const width=range.getBoundingClientRect().width;line.style.fontSize=(100*widthNow/width)+'px';for(let i=0;i<3;i++){const measured=range.getBoundingClientRect().width;line.style.fontSize=(parseFloat(line.style.fontSize)*widthNow/measured)+'px';}const originalSize=parseFloat(line.style.fontSize);line.style.lineHeight=(originalSize*.95)+'px';line.style.fontSize=(originalSize-1)+'px';}}
+  const bio=query('.about-editorial__bio');
+  let fitting=false,fitFrame=0;
+  function fitBio(){
+    fitFrame=0;if(fitting||!section.hasAttribute('data-editorial'))return;
+    if(document.documentElement.hasAttribute('data-about-mobile')||document.documentElement.hasAttribute('data-large-tablet-landscape')){fitTitle();return;}
+    fitting=true;
+    const apply=scale=>{bioScale=scale;section.style.setProperty('--bio-scale',String(scale));fittedWidth=-1;fitTitle();};
+    const fits=()=>{const style=getComputedStyle(bio),box=bio.getBoundingClientRect();return bio.lastElementChild.getBoundingClientRect().bottom+bio.scrollTop<=box.bottom-parseFloat(style.paddingBottom)+.5;};
+    apply(1);
+    if(!fits()){let lo=.65,hi=1;for(let i=0;i<9;i++){const mid=(lo+hi)/2;apply(mid);if(fits())lo=mid;else hi=mid;}apply(lo);}
+    bio.tabIndex=fits()?-1:0;
+    fitting=false;
+  }
+  function scheduleFit(){if(!fitFrame)fitFrame=requestAnimationFrame(fitBio);}
+  const titleObserver=new ResizeObserver(scheduleFit);titleObserver.observe(bio);
+  on(window,'resize',scheduleFit);on(window,'leo:language-change',scheduleFit);
+  document.fonts.ready.then(scheduleFit);
   const picker=query('[data-picker]');
   const choices=Array.from(query('[data-explore]').querySelectorAll('button'));
   const ordered=choices.filter(b=>b.dataset.id!=='morena').concat(choices.filter(b=>b.dataset.id==='morena'));
@@ -86,5 +102,5 @@ export function mountEditorialAbout(section, getScene, on, reduced) {
   on(window,'leo:language-change',language);
   on(window,'leo:page-reveal',enter);
   language();
-  return {select,settled,status,ready,enter,pause(paused){const button=query('[data-pause]');button.replaceChildren();const icon=document.createElement('span');icon.className='about-editorial__motion-icon';icon.style.maskImage=`url('/icons/${paused?'play':'pause'}.svg')`;button.append(icon);button.setAttribute('aria-label',message(paused?'Play motion':'Pause motion'));},zoom(value){zoom.value=String(Math.round(value*100));},clock(now){date.textContent=new Intl.DateTimeFormat(document.documentElement.lang==='es'?'es-PE':'en-US',{timeZone:'America/Lima',weekday:'long',month:'long',day:'numeric',year:'numeric'}).format(now)+' (UTC−5)';},dispose(){titleObserver.disconnect();statusTween?.kill();rollTween?.kill();roller.remove();entrance?.revert();date.remove();back.firstElementChild.textContent=originalArrow;query('[data-explore]').inert=false;restored.reverse().forEach(restore=>restore());section.removeAttribute('data-editorial');section.removeAttribute('data-context-open');delete section.dataset.aboutState;section.setAttribute('aria-labelledby','about-title');}};
+  return {select,settled,status,ready,enter,pause(paused){const button=query('[data-pause]');button.replaceChildren();const icon=document.createElement('span');icon.className='about-editorial__motion-icon';icon.style.maskImage=`url('/icons/${paused?'play':'pause'}.svg')`;button.append(icon);button.setAttribute('aria-label',message(paused?'Play motion':'Pause motion'));},zoom(value){zoom.value=String(Math.round(value*100));},clock(now){date.textContent=new Intl.DateTimeFormat(document.documentElement.lang==='es'?'es-PE':'en-US',{timeZone:'America/Lima',weekday:'long',month:'long',day:'numeric',year:'numeric'}).format(now)+' (UTC−5)';},dispose(){cancelAnimationFrame(fitFrame);section.style.removeProperty('--bio-scale');titleObserver.disconnect();bio.removeAttribute('tabindex');bio.scrollTop=0;statusTween?.kill();rollTween?.kill();roller.remove();entrance?.revert();date.remove();back.firstElementChild.textContent=originalArrow;query('[data-explore]').inert=false;restored.reverse().forEach(restore=>restore());section.removeAttribute('data-editorial');section.removeAttribute('data-context-open');delete section.dataset.aboutState;section.setAttribute('aria-labelledby','about-title');}};
 }

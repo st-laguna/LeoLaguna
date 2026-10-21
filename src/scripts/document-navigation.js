@@ -91,6 +91,15 @@ function coverNavigation() {
     root.append(coverage);
   }
 }
+// Restore the physical mobile cover in the head, before any destination paint.
+try {
+  const pending=JSON.parse(sessionStorage.getItem('leo-mobile-navigation')||'null');
+  sessionStorage.removeItem('leo-mobile-navigation');
+  if(pending?.path===location.pathname&&Date.now()-pending.time<30000&&navType!=='reload'&&isMobileAbout()){
+    root.setAttribute('data-mobile-navigation-entry','');root.setAttribute('data-page-transition','');
+    coverNavigation();coverage.style.background=pending.color;
+  }
+} catch { /* Ordinary navigation still works without storage. */ }
 function recoverNavigation(nav) {
   if (activeNavigation !== nav || nav.failed) return;
   // Install a real cover BEFORE dropping the browser's snapshot. The timeout
@@ -113,6 +122,7 @@ function cleanNavigation(nav) {
   activeTransition = undefined;
   coverage?.remove(); coverage = undefined;
   root.removeAttribute('data-page-transition');
+  root.removeAttribute('data-mobile-navigation-entry');
   window.dispatchEvent(new Event('leo:page-reveal'));
 }
 function failNavigation(nav, error) {
@@ -165,12 +175,28 @@ document.addEventListener('click', event => {
   const url = new URL(link.href, location.href);
   if (url.origin !== location.origin || url.pathname === location.pathname) return;
   try { sessionStorage.setItem('leo-page-destination', JSON.stringify({path:url.pathname,time:Date.now()})); } catch {}
+  if(isMobileAbout()&&!reduced.matches){
+    event.preventDefault();
+    if(aboutCovering)return;
+    aboutCovering=true;window.dispatchEvent(new Event('leo:close-menu'));
+    coverNavigation();
+    const color=getComputedStyle(root).getPropertyValue('--background').trim()||'#1C1C1C';
+    coverage.style.background=color;
+    const wipe=coverage.animate(snapshotFrames().newFrames.map(({offset,clipPath})=>({offset,clipPath})),{duration:650,fill:'both'});
+    animations.push(wipe);
+    wipe.finished.then(()=>{
+      try{sessionStorage.setItem('leo-mobile-navigation',JSON.stringify({path:url.pathname,color,time:Date.now()}));}catch{}
+      location.assign(url.href);
+    }).catch(()=>{aboutCovering=false;cleanNavigation();});
+    return;
+  }
   if (/^\/about\/?$/.test(url.pathname) && !isMobileAbout() && !reduced.matches) {
     event.preventDefault();
     if (aboutCovering) return;
     aboutCovering = true;
     coverNavigation();
-    coverage.style.background = (root.dataset.theme || root.dataset.globalTheme) === 'dark' ? '#1C1C1C' : '#EDEDED';
+    // Match About desktop's initial light surface across the document handoff.
+    coverage.style.background = '#EDEDED';
     const wipe = coverage.animate(snapshotFrames().newFrames, {duration:300,fill:'both'});
     animations.push(wipe);
     wipe.finished.then(() => location.assign(url.href)).catch(() => { aboutCovering=false; });
@@ -190,16 +216,18 @@ function revealPage(event) {
   // Direct loads/reloads have no browser snapshot. Reuse destination readiness
   // under the physical cover installed in the head.
   const initialDestination = retryDestination || (!restoredFromCache ? entryDestination : null);
-  const transition = event.viewTransition || (initialDestination ? {
+  const mobileEntry=root.hasAttribute('data-mobile-navigation-entry');
+  if(mobileEntry){event.viewTransition?.ready.catch(()=>{});event.viewTransition?.skipTransition();}
+  const transition = (!mobileEntry&&event.viewTransition) || ((initialDestination||mobileEntry) ? {
     skipTransition() {}, ready:Promise.resolve(), finished:Promise.resolve(),
   } : null);
   if (!transition) { cleanNavigation(); return; }
   root.setAttribute('data-cross-page', '');
   root.removeAttribute('data-hero-intro');
   if (reduced.matches && !initialDestination) { transition.skipTransition(); cleanNavigation(); return; }
-  if (initialDestination && (!event.viewTransition || reduced.matches)) coverNavigation();
+  if ((initialDestination||mobileEntry) && (!event.viewTransition || reduced.matches || mobileEntry)) coverNavigation();
   activeTransition = transition;
-  const nav = {id:++navigationId, transition, fallback:!!retryDestination || !event.viewTransition || reduced.matches, failed:false, controller:undefined};
+  const nav = {id:++navigationId, transition, fallback:mobileEntry || !!retryDestination || !event.viewTransition || reduced.matches, failed:false, controller:undefined};
   activeNavigation = nav;
   root.setAttribute('data-page-transition', '');
   // Content enters inside the new snapshot; it is not a second page overlay.
@@ -208,6 +236,7 @@ function revealPage(event) {
   retryDestination = null;
   restoredFromCache = false;
   const destinationReady = (async () => {
+    if(mobileEntry)await Promise.race([documentReady,initializationFailed]);
     if (!anchorHash) return;
     await Promise.race([documentReady, initializationFailed]);
     if (activeNavigation !== nav) return;
@@ -248,6 +277,10 @@ function revealPage(event) {
     if (!nav.fallback) await entrance?.finished();
     // Resize can invalidate layout during the text entrance as well.
     await nav.controller?.ready();
+    if(mobileEntry&&nav.fallback&&coverage&&!reduced.matches){
+      const wipe=coverage.animate(snapshotFrames().oldFrames.map(({offset,clipPath})=>({offset,clipPath})),{duration:650,fill:'both'});
+      animations.push(wipe);await wipe.finished.catch(()=>{});
+    }
     if (activeNavigation === nav) cleanNavigation(nav);
   }).catch(error => failNavigation(nav, error));
   timer = setTimeout(() => recoverNavigation(nav), 8000);

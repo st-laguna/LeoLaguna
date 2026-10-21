@@ -113,7 +113,7 @@ html[data-page="case-study"] .site-header__footer-logo {visibility:visible;}
  .case-study[data-horizontal] .case-study__intro {padding:88px var(--page-gap) 32px;gap:24px;}
  .case-study[data-horizontal] h1 {font-size:clamp(36px,10vw,56px);}
  .case-study[data-horizontal] .case-study__images {--case-media-height:calc(100svh - 140px);padding-block:88px 52px;gap:32px;}
- .case-study[data-horizontal] .case-study__end {padding:80px var(--page-gap) 24px;gap:20px;overflow:hidden;}
+ .case-study[data-horizontal] .case-study__end {padding:80px var(--page-gap) 24px;gap:20px;overflow-y:auto;}
  .case-study[data-horizontal] .case-study__end h2 {font-size:clamp(27px,7.2vw,38px);max-width:none;}
  .case-study[data-horizontal] .case-study__next-heading {flex-direction:column;align-items:flex-start;gap:8px;}
  .case-study[data-horizontal] .case-study__next-heading>span {flex:none;text-align:left;}
@@ -127,13 +127,14 @@ html[data-page="case-study"] .site-header__footer-logo {visibility:visible;}
  .case-study__model-hint {grid-column:1/-1;}
 }
 
-@media(max-width:1000px) and (max-height:500px) and (any-pointer:coarse) {
+@media(max-width:1000px) and (max-height:500px) and (orientation:landscape) and (any-pointer:coarse) {
  .case-study[data-horizontal] .case-study__intro,.case-study[data-horizontal] .case-study__end {flex:0 0 100vw;width:100vw;}
  .case-study[data-horizontal] .case-study__intro {padding:64px var(--page-gap) 24px;gap:20px;}
  .case-study__intro-title {display:flex;align-items:center;gap:16px;}
  .case-study__intro-direction {display:block;flex:none;font-size:32px;}
- .case-study[data-horizontal] .case-study__end {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);align-items:center;padding:64px var(--page-gap) 16px;gap:24px;overflow:hidden;}
- .case-study[data-horizontal] .case-study__end .case-study__next {gap:8px;}
+ .case-study[data-horizontal] .case-study__end {display:flex;flex-flow:row wrap;align-items:center;align-content:flex-start;padding:64px var(--page-gap) 16px;gap:24px;overflow-y:auto;}
+ .case-study[data-horizontal] .case-study__end .case-study__others {flex:1 0 13rem;min-width:0;max-width:100%;}
+ .case-study[data-horizontal] .case-study__end .case-study__next {flex:1.4 0 18.2rem;width:auto;min-width:0;max-width:100%;gap:8px;}
  .case-study[data-horizontal] .case-study__end .case-study__preview img {height:30.375svh;}
  .case-study[data-horizontal] .case-study__end h2 {font-size:24px;}
  .case-study__next-heading {gap:10px;}

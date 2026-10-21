@@ -217,3 +217,10 @@ html body .brands[data-mobile-streams][data-landscape-streams] .brands-cell[data
  html body .brands[data-mobile-streams][data-landscape-streams] .brands-cell[aria-hidden="true"] {display:none;}
 }
 
+
+/* Optical centering moves the original composition without resizing its cells. */
+@media(min-width:1001px) {
+  [data-featured-brands] > .brands:not([data-mobile-streams]) .brands-layout {
+    translate:var(--brands-center-x,0px) 0;
+  }
+}

@@ -2,11 +2,15 @@ import { initBrandPreview } from './brand-preview';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { registerScrollStops } from './scroll-pacing';
+import { mountBrandsFooterHandoff } from './brands-footer-handoff';
+import { centerBrandComposition } from './brand-centering';
 gsap.registerPlugin(ScrollTrigger);
 const section=document.querySelector<HTMLElement>('[data-brands]');
 if(section){
+  const removeFooterHandoff=mountBrandsFooterHandoff(section);
+  const removeCentering=centerBrandComposition(section);
   const removeStop = registerScrollStops(section);
-  if(import.meta.hot)import.meta.hot.dispose(removeStop);
+  if(import.meta.hot)import.meta.hot.dispose(()=>{removeStop();removeFooterHandoff();removeCentering();});
   function updateLogos(){
     const dark=document.documentElement.dataset.theme==='dark';
     section!.querySelectorAll<HTMLImageElement>('[data-brand-white]').forEach(img=>{

@@ -134,9 +134,9 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
     const promote = (active: boolean) => layers.forEach(layer => layer.style.willChange = active && !largeTablet() && !layer.closest('[data-service-lead]') ? 'transform,opacity' : 'auto');
     gsap.set(content, { autoAlpha:0, y:20 });
     gsap.set(title, { xPercent:-50, yPercent:-50, y:0, scale:1, opacity:1 });
-    gsap.set(eyebrow,{xPercent:-50,yPercent:-100,y:()=>-title.offsetHeight/2-24});
-    if(number&&!phone)gsap.set(number,{xPercent:-50,yPercent:-100,y:()=>-innerWidth*.07-54});
-    gsap.set(hint,{xPercent:-50,y:()=>title.offsetHeight/2+24,autoAlpha:1});
+    gsap.set(eyebrow,{x:0,xPercent:-50,yPercent:-100,y:()=>-title.offsetHeight/2-24});
+    if(number&&!phone)gsap.set(number,{x:0,xPercent:-50,yPercent:-100,y:()=>-innerWidth*.07-54});
+    gsap.set(hint,{x:0,xPercent:-50,y:()=>title.offsetHeight/2+24,autoAlpha:1});
     if(phone){
       gsap.set([title,eyebrow,content,...(number?[number]:[])],{xPercent:0,yPercent:0,x:0,y:0,scale:1,autoAlpha:1});
       gsap.set(intro,{xPercent:-50,yPercent:-50,x:0,y:0});

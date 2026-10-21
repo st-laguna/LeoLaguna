@@ -1,15 +1,16 @@
 @font-face{font-family:Contact Host;src:url('/about/fonts/HostGrotesk-VariableFont_wght.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* Keep fields readable; short viewports scroll the existing modal instead of shrinking the card. */
 /* Coordinates follow carta.svg's 640.25 × 824.07 viewBox. */
 html body .contact-modal{--contact-backdrop:0;--contact-blur:0px;position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:#1c1c1c;overflow:auto;overscroll-behavior:contain;color-scheme:light;font-family:Contact Host,'Host Grotesk',sans-serif}
 .contact-modal:not([open]){display:none}
 .contact-modal::backdrop{background:rgb(0 0 0 / var(--contact-backdrop));backdrop-filter:blur(var(--contact-blur));-webkit-backdrop-filter:blur(var(--contact-blur))}
 .contact-modal__stage{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;box-sizing:border-box;perspective:1400px;gap:8px}
-html body .contact-card{position:relative;flex:none;width:min(640.25px,calc((100svh - 96px) * .77694),calc(100vw - 32px));aspect-ratio:640.25 / 824.07;margin:0;padding:0;border:0;background:transparent;container-type:inline-size;transform-origin:50% 65%;box-sizing:border-box;font-weight:500}
+html body .contact-card{position:relative;flex:none;width:min(640.25px,max(480px,calc((100svh - 96px) * .77694)),calc(100vw - 32px));aspect-ratio:640.25 / 824.07;margin:0;padding:0;border:0;background:transparent;container-type:inline-size;transform-origin:50% 65%;box-sizing:border-box;font-weight:500}
 .contact-card__geometry{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 html body .contact-card :is(input,textarea,button,h2,p,label,output){position:absolute;margin:0;box-sizing:border-box;font-family:inherit;color:#1c1c1c;line-height:1.2;border-radius:0;text-transform:none}
 html body .contact-card :is(input,textarea,button){background:transparent;border:0;box-shadow:none}
 html body .contact-card button{cursor:pointer}
-html body .contact-card :is(input,textarea){outline:none;font-size:2.8114cqw;letter-spacing:.04em;font-weight:500;padding:0}
+html body .contact-card :is(input,textarea){outline:none;font-size:max(16px,2.8114cqw);letter-spacing:.04em;font-weight:500;padding:0}
 html body .contact-card :is(input,textarea)::placeholder{color:#8c8c8c;opacity:1}
 /* Clip the browser autofill paint to glyphs so the material remains visible. */
 html body .contact-card__email:autofill,
@@ -27,17 +28,17 @@ html body .contact-card :is(input,textarea):focus-visible{outline:none}
 .contact-card:has(.contact-card__message:focus-visible) .contact-card__message-outline,
 .contact-card:has(.contact-card__email:focus-visible) .contact-card__email-outline{stroke-width:2}
 html body .contact-card :is(button,h2):focus-visible{outline:2px solid #1c1c1c;outline-offset:3px}
-html body .contact-card :is(label,.contact-card__copy-label){font-size:2.8114cqw;letter-spacing:.22em;font-weight:500}
+html body .contact-card :is(label,.contact-card__copy-label){font-size:max(11px,2.8114cqw);letter-spacing:.22em;font-weight:500}
 .contact-card__dot{position:absolute;left:6.56%;top:6.73%;width:2.04%;aspect-ratio:1;background:#ff6e4a;clip-path:circle(50%)}
-html body .contact-card__title{left:11.545%;top:5.91%;font-size:2.9457cqw;letter-spacing:.2em;font-weight:500;white-space:nowrap}
+html body .contact-card__title{left:11.545%;top:5.91%;font-size:max(12px,2.9457cqw);letter-spacing:.2em;font-weight:500;white-space:nowrap}
 html body .contact-card__close{left:86.9%;top:4.65%;width:5.3%;height:4.12%;display:grid;place-items:center;padding:.6cqw}
 .contact-card__close svg{width:100%;height:100%}
 html body .contact-card__email-label{left:10.143%;top:16.07%;font-weight:600}
-html body .contact-card__email{left:13.527%;top:23.27%;width:72%;height:2.95%}
+html body .contact-card__email{left:13.527%;top:21.65%;width:72%;height:5.9%;min-height:24px}
 html body .contact-card__message-label{left:10.143%;top:31.56%}
-html body .contact-card__counter{right:10.14%;top:32.17%;font-size:2.1866cqw;letter-spacing:.14em;color:#6e6e6e;font-weight:500}
+html body .contact-card__counter{right:10.14%;top:32.17%;font-size:max(10px,2.1866cqw);letter-spacing:.14em;color:#6e6e6e;font-weight:500}
 html body .contact-card__message{left:14.36%;top:40.38%;width:71.8%;height:17.7%;resize:none;overflow:auto}
-html body .contact-card__submit{left:37.11%;top:66.38%;width:25.78%;height:4.89%;font-size:3.7485cqw;letter-spacing:.1em;font-weight:600;padding:0;transition:opacity .2s ease}
+html body .contact-card__submit{left:37.11%;top:66.38%;width:25.78%;height:4.89%;font-size:max(12px,3.7485cqw);letter-spacing:.1em;font-weight:600;padding:0;transition:opacity .2s ease}
 html body .contact-card__submit:disabled{opacity:.45;cursor:default}
 /* The full SVG-aligned rectangle is the submit hit area. */
 html body .contact-card__submit{scale:1;transition:scale .18s ease,opacity .2s ease}
@@ -47,10 +48,10 @@ html body .contact-card__submit[data-contact-released]:not(:active),html body .c
 @media(prefers-reduced-motion:reduce){html body .contact-card__submit{scale:1!important}}
 html body .contact-card__copy-label{position:absolute;left:10%;top:75.65%}
 html body .contact-card__copy{left:10.143%;top:80.35%;width:70.29%;height:6.795%;padding:0}
-html body .contact-card__copy span{position:absolute;left:29.04%;top:27%;font-size:3.7485cqw;font-weight:400;letter-spacing:.04em;white-space:nowrap}
-html body .contact-card__status{left:10.143%;top:89%;width:79.657%;font-size:1.9cqw;text-align:center;line-height:1.25}
+html body .contact-card__copy span{position:absolute;left:29.04%;top:27%;font-size:max(12px,3.7485cqw);font-weight:400;letter-spacing:.04em;white-space:nowrap}
+html body .contact-card__status{left:10.143%;top:89%;width:79.657%;font-size:max(11px,1.9cqw);text-align:center;line-height:1.25}
 .contact-modal__verification{flex:none;max-width:100%;font-family:inherit}
-@media(max-width:600px){html body .contact-card :is(input,textarea){font-size:16px;letter-spacing:0}html body .contact-card__status{font-size:11px}html body .contact-card__submit{font-size:10px;letter-spacing:.06em}html body .contact-card__title{font-size:12px;letter-spacing:.12em}}
+@media(max-width:600px){html body .contact-card :is(input,textarea){font-size:16px;letter-spacing:0}html body .contact-card__status{font-size:11px}html body .contact-card__submit{letter-spacing:.06em}html body .contact-card__title{font-size:12px;letter-spacing:.12em}}
 @media(prefers-reduced-motion:reduce){html body .contact-card *{transition:none!important}}
 
 /* Enlarge touch targets without changing the reference icon/button geometry. */
