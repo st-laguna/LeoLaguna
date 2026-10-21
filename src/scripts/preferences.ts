@@ -39,9 +39,8 @@ import { isMobileAbout } from './about/mobileAboutDevice.js';
 
   const isAboutPage = root.dataset.page === 'about';
   function initialTheme(): Theme {
-    if(isAboutPage)return root.dataset.theme === 'dark' ? 'dark' : 'light';
-    const saved=readPreference('leo-theme');
-    return saved==='dark'||saved==='light'?saved:'dark';
+    // The pre-paint entry sets light; subsequent updates use the live selection.
+    return root.dataset.theme === 'dark' ? 'dark' : 'light';
   }
   function applyTheme(theme: Theme) {
     if(!isAboutPage)root.dataset.globalTheme = theme;
@@ -131,7 +130,7 @@ import { isMobileAbout } from './about/mobileAboutDevice.js';
 
   async function transitionTheme(theme: Theme) {
     if (themeTransitioning) return;
-    const commit = () => { applyTheme(theme); if(!isAboutPage)savePreference('leo-theme', theme); };
+    const commit = () => { applyTheme(theme); };
     if(document.querySelector('[data-about]')){commit();return;}
     if (!themeWipe || matchMedia('(prefers-reduced-motion: reduce)').matches) {
       commit();

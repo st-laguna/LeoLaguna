@@ -10,7 +10,7 @@ import mobileAboutDevice from '../scripts/about/mobileAboutDevice.js?raw';
 // Keep the desktop preload behavior without fetching 3D assets on mobile/iPad.
 const mobileAboutPrepaint = '(() => {\n' + mobileAboutDevice.replace(/^export /gm, '') + `
   document.documentElement.toggleAttribute('data-about-mobile', isMobileAbout());
-  document.documentElement.dataset.theme=isMobileAbout()?'dark':'light';
+  document.documentElement.dataset.theme='light';
   if (!isMobileAbout()) {
     for (const name of ['leo', 'simba', 'morena']) {
       const link = document.createElement('link');

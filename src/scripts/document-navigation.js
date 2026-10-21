@@ -16,20 +16,19 @@ window.addEventListener('error', event => {
     rejectInitialization(event.error);
   }
 }, true);
-let aboutThemeInitialized = false;
+let themeInitialized = false;
 function restorePreferences() {
   try {
-    const saved=localStorage.getItem('leo-theme');
-    root.dataset.globalTheme = saved==='light'||saved==='dark'?saved:'dark';
     root.lang = localStorage.getItem('leo-language') === 'es' ? 'es' : 'en';
   } catch {
-    root.dataset.globalTheme = 'dark';
     root.lang = 'en';
   }
-  if(root.dataset.page === 'about') {
-    if(!aboutThemeInitialized)root.dataset.theme=isMobileAbout()?'dark':'light';
-    aboutThemeInitialized=true;
-  } else root.dataset.theme=root.dataset.globalTheme;
+  // Every document entry starts light. Later reveals must preserve toggle input.
+  if(!themeInitialized){
+    root.dataset.globalTheme='light';
+    root.dataset.theme='light';
+    themeInitialized=true;
+  }
 }
 restorePreferences();
 // Prepare only the destination document on explicit pointer/keyboard intent.
@@ -290,7 +289,7 @@ window.addEventListener('pagereveal', revealPage);
 // through the same initialization barrier, after their deferred modules mount.
 if (!('onpagereveal' in window)) void documentReady.then(() => revealPage({}));
 window.addEventListener('pageshow', event => {
-  if(event.persisted)aboutThemeInitialized=false;
+  if(event.persisted)themeInitialized=false;
   restorePreferences();
   aboutCovering = false;
   if (event.persisted) root.setAttribute('data-cross-page', '');
