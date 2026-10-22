@@ -5,6 +5,6 @@ import {caseStudies} from '../../data/case-studies';
 export function getStaticPaths(){return caseStudies.map(project=>({params:{slug:project.slug},props:{project}}));}
 const {project}=Astro.props;
 ---
-<BaseLayout title={project.title+' — Leo Laguna'} page="case-study" lang="en">
+<BaseLayout title={project.title+' — Leo Laguna'} description={project.description} page="case-study" lang="en">
   <CaseStudy project={project} />
 </BaseLayout>

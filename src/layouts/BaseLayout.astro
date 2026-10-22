@@ -9,6 +9,7 @@ import '../styles/compact-laptop.css';
 import '../styles/large-tablet-landscape.css';
 import '../styles/touch-section-palette.css';
 import HomeSEO from '../components/HomeSEO.astro';
+import Canonical from '../components/Canonical.astro';
 import PageNavigation from '../components/PageNavigation.astro';
 import NavigationMenu from '../components/NavigationMenu.astro';
 import {readFileSync} from 'node:fs';
@@ -51,6 +52,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <Canonical />
     {Astro.url.pathname === '/' && <HomeSEO title={title} description={description} />}
     <PageNavigation />
     <script is:inline>

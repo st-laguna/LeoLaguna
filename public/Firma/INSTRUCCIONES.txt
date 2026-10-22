@@ -1,0 +1,17 @@
+FIRMA DE CORREO — LEO LAGUNA
+
+1. Esta carpeta contiene logo.png e iconos SVG proporcionados por ti.
+2. Para que Gmail y los destinatarios vean las imágenes de modo confiable, publica estos seis archivos en https://www.leolaguna.com/email-signature/ (mismos nombres).
+3. Comprueba por separado que https://www.leolaguna.com/email-signature/logo.png muestra el logotipo en un navegador.
+4. Una vez publicados, abre firma_para_web.html en un navegador, selecciona visualmente solo la firma y copia (Ctrl+C).
+5. Ve a Gmail > Configuración > Ver todos los ajustes > General > Firma, crea una nueva firma y pega (Ctrl+V).
+6. Asocia la firma a hello@leolaguna.com en nuevos mensajes y respuestas; guarda cambios.
+7. Envía correo de prueba a otro proveedor y confirma que imágenes y enlaces aparecen y funcionan.
+
+LINKS CONFIGURADOS:
+https://www.leolaguna.com/
+https://www.linkedin.com/in/leolaguna/
+https://www.instagram.com/laguna.99/
+mailto:hello@leolaguna.com
+
+No basta con insertar una imagen única, porque cada enlace debe ser independiente. Si abres vista_previa.html antes de publicar los archivos, el aspecto se puede evaluar, pero al pegar en Gmail algunas imágenes embebidas podrían desaparecer.

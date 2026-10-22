@@ -1,5 +1,6 @@
 ---
 import ContactCard from '../components/ContactCard.astro';
+import Canonical from '../components/Canonical.astro';
 import AboutSection from '../components/about/AboutSection.astro';
 import PageNavigation from '../components/PageNavigation.astro';
 import '../styles/about.css';
@@ -28,6 +29,8 @@ const mobileAboutPrepaint = '(() => {\n' + mobileAboutDevice.replace(/^export /g
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>About — Leo Laguna</title>
+    <meta name="description" content="Meet Leo Laguna, a marine biology graduate creating scientific illustrations, technical visuals, 3D and animation for research and conservation projects." />
+    <Canonical />
     <PageNavigation />
     <script is:inline set:html={mobileAboutPrepaint}></script>
     <script is:inline>

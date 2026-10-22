@@ -1,0 +1,6 @@
+---
+// Use the public origin, never the preview/build host or query string.
+const pathname = Astro.url.pathname;
+const url = new URL(pathname, "https://leolaguna.com").href;
+---
+<link rel="canonical" href={url} />
