@@ -323,6 +323,8 @@ if (brandsLayout) {
     renderMobile();ScrollTrigger.refresh();
   }
   function configure(){
+    // Desktop cell geometry must not survive a switch to another layout.
+    section!.removeAttribute('data-service-cells');
     disposeScroll();pause();closeMenu();checkedThumbs.clear();
     copyLayers.flat().forEach(layer=>{layer.style.removeProperty('transform');layer.style.removeProperty('opacity');layer.style.removeProperty('clip-path');});
     configuredPortrait=orientation.matches;
