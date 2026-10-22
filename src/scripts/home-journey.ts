@@ -1,4 +1,4 @@
-import { createHeroInfoTimeline } from './home-entrance.js';
+import { createHeroInfoTimeline, createHeroTitleTimeline } from './home-entrance.js';
 import { isTabletPortrait, getHeroFrame } from './responsive-layout';
 import { mountHeroDistortion } from './hero-distortion';
 import gsap from 'gsap';
@@ -21,6 +21,14 @@ if(root){
   const queuedImages=new Set<HTMLImageElement>();
   let decodingImage=false;
   let imageQueueTimer:ReturnType<typeof setTimeout>|undefined;
+  function activateImage(img:HTMLImageElement){
+    // Set sizing and candidates before src to avoid fetching the fallback first.
+    if(img.dataset.srcset&&!img.hasAttribute('srcset')){
+      img.sizes='100vw';
+      img.srcset=img.dataset.srcset;
+    }
+    if(img.dataset.src&&!img.hasAttribute('src'))img.src=img.dataset.src;
+  }
   function pumpImages(){
     clearTimeout(imageQueueTimer);
     imageQueueTimer=undefined;
@@ -32,7 +40,7 @@ if(root){
     }
     const img=imageQueue.shift()!;
     decodingImage=true;
-    if(img.dataset.src&&!img.hasAttribute('src'))img.src=img.dataset.src;
+    activateImage(img);
     void img.decode().catch(()=>{}).finally(()=>{
       decodingImage=false;
       if(!disposed)imageQueueTimer=setTimeout(pumpImages,32);
@@ -43,9 +51,9 @@ if(root){
     pumpImages();
   }
 
-  const intermediateImages=[1,2,3,4].map(index=>{const image=new Image();image.dataset.src=`/imgs/hero/in_${index}.webp`;image.alt='';image.decoding='async';image.draggable=false;image.className='journey-intermediate-image';fish.append(image);return image;});
+  const intermediateImages=[1,2,3,4].map(index=>{const image=new Image();image.dataset.src=`/imgs/hero/WEBP_EXPORT/in_${index}_720p.webp`;image.dataset.srcset=`/imgs/hero/WEBP_EXPORT/in_${index}_720p.webp 1280w, /imgs/hero/WEBP_EXPORT/in_${index}_1080p.webp 1920w, /imgs/hero/WEBP_EXPORT/in_${index}_2K.webp 2560w`;image.alt='';image.decoding='async';image.draggable=false;image.className='journey-intermediate-image';fish.append(image);return image;});
   let intermediatesLoaded=false;
-  const loadIntermediateImages=()=>{if(intermediatesLoaded)return;intermediatesLoaded=true;if(ipad){queueImages(intermediateImages);return;}intermediateImages.forEach(img=>img.src=img.dataset.src!);};
+  const loadIntermediateImages=()=>{if(intermediatesLoaded)return;intermediatesLoaded=true;if(ipad){queueImages(intermediateImages);return;}intermediateImages.forEach(activateImage);};
   window.addEventListener('wheel',loadIntermediateImages,{once:true,passive:true});
   window.addEventListener('touchmove',loadIntermediateImages,{once:true,passive:true});
   window.addEventListener('keydown',e=>{if(['ArrowDown','PageDown',' ','End'].includes(e.key))loadIntermediateImages();});
@@ -99,7 +107,7 @@ if(root){
   const grid=workflow.querySelector<HTMLElement>('.workflow__grid')!;
   const slots=Array.from(workflow.querySelectorAll<HTMLElement>('.workflow__slot'));
   const track=workflow.querySelector<HTMLElement>('.workflow__track')!;
-  const texts=Array.from(hero.querySelectorAll<HTMLElement>('.hero__blend:not(.hero__info):not(.hero__scroll)'));
+  const texts=Array.from(hero.querySelectorAll<HTMLElement>('.hero__blend:not(.hero__info):not(.hero__scroll)')).filter(text=>!text.querySelector('[data-hero-char]'));
   const cover=document.createElementNS('http://www.w3.org/2000/svg','svg');
   cover.classList.add('journey-cover');cover.setAttribute('aria-hidden','true');
   cover.setAttribute('preserveAspectRatio','none');
@@ -413,7 +421,7 @@ slots.forEach((slot, i) => {
       });
       if(mobileOverlay){
         mobileOverlay.style.translate='none';mobileOverlay.style.clipPath='none';
-        mobileOverlay.querySelectorAll<SVGElement>('[data-hero-part]').forEach((part,i)=>{
+        mobileOverlay.querySelectorAll<SVGElement>('[data-hero-part]:not([data-hero-part="title"])').forEach((part,i)=>{
           const out=ease((p-i*.008)/.026);
           part.style.opacity=String(1-out);
           part.style.transform=`translateY(${-100*out}px)`;
@@ -516,14 +524,15 @@ slots.forEach((slot, i) => {
   const infoMedia=gsap.matchMedia();
   infoMedia.add('(prefers-reduced-motion:no-preference)',()=>{
     const info=createHeroInfoTimeline(hero);
-    if(!document.documentElement.hasAttribute('data-home-entry'))info.show();
+    const title=createHeroTitleTimeline(hero);
+    if(!document.documentElement.hasAttribute('data-home-entry')){info.show();title.show();}
     const infoTrigger=ScrollTrigger.create({
       id:'hero-info-return',trigger:host,start:'top top',
       end:()=>`+=${host.querySelector<HTMLElement>('.journey-stage')!.offsetHeight*.08}`,
-      onLeave:()=>info.reverse(),onEnterBack:()=>info.play(),
-      onRefresh:self=>{if(self.scroll()>self.end)info.hide();},
+      onLeave:()=>{info.reverse();title.reverse();},onEnterBack:()=>{info.play();title.play();},
+      onRefresh:self=>{if(self.scroll()>self.end){info.hide();title.hide();}},
     });
-    return()=>{infoTrigger.kill();info.show();};
+    return()=>{infoTrigger.kill();info.show();title.show();};
   });
     if (import.meta.hot) {
       import.meta.hot.dispose(() => {
@@ -532,7 +541,7 @@ slots.forEach((slot, i) => {
         document.documentElement.removeAttribute('data-workflow-header');
         removeStaticStop();
         distortion.dispose();disposed=true;clearTimeout(warmupTimer);clearTimeout(imageQueueTimer);imageQueue.length=0;
-        infoMedia.revert();createHeroInfoTimeline(hero).dispose();
+        infoMedia.revert();createHeroInfoTimeline(hero).dispose();createHeroTitleTimeline(hero).dispose();
         media.revert();
         cover.remove();
         intermediateImages.forEach(image => image.remove());

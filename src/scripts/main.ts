@@ -10,28 +10,6 @@ gsap.registerPlugin(ScrollTrigger);
 const hero = document.querySelector<HTMLElement>('.hero');
 const mask = hero?.querySelector<HTMLElement>('.hero__mask');
 const image = hero?.querySelector<HTMLElement>('.hero__parallax');
-const clock = document.querySelector<HTMLElement>('[data-lima-clock]');
-
-if (clock) {
-  const formatter = new Intl.DateTimeFormat('es-PE', {
-    timeZone: 'America/Lima',
-    hour: '2-digit',
-    minute: '2-digit',
-    hourCycle: 'h23',
-  });
-
-  const updateClock = () => {
-    const time = formatter.format(new Date());
-    if (clock.textContent !== time) clock.textContent = time;
-  };
-
-  updateClock();
-  const timer = window.setInterval(updateClock, 1000);
-
-  if (import.meta.hot) {
-    import.meta.hot.dispose(() => window.clearInterval(timer));
-  }
-}
 if (hero && mask && image) {
   const phoneMask = window.matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait)');
   // Ajusta la geometría del logo al tamaño real de la portada.

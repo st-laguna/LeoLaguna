@@ -202,13 +202,14 @@ const { company, dates, description, images = [], variant = "standard" }: Props 
 
   .media-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-sm);
   }
 
   .media-grid img,
   .media-grid .media-placeholder {
     width: 100%;
+    height: auto;
     aspect-ratio: 1.6;
     border-radius:0;
     background: #000;
@@ -365,7 +366,7 @@ const { company, dates, description, images = [], variant = "standard" }: Props 
 
     .media-grid img,
     .media-grid .media-placeholder {
-      flex: 0 0 75vw; /* Cada imagen es grande (75% de la pantalla) */
+      flex: 0 0 75vw; /* Horizontal previews in the existing touch carousel. */
       width: 75vw;
       height: auto;
       aspect-ratio: 1.6;

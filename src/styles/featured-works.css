@@ -24,12 +24,13 @@ html body [data-featured-brands] > .brands[data-brands] {position:sticky;top:0;z
 .featured-work__cover {aspect-ratio:var(--cover-ratio);overflow:hidden;}
 .featured-work img {display:block;width:100%;height:100%;object-fit:cover;object-position:center;}
 .featured-work figcaption {
-  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) minmax(0,1fr);gap:4px clamp(6px,.7vw,12px);
   min-height:2.099vw;box-sizing:border-box;padding-bottom:6px;align-items:end;
-  font-size:clamp(12px,.85vw,14px);font-weight:400;line-height:1.4;white-space:normal;
+  font-size:var(--ui-nav-size,clamp(11px,.95vw,15px));font-weight:400;line-height:1.4;white-space:normal;
 }
-.featured-work__category {grid-column:1;grid-row:2;opacity:1;text-transform:uppercase;}
-.featured-work__action {grid-column:2;grid-row:1 / 3;align-self:end;justify-self:end;display:grid;overflow:hidden;text-align:right;white-space:nowrap;}
+.featured-work__client {grid-column:1;grid-row:1;min-width:0;overflow-wrap:anywhere;}
+.featured-work__category {font-size:calc(var(--ui-nav-size,clamp(11px,.95vw,15px)) - 2px);grid-column:2;grid-row:1;min-width:0;text-align:center;opacity:.6;text-transform:none;overflow-wrap:anywhere;}
+.featured-work__action {grid-column:3;grid-row:1;align-self:end;justify-self:end;display:grid;overflow:hidden;text-align:right;white-space:nowrap;}
 .featured-work__action > span {grid-area:1 / 1;}
 .featured-work__view {transform:translateY(120%);}
 .featured-works__closing {width:88.033%;margin:4lh 0 0 auto;text-align:right;font-size:clamp(22px,3.15vw,64px);font-weight:600;line-height:1.12;letter-spacing:-.045em;}
@@ -55,7 +56,7 @@ html body [data-featured-brands] > .brands[data-brands] {position:sticky;top:0;z
   .featured-work--wewhale {order:4;width:84%;margin:0 0 0 auto;}
   .featured-work--sperm-whales-of-dominica {order:5;width:100%;margin-top:0;}
   .featured-works__closing {order:6;width:88%;margin:4lh 0 0 auto;font-size:clamp(24px,6.8vw,48px);}
-  .featured-work figcaption {min-height:0;padding-bottom:6px;font-size:12px;}
+  .featured-work figcaption {min-height:0;padding-bottom:6px;}
 }
 @media(prefers-reduced-motion:reduce) {
   .featured-brands::after {display:none;}
@@ -102,3 +103,9 @@ html body [data-featured-brands] > .brands[data-brands] {position:sticky;top:0;z
 [data-featured-brands][data-footer-handoff] > [data-brands] {scroll-margin-top:0;}
 /* The footer must paint above Works in the ordinary/reduced-motion flow too. */
 [data-brands-footer-handoff] {position:relative;z-index:3;}
+
+.featured-work__company,.featured-work__year {font-weight:500;}
+
+/* The empty handoff runway must not intercept the Brands hover underneath. */
+[data-brands-footer-handoff] {pointer-events:none;}
+[data-brands-footer-handoff] > .footer {pointer-events:auto;}

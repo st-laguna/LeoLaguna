@@ -224,3 +224,7 @@ html body .brands[data-mobile-streams][data-landscape-streams] .brands-cell[data
     translate:var(--brands-center-x,0px) 0;
   }
 }
+
+.brand-hover-cursor {position:fixed;top:0;left:0;width:18px;height:18px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;z-index:110;}
+.brand-hover-cursor[hidden] {display:none!important;}
+@media(hover:hover) and (pointer:fine){html .brands[data-brand-cursor-ready] .brands-cell {cursor:none;}}

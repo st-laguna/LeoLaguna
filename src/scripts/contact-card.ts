@@ -85,22 +85,27 @@ if(modal && typeof modal.showModal==='function') {
     loading=new Promise<void>((resolve,reject)=>{
       const script=document.createElement('script');script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';script.async=true;
       const timeout=setTimeout(()=>{script.remove();loading=undefined;reject(new Error('Turnstile timeout'));},12000);
-      script.onload=()=>{clearTimeout(timeout);window.turnstile?resolve():reject(new Error('Turnstile unavailable'));};
+      script.onload=()=>{clearTimeout(timeout);if(window.turnstile)resolve();else{script.remove();loading=undefined;reject(new Error('Turnstile unavailable'));}};
       script.onerror=()=>{clearTimeout(timeout);script.remove();loading=undefined;reject(new Error('Turnstile unavailable'));};
       document.head.append(script);
     });return loading;
   }
+  let mounting=false;
   async function mountVerification(){
+    if(mounting)return;
+    mounting=true;
     const current=++generation;token='';update();say('verifying');
     try {
       if(!modal!.dataset.siteKey)throw new Error('Missing Site Key');
       await loadTurnstile();if(!modal!.open||closing||current!==generation)return;
       widget=window.turnstile!.render(verification,{sitekey:modal!.dataset.siteKey,action:'contact',theme:'light',size:'flexible',appearance:'interaction-only',language:document.documentElement.lang==='es'?'es':'en',
         callback:(value:string)=>{if(current!==generation)return;token=value;update();if(statusKey==='verifying'||statusKey==='verification')say(undefined);},
-        'expired-callback':()=>{token='';update();say('verification');},
-        'error-callback':()=>{token='';update();say('verification');},
+        'expired-callback':()=>{if(current!==generation)return;token='';update();if(!busy&&(!statusKey||statusKey==='verifying'))say('verification');},
+        'error-callback':()=>{if(current!==generation)return;token='';update();if(!busy&&(!statusKey||statusKey==='verifying'))say('verification');},
+        'timeout-callback':()=>{if(current!==generation)return;token='';update();if(!busy&&(!statusKey||statusKey==='verifying'))say('verification');},
       });
     }catch{if(modal!.open&&current===generation)say('unavailable');}
+    finally{mounting=false;}
   }
   function release(){
     cancelAnimationFrame(openingFrame);openingFrame=0;modal!.removeAttribute('data-contact-moving');
@@ -184,14 +189,20 @@ if(modal && typeof modal.showModal==='function') {
   },{signal}));
   card.addEventListener('submit',async event=>{
     event.preventDefault();if(busy)return;
-    if(!token){say('verification');return;}
     if(!card.reportValidity())return;
+    if(!message.value.trim()){say('invalid');message.focus();return;}
+    if(!token){
+      say('verification');
+      if(widget===undefined)void mountVerification();
+      else window.turnstile?.reset(widget);
+      return;
+    }
     busy=true;update();submit.textContent=copy().sending;say(undefined);
     request=new AbortController();const timeout=setTimeout(()=>request?.abort(),20000);
     try {
       const response=await fetch(modal!.dataset.endpoint!,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email.value.trim(),message:message.value,token,website:card.querySelector<HTMLInputElement>('[name=website]')!.value}),signal:request.signal});
       const result=await response.json().catch(()=>({}));
-      if(!response.ok||result.ok!==true){say(response.status===429?'limited':response.status===503?'unavailable':result.code==='verification'?'verification':'failed');}
+      if(!response.ok||result.ok!==true){say(response.status===429?'limited':response.status===503?'unavailable':result.code==='verification'?'verification':result.code==='invalid'?'invalid':'failed');}
       else{card.reset();say('sent');}
     }catch{say('failed');}
     finally{clearTimeout(timeout);busy=false;token='';submit.textContent=copy().send;update();if(widget!==undefined)window.turnstile?.reset(widget);}

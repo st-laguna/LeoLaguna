@@ -57,79 +57,6 @@ export function initFooter() {
   const marquee=footer.querySelector<HTMLElement>('[data-footer-marquee]')!;
   const marqueeRenderer=initFooterMarquee(marquee);
 
-  const clickTarget=footer.querySelector<HTMLElement>('[data-footer-click-target]');
-const clickCursor=footer.querySelector<HTMLElement>('[data-footer-click-cursor]');
-const cursorHome=clickCursor?.parentElement;
-const cursorLabel=clickCursor?.querySelector('span');
-const cursorArrow=clickCursor?.querySelector<HTMLElement>('.footer__click-arrow');
-const finePointer=matchMedia('(hover:hover) and (pointer:fine)');
-
-let px=0,py=0,cx=0,cy=0,hasPointer=false,cursorFrame=0,scrollTimer=0,isScrolling=false;
-const cursorSize={scale:1};
-let cursorPulse:gsap.core.Timeline|undefined;
-
-function setCursor(show:boolean){
-  if(!clickCursor)return;
-  const visible = show && finePointer.matches && !document.hidden;
-  clickCursor.classList.toggle('is-visible',visible);
-  if (visible) wakeCursor();
-  else { cancelAnimationFrame(cursorFrame); cursorFrame=0; }
-
-}
-
-function checkCursor(){
-  if(!clickTarget||!hasPointer)return;
-  const el=document.elementFromPoint(px,py);
-  const show=!!el&&(clickTarget.contains(el)||!!el.closest('.workflow__card, .project-enlarge:not(:disabled), .gallery-item button, .featured-work__cover, .featured-work a[href]'));
-  // Keep the current label and arrow throughout the fade out.
-  if(!show||!finePointer.matches){setCursor(false);return;}
-  const zoom=!!el?.closest('.projects .project-media .project-enlarge');
-  const label=zoom?'ZOOM':'CLICK';
-  if(cursorLabel&&cursorLabel.textContent!==label)cursorLabel.textContent=label;
-  if(cursorArrow)cursorArrow.style.display=zoom?'none':'';
-  // Reuse the same circle inside an open native dialog's top layer.
-  const cursorParent=el?.closest('dialog[open]')||document.body;
-  if(clickCursor&&cursorParent&&clickCursor.parentElement!==cursorParent)cursorParent.append(clickCursor);
-  setCursor(true);
-}
-
-function pulseCursor(event:PointerEvent){
-  if(event.button!==0||event.pointerType==='touch'||!finePointer.matches||!clickCursor?.classList.contains('is-visible')||reduced.matches)return;
-  cursorPulse?.kill();
-  const scale=cursorLabel?.textContent==='ZOOM'?.76:.84;
-  // Scale after translation so the cursor shrinks around its current center.
-  cursorPulse=gsap.timeline({onUpdate:wakeCursor})
-    .to(cursorSize,{scale,duration:.184,ease:'power2.inOut'})
-    .to(cursorSize,{scale:1,duration:.276,ease:'power2.inOut'});
-}
-
-function wakeCursor(){
-  if(!cursorFrame && !document.hidden && finePointer.matches && clickCursor?.classList.contains('is-visible')) cursorFrame=requestAnimationFrame(animateCursor);
-}
-function animateCursor(){
-  cursorFrame=0;
-  if(!clickCursor || document.hidden || !finePointer.matches || !clickCursor.classList.contains('is-visible'))return;
-  cx+=(px-cx)*.18;
-  cy+=(py-cy)*.18;
-  clickCursor.style.transform=`translate3d(${cx}px,${cy}px,0) translate(-50%,-50%) scale(${cursorSize.scale})`;
-  if(Math.abs(px-cx)+Math.abs(py-cy)>.05 || cursorPulse?.isActive()) wakeCursor();
-}
-
-document.addEventListener('pointermove',e=>{
-  if(e.pointerType==='touch')return;
-  px=e.clientX;py=e.clientY;
-  if(!hasPointer){hasPointer=true;cx=px;cy=py;}
-  checkCursor();
-},{passive:true,signal});
-
-window.addEventListener('scroll',checkCursor,{passive:true,signal});
-
-document.documentElement.addEventListener('mouseleave',()=>setCursor(false),{signal});
-window.addEventListener('blur',()=>setCursor(false),{signal});
-
-finePointer.addEventListener('change',()=>{if(finePointer.matches)checkCursor();else setCursor(false);},{signal});
-document.addEventListener('visibilitychange',()=>{if(document.hidden)setCursor(false);else checkCursor();},{signal});
-
   const nav=document.querySelector<HTMLElement>('.site-nav');
   const work=document.querySelector<HTMLButtonElement>('[data-footer-work]');
   const submenu=document.querySelector<HTMLElement>('#site-work-options');
@@ -243,7 +170,7 @@ function setFooterNavigation(active: boolean) {
     }
   }
   work?.addEventListener('click',()=>setOpen(work.getAttribute('aria-expanded')!=='true'),{signal});
-  document.addEventListener('pointerdown',event=>{pulseCursor(event);if(!nav?.contains(event.target as Node))setOpen(false);},{signal});
+  document.addEventListener('pointerdown',event=>{if(!nav?.contains(event.target as Node))setOpen(false);},{signal});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&work?.getAttribute('aria-expanded')==='true'){setOpen(false);work.focus();}},{signal});
   nav?.addEventListener('click',event=>{
     const link=(event.target as Element).closest<HTMLAnchorElement>('a');
@@ -372,10 +299,7 @@ return () => {
   footer.removeAttribute('data-footer-refraction');
   entranceElements.forEach(element=>element.removeAttribute('data-entered'));
 
-  cancelAnimationFrame(cursorFrame);
-  cursorPulse?.kill();
-  clickCursor?.classList.remove('is-visible');
-  if(clickCursor&&cursorHome)cursorHome.append(clickCursor);
+
 
   abort.abort();
   clearInterval(timer);

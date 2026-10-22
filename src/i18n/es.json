@@ -102,4 +102,17 @@
   "workflow.2.step": "Paso 02",
   "workflow.3.step": "Paso 03",
   "workflow.4.step": "Paso 04"
+,
+  "hero.editorial.services": "Servicios",
+  "hero.editorial.stories": "Formación, experiencia y enfoque",
+  "hero.service.0": "Visualización Técnica",
+  "hero.service.1": "Ilustración Científica",
+  "hero.service.2": "Medios Educativos",
+  "hero.service.3": "Animación y Video",
+  "hero.story.0.title": "Formación",
+  "hero.story.0.copy": "Comprender cómo funcionan las cosas cambia la forma de representarlas. Una formación científica aporta una perspectiva diferente al trabajo visual.",
+  "hero.story.1.title": "Experiencia",
+  "hero.story.1.copy": "Desde los ecosistemas marinos hasta los entornos industriales, cada tema plantea nuevos desafíos y una forma diferente de ver las cosas.",
+  "hero.story.2.title": "Enfoque",
+  "hero.story.2.copy": "Las preguntas adecuadas suelen importar más que la primera buena idea. Comprender los detalles da forma a todo lo que viene después."
 }

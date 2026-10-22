@@ -320,6 +320,7 @@ export function createAboutScene(section, callbacks = {}) {
     pointerInside = false;
     hovered = null;
     canvas.style.cursor = '';
+    delete canvas.dataset.aboutCursor;window.dispatchEvent(new Event('leo:cursor-update'));
     requestRender();
   });
   on(canvas, 'pointerdown', (event) => {
@@ -624,6 +625,8 @@ export function createAboutScene(section, callbacks = {}) {
     ) {
       hovered = pick();
       canvas.style.cursor = hovered ? 'pointer' : 'grab';
+      const cursorState=hovered?'object':'orbit';
+      if(canvas.dataset.aboutCursor!==cursorState){canvas.dataset.aboutCursor=cursorState;window.dispatchEvent(new Event('leo:cursor-update'));}
       pointerDirty = false;
       lastHover = now;
     }

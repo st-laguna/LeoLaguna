@@ -28,7 +28,7 @@
   "projects.04.description": "Animation and video bringing scientific, environmental and industrial stories into motion.",
   "projects.04.caption": "Animation and video.",
   "nav.workflow": "Workflow",
-  "nav.services": "Service",
+  "nav.services": "Services",
   "nav.works": "Works",
   "nav.work": "WORK",
   "nav.about": "About",
@@ -102,4 +102,17 @@
   "workflow.2.step": "Step 02",
   "workflow.3.step": "Step 03",
   "workflow.4.step": "Step 04"
+,
+  "hero.editorial.services": "Services",
+  "hero.editorial.stories": "Background, experience and approach",
+  "hero.service.0": "Technical Visualization",
+  "hero.service.1": "Scientific Illustration",
+  "hero.service.2": "Educational Media",
+  "hero.service.3": "Animation and Video",
+  "hero.story.0.title": "Background",
+  "hero.story.0.copy": "Understanding how things work changes how you represent them. A scientific background brings a different perspective to visual work.",
+  "hero.story.1.title": "Experience",
+  "hero.story.1.copy": "From marine ecosystems to industrial environments, every subject brings new challenges and a different way of seeing things.",
+  "hero.story.2.title": "Approach",
+  "hero.story.2.copy": "The right questions often matter more than the first good idea. Understanding the details shapes everything that follows."
 }

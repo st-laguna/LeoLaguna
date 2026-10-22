@@ -121,7 +121,7 @@ const {
     <header class="site-header" data-site-header style={headerBlueprint}>
       <a class="site-header__footer-logo" href={page ? "/#home" : "#home"} aria-label="Leo Laguna — Home"></a>
   <NavigationMenu context="site" id="mobile-navigation" preferences links={[
-    {label:'Service',href:page ? '/#work' : '#work',i18n:'nav.services'},
+    {label:'Services',href:page ? '/#work' : '#work',i18n:'nav.services'},
     {label:'About',href:'/about/',i18n:'nav.about'},
     {label:'Works',href:Astro.url.pathname === '/' ? '#featured-works' : '/#featured-works',i18n:'nav.works'},
     {label:'Contact',href:page ? '/#contact' : '#contact',i18n:'nav.contact'},
@@ -162,5 +162,6 @@ const {
 
     <script>import "../scripts/large-tablet-viewport";</script>
     <ContactCard />
-  </body>
+  <script>import '../scripts/site-cursor';</script>
+</body>
 </html>

@@ -151,7 +151,7 @@ export function initBrandPreview(section:HTMLElement){
     const button=document.elementFromPoint(pointerX,pointerY)?.closest<HTMLButtonElement>('[data-brand-preview]');
     if(button && section.contains(button)) {
       if(active!==button)void show(button);
-      else if(!preview.hidden)position();
+      else if(!preview.hidden){position();}
     } else hide();
   }
   function scheduleHover() {if(!hoverFrame)hoverFrame=requestAnimationFrame(inspectHover);}
