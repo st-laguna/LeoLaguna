@@ -23,7 +23,7 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
     const f = getHeroFrame(width, height);
     const adaptive = document.documentElement.hasAttribute('data-adaptive-hero');
     const portraitOffset = tabletPortrait && !adaptive ? Math.min(32, height * .02) : 0;
-    const m = adaptive ? (f.portrait ? masters.mp : masters.ml) : (f.portrait ? masters.v : masters.h);
+    const m = f.mode === 'ipad-portrait' ? masters.ip : adaptive ? (f.portrait ? masters.mp : masters.ml) : (f.portrait ? masters.v : masters.h);
     if (hero.dataset.heroFrame !== f.mode) hero.dataset.heroFrame = f.mode;
     hero.style.setProperty('--hero-mask-size', `${f.masterWidth * f.scale}px ${f.masterHeight * f.scale}px`);
     hero.style.setProperty('--hero-mask-position', `${f.x}px ${f.y - portraitOffset}px`);

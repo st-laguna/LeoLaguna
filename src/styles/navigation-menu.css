@@ -42,3 +42,5 @@ html.mobile-menu-open,html.mobile-menu-open body {background:#000!important;}
 html:is([data-contact-hidden],.footer-active) body .site-header [data-shared-menu-panel][data-menu-compact] a[href="#contact"] {
   display:none!important;
 }
+
+html body [data-shared-menu-panel] .ipad-home-nav {display:none;}

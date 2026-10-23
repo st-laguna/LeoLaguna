@@ -1,0 +1,222 @@
+/* iPad Home only. Reference coordinates: 768 × 1024; spacing unit: 12.5px. */
+html[data-ipad-home][data-tablet-portrait] {
+  --ip-unit:1.627604vw;
+  --ip-space-1:var(--ip-unit);
+  --ip-space-2:calc(var(--ip-unit)*2);
+  --ip-space-3:calc(var(--ip-unit)*3);
+  --ip-space-4:calc(var(--ip-unit)*4);
+  --ip-space-6:calc(var(--ip-unit)*6);
+}
+html[data-ipad-home][data-tablet-portrait] body .hero {--hero-left:var(--ip-space-2);--hero-right:var(--ip-space-2);--hero-top:var(--ip-space-2);}
+html[data-ipad-home][data-tablet-portrait] body .hero [data-hero-anchor="leo"] {left:var(--ip-space-2);top:calc(32.7412% - 15.625vw);width:45.31vw;height:15.365vw;}
+html[data-ipad-home][data-tablet-portrait] body .hero [data-hero-anchor="laguna"] {left:var(--ip-space-2);top:calc(32.7412% + 2.434vw);width:93.49vw;height:14.15vw;}
+html[data-ipad-home][data-tablet-portrait] body .hero .hero-project .action-pill {min-height:6.534vw;padding:var(--ip-space-1) var(--ip-space-2);font-size:1.9vw;}
+html[data-ipad-home][data-tablet-portrait] body .hero .hero-services {top:52.3%;bottom:auto;font-size:2.45vw;}
+html[data-ipad-home][data-tablet-portrait] body .hero .hero-services a {font-size:2.45vw;line-height:1.3;}
+html[data-ipad-home][data-tablet-portrait] body .hero .hero__scroll {display:flex;left:50%;right:auto;bottom:var(--ip-space-2);transform:translateX(-50%);white-space:nowrap;font-size:1.8vw;}
+html[data-ipad-home][data-tablet-portrait] body .site-header .mobile-menu-toggle {top:var(--ip-space-2);right:var(--ip-space-2);}
+
+html[data-ipad-home][data-tablet-portrait] body .home-journey[data-mobile-journey] {height:550svh;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow {padding:0;min-height:100svh;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__heading {position:absolute;left:12.9%;top:8.81%;width:74.2%;max-width:none;margin:0;font-size:calc(4.7vw - 3px);line-height:1.08;text-align:center;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__grid {position:absolute;inset:28.67% var(--ip-space-2) 5.58%;display:block;column-gap:var(--ip-space-1);padding:0;border:0;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__slot {position:absolute;inset:0 auto 0 0;margin:0!important;display:block;visibility:visible;perspective:1100px;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__card {position:relative;display:block;width:100%;height:100%;max-height:none;max-width:none;aspect-ratio:auto;margin:0;pointer-events:auto;cursor:pointer;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__number {display:block;position:absolute;top:var(--ip-space-1);left:50%;transform:translateX(-50%);z-index:2;font:700 clamp(18px,3vw,36px)/1 'Archivo',sans-serif;color:white;mix-blend-mode:difference;pointer-events:none;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__front strong {left:var(--ip-space-1);right:var(--ip-space-1);bottom:var(--ip-space-2);font-size:clamp(16px,2.35vw,28px);line-height:1.2;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__slot[data-collapsed] .workflow__front strong {opacity:0;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__back {padding:var(--ip-space-3);font-size:clamp(18px,2.6vw,30px);overflow:auto;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__track,html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__cursor {display:none!important;}
+
+/* Existing desktop rail, viewer, preview controls, digit timeline and View All. */
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects][data-horizontal] .projects-stage {height:100svh;min-height:0;padding:0;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] {--project-footer:24.6787svh;--project-top:var(--ip-space-2);--project-left:var(--ip-space-2);--project-right:var(--ip-space-2);--project-bottom:var(--ip-space-2);}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-main {width:100%;height:100%;margin:0;grid-template-rows:minmax(0,1fr) var(--project-footer);}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-sidebar,html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-progress,html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-guides {display:none;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-panel {grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,462fr) minmax(0,234.3fr);padding:var(--ip-space-2);gap:var(--ip-space-2);}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-panel--video {grid-template-rows:minmax(0,579.15fr) minmax(0,117.15fr);}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-media {position:relative;inset:auto;width:100%;height:100%;aspect-ratio:auto;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-thumbs {position:relative;inset:auto;width:100%;height:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:var(--ip-space-2);padding:0;border:0;background:none;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-thumbs button {display:block;width:100%;height:100%;aspect-ratio:auto;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-panel:not(.project-panel--video) .project-thumbs button:nth-child(n+9) {display:none;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-panel--video .project-thumbs {grid-template-rows:minmax(0,1fr);}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-panel--video .project-thumbs button:nth-child(n+5) {display:none;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-thumbs img {display:block;width:100%;height:100%;object-fit:cover;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-footer {position:relative;display:block;padding:var(--ip-space-2);border-top:1px solid #8885;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-number {position:absolute;top:var(--ip-space-2);left:var(--ip-space-2);font-size:12.5vw;line-height:.91;letter-spacing:-.06em;gap:.9vw;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-number > span:first-child {width:7.89vw;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-digit-window {height:1em;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-copy-stack {position:absolute;left:20.862%;top:var(--ip-space-2);right:var(--ip-space-2);height:10.5svh;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-copy h2 {font-size:clamp(26px,4.8vw,58px);margin:0 0 .8vw;line-height:1.05;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-copy p {width:75%;font-size:clamp(11px,1.55vw,19px);line-height:1.25;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-actions {position:absolute;inset:8.25svh var(--ip-space-2) var(--ip-space-2) auto;display:flex;height:auto;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-view-all {order:-1;font-size:clamp(14px,2vw,24px)!important;padding:0;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-paging {margin-top:auto;gap:0;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-paging button {width:44px;height:44px;border:0;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .service-preview-nav {position:absolute;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));left:13.5%;right:16.84%;top:14.59svh;bottom:var(--ip-space-2);height:auto;gap:var(--ip-space-1);padding:0;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .service-preview-nav button {display:block;min-width:0;width:100%;height:100%;aspect-ratio:auto;padding:0;overflow:hidden;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .service-preview-nav :is(img,video) {width:100%;height:100%;object-fit:cover;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .service-preview-progress {display:none;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-stage::before {content:'';position:absolute;inset:var(--ip-space-1);border:1px solid #8885;pointer-events:none;z-index:4;}
+
+html[data-ipad-home][data-tablet-portrait] body .services-intro {height:100svh;top:0;padding:0;}
+html[data-ipad-home][data-tablet-portrait] body .services-intro .nexo__motion {width:100%;}
+html[data-ipad-home][data-tablet-portrait] body .services-intro p {margin-left:13.9%;font-size:5.1vw;line-height:1.2;row-gap:var(--ip-space-2);}
+html[data-ipad-home][data-tablet-portrait] body .services-intro .nexo__second {grid-column:1/3;margin-left:23.78vw;}
+
+/* Coordinates preserve the deliberately staggered composition and existing projects. */
+html[data-ipad-home][data-tablet-portrait] body .featured-works {height:254.586vw;min-height:0;padding:0;}
+html[data-ipad-home][data-tablet-portrait] body .featured-works h2 {position:absolute;left:3.25%;top:3.17%;width:39%;font-size:calc(4.4vw - 4px);display:flex;align-items:center;gap:.25em;white-space:nowrap;}
+html[data-ipad-home][data-tablet-portrait] body .featured-works__composition,html[data-ipad-home][data-tablet-portrait] body .featured-works__column {display:contents;}
+html[data-ipad-home][data-tablet-portrait] body .featured-work {position:absolute;margin:0;}
+html[data-ipad-home][data-tablet-portrait] body .featured-work--groaqua {left:45.94%;top:3.24%;width:49.23%;--cover-ratio:378.07 / 303;}
+html[data-ipad-home][data-tablet-portrait] body .featured-work--wwf {left:3.38%;top:11.53%;width:38.07%;--cover-ratio:292.4 / 532.54;}
+html[data-ipad-home][data-tablet-portrait] body .featured-work--exo-environmental {left:50%;top:24.59%;width:45.91%;--cover-ratio:352.58 / 426.4;}
+html[data-ipad-home][data-tablet-portrait] body .featured-work--wewhale {left:11.85%;top:49.52%;width:74.22%;--cover-ratio:570 / 425.28;}
+html[data-ipad-home][data-tablet-portrait] body .featured-work--sperm-whales-of-dominica {left:48.96%;top:73.93%;width:46.74%;--cover-ratio:359 / 436.67;}
+html[data-ipad-home][data-tablet-portrait] body .featured-work__cover {aspect-ratio:var(--cover-ratio);}
+html[data-ipad-home][data-tablet-portrait] body .featured-work figcaption {grid-template-columns:minmax(0,1fr) auto;font-size:clamp(11px,1.65vw,20px);min-height:3.2vw;padding-bottom:.8vw;gap:.5vw;}
+html[data-ipad-home][data-tablet-portrait] body .featured-work__category {display:none;}
+html[data-ipad-home][data-tablet-portrait] body .featured-work__action {grid-column:2;}
+html[data-ipad-home][data-tablet-portrait] body .featured-works__closing {position:absolute;left:9.15%;top:78.43%;width:33.73%;margin:0;font-size:4.9vw;line-height:1.12;text-align:left;}
+
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] {height:100svh;min-height:0;padding:var(--ip-space-2);overflow:clip;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-layout {position:relative;display:grid;grid-template-columns:31.6fr 65fr;gap:var(--ip-space-2);width:100%;height:100%;max-width:none;margin:0;padding:0;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-info {display:flex;flex-direction:column;gap:var(--ip-space-4);min-width:0;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-statement {display:block;order:-1;position:static;width:89%;align-self:flex-end;max-width:none;font-size:clamp(16px,2.45vw,29px);line-height:1.15;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-stats {display:flex;flex:1;flex-direction:column;justify-content:space-between;align-items:flex-end;gap:var(--ip-space-2);padding:0;align-self:stretch;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-stats>div {width:auto;min-width:17.58vw;align-items:center;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-stats dd {font-size:clamp(62px,12vw,150px);line-height:1.05;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-stats dt {font-size:clamp(14px,2.1vw,25px);line-height:1.2;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-grid {grid-column:2;height:100%;}
+
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] {display:flex;flex-direction:column;height:auto;min-height:148.438vw;padding:13.54vw 0 0;gap:var(--ip-space-2);}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__marquee {position:relative;display:block;flex:none;width:100%;height:109.56vw;overflow:hidden;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__mobile-message {height:100%;display:flex;flex-direction:column;justify-content:space-between;font-size:35.2vw;line-height:1;gap:var(--ip-space-2);}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__mobile-row {flex:none;line-height:1;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__marquee>[data-footer-glass] {display:block!important;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__compact-window {display:none;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__strip-window,html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__strip-clip {position:relative;display:block;height:auto;width:100%;overflow:visible;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__bottom {position:relative;display:grid;inset:auto;grid-template-columns:minmax(0,1fr) auto;gap:var(--ip-space-2);padding:var(--ip-space-2);height:auto;min-height:20vw;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__center-group {display:flex;align-items:center;gap:var(--ip-space-2);position:static;transform:none;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__center-logo {display:block;width:17vw;height:14vw;flex:none;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__contact-block {display:block;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__social {display:flex;flex-direction:column;align-items:flex-start;gap:var(--ip-space-1);font-size:2.3vw;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__contact-email {font-size:2.6vw;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__contact-block p,html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__label {font-size:1.65vw;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] :is(.footer__meta,.footer__copyright,.footer__back-top) {display:none;}
+@media(prefers-reduced-motion:reduce) {
+  html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow {position:relative;height:100svh;}
+  html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__turn {transition:none;}
+  html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-panel {height:100svh;}
+  html[data-ipad-home][data-tablet-portrait] body .footer__mobile-track {animation:none;}
+}
+
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__turn {transition:transform 650ms cubic-bezier(.22,1,.36,1);transform-style:preserve-3d;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__card {overflow:visible;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__front,html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__back {-webkit-backface-visibility:hidden;backface-visibility:hidden;}
+@media(prefers-reduced-motion:reduce){html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__turn {transition:none;}}
+
+/* The legacy compact footer uses !important; override only its iPad Home shell. */
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] {display:flex!important;height:auto!important;min-height:148.438vw!important;padding:13.54vw 0 0!important;gap:var(--ip-space-2)!important;background:var(--background)!important;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__marquee {height:109.56vw!important;padding:0!important;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__mobile-message {gap:var(--ip-space-2)!important;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__compact-window {display:none!important;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__strip-window {display:block!important;flex:none;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__strip-clip {clip-path:none;transform:none;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__bottom {display:grid!important;}
+html[data-ipad-home][data-tablet-portrait] body .footer[data-compact-portrait] .footer__strip-window::before {display:none;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .service-preview-nav {height:7.643svh;bottom:auto;align-self:stretch;grid-template-rows:minmax(0,1fr);}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-actions {margin:0;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-stats>div {flex-direction:column;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-statement {min-height:17.3vw;flex:none;}
+/* WebKit can flatten container-query faces. Switch their visibility at the existing flip midpoint. */
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__back {visibility:hidden;transition:visibility 0s .325s;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__front {visibility:visible;transition:visibility 0s .325s;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__card[aria-pressed="true"] .workflow__back {visibility:visible;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__card[aria-pressed="true"] .workflow__front {visibility:hidden;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__slot[data-collapsed] .workflow__back {visibility:hidden;}
+@media(prefers-reduced-motion:reduce){html[data-ipad-home][data-tablet-portrait] body .home-journey :is(.workflow__front,.workflow__back) {transition:none;}}
+
+html[data-ipad-home][data-tablet-portrait] body .hero .hero__scroll {display:flex!important;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-info {padding:0;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-statement {margin:0;align-self:flex-end;}
+
+/* Static, fully operable presentation when the user requests reduced motion. */
+@media(prefers-reduced-motion:reduce) {
+  html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-panel {height:auto;min-height:100svh;grid-template-rows:45svh 23svh auto;}
+  html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-panel--video {grid-template-rows:56svh 12svh auto;}
+  html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-mobile-copy {display:grid;grid-template-columns:auto 1fr;column-gap:var(--ip-space-1);margin:0 0 var(--ip-space-4);}
+  html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-mobile-copy>span {grid-row:1/3;}
+  html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-panel-back {display:flex;gap:.9vw;font-size:12.5vw;line-height:1;}
+  html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-mobile-copy h2 {font-size:4.8vw;margin:0;}
+  html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-mobile-copy p {margin:var(--ip-space-1) 0;}
+  html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-mobile-more {display:block;position:absolute;bottom:var(--ip-space-1);right:var(--ip-space-2);}
+  html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-footer {display:none;}
+}
+
+html[data-ipad-home][data-tablet-portrait] body .projects[data-current="3"] .projects-paging {position:absolute;right:calc(100vw - var(--ip-space-2)*2 - 44px);bottom:0;}
+
+@media(prefers-reduced-motion:reduce){
+ html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] {padding:0;}
+ html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-panel {display:grid;margin:0;border:0;}
+ html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-mobile-controls {display:contents;}
+ html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-mobile-copy {order:0;}
+ html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-mobile-copy h2 {max-width:none;}
+}
+
+/* Review adjustments: page gutters never determine control padding. */
+html[data-ipad-home][data-tablet-portrait] body .hero .hero-project .action-pill,html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-view-all {min-height:36px;height:auto;padding:10px 16px;font-size:13px!important;line-height:1.2;display:inline-flex;align-items:center;gap:8px;box-sizing:border-box;}
+html[data-ipad-home][data-tablet-portrait] body .services-intro .nexo__motion {width:max-content;left:50%;top:50svh;transform:translate(-50%,-50%);}
+html[data-ipad-home][data-tablet-portrait] body .services-intro p {margin:0;font-size:clamp(30px,4.8vw,58px);grid-template-columns:max-content max-content;column-gap:.25em;row-gap:0;line-height:1.15;}
+html[data-ipad-home][data-tablet-portrait] body .services-intro .nexo__second {grid-column:2;grid-row:2;margin:0;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-stage::before {opacity:var(--ipad-frame-opacity,0);}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-footer {background:#1c1c1c;color:#f7f7f7;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-number {gap:0;letter-spacing:-.075em;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-number>span:first-child {width:auto;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-number .projects-digit-window {padding-right:.04em;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-view-all {background:var(--button-coral,#ef6c65);color:#1c1c1c!important;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-actions {inset:0;pointer-events:none;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-view-all {position:absolute;right:var(--ip-space-2);top:7.9svh;pointer-events:auto;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-paging,html[data-ipad-home][data-tablet-portrait] body .projects[data-current="3"] .projects-paging {position:absolute;inset:14.59svh var(--ip-space-2) auto;height:7.643svh;margin:0;display:flex;align-items:center;justify-content:space-between;pointer-events:none;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-paging button {pointer-events:auto;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-paging button:disabled {visibility:hidden;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .service-preview-nav {padding-top:5px;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .service-preview-nav button {position:relative;overflow:visible;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .service-preview-nav button::before {content:'';position:absolute;top:-5px;left:0;right:0;height:2px;background:var(--button-coral,#ef6c65);opacity:.25;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .service-preview-nav button[aria-pressed="true"]::before {opacity:1;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .service-preview-nav :is(img,video) {transform:none;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-info {gap:8svh;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-statement {font-size:clamp(13px,1.85vw,22px);line-height:1.2;min-height:0;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-stats {flex:1;justify-content:space-between;gap:var(--ip-space-2);padding-bottom:var(--ip-space-2);}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-stats dd {font-size:clamp(52px,8.5vw,102px);}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-stats dt {font-size:clamp(12px,1.65vw,20px);}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(9,minmax(0,1fr));aspect-ratio:auto;height:100%;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-column {display:contents;animation:none;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-cell {grid-column:auto;order:var(--brand-order);height:auto;min-height:0;padding:12px;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-cell img {max-width:80%;max-height:80%;transform:none!important;}
+@media(prefers-reduced-motion:reduce){html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .projects-stage::before {opacity:1;}}
+
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-layout {height:calc(100svh - var(--ip-space-2)*2);min-height:0;grid-template-rows:minmax(0,1fr);}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-info,html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-grid {min-height:0;}
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-cell {overflow:hidden;}
+
+html[data-ipad-home][data-tablet-portrait] body .brands[data-brands] .brands-stats {flex:0;justify-content:flex-start;gap:5svh;margin-top:auto;}
+
+
+/* iPad review: collapsed labels, viewer divider and lateral navigation. */
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__number {display:none;top:auto;bottom:var(--ip-space-1);font-size:clamp(16px,2vw,24px);font-weight:400;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey [data-collapsed] .workflow__number {display:block;}
+html[data-ipad-home][data-tablet-portrait] body .projects[data-projects] .project-thumbs::before {content:'';position:absolute;left:0;right:0;top:calc(var(--ip-space-2) / -2);border-top:1px solid #8888;pointer-events:none;}
+html[data-ipad-home][data-tablet-portrait] body [data-shared-menu-panel][data-menu-compact] {left:auto;right:0;width:50vw;min-height:100dvh;clip-path:inset(0);transform:translateX(100%);transition:transform .55s cubic-bezier(.76,0,.24,1),visibility 0s .55s;}
+html[data-ipad-home][data-tablet-portrait] body [data-shared-menu-panel][data-shared-menu-open] {transform:translateX(0);visibility:visible;transition-delay:0s;}
+html[data-ipad-home][data-tablet-portrait] body [data-shared-menu-panel] [data-shared-nav-link] {text-align:right;transform-origin:right center;font-size:clamp(28px,4vw,48px);}
+html[data-ipad-home][data-tablet-portrait] body [data-shared-menu-panel] .ipad-home-nav {display:block;}
+@media(prefers-reduced-motion:reduce){html[data-ipad-home][data-tablet-portrait] body [data-shared-menu-panel][data-menu-compact] {transition:none;}}
+
+/* The second intentional tap reveals the back; no automatic reveal timer. */
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__card[aria-expanded="true"][aria-pressed="false"] .workflow__explore {display:block;position:absolute;top:var(--ip-space-2);left:0;right:0;z-index:2;text-align:center;color:#fff;font:400 14px/1.3 'Host Grotesk',sans-serif;text-shadow:0 1px 5px #000;pointer-events:none;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__back {gap:clamp(14px,3.6vh,34px);}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__back .workflow__step {font-size:clamp(13px,5.04cqw,18px);}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__back .workflow__icon {width:81.6%;height:33.6cqh;max-width:228px;}
+html[data-ipad-home][data-tablet-portrait] body .home-journey .workflow__back .workflow__description {font-size:clamp(14.4px,6.24cqw,24px);}

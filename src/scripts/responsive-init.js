@@ -3,12 +3,13 @@
   const root = document.documentElement;
   // Device identity only gates iPad fixes; existing layout breakpoints stay intact.
   root.toggleAttribute('data-ipad', /iPad/.test(navigator.userAgent) ||
-    (/Mac/.test(navigator.platform || navigator.userAgent) && navigator.maxTouchPoints > 1));
+    (/Mac/.test((navigator.platform || '') + ' ' + navigator.userAgent) && navigator.maxTouchPoints > 1));
   // Identity gates only the new Home composition, never a narrow desktop window.
   const ua = navigator.userAgent;
+  const ipadPreview = new URLSearchParams(location.search).get('layout') === 'ipad-portrait';
   const mobileDevice = root.hasAttribute('data-ipad') || /iPhone|iPod|Android|Mobile|Tablet|Silk/i.test(ua) ||
     (navigator.maxTouchPoints > 0 && matchMedia('(pointer:coarse) and (hover:none)').matches && !/Windows|Macintosh|Linux x86_64/i.test(ua));
-  root.toggleAttribute('data-adaptive-hero', mobileDevice && ['/', '/index.html'].includes(location.pathname));
+  root.toggleAttribute('data-adaptive-hero', (mobileDevice || ipadPreview) && ['/', '/index.html'].includes(location.pathname));
   const tablet = matchMedia('(min-width:701px) and (max-width:1400px) and (orientation:portrait)');
   const portrait = matchMedia('(orientation:portrait)');
   if (root.hasAttribute('data-ipad')) {
@@ -53,6 +54,8 @@
   }
   function apply() {
     root.toggleAttribute('data-tablet-portrait', tablet.matches);
+    // This composition is exclusive to the iPad home page; inner routes retain their layouts.
+    root.toggleAttribute('data-ipad-home', (root.hasAttribute('data-ipad') || ipadPreview) && tablet.matches && ['/', '/index.html'].includes(location.pathname));
     const large=largeLandscape.matches && (touch.matches || root.hasAttribute('data-ipad'));
     root.toggleAttribute('data-large-tablet-landscape',large);
     if(large)dynamicViewport();else {clearTimeout(dynamicTimer);lastHeight=0;root.style.removeProperty('--tablet-viewport');}

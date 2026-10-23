@@ -17,6 +17,7 @@ const { context, id, links, preferences = false, formal = false } = Astro.props;
 <div class="mobile-menu-panel" id={id} data-shared-menu-panel data-menu-context={context} data-menu-compact={context === 'about' ? '' : undefined} data-mobile-menu={context === 'site' ? '' : undefined} inert>
   <nav class="site-nav" aria-label={context === 'site' ? 'Navegación principal' : 'Main navigation'}>
     <div class="site-nav__items hover-group" data-shared-menu-links>
+      {context === 'site' && <a class="hover-option ipad-home-nav" href="#home" data-shared-nav-link><span data-i18n="nav.home">HOME</span></a>}
       {links.map(link => <a class="hover-option" href={link.href} data-roll-link data-shared-nav-link>
         <span class="nav-state" aria-hidden="true"><span data-nav-entry-bracket="left">[</span><span class="nav-plus">+</span><span data-nav-entry-bracket="right">]</span></span><span data-nav-entry-label data-roll-label data-roll-preserve data-i18n={link.i18n}>{link.label}</span>
       </a>)}

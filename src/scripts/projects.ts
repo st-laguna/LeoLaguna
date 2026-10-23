@@ -1,4 +1,6 @@
-import {isMobileAbout} from './about/mobileAboutDevice.js';
+import {isMobileAbout as originalMobileAbout} from './about/mobileAboutDevice.js';
+const ipadHome=()=>document.documentElement.hasAttribute('data-ipad-home');
+const isMobileAbout=()=>!ipadHome() && originalMobileAbout();
 import { isTabletPortrait } from './responsive-layout';
 import { scrollPage, beginScrollTransition, endScrollTransition, commitScrollJump, holdScrollLayout } from './smooth-scroll';
 import gsap from 'gsap';
@@ -8,6 +10,7 @@ import './project-gallery';
 gsap.registerPlugin(ScrollTrigger);
 const section=document.querySelector<HTMLElement>('[data-projects]');
 if(section){
+  const desktopMotion=()=>!matchMedia('(prefers-reduced-motion:reduce)').matches && (ipadHome() || (motion.matches && !isTabletPortrait()));
   const panels=Array.from(section.querySelectorAll<HTMLElement>('[data-panel]'));
   const copies=Array.from(section.querySelectorAll<HTMLElement>('[data-copy]'));
   const rail=section.querySelector<HTMLElement>('.projects-rail')!;
@@ -95,8 +98,9 @@ if(section){
   function measureLayout() {
     if(!layoutMatchesViewport())return;
     sidebarTravel=sidebar.offsetLeft+sidebar.offsetWidth+16;
-    if(!(motion.matches && !isTabletPortrait()))return;
+    if(!(desktopMotion()))return;
     section!.removeAttribute('data-service-cells');
+    if(ipadHome())return; // Portrait geometry is defined by the SVG proportions in CSS.
     const height=main.clientHeight;
     const stageTop=parseFloat(getComputedStyle(stage).top)||0;
     // Frame the entire header row, including the logo and tallest control.
@@ -152,8 +156,8 @@ if(section){
   const reducedMotion=matchMedia('(prefers-reduced-motion:reduce)');
   let configuredPortrait=orientation.matches;
   function layoutMatchesViewport(){
-    const horizontal=motion.matches && !isTabletPortrait();
-    const mobile=!horizontal && (mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches));
+    const horizontal=desktopMotion();
+    const mobile=!horizontal && (mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches));
     return configuredPortrait===orientation.matches && section!.hasAttribute('data-horizontal')===horizontal && section!.hasAttribute('data-mobile-stack')===mobile;
   }
   const events=new AbortController();
@@ -217,6 +221,7 @@ if(section){
     });
     if(entrance>.1 && state.exit<.3)revealPanel(panels[current]);
     const incoming=ease(entrance/.90);
+    if(ipadHome())section!.style.setProperty('--ipad-frame-opacity',String(ease((entrance-.9)/.1)));
     const outgoing=ease((state.exit-.3)/.7);
     // Marcas empieza a revelarse cuando la salida visual llega a la mitad.
 const brandsReveal = ease((outgoing - .5) / .5);
@@ -338,9 +343,9 @@ if (brandsLayout) {
       });
     }
     if(menuToggle)menuToggle.disabled=false;
-    section!.toggleAttribute('data-horizontal',(motion.matches && !isTabletPortrait()));
-    if(!(motion.matches && !isTabletPortrait())){
-      if((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){configureMobile();return;}
+    section!.toggleAttribute('data-horizontal',(desktopMotion()));
+    if(!(desktopMotion())){
+      if((mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){configureMobile();return;}
       if (brandsLayout) {
   brandsLayout.style.removeProperty('clip-path');
   brandsLayout.inert = false;
@@ -412,7 +417,7 @@ if (brandsLayout) {
     }
   },{signal:events.signal});
   section.addEventListener('click',event=>{
-    if(!(mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))return;
+    if(!(mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))return;
     const panel=(event.target as Element).closest<HTMLElement>('[data-panel][data-compressed]');
     if(!panel||((event.target as Element).closest('button')&&!(event.target as Element).closest('[data-panel-back]')))return;
     const index=Number(panel.dataset.panel);const trigger=mobileTimeline?.scrollTrigger;
@@ -422,7 +427,7 @@ if (brandsLayout) {
   panels.forEach(panel=>{
     const media=panel.querySelector<HTMLElement>('.project-media');if(!media)return;
     let startX=0,startY=0,pointer:number|null=null;
-    media.addEventListener('pointerdown',event=>{if((!(mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))&&!(tabletPortrait.matches || isTabletPortrait()))||!event.isPrimary)return;pointer=event.pointerId;startX=event.clientX;startY=event.clientY;},{signal:events.signal});
+    media.addEventListener('pointerdown',event=>{if((!(mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches))&&!(tabletPortrait.matches || isTabletPortrait()))||!event.isPrimary)return;pointer=event.pointerId;startX=event.clientX;startY=event.clientY;},{signal:events.signal});
     media.addEventListener('pointerup',event=>{
       if(pointer!==event.pointerId)return;pointer=null;
       const dx=event.clientX-startX,dy=event.clientY-startY;if(Math.abs(dx)<42||Math.abs(dx)<Math.abs(dy)*1.2)return;
@@ -437,10 +442,10 @@ if (brandsLayout) {
     const index = Math.max(0, Math.min(panels.length - 1, Number(event.detail)));
     if (!Number.isInteger(index) || !panels[index]) return;
     const trigger = timeline?.scrollTrigger;
-    if ((motion.matches && !isTabletPortrait()) && trigger) {
+    if ((desktopMotion()) && trigger) {
       const destination=trigger.start + stops[index] / total * (trigger.end - trigger.start);
       if(!isMobileAbout()){commitScrollJump(()=>scrollPage(destination,false));ScrollTrigger.update();trigger.getTween()?.progress(1);timeline?.time(stops[index]);render();}else scrollPage(destination);
-    } else if ((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)) && mobileTimeline?.scrollTrigger) {
+    } else if ((mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches)) && mobileTimeline?.scrollTrigger) {
       const mobileTrigger = mobileTimeline.scrollTrigger;
       scrollPage(mobileTrigger.start + (index / 3 * .86) * (mobileTrigger.end - mobileTrigger.start));
     } else {
@@ -479,12 +484,12 @@ if (brandsLayout) {
   window.addEventListener('leo:gallery-unlock',()=>{
     frozen=false;
     // Resume el seguimiento desde el mismo fotograma; nunca reconstruye el pin.
-    if((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){
+    if((mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){
       // Update only the mobile stack: the desktop render clips the whole main.
       ScrollTrigger.update();
       mobileTimeline?.scrollTrigger?.getTween()?.play();
       renderMobile();
-    }else if((motion.matches && !isTabletPortrait())){
+    }else if((desktopMotion())){
       timeline?.scrollTrigger?.getTween()?.play();
       render();
     }
@@ -511,7 +516,7 @@ if (brandsLayout) {
     }
     finishConfigure();
   },{signal:events.signal});
-  const resizeObserver=new ResizeObserver(()=>{if(!layoutMatchesViewport())return;checkedThumbs.clear();hydrateStaticPanels();measureLayout();if((motion.matches && !isTabletPortrait()))render();else if((mobileMotion.matches || (isTabletPortrait() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))renderMobile();});
+  const resizeObserver=new ResizeObserver(()=>{if(!layoutMatchesViewport())return;checkedThumbs.clear();hydrateStaticPanels();measureLayout();if((desktopMotion()))render();else if((mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches)))renderMobile();});
   resizeObserver.observe(stage);
   const controlsElement=document.querySelector<HTMLElement>('.site-controls');
   if(controlsElement)resizeObserver.observe(controlsElement);

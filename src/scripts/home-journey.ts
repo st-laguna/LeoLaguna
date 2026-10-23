@@ -150,7 +150,7 @@ if(root){
       const stage=host.querySelector<HTMLElement>('.journey-stage')!.getBoundingClientRect();
       width=stage.width;height=stage.height;
       frame=getHeroFrame(width,height);
-      const master=adaptive?(frame.portrait?masters.mp:masters.ml):(frame.portrait?masters.v:masters.h);
+      const master=frame.mode==='ipad-portrait'?masters.ip:adaptive?(frame.portrait?masters.mp:masters.ml):(frame.portrait?masters.v:masters.h);
       // Read layout before updating SVG attributes. Slot offsets exclude transforms.
       const image=slots[0].querySelector<HTMLImageElement>('.workflow__front img')!;
       // Convert the slot's layout coordinates to the Hero's stage coordinates.
@@ -405,6 +405,7 @@ slots.forEach((slot, i) => {
       lastPortal=undefined; // A resize changes the path even at the same progress.
       const w=cards[0].offsetWidth,h=cards[0].offsetHeight;
       target={x:grid.offsetLeft+(grid.clientWidth-w)/2,y:grid.offsetTop+(grid.clientHeight-h)/2,w,h};
+      if(document.documentElement.hasAttribute('data-ipad-home'))target={x:grid.offsetLeft,y:grid.offsetTop,w,h};
       if(tablet)cover.setAttribute('viewBox',`0 0 ${width} ${height}`);
       render();
     }
@@ -431,7 +432,7 @@ slots.forEach((slot, i) => {
       }
       // Grow only the aperture; the illustration keeps its viewport dimensions.
       const portalScale=1+portal*18;
-      const master=adaptive?(frame.portrait?masters.mp:masters.ml):(frame.portrait?masters.v:masters.h);
+      const master=frame.mode==='ipad-portrait'?masters.ip:adaptive?(frame.portrait?masters.mp:masters.ml):(frame.portrait?masters.v:masters.h);
       const mw=frame.masterWidth*frame.scale,mh=frame.masterHeight*frame.scale;
       if(tablet){
         if(p<=.2 && portal!==lastPortal){
@@ -453,7 +454,8 @@ slots.forEach((slot, i) => {
       else {mask.style.maskImage=master.mask;mask.style.webkitMaskImage=master.mask;}
       }
 
-      const imageStarts=[.105,.135,.165,.195];
+      const ipadHome=document.documentElement.hasAttribute('data-ipad-home');
+      const imageStarts=ipadHome?[.22,.30,.38,.46]:[.105,.135,.165,.195];
       intermediateImages.forEach((img,index)=>{
         const reveal=ease((p-imageStarts[index])/.025);
         const replaced=index<intermediateImages.length-1&&p>=imageStarts[index+1]+.025;
@@ -477,11 +479,30 @@ slots.forEach((slot, i) => {
       hero.inert=p>.03;
       workflow.style.visibility=p>.22?'visible':'hidden';
       showWorkflowLogo(p>=cardsStart+.16*span*overlap);
-      workflow.inert=true;
+      workflow.inert=!document.documentElement.hasAttribute('data-ipad-home') || p<.77;
       const headingIn=ease((p-.23)/.07),headingOut=ease((p-.94)/.04);
       heading.style.opacity='1';
       heading.style.clipPath=`inset(${(1-headingIn)*100}% 0 ${headingOut*100}% 0)`;
 
+      if(document.documentElement.hasAttribute('data-ipad-home')) {
+        heading.style.clipPath=`inset(${(1-ease((p-.54)/.08))*100}% 0 0)`;
+        // The final existing image narrows into slot 01, then the other columns reveal.
+        const settle=ease((p-.54)/.12);
+        hero.style.width=`${width+(target.w-width)*settle}px`;
+        hero.style.height=`${height+(target.h-height)*settle}px`;
+        hero.style.left=`${target.x*settle}px`;
+        hero.style.top=`${target.y*settle}px`;
+        hero.style.visibility=p<.68?'visible':'hidden';
+        hero.style.opacity=String(1-ease((p-.66)/.02));
+        fish.style.filter=`brightness(${1-.65*settle})`;
+        slots.forEach((slot,i)=>{
+          const enter=ease((p-(.66+i*.02))/.04);
+          slot.style.visibility=enter>0?'visible':'hidden';
+          slot.style.opacity=String(enter);
+          slot.style.clipPath=`inset(${(1-enter)*100}% 0 0)`;
+        });
+        return;
+      }
       slots.forEach((slot,i)=>{
         const local=(p-(cardsStart+i*span))/(span*overlap);
         const enter=ease(local/(i===0?.16:.22));
@@ -500,12 +521,12 @@ slots.forEach((slot, i) => {
       });
     }
 
-    const animation=gsap.to(state,{p:1,ease:'none',scrollTrigger:{trigger:host,start:'top top',end:'bottom bottom',scrub:.45,invalidateOnRefresh:true,onRefresh:measure},onUpdate:render});
+    const animation=gsap.to(state,{p:1,ease:'none',scrollTrigger:{trigger:host,start:'top top',end:'bottom bottom',scrub:document.documentElement.hasAttribute('data-ipad-home')?1:.45,invalidateOnRefresh:true,onRefresh:measure},onUpdate:render});
     const resize=new ResizeObserver(measure);resize.observe(stage);
     const removeStops=registerScrollStops(host,()=>{
       const trigger=animation.scrollTrigger;
       // Full front face: after entrance, before the existing scroll-driven flip.
-      return trigger?slots.map((_,i)=>(trigger.end-trigger.start)*(cardsStart+(i+.24*overlap)*span)):[];
+      return document.documentElement.hasAttribute('data-ipad-home') && trigger ? [(trigger.end-trigger.start)*.78] : trigger?slots.map((_,i)=>(trigger.end-trigger.start)*(cardsStart+(i+.24*overlap)*span)):[];
     });
     measure();ScrollTrigger.refresh();
     return()=>{

@@ -34,12 +34,14 @@ if(section){
     layoutWidth=innerWidth;layoutLandscape=landscape.matches;
     media?.revert();
     media=gsap.matchMedia();
-    const tabletPortrait=document.documentElement.hasAttribute('data-tablet-portrait');
+    const ipadHome=document.documentElement.hasAttribute('data-ipad-home');
+    const tabletPortrait=document.documentElement.hasAttribute('data-tablet-portrait')&&!ipadHome;
     const horizontalStreams = useLandscapeStreams();
     media.add('(min-width:1001px), (min-width:701px) and (min-height:501px)',()=>{
       if(!tabletPortrait && !horizontalStreams)return initBrandPreview(section);
     });
     media.add(tabletPortrait || horizontalStreams?'all':'(max-width:700px), (max-width:1000px) and (max-height:500px)',()=>{
+    if(ipadHome)return;
     section.setAttribute('data-mobile-streams','');
     section.toggleAttribute('data-landscape-streams', horizontalStreams);
     const cells=Array.from(section.querySelectorAll<HTMLButtonElement>('.brands-cell'));

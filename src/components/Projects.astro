@@ -56,7 +56,7 @@ const t = en as Record<string,string>;
                 <button type="button" class="project-mobile-more" data-open={index} aria-label={t['projects.viewAll']}><span data-roll-label data-i18n="projects.viewAll">{t['projects.viewAll']}</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></button>
               </div>
               <div class="project-mobile-copy">
-                <span><button type="button" class="project-panel-back" data-panel-back disabled tabindex="-1" aria-label={`${project.id} — Volver / Back to ${t[`projects.${project.id}.title`]}`}>{project.id}</button></span>
+                <span><button type="button" class="project-panel-back" data-panel-back disabled tabindex="-1" aria-label={`${project.id} — Volver / Back to ${t[`projects.${project.id}.title`]}`}><span>{project.id.slice(0,1)}</span><span>{project.id.slice(1)}</span></button></span>
                 <h2 data-i18n={`projects.${project.id}.title`}>{t[`projects.${project.id}.title`]}</h2>
                 <p data-i18n={`projects.${project.id}.description`}>{t[`projects.${project.id}.description`]}</p>
               </div>

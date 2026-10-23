@@ -46,7 +46,7 @@ if(section){
  video.addEventListener('loadeddata',prepareInitialFrame);
  video.addEventListener('canplay',prepareInitialFrame);
  const sync=()=>{
-  const enabled=section.hasAttribute('data-horizontal')&&!isMobileAbout();section.toggleAttribute('data-service-preview',enabled);
+  const enabled=section.hasAttribute('data-horizontal')&&(!isMobileAbout()||document.documentElement.hasAttribute('data-ipad-home'));section.toggleAttribute('data-service-preview',enabled);
   const nextHover=enabled&&hoverQuery.matches;
   if(hoverEnabled!==nextHover){
    hoverEnabled=nextHover;

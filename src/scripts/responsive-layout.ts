@@ -7,6 +7,12 @@ export const isPhoneViewport = () => !document.documentElement.hasAttribute('dat
 // References are authored in logo_horizontal.svg and logo_vertical.svg.
 export function getHeroFrame(width: number, height: number) {
   const portrait = height > width;
+  if (document.documentElement.hasAttribute('data-ipad-home')) {
+    const scale = width / 768;
+    return {portrait:true,mode:'ipad-portrait',masterWidth:768,masterHeight:1024,scale,x:0,
+      y:height * (335.27 / 1024) - 335.27 * scale,
+      focalX:358.11 * scale,focalY:height * (335.27 / 1024)};
+  }
   if (document.documentElement.hasAttribute('data-adaptive-hero')) {
     const masterWidth = portrait ? 390 : 844, masterHeight = portrait ? 844 : 390;
     const scale = portrait ? width / masterWidth : Math.max(width / masterWidth, height / masterHeight);

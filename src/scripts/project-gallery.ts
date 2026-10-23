@@ -121,11 +121,12 @@ if(gallery&&lightbox&&section){
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','true'));
     scroller.focus({preventScroll:true});
     };
-    if(isMobileAbout()){
+    const mobileOpening=isMobileAbout()&&!document.documentElement.hasAttribute('data-ipad-home');
+    if(mobileOpening){
       opening=transitionDialog(revealGallery,g);
       await opening.finished;if(!owns(owner))return;opening=undefined;
     }else revealGallery();
-    if(!reduced.matches&&!isMobileAbout()){
+    if(!reduced.matches&&!mobileOpening){
       const title=g.querySelector<HTMLElement>('[data-gallery]:not([hidden]) [data-sticky-title]');
       opening=openServiceCover(g,shell,title,s,index);
       await opening.finished;
