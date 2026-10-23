@@ -94,7 +94,8 @@ if(root){
   const loadWorkflowImages=()=>{if(workflowImagesLoaded)return;workflowImagesLoaded=true;if(ipad){queueImages(workflowImages);return;}workflowImages.forEach(img=>{if(img.dataset.src)img.src=img.dataset.src;});};
   let warmupTimer:ReturnType<typeof setTimeout>|undefined;
   const warmupHero=hero.querySelector<HTMLImageElement>('picture[data-loaded] img');
-  if(navigator.maxTouchPoints>0 && Math.min(innerWidth,innerHeight)>700){
+  // iPad loads transition images on scroll intent, not while the landing is idle.
+  if(!ipad && navigator.maxTouchPoints>0 && Math.min(innerWidth,innerHeight)>700){
     void (warmupHero?.decode().catch(()=>{})??Promise.resolve()).then(()=>{
       if(disposed)return;
       warmupTimer=setTimeout(()=>{
@@ -549,3 +550,4 @@ slots.forEach((slot, i) => {
       });
     }
 }
+

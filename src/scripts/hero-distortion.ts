@@ -43,7 +43,7 @@ export function mountHeroDistortion(hero: HTMLElement) {
   }
   function sync() {
     if (ended || !initial || unavailable) return;
-    if (reduced.matches || mobile || (!tablet && !mouse.matches)) { deactivate(); return; }
+    if (reduced.matches || mobile || ipad || (!tablet && !mouse.matches)) { deactivate(); return; }
     if (!visible || document.hidden || covered) { pause?.(); return; }
     if (resume) resume(); else void init();
   }
@@ -225,3 +225,4 @@ export function mountHeroDistortion(hero: HTMLElement) {
   // Re-entering the initial masked state creates one fresh, temporary renderer.
   return {setInitialState(active:boolean,intensity=1){if(strength!==intensity){strength=intensity;updateStrength?.();}if(initial===active){if(active&&!resume&&!loading&&!recoveryTimer)sync();return;}initial=active;if(active){unavailable=false;recoveryAttempts=0;sync();}else deactivate();},dispose:finish};
 }
+
