@@ -13,6 +13,7 @@ if(root){
   const mask=host.querySelector<HTMLElement>('.hero__mask')!;
   const fish=host.querySelector<HTMLElement>('.hero__parallax')!;
   const masterOverlay=host.querySelector<HTMLElement>('.hero__master');
+  const adaptive=document.documentElement.hasAttribute('data-adaptive-hero');
   const masters=JSON.parse(hero.dataset.heroMasters!);
   const distortion=mountHeroDistortion(hero);
   const ipad=document.documentElement.hasAttribute('data-ipad');
@@ -148,7 +149,7 @@ if(root){
       const stage=host.querySelector<HTMLElement>('.journey-stage')!.getBoundingClientRect();
       width=stage.width;height=stage.height;
       frame=getHeroFrame(width,height);
-      const master=frame.portrait?masters.v:masters.h;
+      const master=adaptive?(frame.portrait?masters.mp:masters.ml):(frame.portrait?masters.v:masters.h);
       // Read layout before updating SVG attributes. Slot offsets exclude transforms.
       const image=slots[0].querySelector<HTMLImageElement>('.workflow__front img')!;
       // Convert the slot's layout coordinates to the Hero's stage coordinates.
@@ -429,13 +430,13 @@ slots.forEach((slot, i) => {
       }
       // Grow only the aperture; the illustration keeps its viewport dimensions.
       const portalScale=1+portal*18;
-      const master=frame.portrait?masters.v:masters.h;
+      const master=adaptive?(frame.portrait?masters.mp:masters.ml):(frame.portrait?masters.v:masters.h);
       const mw=frame.masterWidth*frame.scale,mh=frame.masterHeight*frame.scale;
       if(tablet){
         if(p<=.2 && portal!==lastPortal){
           lastPortal=portal;
           const tx=frame.x*portalScale-(portalScale-1)*frame.focalX;
-          const ty=frame.y*portalScale-(portalScale-1)*frame.focalY-Math.min(32,height*.02)*(1-portal);
+          const ty=frame.y*portalScale-(portalScale-1)*frame.focalY-(adaptive?0:Math.min(32,height*.02))*(1-portal);
           const holes=master.polygons.map((points:number[][])=>'M'+points.map(([x,y])=>
             `${(x*frame.scale*portalScale+tx).toFixed(2)},${(y*frame.scale*portalScale+ty).toFixed(2)}`).join('L')+'Z').join('');
           aperture.setAttribute('d',`M0,0H${width}V${height}H0Z`+holes);
@@ -445,7 +446,7 @@ slots.forEach((slot, i) => {
         mask.style.transform='none';fish.style.transform=`translate3d(0,${-height*.012*portal}px,0)`;
       }else{
       mask.style.maskSize=mask.style.webkitMaskSize=`${mw*portalScale}px ${mh*portalScale}px`;
-      mask.style.maskPosition=mask.style.webkitMaskPosition=`${frame.x*portalScale-(portalScale-1)*frame.focalX}px ${frame.y*portalScale-(portalScale-1)*frame.focalY-(isTabletPortrait()?Math.min(32,height*.02)*(1-portal):0)}px`;
+      mask.style.maskPosition=mask.style.webkitMaskPosition=`${frame.x*portalScale-(portalScale-1)*frame.focalX}px ${frame.y*portalScale-(portalScale-1)*frame.focalY-(isTabletPortrait()&&!adaptive?Math.min(32,height*.02)*(1-portal):0)}px`;
       mask.style.transform='none';fish.style.transform=`translate3d(0,${-height*.012*portal}px,0)`;
       if(p>.2){mask.style.maskImage='none';mask.style.webkitMaskImage='none';}
       else {mask.style.maskImage=master.mask;mask.style.webkitMaskImage=master.mask;}

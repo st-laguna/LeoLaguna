@@ -209,8 +209,15 @@ html:not([data-about-mobile]):not([data-ipad]):not([data-large-tablet-landscape]
  .about-editorial__roller button {font-size:16px;height:24px;}
  .about__dot {width:12px;height:12px;flex-basis:12px;}
 }
-/* The settled panel must not isolate text blending behind a clip-path. */
-html:not([data-about-mobile]):not([data-ipad]) .about[data-about-state="selected"] .about-editorial__context {clip-path:none;}
+/* Keep the parent ungrouped so Difference sees the scene throughout the reveal.
+   Clip each painted layer instead of isolating all of its blending descendants. */
+html:not([data-about-mobile]):not([data-ipad]) .about[data-editorial] .about-editorial__context {clip-path:none;transition:visibility 0s .65s;}
+html:not([data-about-mobile]):not([data-ipad]) .about[data-editorial][data-context-open] .about-editorial__context {transition-delay:0s;}
+html:not([data-about-mobile]):not([data-ipad]) .about[data-editorial] .about-editorial__context :is(.about-editorial__number,.about-editorial__context-title,.about-editorial__image-placeholder,.about-editorial__context-content>p) {
+  clip-path:inset(0 0 0 100%);
+  transition:clip-path .65s cubic-bezier(.76,0,.24,1);
+}
+html:not([data-about-mobile]):not([data-ipad]) .about[data-editorial][data-context-open] .about-editorial__context :is(.about-editorial__number,.about-editorial__context-title,.about-editorial__image-placeholder,.about-editorial__context-content>p) {clip-path:inset(0);transition-delay:.15s;}
 html:not([data-about-mobile]):not([data-ipad]) .about[data-editorial] .about-editorial__context :is(.about-editorial__number,.about-editorial__context-title,.about-editorial__context-content>p) {color:#fff;mix-blend-mode:difference;}
 
 html:not([data-about-mobile]):not([data-ipad]):not([data-large-tablet-landscape]) body .about[data-editorial] .about-editorial .about-editorial__top .about-editorial__cta-cell {padding:0 8px;}

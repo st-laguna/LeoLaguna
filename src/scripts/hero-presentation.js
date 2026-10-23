@@ -9,6 +9,7 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
   const compositions = Array.from(hero.querySelectorAll('.hero__composition'));
   const masters = JSON.parse(hero.dataset.heroMasters);
   const anchors = Array.from(hero.querySelectorAll('[data-hero-anchor]'));
+  const deviceShortSide=Math.min(screen.width,screen.height);
   let lastWidth = 0, lastHeight = 0;
   let lastTabletPortrait;
   let lastPortrait;
@@ -20,12 +21,28 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
     lastHeight = height;
     lastTabletPortrait = tabletPortrait;
     const f = getHeroFrame(width, height);
-    const portraitOffset = tabletPortrait ? Math.min(32, height * .02) : 0;
-    const m = f.portrait ? masters.v : masters.h;
+    const adaptive = document.documentElement.hasAttribute('data-adaptive-hero');
+    const portraitOffset = tabletPortrait && !adaptive ? Math.min(32, height * .02) : 0;
+    const m = adaptive ? (f.portrait ? masters.mp : masters.ml) : (f.portrait ? masters.v : masters.h);
     if (hero.dataset.heroFrame !== f.mode) hero.dataset.heroFrame = f.mode;
     hero.style.setProperty('--hero-mask-size', `${f.masterWidth * f.scale}px ${f.masterHeight * f.scale}px`);
     hero.style.setProperty('--hero-mask-position', `${f.x}px ${f.y - portraitOffset}px`);
     compositions.forEach(composition => composition.style.transform = `translate(${f.x}px,${f.y - portraitOffset}px) scale(${f.scale})`);
+    if (adaptive) {
+      hero.style.setProperty('--hero-mask', m.mask);
+      compositions.forEach(c => {c.style.transform='none';c.style.width='100%';c.style.height='100%';});
+      // Browser chrome changes height, not the authored type scale.
+      const shortSide=deviceShortSide||Math.min(width,height);
+      const left=parseFloat(getComputedStyle(anchors.find(el=>el.dataset.heroAnchor==='laguna')).left)||12;
+      const right=parseFloat(getComputedStyle(hero.querySelector('.hero-services')).right)||12;
+      // Portrait fills the safe width. Landscape retains the device's short-side scale.
+      const available=f.portrait?width:Math.min(width,shortSide);
+      const size=Math.max(.1,(available-left-right)/365);
+      hero.style.setProperty('--hero-title-scale',String(size));
+      anchors.forEach(el=>{el.removeAttribute('style');});
+      hero.setAttribute('data-hero-layout-ready','');
+      return;
+    }
     // Authored anchors and the mask source only change with the artwork master.
     if (lastPortrait === f.portrait) { hero.setAttribute('data-hero-layout-ready', ''); return; }
     lastPortrait = f.portrait;
@@ -68,6 +85,12 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
   window.addEventListener('leo:orientation-ready', measure);
 
   const root = document.documentElement;
+  if(root.hasAttribute('data-adaptive-hero')) {
+    const button=hero.querySelector('.hero-project');
+    const sync=()=>{const hidden=scrollY>24;button.toggleAttribute('data-away',hidden);button.inert=hidden;};
+    window.addEventListener('scroll',sync,{passive:true});
+    window.addEventListener('pageshow',sync);sync();
+  }
   if (!root.hasAttribute('data-hero-intro')) return;
   // Consume the flag before deferred navigation runs: only one initial entrance.
   root.removeAttribute('data-hero-intro');
@@ -108,3 +131,6 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
     await Promise.all([entrance.finished(), wipe?.finished.catch(() => {})]);
   }).then(finish).catch(finish);
 }
+
+
+

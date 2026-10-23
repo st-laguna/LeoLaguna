@@ -7,6 +7,14 @@ export const isPhoneViewport = () => !document.documentElement.hasAttribute('dat
 // References are authored in logo_horizontal.svg and logo_vertical.svg.
 export function getHeroFrame(width: number, height: number) {
   const portrait = height > width;
+  if (document.documentElement.hasAttribute('data-adaptive-hero')) {
+    const masterWidth = portrait ? 390 : 844, masterHeight = portrait ? 844 : 390;
+    const scale = portrait ? width / masterWidth : Math.max(width / masterWidth, height / masterHeight);
+    const x = portrait ? 0 : width * (328.25 / 844) - 328.25 * scale;
+    const y = height * (portrait ? 287.06 / 844 : 300.6 / 390) - (portrait ? 287.06 : 300.6) * scale;
+    return {portrait,mode:portrait?'mobile-portrait':'mobile-landscape',masterWidth,masterHeight,scale,x,y,
+      focalX:width*.52,focalY:height*.25};
+  }
   const mode = portrait ? 'portrait' : width / height >= 1.55 ? 'landscape-width' : 'landscape-height';
   const masterWidth = portrait ? 2280.13 : 5132.9;
   const masterHeight = portrait ? 4152.38 : 3331.5;

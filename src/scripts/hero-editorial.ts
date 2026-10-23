@@ -30,7 +30,9 @@ if(host){
  const sizeObserver=new ResizeObserver(measureShift);
  if(languageButton)sizeObserver.observe(languageButton);
  measureShift();
- function showService(index:number){service=index;links.forEach((a,i)=>a.toggleAttribute('data-active',i===index));}
+ const adaptive=document.documentElement.hasAttribute('data-adaptive-hero');
+ function showService(index:number){service=index;links.forEach((a,i)=>{a.toggleAttribute('data-active',i===index);if(adaptive){a.inert=i!==index;a.setAttribute('aria-hidden',String(i!==index));}});}
+ showService(0);
  links.forEach((a,i)=>a.addEventListener('click',event=>{if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;event.preventDefault();event.stopPropagation();serviceElapsed=0;showService(i);window.dispatchEvent(new CustomEvent('leo:project-jump',{detail:i}));},{signal}));
  dots.forEach((b,i)=>b.addEventListener('click',()=>{showStory(i);storyElapsed=0;},{signal}));
  links.forEach((a,i)=>{
@@ -40,10 +42,10 @@ if(host){
  });
  const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;},{threshold:.2});observer.observe(host.closest('.hero')!);
  const timer=setInterval(()=>{
-  if(!desktop.matches||document.documentElement.hasAttribute('data-ipad')||reduced.matches||document.hidden||!visible)return;
+  if((!adaptive&&(!desktop.matches||document.documentElement.hasAttribute('data-ipad')))||reduced.matches||document.hidden||!visible)return;
   serviceElapsed+=250;storyElapsed+=250;
   if(serviceElapsed>=2200){showService((service+1)%links.length);serviceElapsed=0;}
-  if(storyElapsed>=7000){showStory((story+1)%panels.length);storyElapsed=0;}
+  if(!adaptive&&storyElapsed>=7000){showStory((story+1)%panels.length);storyElapsed=0;}
  },250);
  if(import.meta.hot)import.meta.hot.dispose(()=>{clearInterval(timer);observer.disconnect();sizeObserver.disconnect();barAnimations.forEach(animation=>animation.cancel());abort.abort();});
 }

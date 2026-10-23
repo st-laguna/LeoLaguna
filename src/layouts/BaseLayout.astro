@@ -60,14 +60,15 @@ const {
         if (!['/', '/index.html'].includes(location.pathname)) return;
         // PageNavigation has already restored the theme. Match Hero's picture
         // selection so its later request reuses this one, without warming both themes.
-        const portrait = matchMedia('(orientation:portrait), (max-width:1000px)').matches;
+        const adaptive = document.documentElement.hasAttribute('data-adaptive-hero');
+        const portrait = adaptive || matchMedia('(orientation:portrait), (max-width:1000px)').matches;
         const dark = document.documentElement.dataset.theme === 'dark';
         const preload = document.createElement('link');
         preload.rel = 'preload';
         preload.as = 'image';
         preload.fetchPriority = 'high';
         const phone = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches;
-        if (phone) {
+        if (phone && !adaptive) {
           const name = dark ? '4H' : '3H';
           preload.imageSrcset = [480, 720, 960].map(width => `/imgs/hero/${name}-${width}.webp ${width}w`).join(', ');
           preload.imageSizes = '100vw';

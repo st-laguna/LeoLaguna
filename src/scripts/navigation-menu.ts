@@ -23,7 +23,7 @@ function mount(toggle: HTMLButtonElement) {
   const on = (target: EventTarget, name: string, handler: EventListener) => target.addEventListener(name, handler, { signal: abort.signal });
   const links = [...panel.querySelectorAll<HTMLAnchorElement>('[data-shared-nav-link]')];
   const group = panel.querySelector<HTMLElement>('[data-shared-menu-links]')!;
-  const enabled = () => about ? root.hasAttribute('data-about-mobile') : media.matches || root.hasAttribute('data-tablet-portrait');
+  const enabled = () => about ? root.hasAttribute('data-about-mobile') : media.matches || root.hasAttribute('data-tablet-portrait') || root.hasAttribute('data-adaptive-hero');
   let open = false;
   function select(link: HTMLAnchorElement | null) {
     group.toggleAttribute('data-selection-active', !!link);

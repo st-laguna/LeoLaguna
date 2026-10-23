@@ -4,6 +4,11 @@
   // Device identity only gates iPad fixes; existing layout breakpoints stay intact.
   root.toggleAttribute('data-ipad', /iPad/.test(navigator.userAgent) ||
     (/Mac/.test(navigator.platform || navigator.userAgent) && navigator.maxTouchPoints > 1));
+  // Identity gates only the new Home composition, never a narrow desktop window.
+  const ua = navigator.userAgent;
+  const mobileDevice = root.hasAttribute('data-ipad') || /iPhone|iPod|Android|Mobile|Tablet|Silk/i.test(ua) ||
+    (navigator.maxTouchPoints > 0 && matchMedia('(pointer:coarse) and (hover:none)').matches && !/Windows|Macintosh|Linux x86_64/i.test(ua));
+  root.toggleAttribute('data-adaptive-hero', mobileDevice && ['/', '/index.html'].includes(location.pathname));
   const tablet = matchMedia('(min-width:701px) and (max-width:1400px) and (orientation:portrait)');
   const portrait = matchMedia('(orientation:portrait)');
   if (root.hasAttribute('data-ipad')) {
