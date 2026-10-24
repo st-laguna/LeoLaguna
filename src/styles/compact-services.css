@@ -1,0 +1,80 @@
+.service-gallery-controls{display:none}
+:root:root:root body .projects[data-compact-services]{--project-footer:310px;--project-top:25px;--project-left:25px;--project-right:25px;--project-bottom:12.5px}
+:root:root:root body .projects[data-compact-services][data-horizontal]{height:750svh}
+:root:root:root body .projects[data-compact-services] .projects-stage{display:block;height:100svh;min-height:0;padding:0;position:sticky;top:0}
+:root:root:root body .projects[data-compact-services] .projects-main{display:grid;width:100%;height:100%;margin:0;padding:0;grid-template-rows:minmax(0,1fr) 62.5px var(--project-footer);overflow:hidden}
+:root:root:root body .projects[data-compact-services] :is(.projects-sidebar,.projects-progress,.projects-guides,.project-mobile-copy,.project-mobile-controls,.project-thumbs){display:none!important}
+:root:root:root body .projects[data-compact-services] .projects-window{grid-row:1;height:100%;min-height:0;overflow:clip}
+:root:root:root body .projects[data-compact-services] .projects-rail{display:flex;flex-direction:row;height:100%;width:100%;overflow:visible}
+:root:root:root body .projects[data-compact-services] .project-panel{display:block;position:relative;flex:0 0 100%;width:100%;height:100%;padding:25px 25px 12.5px;min-width:0;background:var(--background,#ededed)}
+:root:root:root body .projects[data-compact-services] .project-media{position:relative;inset:auto;width:100%;height:100%;aspect-ratio:auto}
+:root:root:root body .projects[data-compact-services] .project-slide{position:absolute;inset:0;width:100%;height:100%;margin:0}
+:root:root:root body .projects[data-compact-services] :is(.project-enlarge,.project-slide img,.project-slide video){width:100%;height:100%;max-width:none;max-height:none;object-fit:cover}
+:root:root:root body .projects[data-compact-services] .service-gallery-controls{grid-row:2;display:flex;align-items:center;justify-content:center;gap:12.5px;padding:12.5px 25px 0;background:#1c1c1c;color:#ededed}
+:root:root:root body .projects[data-compact-services] .service-dots{display:flex;align-items:center;gap:0}
+:root:root:root body .projects[data-compact-services] .service-dots button{background:none;border:0;min-width:32px;height:44px;padding:6px;display:grid;place-items:center}
+:root:root:root body .projects[data-compact-services] .service-dots button>span{position:relative;display:block;width:8px;height:8px;background:#86868b;border-radius:50%;overflow:hidden;transition:width .4s,border-radius .4s}
+:root:root:root body .projects[data-compact-services] .service-dots button[aria-pressed=true]>span{width:44px;border-radius:0}
+:root:root:root body .projects[data-compact-services] .service-dots i{position:absolute;inset:0;background:#ededed;transform:scaleX(0);transform-origin:left}
+:root:root:root body .projects[data-compact-services] .service-play{display:grid;place-items:center;background:none;border:0;width:44px;height:44px;color:#ededed}
+:root:root:root body .projects[data-compact-services] .service-play svg{display:block;flex:none;width:18px;height:18px}
+:root:root:root body .projects[data-compact-services] .projects-footer{grid-row:3;position:relative;display:grid;grid-template-columns:18% minmax(0,1fr) 100px;grid-template-rows:minmax(0,1fr) 95px;gap:25px 12.5px;padding:25px 25px 12.5px;background:#1c1c1c;color:#ededed;border:0}
+:root:root:root body .projects[data-compact-services] .projects-number{position:static;grid-column:1;grid-row:1;align-self:start;display:flex;gap:0;font-family:Archivo,sans-serif;font-size:clamp(78px,12vw,126px);line-height:1;letter-spacing:-.065em}
+:root:root:root body .projects[data-compact-services] .projects-number>span:first-child{width:auto}
+:root:root:root body .projects[data-compact-services] .projects-digit-window{height:1em;overflow:hidden}
+:root:root:root body .projects[data-compact-services] .projects-copy-stack{position:relative;inset:auto;grid-column:2;grid-row:1;width:100%;height:100%;display:grid;align-self:stretch;overflow:hidden}
+:root:root:root body .projects[data-compact-services] .projects-copy{grid-area:1/1;display:flex;flex-direction:column;justify-content:space-between;position:relative;inset:auto;width:100%;height:100%}
+:root:root:root body .projects[data-compact-services] .projects-copy h2{font-family:Archivo,sans-serif;font-size:clamp(26px,3.6vw,44px);font-weight:800;line-height:1.05;margin:0 0 12.5px;color:inherit}
+:root:root:root body .projects[data-compact-services] .projects-copy p{font-size:clamp(15px,2vw,22px);line-height:1.2;max-width:44ch;margin:0;color:inherit}
+:root:root:root body .projects[data-compact-services] .projects-actions{display:contents}
+:root:root:root body .projects[data-compact-services] .projects-view-all{position:static;grid-column:3;grid-row:1;align-self:end;justify-self:end;padding:10px 12.5px;background:#ef6c65;color:#1c1c1c;font-size:13px;min-height:40px;white-space:nowrap}
+:root:root:root body .projects[data-compact-services] .service-preview-nav{position:relative;inset:auto;grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:1fr;gap:12.5px;margin:0 37.5px;height:100%;padding-top:14.5px;border:0}
+:root:root:root body .projects[data-compact-services] .service-preview-nav:after{content:'';position:absolute;top:0;left:-37.5px;right:-37.5px;border-top:1px solid #8885}
+:root:root:root body .projects[data-compact-services] .service-preview-nav button{position:relative;display:block;width:100%;height:100%;min-width:0;padding:0;border:0;overflow:visible;aspect-ratio:auto}
+:root:root:root body .projects[data-compact-services] .service-preview-nav button:before{content:'';position:absolute;top:-2px;left:0;width:100%;height:2px;background:#ef6c65;opacity:1;transform:scaleX(clamp(0,calc(var(--service-preview-position,0) + 1 - var(--thumb-index)),1));transform-origin:left}
+:root:root:root body .projects[data-compact-services] .service-preview-nav button:nth-of-type(1){--thumb-index:0}:root:root:root body .projects[data-compact-services] .service-preview-nav button:nth-of-type(2){--thumb-index:1}:root:root:root body .projects[data-compact-services] .service-preview-nav button:nth-of-type(3){--thumb-index:2}:root:root:root body .projects[data-compact-services] .service-preview-nav button:nth-of-type(4){--thumb-index:3}
+:root:root:root body .projects[data-compact-services] .service-preview-nav :is(img,video){width:100%;height:100%;object-fit:cover;transform:none;filter:grayscale(1);opacity:.65}
+:root:root:root body .projects[data-compact-services] .service-preview-nav button[aria-pressed=true] :is(img,video){filter:none;opacity:1}
+:root:root:root body .projects[data-compact-services] .service-preview-progress{display:none}
+:root:root:root body .projects[data-compact-services] .projects-paging{position:absolute;inset:auto 25px 12.5px;height:80px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+:root:root:root body .projects[data-compact-services] .projects-paging button{pointer-events:auto;width:25px;min-width:25px;padding:0;background:none;border:0;color:#ef6c65}
+:root:root:root body .projects[data-compact-services] .projects-paging button:disabled{visibility:hidden}
+@media(max-width:700px){:root:root:root body .projects[data-compact-services]{--project-footer:300px}:root:root:root body .projects[data-compact-services] .projects-footer{grid-template-columns:78px minmax(0,1fr);grid-template-rows:minmax(0,1fr) 36px 62.5px;gap:12.5px;padding-top:25px}:root:root:root body .projects[data-compact-services] .projects-number{font-size:78px}:root:root:root body .projects[data-compact-services] .projects-copy h2{font-size:23px}:root:root:root body .projects[data-compact-services] .projects-copy p{font-size:14px}:root:root:root body .projects[data-compact-services] .projects-view-all{grid-column:2;grid-row:2;min-height:36px;font-size:12px;padding:8px 12.5px}:root:root:root body .projects[data-compact-services] .service-preview-nav{grid-row:3;margin-inline:25px}:root:root:root body .projects[data-compact-services] .service-preview-nav:after{left:-25px;right:-25px}:root:root:root body .projects[data-compact-services] .projects-paging{height:50px}:root:root:root body .projects[data-compact-services] .service-dots button{min-width:28px;padding:5px}:root:root:root body .projects[data-compact-services] .service-dots button[aria-pressed=true]>span{width:34px}}
+@media(prefers-reduced-motion:reduce){:root:root:root body .projects[data-compact-services] .service-gallery-controls{display:none}:root:root:root body .projects[data-compact-services] .projects-stage{position:relative;height:auto}:root:root:root body .projects[data-compact-services] .projects-main{display:block;height:auto;overflow:visible}:root:root:root body .projects[data-compact-services] .projects-window{height:auto;overflow:visible}:root:root:root body .projects[data-compact-services] .projects-rail{display:block;height:auto}:root:root:root body .projects[data-compact-services] .project-panel{height:auto;min-height:75svh}:root:root:root body .projects[data-compact-services] .project-media{height:50svh}:root:root:root body .projects[data-compact-services] .project-mobile-copy{display:block!important}:root:root:root body .projects[data-compact-services] .project-mobile-controls{display:block!important}:root:root:root body .projects[data-compact-services] .project-mobile-more{display:block}:root:root:root body .projects[data-compact-services] .projects-footer{display:none}:root:root:root body .projects[data-compact-services] .service-dots button>span{transition:none}}
+
+/* Keep the copy together; the preview row reserves its own lower page gap. */
+:root:root:root body .projects[data-compact-services] .projects-copy{justify-content:flex-start;gap:6.25px;height:auto}
+:root:root:root body .projects[data-compact-services] .projects-copy h2{margin:0;line-height:1}
+:root:root:root body .projects[data-compact-services] .projects-copy-stack{height:auto;align-self:start}
+:root:root:root body .projects[data-compact-services] .projects-footer{padding-bottom:25px;grid-template-rows:minmax(0,1fr) auto}
+:root:root:root body .projects[data-compact-services] .service-preview-nav{height:auto;align-self:end;align-items:end}
+:root:root:root body .projects[data-compact-services] .service-preview-nav button{aspect-ratio:1;height:auto;max-height:130px}
+:root:root:root body .projects[data-compact-services] .projects-paging{bottom:25px;height:clamp(50px,14vw,130px)}
+@media(max-width:700px){
+:root:root:root body .projects[data-compact-services] .projects-footer{grid-template-rows:minmax(0,1fr) 36px auto}
+:root:root:root body .projects[data-compact-services] .projects-copy h2{font-size:22px}
+:root:root:root body .projects[data-compact-services] .projects-copy p{font-size:13px;line-height:1.15}
+}
+
+@media(min-width:701px){
+:root:root:root body .projects[data-compact-services]{--project-footer:clamp(340px,32svh,400px)}
+:root:root:root body .projects[data-compact-services] .service-preview-nav{width:min(calc(100% - 75px),557.5px);margin-inline:0;justify-self:center}
+:root:root:root body .projects[data-compact-services] .projects-number{font-size:clamp(104px,12vw,146px);line-height:.85}
+}
+:root:root:root body .projects[data-compact-services] .service-preview-nav button{max-height:none}
+:root:root:root body .projects[data-compact-services] .service-preview-nav:after{display:none}
+:root:root:root body .projects[data-compact-services] .projects-footer:after{content:'';position:absolute;left:25px;right:25px;bottom:calc(25px + var(--service-thumb-size,130px) + 12.5px);border-top:1px solid #8885;pointer-events:none}
+@media(max-width:700px){
+:root:root:root body .projects[data-compact-services] .projects-footer{--service-thumb-size:calc((100vw - 137.5px)/4);grid-template-columns:90px minmax(0,1fr)}
+:root:root:root body .projects[data-compact-services] .projects-number{font-size:96px;line-height:.85}
+}
+@media(max-width:700px){
+:root:root:root body .projects[data-compact-services] .projects-footer{grid-template-columns:110px minmax(0,1fr)}
+:root:root:root body .projects[data-compact-services] .projects-number{font-size:110px;line-height:.85}
+}
+@media(max-width:350px){
+:root:root:root body .projects[data-compact-services] .projects-footer{grid-template-columns:90px minmax(0,1fr)}
+:root:root:root body .projects[data-compact-services] .projects-number{font-size:90px}
+:root:root:root body .projects[data-compact-services] .projects-copy h2{font-size:18px}
+:root:root:root body .projects[data-compact-services] .projects-copy p{font-size:12px}
+}

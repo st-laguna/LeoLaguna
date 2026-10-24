@@ -11,7 +11,7 @@ function syncMenuChrome(open:boolean){
   }else if(!open&&chromeRestore){chromeRestore();chromeRestore=undefined;}
 }
 const mounted = new Map<HTMLButtonElement, { dispose(): void }>();
-const compactMedia = '(max-width:700px), (max-width:1000px) and (max-height:500px), (min-width:701px) and (max-width:1100px) and (orientation:portrait)';
+const compactMedia = '(max-width:700px), (max-width:1000px) and (max-height:500px), (orientation:portrait)';
 
 function mount(toggle: HTMLButtonElement) {
   const panel = document.getElementById(toggle.getAttribute('aria-controls')!)!;

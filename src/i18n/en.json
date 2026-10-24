@@ -8,8 +8,8 @@
   "projects.desktop.04.title": "ANIMATION & VIDEO",
   "projects.desktop.04.description": "Some ideas need time, movement and sequence to fully make sense. Motion can reveal change, scale and process in ways a single frame cannot.",
   "brands.years": "YEARS",
-  "brands.count": "BRANDS",
-  "brands.statement": "EVERY LOGO HERE REPRESENTS A CREATIVE PARTNERSHIP, A SHARED VISION, AND WORK WE’RE PROUD TO BE PART OF.",
+  "brands.count": "ORGANIZATIONS",
+  "brands.statement": "EVERY ORGANIZATION HERE REPRESENTS A CREATIVE PARTNERSHIP, A SHARED VISION, AND WORK WE’RE PROUD TO BE PART OF.",
   "brands.close": "Close",
   "projects.viewAll": "VIEW ALL",
   "projects.close": "BACK TO PROJECTS",
@@ -101,8 +101,7 @@
   "workflow.1.step": "Step 01",
   "workflow.2.step": "Step 02",
   "workflow.3.step": "Step 03",
-  "workflow.4.step": "Step 04"
-,
+  "workflow.4.step": "Step 04",
   "hero.editorial.services": "Services",
   "hero.editorial.stories": "Background, experience and approach",
   "hero.service.0": "Technical Visualization",
@@ -114,5 +113,11 @@
   "hero.story.1.title": "Experience",
   "hero.story.1.copy": "From marine ecosystems to industrial environments, every subject brings new challenges and a different way of seeing things.",
   "hero.story.2.title": "Approach",
-  "hero.story.2.copy": "The right questions often matter more than the first good idea. Understanding the details shapes everything that follows."
+  "hero.story.2.copy": "The right questions often matter more than the first good idea. Understanding the details shapes everything that follows.",
+  "featured.summary.groaqua": "Aquaculture systems, vessels and equipment explained through technical illustration and 3D visualization.",
+  "featured.summary.wwf": "Illustration, animation and interactive 3D for whale science and conservation.",
+  "featured.summary.exo-environmental": "Detailed visuals showing how engineered structures support marine habitats.",
+  "featured.summary.wewhale": "Visual guides to marine life, supporting education and whale watching at sea.",
+  "featured.summary.sperm-whales-of-dominica": "Scientific illustrations for a catalogue documenting Dominica’s sperm whales.",
+  "nav.home.menu": "Home"
 }

@@ -14,7 +14,9 @@ export function mountBrandsFooterHandoff(brands:HTMLElement){
   function configure(){
     frame=0;if(disposed)return;
     const fits=brands.scrollHeight<=innerHeight+1;
-    const next=conditions.matches&&!brands.hasAttribute('data-mobile-streams')&&fits;
+    const portrait=matchMedia('(orientation:portrait)').matches;
+    brands.style.setProperty('--brands-sticky-top',Math.min(0,innerHeight-brands.offsetHeight)+'px');
+    const next=(portrait?!matchMedia('(prefers-reduced-motion:reduce)').matches:conditions.matches&&fits)&&!brands.hasAttribute('data-mobile-streams');
     if(next===enabled)return;
     context?.revert();context=undefined;enabled=next;
     if(!next){ScrollTrigger.refresh();return;}
@@ -30,7 +32,7 @@ export function mountBrandsFooterHandoff(brands:HTMLElement){
         brands.inert=progress>=.99;
       };
       const timeline=gsap.timeline({scrollTrigger:{
-        id:'brands-footer-handoff',trigger:runway!,start:'top -80%',end:'bottom bottom',
+        id:'brands-footer-handoff',trigger:runway!,start:()=>matchMedia('(orientation:portrait)').matches?'top -10%':'top -80%',end:'bottom bottom',
         scrub:true,invalidateOnRefresh:true,
         onUpdate:self=>render(self.progress),onRefresh:self=>render(self.progress),
       }});

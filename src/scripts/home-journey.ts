@@ -1,3 +1,4 @@
+import {compactServices} from './compact-services';
 import { createHeroInfoTimeline, createHeroTitleTimeline } from './home-entrance.js';
 import { isTabletPortrait, getHeroFrame } from './responsive-layout';
 import { mountHeroDistortion } from './hero-distortion';
@@ -120,7 +121,7 @@ if(root){
   const media=gsap.matchMedia();
   const clamp=(v:number)=>Math.max(0,Math.min(1,v));
   const ease=(v:number)=>{const x=clamp(v);return x*x*(3-2*x);};
-  media.add('(min-width:1001px) and (orientation:landscape) and (prefers-reduced-motion:no-preference), (min-width:1401px) and (prefers-reduced-motion:no-preference)',()=>{
+  media.add('(min-width:1001px) and (orientation:landscape) and (prefers-reduced-motion:no-preference)',()=>{
     host.setAttribute('data-journey','');
     // Desktop Journey owns the logo immediately, before the first measured render.
     mask.style.maskImage='none';
@@ -368,7 +369,7 @@ slots.forEach((slot, i) => {
     };
   });
 
-  media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',tablet:'(min-width:701px) and (max-width:1400px) and (orientation:portrait)',reduced:'(prefers-reduced-motion:reduce)',always:'all'},context=>{
+  media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',tablet:'(orientation:portrait)',reduced:'(prefers-reduced-motion:reduce)',always:'all'},context=>{
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) {
       headerLogoMotion?.kill();
       headerLogo?.style.removeProperty('transform');
@@ -391,6 +392,7 @@ slots.forEach((slot, i) => {
     const backs=slots.map(slot=>slot.querySelector<HTMLElement>('.workflow__back')!);
     const cards=slots.map(slot=>slot.querySelector<HTMLButtonElement>('.workflow__card')!);
     const state={p:0};
+    let cardsReady=false;
     let width=0,height=0,target={x:0,y:0,w:0,h:0};
     let frame:ReturnType<typeof getHeroFrame>;
     let lastPortal:number|undefined;
@@ -405,7 +407,7 @@ slots.forEach((slot, i) => {
       lastPortal=undefined; // A resize changes the path even at the same progress.
       const w=cards[0].offsetWidth,h=cards[0].offsetHeight;
       target={x:grid.offsetLeft+(grid.clientWidth-w)/2,y:grid.offsetTop+(grid.clientHeight-h)/2,w,h};
-      if(document.documentElement.hasAttribute('data-ipad-home'))target={x:grid.offsetLeft,y:grid.offsetTop,w,h};
+      if(compactServices())target={x:grid.offsetLeft+(grid.clientWidth-w)/2,y:grid.offsetTop,w,h};
       if(tablet)cover.setAttribute('viewBox',`0 0 ${width} ${height}`);
       render();
     }
@@ -454,7 +456,7 @@ slots.forEach((slot, i) => {
       else {mask.style.maskImage=master.mask;mask.style.webkitMaskImage=master.mask;}
       }
 
-      const ipadHome=document.documentElement.hasAttribute('data-ipad-home');
+      const ipadHome=compactServices();
       const imageStarts=ipadHome?[.22,.30,.38,.46]:[.105,.135,.165,.195];
       intermediateImages.forEach((img,index)=>{
         const reveal=ease((p-imageStarts[index])/.025);
@@ -471,6 +473,7 @@ slots.forEach((slot, i) => {
       hero.style.left=`${target.x*shrink}px`;
       hero.style.top=`${target.y*shrink}px`;
       hero.style.borderRadius="0";
+      hero.style.clipPath='none';
       const handoff=.32;
       const crossfade=ease((p-.29)/.03);
       fish.style.filter='none';
@@ -479,12 +482,15 @@ slots.forEach((slot, i) => {
       hero.inert=p>.03;
       workflow.style.visibility=p>.22?'visible':'hidden';
       showWorkflowLogo(p>=cardsStart+.16*span*overlap);
-      workflow.inert=!document.documentElement.hasAttribute('data-ipad-home') || p<.77;
+      const ready=compactServices() && p>=.77;
+      if(cardsReady && !ready)workflow.dispatchEvent(new Event('workflow:reset'));
+      cardsReady=ready;
+      workflow.inert=!ready;
       const headingIn=ease((p-.23)/.07),headingOut=ease((p-.94)/.04);
       heading.style.opacity='1';
       heading.style.clipPath=`inset(${(1-headingIn)*100}% 0 ${headingOut*100}% 0)`;
 
-      if(document.documentElement.hasAttribute('data-ipad-home')) {
+      if(compactServices()) {
         heading.style.clipPath=`inset(${(1-ease((p-.54)/.08))*100}% 0 0)`;
         // The final existing image narrows into slot 01, then the other columns reveal.
         const settle=ease((p-.54)/.12);
@@ -492,14 +498,21 @@ slots.forEach((slot, i) => {
         hero.style.height=`${height+(target.h-height)*settle}px`;
         hero.style.left=`${target.x*settle}px`;
         hero.style.top=`${target.y*settle}px`;
-        hero.style.visibility=p<.68?'visible':'hidden';
-        hero.style.opacity=String(1-ease((p-.66)/.02));
-        fish.style.filter=`brightness(${1-.65*settle})`;
+        // Keep an opaque black surface until the first card is underneath it.
+        hero.style.zIndex='2';workflow.style.zIndex='1';
+        hero.style.filter=`brightness(${1-settle})`;
+        const reveal=ease((p-.68)/.06),spread=ease((p-.73)/.04);
+        hero.style.visibility=p<.74?'visible':'hidden';
+        hero.style.opacity='1';
+        hero.style.clipPath=`inset(0 0 ${reveal*100}% 0)`;
+        fish.style.filter=`brightness(${1-settle})`;
+        intermediateImages.forEach(img=>img.style.filter=`grayscale(1) brightness(${1-settle})`);
         slots.forEach((slot,i)=>{
-          const enter=ease((p-(.66+i*.02))/.04);
-          slot.style.visibility=enter>0?'visible':'hidden';
-          slot.style.opacity=String(enter);
-          slot.style.clipPath=`inset(${(1-enter)*100}% 0 0)`;
+          slot.style.visibility=(i===0?p>=.66:spread>0)?'visible':'hidden';
+          slot.style.opacity='1';
+          slot.style.clipPath='none';
+          slot.style.translate=`${i===0?0:-(slot.offsetLeft-slots[0].offsetLeft)*(1-spread)}px 0`;
+          slot.style.zIndex=String(10-i);
         });
         return;
       }
@@ -521,12 +534,12 @@ slots.forEach((slot, i) => {
       });
     }
 
-    const animation=gsap.to(state,{p:1,ease:'none',scrollTrigger:{trigger:host,start:'top top',end:'bottom bottom',scrub:document.documentElement.hasAttribute('data-ipad-home')?1:.45,invalidateOnRefresh:true,onRefresh:measure},onUpdate:render});
+    const animation=gsap.to(state,{p:1,ease:'none',scrollTrigger:{trigger:host,start:'top top',end:'bottom bottom',scrub:compactServices()?1:.45,invalidateOnRefresh:true,onRefresh:measure},onUpdate:render});
     const resize=new ResizeObserver(measure);resize.observe(stage);
     const removeStops=registerScrollStops(host,()=>{
       const trigger=animation.scrollTrigger;
       // Full front face: after entrance, before the existing scroll-driven flip.
-      return document.documentElement.hasAttribute('data-ipad-home') && trigger ? [(trigger.end-trigger.start)*.78] : trigger?slots.map((_,i)=>(trigger.end-trigger.start)*(cardsStart+(i+.24*overlap)*span)):[];
+      return compactServices() && trigger ? [(trigger.end-trigger.start)*.78] : trigger?slots.map((_,i)=>(trigger.end-trigger.start)*(cardsStart+(i+.24*overlap)*span)):[];
     });
     measure();ScrollTrigger.refresh();
     return()=>{
@@ -571,4 +584,7 @@ slots.forEach((slot, i) => {
       });
     }
 }
+
+
+
 

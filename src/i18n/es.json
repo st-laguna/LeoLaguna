@@ -8,8 +8,8 @@
   "projects.desktop.04.title": "ANIMACIÓN & VIDEO",
   "projects.desktop.04.description": "Algunas ideas necesitan tiempo, movimiento y secuencia para cobrar sentido por completo. El movimiento puede mostrar cambios, escala y procesos de una forma que una sola imagen no puede.",
   "brands.years": "AÑOS",
-  "brands.count": "MARCAS",
-  "brands.statement": "CADA LOGO REPRESENTA UNA COLABORACIÓN CREATIVA, UNA VISIÓN COMPARTIDA Y UN TRABAJO DEL QUE NOS ENORGULLECE FORMAR PARTE.",
+  "brands.count": "ORGANIZACIONES",
+  "brands.statement": "CADA ORGANIZACIÓN REPRESENTA UNA COLABORACIÓN CREATIVA, UNA VISIÓN COMPARTIDA Y UN TRABAJO DEL QUE NOS ENORGULLECE FORMAR PARTE.",
   "brands.close": "Cerrar",
   "projects.viewAll": "VER TODO",
   "projects.close": "VOLVER A PROYECTOS",
@@ -101,8 +101,7 @@
   "workflow.1.step": "Paso 01",
   "workflow.2.step": "Paso 02",
   "workflow.3.step": "Paso 03",
-  "workflow.4.step": "Paso 04"
-,
+  "workflow.4.step": "Paso 04",
   "hero.editorial.services": "Servicios",
   "hero.editorial.stories": "Formación, experiencia y enfoque",
   "hero.service.0": "Visualización Técnica",
@@ -114,5 +113,11 @@
   "hero.story.1.title": "Experiencia",
   "hero.story.1.copy": "Desde los ecosistemas marinos hasta los entornos industriales, cada tema plantea nuevos desafíos y una forma diferente de ver las cosas.",
   "hero.story.2.title": "Enfoque",
-  "hero.story.2.copy": "Las preguntas adecuadas suelen importar más que la primera buena idea. Comprender los detalles da forma a todo lo que viene después."
+  "hero.story.2.copy": "Las preguntas adecuadas suelen importar más que la primera buena idea. Comprender los detalles da forma a todo lo que viene después.",
+  "featured.summary.groaqua": "Sistemas, embarcaciones y equipos acuícolas explicados mediante ilustración técnica y visualización 3D.",
+  "featured.summary.wwf": "Ilustración, animación y 3D interactivo para la investigación y conservación de las ballenas.",
+  "featured.summary.exo-environmental": "Visualizaciones detalladas de estructuras diseñadas para favorecer los hábitats marinos.",
+  "featured.summary.wewhale": "Guías visuales de vida marina para la educación y observación de cetáceos.",
+  "featured.summary.sperm-whales-of-dominica": "Ilustraciones científicas para un catálogo de los cachalotes de Dominica.",
+  "nav.home.menu": "Inicio"
 }

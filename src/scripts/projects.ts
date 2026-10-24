@@ -1,5 +1,6 @@
 import {isMobileAbout as originalMobileAbout} from './about/mobileAboutDevice.js';
-const ipadHome=()=>document.documentElement.hasAttribute('data-ipad-home');
+import {compactServices,compactServiceMedia} from './compact-services';
+const ipadHome=compactServices;
 const isMobileAbout=()=>!ipadHome() && originalMobileAbout();
 import { isTabletPortrait } from './responsive-layout';
 import { scrollPage, beginScrollTransition, endScrollTransition, commitScrollJump, holdScrollLayout } from './smooth-scroll';
@@ -8,6 +9,7 @@ import {mountTabletHorizontalGesture} from './tablet-horizontal-gesture';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import './project-gallery';
 gsap.registerPlugin(ScrollTrigger);
+import {mountServiceDots} from './service-dots';
 const section=document.querySelector<HTMLElement>('[data-projects]');
 if(section){
   const desktopMotion=()=>!matchMedia('(prefers-reduced-motion:reduce)').matches && (ipadHome() || (motion.matches && !isTabletPortrait()));
@@ -161,6 +163,9 @@ if(section){
     return configuredPortrait===orientation.matches && section!.hasAttribute('data-horizontal')===horizontal && section!.hasAttribute('data-mobile-stack')===mobile;
   }
   const events=new AbortController();
+  const compactMedia=matchMedia(compactServiceMedia);
+  const disposeDots=mountServiceDots(section!);
+  compactMedia.addEventListener('change',()=>scheduleConfigure(),{signal:events.signal});
   const state={position:0,exit:0};
   const featured = document.querySelector<HTMLElement>('[data-featured-works]');
   const brandsLayout =
@@ -333,6 +338,7 @@ if (brandsLayout) {
     disposeScroll();pause();closeMenu();checkedThumbs.clear();
     copyLayers.flat().forEach(layer=>{layer.style.removeProperty('transform');layer.style.removeProperty('opacity');layer.style.removeProperty('clip-path');});
     configuredPortrait=orientation.matches;
+    section!.toggleAttribute('data-compact-services',compactServices());
     const videoPanel=panels.find(panel=>panel.classList.contains('project-panel--video'));
     if(videoPanel) {
       const selected=Number(videoPanel.querySelector<HTMLElement>('[aria-selected="true"]')?.dataset.select || 0);
@@ -345,7 +351,7 @@ if (brandsLayout) {
     if(menuToggle)menuToggle.disabled=false;
     section!.toggleAttribute('data-horizontal',(desktopMotion()));
     if(!(desktopMotion())){
-      if((mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){configureMobile();return;}
+      if((!compactServices()&&mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){configureMobile();return;}
       if (brandsLayout) {
   brandsLayout.style.removeProperty('clip-path');
   brandsLayout.inert = false;
@@ -376,7 +382,7 @@ if (brandsLayout) {
       .to(state,{position:isMobileAbout()?2.965:3,duration:.9,ease:'power3.inOut'},4.5)
       .to(state, { position: 3, duration: 1.1, ease: 'none' }, 5.4)
       .to(state, { exit: 1, duration: 1, ease: 'none' }, 6.5);
-    removeGesture=mountTabletHorizontalGesture(section!,()=>timeline?.scrollTrigger,[0,6.5/7.5]);
+    removeGesture=mountTabletHorizontalGesture(section!,()=>timeline?.scrollTrigger,[0,6.5/7.5],()=>compactServices()||document.documentElement.hasAttribute('data-large-tablet-landscape'));
     render();ScrollTrigger.refresh();
   }
   const selections=new Map<HTMLElement,{timeline:gsap.core.Timeline,pending:number|null}>();
@@ -427,7 +433,7 @@ if (brandsLayout) {
   panels.forEach(panel=>{
     const media=panel.querySelector<HTMLElement>('.project-media');if(!media)return;
     let startX=0,startY=0,pointer:number|null=null;
-    media.addEventListener('pointerdown',event=>{if((!(mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches))&&!(tabletPortrait.matches || isTabletPortrait()))||!event.isPrimary)return;pointer=event.pointerId;startX=event.clientX;startY=event.clientY;},{signal:events.signal});
+    media.addEventListener('pointerdown',event=>{if(compactServices())return;if((!(mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches))&&!(tabletPortrait.matches || isTabletPortrait()))||!event.isPrimary)return;pointer=event.pointerId;startX=event.clientX;startY=event.clientY;},{signal:events.signal});
     media.addEventListener('pointerup',event=>{
       if(pointer!==event.pointerId)return;pointer=null;
       const dx=event.clientX-startX,dy=event.clientY-startY;if(Math.abs(dx)<42||Math.abs(dx)<Math.abs(dy)*1.2)return;
@@ -522,5 +528,5 @@ if (brandsLayout) {
   if(controlsElement)resizeObserver.observe(controlsElement);
   ScrollTrigger.addEventListener('refreshInit',measureLayout);
   configure();void document.fonts.ready.then(()=>{if(!events.signal.aborted)ScrollTrigger.refresh();});
-  if(import.meta.hot)import.meta.hot.dispose(()=>{clearTimeout(configureTimer);releaseLayout?.();events.abort();imageObserver.disconnect();resizeObserver.disconnect();ScrollTrigger.removeEventListener('refreshInit',measureLayout);disposeScroll();});
+  if(import.meta.hot)import.meta.hot.dispose(()=>{clearTimeout(configureTimer);releaseLayout?.();disposeDots();events.abort();imageObserver.disconnect();resizeObserver.disconnect();ScrollTrigger.removeEventListener('refreshInit',measureLayout);disposeScroll();});
 }

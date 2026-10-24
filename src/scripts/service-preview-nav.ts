@@ -1,3 +1,4 @@
+import {compactServices} from './compact-services';
 import gsap from 'gsap';
 import {isMobileAbout} from './about/mobileAboutDevice.js';
 const section=document.querySelector<HTMLElement>('.projects');
@@ -46,7 +47,7 @@ if(section){
  video.addEventListener('loadeddata',prepareInitialFrame);
  video.addEventListener('canplay',prepareInitialFrame);
  const sync=()=>{
-  const enabled=section.hasAttribute('data-horizontal')&&(!isMobileAbout()||document.documentElement.hasAttribute('data-ipad-home'));section.toggleAttribute('data-service-preview',enabled);
+  const enabled=section.hasAttribute('data-horizontal')&&(!isMobileAbout()||compactServices());section.toggleAttribute('data-service-preview',enabled);
   const nextHover=enabled&&hoverQuery.matches;
   if(hoverEnabled!==nextHover){
    hoverEnabled=nextHover;

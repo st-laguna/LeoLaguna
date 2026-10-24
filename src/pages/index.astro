@@ -7,6 +7,9 @@ import FeaturedWorks from '../components/FeaturedWorks.astro';
 import Brands from '../components/Brands.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/ipad-home.css';
+import '../styles/compact-services.css';
+import '../styles/unified-home.css';
+import '../styles/progress-controls.css';
 ---
 
 <BaseLayout title="Leo Laguna — Scientific Illustrator & 3D Developer" description="Scientific illustration, 3D visualization and animation for marine research, conservation, aquaculture and engineering — by Leo Laguna.">
@@ -17,6 +20,7 @@ import '../styles/ipad-home.css';
       <Projects />
     </div>
     <div class="featured-brands" data-featured-brands>
+      <section class="science-interlude" aria-label="Science and visual communication"><p><span data-i18n="science.1">Science is</span> <span data-i18n="science.2">complex.</span><br/><em><span data-i18n="science.3">Visuals</span> <span data-i18n="science.4">shouldn’t be.</span></em></p></section>
       <FeaturedWorks />
       <Brands />
       <div data-brands-footer-handoff><Footer /></div>

@@ -1,3 +1,5 @@
+import {mountUnifiedBrands} from './unified-brands';
+import {compactServices} from './compact-services';
 import { initBrandPreview } from './brand-preview';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -30,10 +32,13 @@ if(section){
     document.documentElement.hasAttribute('data-large-tablet-landscape') ||
     matchMedia('(max-width:1000px) and (max-height:500px), (pointer:coarse)').matches
   );
+  let disposeUnified:(()=>void)|undefined;
   function configureLayout(){
+    disposeUnified?.();disposeUnified=undefined;
     layoutWidth=innerWidth;layoutLandscape=landscape.matches;
     media?.revert();
     media=gsap.matchMedia();
+    if(compactServices()){section!.removeAttribute('data-mobile-streams');section!.removeAttribute('data-landscape-streams');disposeUnified=mountUnifiedBrands(section!);return;}
     const ipadHome=document.documentElement.hasAttribute('data-ipad-home');
     const tabletPortrait=document.documentElement.hasAttribute('data-tablet-portrait')&&!ipadHome;
     const horizontalStreams = useLandscapeStreams();
@@ -67,7 +72,7 @@ if(section){
     return()=>{copies.forEach(copy=>copy.remove());cells.forEach(cell=>{cell.disabled=false;});section.querySelectorAll<HTMLElement>('.brands-column').forEach(column=>column.style.removeProperty('--brand-strip-duration'));section.removeAttribute('data-mobile-streams');section.removeAttribute('data-landscape-streams');};
     });
     media.add('(prefers-reduced-motion:no-preference)',()=>{
-      const logos=Array.from(section!.querySelectorAll<HTMLElement>('.brands-cell img'));
+      const logos=Array.from(section!.querySelectorAll<HTMLElement>('.brand-logo img'));
       const compact=tabletPortrait || horizontalStreams || matchMedia('(any-pointer:coarse)').matches;
       const counters=Array.from(section!.querySelectorAll<HTMLElement>('[data-count-to]'));
       const featured=section!.parentElement?.querySelector<HTMLElement>('[data-featured-works]');
@@ -130,10 +135,10 @@ if(section){
     if(innerWidth===layoutWidth && landscape.matches===layoutLandscape)return;
     resizeTimer=setTimeout(()=>{
       if(innerWidth===layoutWidth && landscape.matches===layoutLandscape)return;
-      if(useLandscapeStreams() || section!.hasAttribute('data-landscape-streams'))configureLayout();
-      else {layoutWidth=innerWidth;layoutLandscape=landscape.matches;}
+      configureLayout();
+
     },150);
   };
   window.addEventListener('resize',resize,{passive:true});
-  if(import.meta.hot)import.meta.hot.dispose(()=>{clearTimeout(resizeTimer);window.removeEventListener('resize',resize);layoutObserver.disconnect();media.revert();themeObserver.disconnect();});
+  if(import.meta.hot)import.meta.hot.dispose(()=>{clearTimeout(resizeTimer);window.removeEventListener('resize',resize);layoutObserver.disconnect();disposeUnified?.();media.revert();themeObserver.disconnect();});
 }

@@ -7,7 +7,7 @@ export function centerBrandComposition(section:HTMLElement){
   let frame=0,disposed=false;
   function measure(){
     frame=0;if(disposed)return;
-    if(innerWidth<1001||section.hasAttribute('data-mobile-streams')){
+    if(matchMedia('(orientation:portrait)').matches||innerWidth<1001||section.hasAttribute('data-mobile-streams')){
       layout.style.removeProperty('--brands-center-x');return;
     }
     const offset=parseFloat(layout.style.getPropertyValue('--brands-center-x'))||0;

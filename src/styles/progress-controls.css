@@ -1,0 +1,11 @@
+:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) :is(.service-dots,.unified-dots){display:flex;align-items:center;gap:0}
+:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) :is(.service-dots,.unified-dots) button{background:none;border:0;min-width:32px;height:44px;padding:6px;display:grid;place-items:center}
+:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) :is(.service-dots,.unified-dots) button>span{position:relative;display:block;width:8px;height:8px;background:#86868b;border-radius:50%;overflow:hidden;transition:width .4s,border-radius .4s}
+:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) :is(.service-dots,.unified-dots) button[aria-pressed=true]>span{width:44px;border-radius:0}
+:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) :is(.service-dots,.unified-dots) i{position:absolute;inset:0;background:#ededed;transform:scaleX(0);transform-origin:left}
+:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) :is(.service-play,.unified-play){display:grid;place-items:center;background:none;border:0;width:44px;height:44px;color:#ededed}
+:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) :is(.service-play,.unified-play) svg{display:block;flex:none;width:18px;height:18px}
+:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) .unified-dots{padding:0 12.5px}
+:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) :is(.service-play,.unified-play){flex:0 0 44px;border-radius:0}
+@media(max-width:700px){:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) :is(.service-dots,.unified-dots) button{min-width:28px;padding:5px}:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) :is(.service-dots,.unified-dots) button[aria-pressed=true]>span{width:34px}}
+@media(prefers-reduced-motion:reduce){:root:root:root:root:root body :is(.service-gallery-controls,.unified-workflow-controls) :is(.service-dots,.unified-dots) button>span{transition:none}}

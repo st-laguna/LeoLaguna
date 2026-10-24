@@ -5,7 +5,7 @@ gsap.registerPlugin(ScrollTrigger);
 const section = document.querySelector<HTMLElement>('[data-featured-works]');
 if (section) {
   const media = gsap.matchMedia();
-  media.add('(prefers-reduced-motion:no-preference)', () => {
+  media.add('(orientation:landscape) and (prefers-reduced-motion:no-preference)', () => {
     const services=document.querySelector<HTMLElement>('[data-projects] .projects-stage');
     const brands=section.closest('[data-featured-brands]')?.querySelector<HTMLElement>('[data-brands]');
     // Follow the native sticky overlaps; these layers change paint, not layout.
@@ -21,6 +21,10 @@ if (section) {
         scrollTrigger: { id:'featured-entry-' + index, trigger:figure, start:'top 90%', toggleActions:'play none none reverse' },
       });
     });
+  });
+  media.add('(orientation:portrait) and (prefers-reduced-motion:no-preference)',()=>{
+    section.querySelectorAll<HTMLElement>('.featured-work').forEach((card,i)=>{const surface=card.querySelector('.featured-work__content');gsap.to(surface,{x:i%2?26:-26,y:-14,rotationX:-11,rotationY:i%2?14:-14,rotationZ:i%2?3.5:-3.5,scale:.94,ease:'none',scrollTrigger:{trigger:card,start:'top top',end:'80% top',scrub:true}})});
+    gsap.fromTo(section.querySelector('h2'),{y:25,clipPath:'inset(100% 0 0)'},{y:0,clipPath:'inset(0)',duration:.7,scrollTrigger:{trigger:section,start:'top 90%',once:true}});
   });
   if (import.meta.hot) import.meta.hot.dispose(() => media.revert());
 }
