@@ -414,7 +414,9 @@ slots.forEach((slot, i) => {
 
     function render(){
       if(!width)return;
-      const p=clamp(state.p);
+      // Once interactive, keep the carousel settled through toolbar/scroll refreshes.
+      const rawProgress=clamp(state.p);
+      const p=compactServices()&&cardsReady&&rawProgress>=.54?Math.max(.77,rawProgress):rawProgress;
       if(p>.02)loadIntermediateImages();
       if(p>.18)loadWorkflowImages();
       distortion.setInitialState(p<.105,1-ease((p-.08)/.025));
@@ -482,8 +484,8 @@ slots.forEach((slot, i) => {
       hero.inert=p>.03;
       workflow.style.visibility=p>.22?'visible':'hidden';
       showWorkflowLogo(p>=cardsStart+.16*span*overlap);
-      const ready=compactServices() && p>=.77;
-      if(cardsReady && !ready)workflow.dispatchEvent(new Event('workflow:reset'));
+      const ready=compactServices() && (p>=.77 || (cardsReady && p>=.54));
+      if(cardsReady && !ready && !ScrollTrigger.isRefreshing)workflow.dispatchEvent(new Event('workflow:reset'));
       cardsReady=ready;
       workflow.inert=!ready;
       const headingIn=ease((p-.23)/.07),headingOut=ease((p-.94)/.04);

@@ -170,7 +170,7 @@ if(section){
   const featured = document.querySelector<HTMLElement>('[data-featured-works]');
   const brandsLayout =
   section?.nextElementSibling?.querySelector<HTMLElement>('.brands-layout');
-  let entrance=0,current=0,frozen=false;
+  let entrance=0,current=0,frozen=false,galleryService=0;
   let timeline:gsap.core.Timeline|undefined;
   let mobileTimeline:gsap.core.Tween|undefined;
   let entry:ScrollTrigger|undefined;
@@ -484,12 +484,24 @@ if (brandsLayout && !compactServices()) {
     event.preventDefault();scrollPage(0, false);history.replaceState(null,'','#home');
   },{signal:events.signal});
   window.addEventListener('leo:gallery-lock',()=>{
-    settleSelections();frozen=true;
+    settleSelections();galleryService=current;frozen=true;
     timeline?.scrollTrigger?.getTween()?.pause();
     mobileTimeline?.scrollTrigger?.getTween()?.pause();
   },{signal:events.signal});
   window.addEventListener('leo:gallery-unlock',()=>{
     frozen=false;
+    if(compactServices() && timeline?.scrollTrigger){
+      const trigger=timeline.scrollTrigger;
+      ScrollTrigger.update();trigger.getTween()?.progress(1);timeline.time(stops[galleryService]);
+      panels.forEach(panel=>{
+        const selected=Number(panel.querySelector<HTMLElement>('[data-select][aria-selected="true"]')?.dataset.select||0);
+        panelSlides.get(panel)?.forEach((slide,i)=>{
+          slideReveals.get(slide)?.revert();slideReveals.delete(slide);
+          gsap.killTweensOf(slide);gsap.set(slide,{clearProps:'transform,clipPath,visibility,opacity'});slide.hidden=i!==selected;
+        });
+      });
+      hydratePanel(panels[galleryService]);render();trigger.getTween()?.play();return;
+    }
     // Resume el seguimiento desde el mismo fotograma; nunca reconstruye el pin.
     if((mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){
       // Update only the mobile stack: the desktop render clips the whole main.
