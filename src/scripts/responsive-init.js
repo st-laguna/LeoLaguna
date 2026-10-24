@@ -42,6 +42,10 @@
   const touch = matchMedia('(any-pointer:coarse)');
   let dynamicTimer, lastHeight=0;
   function dynamicViewport() {
+    const liveViewport=window.visualViewport;
+    if(!liveViewport || Math.abs(liveViewport.scale-1)<.01){
+      root.style.setProperty('--live-viewport-height', (liveViewport?.height || innerHeight)+'px');
+    }
     if (!root.hasAttribute('data-large-tablet-landscape')) return;
     const viewport=window.visualViewport;
     if (viewport && Math.abs(viewport.scale-1)>.01) return;
@@ -70,7 +74,7 @@
     clearTimeout(window.__leoOrientationReadyTimer);
     window.__leoOrientationReadyTimer = setTimeout(() => window.dispatchEvent(new Event('leo:orientation-ready')), 180);
   }
-  apply();
+  apply();dynamicViewport();
   tablet.addEventListener('change', resize);
   portrait.addEventListener('change', resize);
   window.addEventListener('pageshow', apply);

@@ -122,9 +122,16 @@ export function trackScrollDestination(commit: () => void, onInvalidate: () => v
   observer.observe(document.body);
   const frame = () => new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
   const current = () => !disposed && operation === destinationOperation;
+  // WebKit may keep fonts.ready pending until unrelated page resources finish.
+  // Bound that wait; the layout observer and stable-frame check still protect
+  // the destination while fonts or responsive sections change its geometry.
+  const fontsReady = Promise.race([
+    document.fonts.ready,
+    new Promise<void>(resolve => setTimeout(resolve, 800)),
+  ]);
   return {
     async ready() {
-      await document.fonts.ready;
+      await fontsReady;
       let stable = 0;
       while (current()) {
         if (layoutHolds.size || orientationPending) { stable = 0; await frame(); continue; }
@@ -218,3 +225,4 @@ if (import.meta.hot) {
     events.abort(); gsap.ticker.remove(tick); lenis?.destroy(); lenis = null;
   });
 }
+

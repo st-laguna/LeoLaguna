@@ -102,7 +102,6 @@
 /* Matched interludes, physical card faces and SVG closing strip. */
 @media(orientation:portrait){
 :root:root:root:root:root:root body .featured-works h2{background:#ededed}
-:root:root:root:root:root:root body .services-intro{height:67svh;top:16.5svh}
 :root:root:root:root:root:root body .workflow__front,:root:root:root:root:root:root body .workflow__back{visibility:visible!important;transition:none!important;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 :root:root:root:root:root:root body .workflow__turn{transition:transform 650ms cubic-bezier(.45,0,.55,1);overflow:visible;transform-style:preserve-3d}
 :root:root:root:root:root:root body .workflow__front{transform:translateZ(1px)}
@@ -130,7 +129,6 @@ html.mobile-menu-open,html.mobile-menu-open body{overflow:hidden!important;overs
 
 @media(orientation:portrait){
 :root:root:root:root:root:root body .projects[data-compact-services] .projects-copy p{text-transform:none;font-weight:300;white-space:normal}
-:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging{left:6.25px;right:6.25px}
 :root:root:root:root:root:root body .projects[data-compact-services] .projects-paging button{width:37.5px;height:37.5px;min-height:37.5px;align-self:center;border:1px solid #ededed;background:#1c1c1c;color:#ededed}
 :root:root:root:root:root:root body .services-transition{margin-top:0;position:relative;z-index:3;background:#000}
 :root:root:root:root:root:root body .services-intro{background:#000;color:#fff}
@@ -141,8 +139,25 @@ html.mobile-menu-open,html.mobile-menu-open body{overflow:hidden!important;overs
 }
 
 @media(orientation:portrait){
-:root:root:root:root:root:root body .services-intro{height:67svh;top:0}
-:root:root:root:root:root:root body .services-intro .nexo__motion{top:33.5svh}
-:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging{left:18.75px;right:18.75px}
 :root:root:root:root:root:root body .projects[data-compact-services] .projects-paging button{padding:0;display:grid;place-items:center}
 }
+
+/* Keep the phrase at viewport center and arrow boxes off the preview edges. */
+@media(orientation:portrait){
+:root:root:root:root:root:root body .home-journey[data-mobile-journey] .journey-stage,:root:root:root:root:root:root body .projects[data-compact-services] .projects-stage{height:max(100dvh,var(--live-viewport-height,100dvh))}
+}
+
+@media(orientation:portrait){
+:root:root:root:root:root:root body .services-intro{height:100svh;top:0}
+:root:root:root:root:root:root body .services-intro .nexo__motion{top:calc(var(--live-viewport-height,100dvh) / 2);left:50%;transform:translate(-50%,-50%)}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging{left:10px;right:10px;padding:0;grid-column:auto;grid-row:auto;justify-content:space-between;pointer-events:none}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging button{pointer-events:auto}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav{width:min(calc(100vw - 120px),437.5px)}
+/* Prepaint the possible toolbar expansion even while Safari defers resize
+   events during a held gesture. Keep layout and clipping unchanged. */
+:root:root:root:root:root:root body .home-journey[data-mobile-journey] .journey-stage,
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-stage{
+  box-shadow:0 max(0px,calc(100lvh - 100svh)) 0 0 var(--background);
+}
+}
+
