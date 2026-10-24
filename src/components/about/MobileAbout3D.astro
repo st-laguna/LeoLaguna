@@ -1,0 +1,23 @@
+---
+import NavigationMenu from '../NavigationMenu.astro';
+import '../../styles/about-mobile-3d.css';
+---
+<div class="mobile-about mobile-about-3d" data-mobile-3d-ui>
+ <NavigationMenu context="about" id="about-3d-navigation" preferences links={[
+  {label:'Home',href:'/',i18n:'nav.home.menu'},
+  {label:'Services',href:'/#work',i18n:'nav.services'},
+  {label:'Works',href:'/#featured-works',i18n:'nav.works'},
+ ]}>
+  <a slot="footer-extra" class="action-pill" href="/cv/"><span data-roll-label data-en="THE FORMAL STUFF" data-es="MI CURRÍCULUM">THE FORMAL STUFF</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></a>
+ </NavigationMenu>
+ <aside class="mobile-3d-panel" id="mobile-3d-panel" aria-label="About Leo" inert aria-hidden="true">
+  <div data-mobile-3d-bio></div>
+  <div data-mobile-3d-selection hidden>
+   <header><h2 data-mobile-3d-title></h2><button type="button" data-mobile-3d-reset aria-label="Return to full scene">↖</button></header>
+   <img data-mobile-3d-image alt="" width="400" height="400" />
+   <p data-mobile-3d-description></p>
+  </div>
+ </aside>
+ <button class="mobile-3d-toggle" type="button" data-mobile-3d-toggle aria-controls="mobile-3d-panel" aria-expanded="false" aria-label="Show information">→</button>
+ <div class="mobile-3d-status" data-mobile-3d-status></div>
+</div>

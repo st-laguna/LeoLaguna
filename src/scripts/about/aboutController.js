@@ -1,7 +1,7 @@
 import { PROPS } from './sceneConfig.js';
 import gsap from 'gsap';
 import { message } from './messages.js';
-import { mountMobileAbout } from './mobileAbout';
+import { mountMobileAbout3D } from './mobileAbout3D';
 import { isMobileAbout, mobileAboutMedia } from './mobileAboutDevice.js';
 import { mountEditorialAbout, editorialMedia, isEditorialAbout } from './editorialAbout.js';
 
@@ -9,7 +9,7 @@ const mounted = new Map();
 
 function mount(section) {
   document.documentElement.toggleAttribute('data-about-mobile', isMobileAbout());
-  if (isMobileAbout()) return mountMobileAbout(section);
+  const mobile3D=isMobileAbout();
   const abort = new AbortController();
   const on = (target, name, handler, options = {}) =>
     target?.addEventListener(name, handler, {
@@ -44,10 +44,10 @@ function mount(section) {
     launchElement = null,
     watchdog = 0;
   const animations = new Set();
-  const editorial=mountEditorialAbout(section,()=>scene,on,reduced);
+  const editorial=mobile3D?mountMobileAbout3D(section,()=>scene,on,reduced):mountEditorialAbout(section,()=>scene,on,reduced);
   const desktopQuery=matchMedia(editorialMedia);
   on(desktopQuery,'change',()=>{dispose();mounted.set(section,mount(section));});
-  on(window,'leo:orientation-ready',()=>{if(!!editorial!==isEditorialAbout()){dispose();mounted.set(section,mount(section));}});
+  on(window,'leo:orientation-ready',()=>{if(!mobile3D&&!!editorial!==isEditorialAbout()){dispose();mounted.set(section,mount(section));}});
 
   // A remount (for example during HMR) may reuse the same HTML nodes.
   explore.replaceChildren();
@@ -262,7 +262,7 @@ function mount(section) {
       }
     }, 12000);
     try {
-      const { createAboutScene } = await (mobileQuery.matches ? import('./portraitScene.js') : import('./dogScene.js'));
+      const { createAboutScene } = await (mobileQuery.matches&&!mobile3D ? import('./portraitScene.js') : import('./dogScene.js'));
       if (destroyed || leaving) {
         starting = false;
         return;
@@ -390,7 +390,7 @@ function mount(section) {
     // The shared destination entrance owns these nodes during navigation.
     gsap.set(boxes, { autoAlpha: 1, y: 0 });
   } else enter();
-  return { dispose, mode: 'desktop' };
+  return { dispose, mode: mobile3D?'mobile':'desktop' };
 }
 
 function boot() {

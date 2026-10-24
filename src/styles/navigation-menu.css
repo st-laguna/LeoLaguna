@@ -52,4 +52,12 @@ html body [data-shared-menu-panel] .ipad-home-nav {display:none;}
 :root:root:root:root body [data-shared-menu-panel][data-menu-compact] .ipad-home-nav{display:block}
 :root:root:root:root body [data-shared-menu-panel][data-menu-compact] [data-menu-selected]{translate:-6px 0}
 }
+
+@media(orientation:landscape){
+:root:where([data-ipad]):root:root:root body [data-shared-menu-panel][data-menu-compact]{left:auto;right:0;width:50vw;max-width:50vw;clip-path:inset(0);transform:translateX(100%);transition:transform .55s cubic-bezier(.76,0,.24,1),visibility 0s .55s}
+:root:where([data-ipad]):root:root:root body [data-shared-menu-panel][data-menu-compact][data-shared-menu-open]{transform:translateX(0);visibility:visible;transition-delay:0s}
+:root:where([data-ipad]):root:root:root body [data-shared-menu-panel][data-menu-compact] [data-shared-nav-link]{text-align:right;transform-origin:right center;font-size:clamp(24px,4vw,48px)}
+:root:where([data-ipad]):root:root:root body [data-shared-menu-panel][data-menu-compact] .ipad-home-nav{display:block}
+:root:where([data-ipad]):root:root:root body [data-shared-menu-panel][data-menu-compact] [data-menu-selected]{translate:-6px 0}
+}
 @media(orientation:portrait) and (prefers-reduced-motion:reduce){:root:root:root:root body [data-shared-menu-panel][data-menu-compact]{transition:none}}

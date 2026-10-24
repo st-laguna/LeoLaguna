@@ -2,13 +2,13 @@
 import '../../styles/home-microinteractions.css';
 import PageControls from '../PageControls.astro';
 import EditorialAbout from './EditorialAbout.astro';
-import MobileAbout from './MobileAbout.astro';
+import MobileAbout3D from './MobileAbout3D.astro';
 const base = import.meta.env.BASE_URL;
 ---
 
 <section class="about" id="about" data-about aria-labelledby="about-title">
   <EditorialAbout />
-  <MobileAbout />
+  <MobileAbout3D />
   <div class="about__composition">
   <button class="about-mobile-toggle" type="button" aria-expanded="false" aria-controls="about-mobile-menu" aria-label="Open menu / Abrir menú"><span></span><span></span><span></span></button>
   <div class="about-mobile-menu" id="about-mobile-menu" inert>
@@ -31,10 +31,9 @@ const base = import.meta.env.BASE_URL;
   <div class="about-mobile-copy">
     <a class="about-mobile-cv" href="/cv/"><span data-en="THE FORMAL STUFF" data-es="MI CURRÍCULUM">THE FORMAL STUFF</span></a>
     <div class="about-mobile-intro">
-      <p data-en="With a background in Marine Biology, I work across science, design and visual storytelling. I create scientific illustrations, technical visuals, 3D and animation for projects in marine research, conservation, aquaculture and engineering." data-es="Con una formación en Biología Marina, trabajo entre la ciencia, el diseño y la narrativa visual. Creo ilustraciones científicas, visuales técnicos, 3D y animación para proyectos de investigación marina, conservación, acuicultura e ingeniería.">With a background in Marine Biology, I work across science, design and visual storytelling. I create scientific illustrations, technical visuals, 3D and animation for projects in marine research, conservation, aquaculture and engineering.</p>
-      <p data-en="Most of my work starts with something complex, so I like to understand the subject first and then find the right visual way to make it clearer, engaging and useful. I don’t really stick to one medium; figuring out what each project needs is part of what I enjoy most." data-es="Gran parte de mi trabajo empieza con algo complejo, así que primero me gusta entender bien el tema y luego encontrar la mejor forma visual de hacerlo más claro, atractivo y útil. No suelo limitarme a un solo medio; descubrir qué necesita cada proyecto es parte de lo que más disfruto de este trabajo.">Most of my work starts with something complex, so I like to understand the subject first and then find the right visual way to make it clearer, engaging and useful. I don’t really stick to one medium; figuring out what each project needs is part of what I enjoy most.</p>
-    </div>
-    <dl><div><dt>Base</dt><dd>Lima, Peru</dd></div><div><dt data-en="Practice" data-es="Práctica">Practice</dt><dd data-en="Scientific illustration · 3D visualisation · Animation · Science communication" data-es="Ilustración científica · Visualización 3D · Animación · Comunicación científica">Scientific illustration · 3D visualisation · Animation · Science communication</dd></div><div><dt data-en="Education" data-es="Educación">Education</dt><dd>BSc Marine Biology · Universidad Científica del Sur</dd></div></dl>
+      <p data-en="Ocean nerd based in Lima, Peru, drawing animals since forever, 3D when 2D isn’t enough, and probably fixing a detail nobody else noticed." data-es="Apasionado del océano, desde Lima, Perú. Dibujo animales desde siempre, uso 3D cuando el 2D no basta y probablemente estoy corrigiendo un detalle que nadie más notó.">Ocean nerd based in Lima, Peru, drawing animals since forever, 3D when 2D isn’t enough, and probably fixing a detail nobody else noticed.</p>
+      <p data-en="I create scientific illustrations, technical visuals, 3D, and animation for projects in research, conservation, aquaculture, and engineering, turning complex ideas into clear, engaging visuals." data-es="Creo ilustraciones científicas, visuales técnicos, 3D y animación para proyectos de investigación, conservación, acuicultura e ingeniería, convirtiendo ideas complejas en imágenes claras y atractivas.">I create scientific illustrations, technical visuals, 3D, and animation for projects in research, conservation, aquaculture, and engineering, turning complex ideas into clear, engaging visuals.</p>
+    </div>    <dl><div><dt>Base</dt><dd>Lima, Peru</dd></div><div><dt data-en="Practice" data-es="Práctica">Practice</dt><dd data-en="Scientific illustration · 3D visualisation · Animation · Science communication" data-es="Ilustración científica · Visualización 3D · Animación · Comunicación científica">Scientific illustration · 3D visualisation · Animation · Science communication</dd></div><div><dt data-en="Education" data-es="Educación">Education</dt><dd>BSc Marine Biology · Universidad Científica del Sur</dd></div></dl>
   </div>
   <div class="about__scene-shell">
     <div class="about__scene" data-scene></div>
@@ -89,11 +88,8 @@ const base = import.meta.env.BASE_URL;
         </p>
       </div>
       <div class="intro__body">
-        <p data-en="With a background in Marine Biology, I work across science, design and visual storytelling. I create scientific illustrations, technical visuals, 3D and animation for projects in marine research, conservation, aquaculture and engineering. Most of my work starts with something complex, so I like to understand the subject first and then find the right visual way to make it clearer, engaging and useful. I don’t really stick to one medium; figuring out what each project needs is part of what I enjoy most." data-es="Con una formación en Biología Marina, trabajo entre la ciencia, el diseño y la narrativa visual. Creo ilustraciones científicas, visuales técnicos, 3D y animación para proyectos de investigación marina, conservación, acuicultura e ingeniería. Gran parte de mi trabajo empieza con algo complejo, así que primero me gusta entender bien el tema y luego encontrar la mejor forma visual de hacerlo más claro, atractivo y útil. No suelo limitarme a un solo medio; descubrir qué necesita cada proyecto es parte de lo que más disfruto de este trabajo.">
-          With a background in Marine Biology, I work across science, design and visual storytelling. I create scientific illustrations, technical visuals, 3D and animation for projects in marine research, conservation, aquaculture and engineering.
-
-          Most of my work starts with something complex, so I like to understand the subject first and then find the right visual way to make it clearer, engaging and useful. I don’t really stick to one medium; figuring out what each project needs is part of what I enjoy most.
-        </p>
+      <p data-en="Ocean nerd based in Lima, Peru, drawing animals since forever, 3D when 2D isn’t enough, and probably fixing a detail nobody else noticed." data-es="Apasionado del océano, desde Lima, Perú. Dibujo animales desde siempre, uso 3D cuando el 2D no basta y probablemente estoy corrigiendo un detalle que nadie más notó.">Ocean nerd based in Lima, Peru, drawing animals since forever, 3D when 2D isn’t enough, and probably fixing a detail nobody else noticed.</p>
+      <p data-en="I create scientific illustrations, technical visuals, 3D, and animation for projects in research, conservation, aquaculture, and engineering, turning complex ideas into clear, engaging visuals." data-es="Creo ilustraciones científicas, visuales técnicos, 3D y animación para proyectos de investigación, conservación, acuicultura e ingeniería, convirtiendo ideas complejas en imágenes claras y atractivas.">I create scientific illustrations, technical visuals, 3D, and animation for projects in research, conservation, aquaculture, and engineering, turning complex ideas into clear, engaging visuals.</p>
       </div>
     </div>
 

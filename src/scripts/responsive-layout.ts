@@ -1,6 +1,7 @@
 // Shared composition for Workflow, interludes, Featured Works and footer.
-// Services and Brands keep their existing layout until their own adaptation.
-export const mobileLandscapeMedia = '(orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px)';
+// iPadOS may expose a fine pointer when a trackpad is connected.
+const ipadLayout = typeof document !== 'undefined' && document.documentElement.hasAttribute('data-ipad');
+export const mobileLandscapeMedia = ipadLayout ? '(orientation:landscape)' : '(orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px)';
 export const mobileJourneyMedia = '(orientation:portrait), ' + mobileLandscapeMedia;
 export const mobileJourneyMotionMedia = mobileJourneyMedia.split(', ').map(query => query + ' and (prefers-reduced-motion:no-preference)').join(', ');
 export const isMobileJourneyLayout = () => matchMedia(mobileJourneyMedia).matches;

@@ -26,14 +26,15 @@ export function createAboutScene(section, callbacks = {}) {
   if (!container) throw new Error('Missing scene container');
   const abort = new AbortController();
   const resources = new Resources();
-  const editorial=section.hasAttribute('data-editorial');
-  const desktopFloats = editorial && matchMedia('(hover:hover) and (pointer:fine)').matches
+  const mobile3D=section.hasAttribute('data-mobile-3d');
+  const editorial=section.hasAttribute('data-editorial')||mobile3D;
+  const desktopFloats = mobile3D || editorial && matchMedia('(hover:hover) and (pointer:fine)').matches
     && !document.documentElement.hasAttribute('data-ipad')
     && !document.documentElement.hasAttribute('data-large-tablet-landscape')
     && !document.documentElement.hasAttribute('data-tablet-portrait');
   const scene = new THREE.Scene();
   const mobilePortrait = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)');
-  const isMobilePortrait = mobilePortrait.matches;
+  const isMobilePortrait = mobilePortrait.matches&&!mobile3D;
   scene.background = new THREE.Color(document.documentElement.dataset.theme === 'dark' ? (editorial?'#1C1C1C':'#181818') : (editorial?getComputedStyle(section).getPropertyValue('--light-base').trim():SCENE.background));
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 150);
   camera.position.fromArray(editorial?[0,2.3,4.5]:SCENE.camera);
@@ -51,9 +52,10 @@ export function createAboutScene(section, callbacks = {}) {
 
   const controls = new OrbitControls(camera, canvas);
   controls.target.fromArray(SCENE.target);
-  controls.enablePan = false;
+  controls.enablePan = mobile3D;
+  if(mobile3D){controls.touches.ONE=THREE.TOUCH.ROTATE;controls.touches.TWO=THREE.TOUCH.DOLLY_PAN;}
   controls.minDistance = editorial?1.6:0.8;
-  controls.maxDistance = editorial?6:18;
+  controls.maxDistance = mobile3D?14:editorial?6:18;
   const generalZoom={minDistance:controls.minDistance,maxDistance:controls.maxDistance};
   function focusProfile(entry){return editorial?(entry?.id==='leo'?FOCUS.leo:entry?.kind==='prop'?FOCUS.object:null):null;}
   function zoomLimits(entry){const profile=focusProfile(entry);return profile?{minDistance:FOCUS.referenceDistance/profile.maxZoom,maxDistance:FOCUS.referenceDistance/profile.minZoom}:generalZoom;}
@@ -67,7 +69,7 @@ export function createAboutScene(section, callbacks = {}) {
   const coarse = matchMedia('(pointer: coarse)');
   const configureInput = () => {
     controls.enableRotate = !coarse.matches || editorial;
-    controls.enableZoom = !coarse.matches;
+    controls.enableZoom = mobile3D||!coarse.matches;
     canvas.style.touchAction = coarse.matches && !editorial ? 'pan-y' : 'none';
   };
   configureInput();
@@ -146,7 +148,7 @@ export function createAboutScene(section, callbacks = {}) {
   const defaultTarget = new THREE.Vector3().fromArray(SCENE.target);
   const defaultCamera = new THREE.Vector3().fromArray(editorial?[0,2.3,4.5]:SCENE.overview);
   const tooltip = section.querySelector('[data-tooltip]');
-  const framing={offset:.1};
+  const framing={offset:mobile3D?0:.1};
   let appliedOffset=NaN;
   function applyFraming(){if(!editorial)return;const offset=Math.round(width*framing.offset);if(appliedOffset!==offset){appliedOffset=offset;camera.setViewOffset(width,height,-offset,0,width,height);}}
   let width = 1,
@@ -259,6 +261,7 @@ export function createAboutScene(section, callbacks = {}) {
       Math.max(1, Math.round(height * scale)),
     );
     camera.aspect = width / height;
+    if(mobile3D&&!active&&!transition){const distance=width<height?10:5;defaultCamera.set(0,2.3,distance);camera.position.copy(defaultCamera);controls.target.copy(defaultTarget);}
     if(editorial){appliedOffset=NaN;applyFraming();}
     camera.updateProjectionMatrix();
     // CSS-pixel size: lowering internal resolution does not enlarge the intended pixel blocks.
@@ -324,7 +327,8 @@ export function createAboutScene(section, callbacks = {}) {
     requestRender();
   });
   on(canvas, 'pointerdown', (event) => {
-    if (!event.isPrimary || event.button !== 0) return;
+    if (!event.isPrimary) {if(pointerDown)pointerDown.dragged=true;return;}
+    if(event.button!==0)return;
     pointerDown = {
       x: event.clientX,
       y: event.clientY,
@@ -478,7 +482,7 @@ export function createAboutScene(section, callbacks = {}) {
     if (transition) {
       const travel = transition;
       if(editorial){controls.minDistance=THREE.MathUtils.lerp(travel.zoomFrom.minDistance,travel.zoomTo.minDistance,travel.progress);controls.maxDistance=THREE.MathUtils.lerp(travel.zoomFrom.maxDistance,travel.zoomTo.maxDistance,travel.progress);}
-      if(editorial){framing.offset=THREE.MathUtils.lerp(travel.framingFrom,travel.returning?.1:.035,travel.progress);applyFraming();}
+      if(editorial){framing.offset=THREE.MathUtils.lerp(travel.framingFrom,mobile3D?framing.offset:(travel.returning?.1:.035),travel.progress);applyFraming();}
       if (travel.returning) {
         world.copy(defaultTarget);
         cameraGoal.copy(defaultCamera);
@@ -863,6 +867,7 @@ export function createAboutScene(section, callbacks = {}) {
     reset,
     setZoom,
     getZoom,
+    setPanelOffset(value){if(!mobile3D)return;framing.offset=value;applyFraming();requestRender();},
     setPaused,
     setReducedMotion,
     setVisible,

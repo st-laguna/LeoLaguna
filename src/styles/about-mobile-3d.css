@@ -1,0 +1,56 @@
+.mobile-about-3d {display:none;}
+html[data-about-mobile] body,html[data-about-mobile] body .about {height:100dvh;min-height:0;overflow:hidden;}
+html[data-about-mobile] body .about {--mobile-panel-width:clamp(260px,28vw,420px);--light-base:#ededed;--background:#ededed;--foreground:#1c1c1c;position:relative;background:var(--background);color:var(--foreground);}
+html[data-about-mobile][data-theme=dark] body .about {--background:#1c1c1c;--foreground:#ededed;}
+html[data-about-mobile] body .about>.about__composition {display:contents;}
+html[data-about-mobile] body .about>.about-editorial,
+html[data-about-mobile] body .about__overlay,
+html[data-about-mobile] body :is(.about-preferences,.about-mobile-copy,.about-mobile-toggle,.about-mobile-menu,.about__tools,.about__tooltip,.about__hint) {display:none;}
+html[data-about-mobile] body .about .about__scene-shell,
+html[data-about-mobile] body .about .about__scene {position:absolute;inset:0;width:100%;height:100%;min-height:0;max-height:none;transform:none;z-index:0;}
+html[data-about-mobile] body .about canvas {display:block;width:100%;height:100%;touch-action:none;}
+html[data-about-mobile] body .mobile-about-3d {display:block;position:absolute;inset:0;z-index:5;pointer-events:none;}
+.mobile-about-3d :is(button,a,details,aside,[data-shared-menu-panel]) {pointer-events:auto;}
+.mobile-3d-panel {position:absolute;inset:0 auto 0 0;width:var(--mobile-panel-width);box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;background:var(--background);color:var(--foreground);border-right:1px solid #8887;transform:translateX(-100%);transition:transform .7s cubic-bezier(.65,0,.35,1);scrollbar-width:thin;}
+[data-mobile-panel-open] .mobile-3d-panel {transform:translateX(0);}
+.mobile-3d-panel [hidden] {display:none!important;}
+.mobile-3d-panel h1 {padding:22px 18px;margin:0;border-bottom:1px solid #8887;font-family:Archivo,sans-serif;font-weight:800;font-size:clamp(36px,4.7vw,64px);line-height:.98;letter-spacing:-.04em;}
+.mobile-3d-panel h1 span {display:block;font-size:inherit;white-space:nowrap;width:max-content;transform-origin:left center;}
+.mobile-3d-panel h1 strong {display:block;font-size:inherit;}
+.mobile-3d-panel p {margin:0;padding:18px 20px 0;font:400 clamp(14px,1.2vw,18px)/1.35 'Host Grotesk',sans-serif;}
+.mobile-3d-panel dl {margin:24px 0 0;padding:18px 20px;border-top:1px solid #8887;font:400 14px/1.35 'Host Grotesk',sans-serif;}
+.mobile-3d-panel dl>div {margin-bottom:18px;}
+.mobile-3d-panel dt {margin-bottom:6px;opacity:.7;}.mobile-3d-panel dd {margin:0;}
+.mobile-3d-panel header {display:flex;align-items:center;justify-content:space-between;padding:22px 18px;gap:12px;}
+.mobile-3d-panel h2 {margin:0;font:700 22px/1.1 Archivo,sans-serif;}
+.mobile-3d-panel header button {width:40px;height:40px;border:0;background:none;color:inherit;font-size:24px;}
+.mobile-3d-panel img {display:block;width:calc(100% - 40px);height:auto;max-height:35dvh;object-fit:cover;margin:0 20px;border-radius:16px;}
+.mobile-3d-toggle {position:absolute;left:calc(var(--mobile-panel-width) * var(--mobile-panel-progress,0));top:50%;translate:-50% -50%;width:40px;height:40px;aspect-ratio:1;box-sizing:border-box;padding:0;display:grid;place-items:center;border:1px solid #8887;border-radius:999px;background:var(--background);color:var(--foreground);font-size:22px;z-index:6;}
+.mobile-3d-toggle[aria-expanded=false] {translate:0 -50%;}
+.mobile-3d-status {position:absolute;left:calc(18px + var(--mobile-panel-width) * var(--mobile-panel-progress,0));bottom:max(16px,env(safe-area-inset-bottom));right:12px;pointer-events:none;}
+.mobile-3d-status .about__loading {display:flex;align-items:center;gap:9px;color:var(--foreground);font:600 11px/1.2 'Host Grotesk',sans-serif;}
+.mobile-3d-status p {margin:0;}.mobile-3d-status .about__dot {display:block;width:18px;height:18px;background:none;}
+.mobile-3d-status .about__dot::before {content:'✱';display:block;font-size:22px;line-height:18px;animation:mobile-3d-spin 5s linear infinite;}
+[data-mobile-3d-busy] .mobile-3d-status .about__dot::before {animation-play-state:paused;}
+html[data-about-mobile] body .about [data-return] {position:absolute;top:18px;left:auto!important;right:72px!important;transform:none!important;z-index:7;}
+@keyframes mobile-3d-spin {to{rotate:360deg}}
+@media(orientation:portrait){html[data-about-mobile] body .about {--mobile-panel-width:min(58vw,350px);}.mobile-3d-panel h1{font-size:clamp(32px,9vw,56px)}.mobile-3d-status{font-size:10px;}}
+@media(prefers-reduced-motion:reduce){.mobile-3d-panel{transition:none}.mobile-3d-status .about__dot::before{animation:none}}
+
+html[data-about-mobile] body .about[data-mobile-3d] .about-preferences {display:none;}
+html[data-about-mobile] body .about[data-mobile-3d] .mobile-3d-status .about__loading {position:static;display:flex;width:auto;height:auto;min-height:0;max-width:none;padding:0;margin:0;overflow:visible;clip-path:none;white-space:normal;border:0;}
+html[data-about-mobile] body .about[data-mobile-3d] .mobile-3d-status .about__dot {display:block;}
+html[data-about-mobile] body .about[data-mobile-3d] .mobile-3d-status .about__loading p {font-size:11px;}html[data-about-mobile] body .about[data-mobile-3d] .mobile-3d-status .about__loading {background:transparent;color:var(--foreground);justify-content:flex-start;align-items:center;text-align:left;transform:none;}
+html[data-about-mobile] body .about[data-mobile-3d] .mobile-3d-status .about__loading p {font-weight:500;text-align:left;}
+/* The biography fills the column; metadata rests at its lower edge. */
+[data-mobile-3d-bio] {display:flex;flex-direction:column;min-height:100%;}
+.mobile-3d-panel dl {margin-top:auto;}
+[data-mobile-3d-bio]>p:last-of-type {padding-bottom:30px;}
+.mobile-3d-panel dl>div:last-child {margin-bottom:0;}
+[data-mobile-3d-selection] {display:flex;flex-direction:column;justify-content:center;min-height:100%;box-sizing:border-box;padding-block:20px;}
+[data-mobile-3d-selection]>p {padding-bottom:22px;}
+html[data-about-mobile] body [data-shared-menu-toggle][data-menu-context="about"] {background:transparent;color:#fff;mix-blend-mode:difference;}
+html[data-about-mobile] body .mobile-about-3d [data-shared-menu-panel] .shared-menu-footer {display:flex;flex-direction:column;align-items:flex-end;gap:12px;}
+html[data-about-mobile] body .mobile-about-3d [data-shared-menu-panel] .site-controls {display:grid!important;grid-template-columns:auto auto;justify-content:end;gap:12px;}
+.mobile-about-3d .site-controls>.action-pill {grid-column:1 / -1;justify-self:end;}
+.mobile-about-3d .shared-menu-footer .action-pill {min-width:190px;justify-content:space-between;box-sizing:border-box;}
