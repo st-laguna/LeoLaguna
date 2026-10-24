@@ -5,6 +5,15 @@ gsap.registerPlugin(ScrollTrigger);
 const section = document.querySelector<HTMLElement>('[data-featured-works]');
 if (section) {
   const media = gsap.matchMedia();
+  // Move the one existing heading onto the phone's first animated surface.
+  media.add('(orientation:portrait), (max-width:700px), (max-width:1000px) and (max-height:500px)', () => {
+    const heading=section.querySelector<HTMLElement>('#featured-works-heading')!;
+    const composition=section.querySelector('.featured-works__composition')!;
+    const surface=section.querySelector('.featured-work--groaqua .featured-work__content')!;
+    surface.prepend(heading);
+    section.setAttribute('data-integrated-heading','');
+    return () => { section.insertBefore(heading,composition);section.removeAttribute('data-integrated-heading'); };
+  });
   media.add('(orientation:landscape) and (prefers-reduced-motion:no-preference)', () => {
     const services=document.querySelector<HTMLElement>('[data-projects] .projects-stage');
     const brands=section.closest('[data-featured-brands]')?.querySelector<HTMLElement>('[data-brands]');

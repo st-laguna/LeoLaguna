@@ -163,7 +163,7 @@ html.mobile-menu-open,html.mobile-menu-open body{overscroll-behavior:none}
 
 
 /* Focused touch refinements; desktop and laptop composition stays authored. */
-@media (pointer:coarse), (max-width:700px), (max-width:1000px) and (max-height:500px) {
+@media (orientation:portrait), (pointer:coarse), (max-width:700px), (max-width:1000px) and (max-height:500px) {
   :root:root:root:root:root:root:root body .projects .project-media {width:calc(100% - 8px);margin-inline:4px;}
   :root:root:root:root:root:root:root body .projects .projects-view-all {display:flex;align-items:center;justify-content:center;gap:6px;text-align:center;}
   :root:root:root:root:root:root:root body .projects .projects-view-all .action-arrow {display:inline-block;color:#1c1c1c;font-size:16px;}
@@ -188,4 +188,84 @@ html.mobile-menu-open,html.mobile-menu-open body{overscroll-behavior:none}
 @media (orientation:portrait) and (pointer:coarse) {
   :root:root:root:root:root:root:root[data-ipad-home] body .brands-layout {display:flex;flex-direction:column;}
   :root:root:root:root:root:root:root[data-ipad-home] body .brands-grid {width:100%;height:auto;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:clamp(140px,19vw,230px);}
+}
+/* Mobile polish: shared touch surfaces in both themes. */
+@media (orientation:portrait), (pointer:coarse), (max-width:700px), (max-width:1000px) and (max-height:500px) {
+  :root:root:root:root:root:root:root body .workflow__tap-cue {border:0;box-shadow:inset 0 0 0 .667px currentColor;}
+  :root:root:root:root:root:root:root body .projects .project-media {width:calc(100% - 20px);height:calc(100% - 20px);margin:10px;}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .projects,
+  :root:root:root:root:root:root:root[data-theme="dark"] body .projects :is(.projects-stage,.projects-main,.projects-window,.projects-rail,.project-panel) {background-color:#1c1c1c;}
+  :root:root:root:root:root:root:root body .science-interlude {background:#000;color:#fff;}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .science-interlude {background:#000;color:#fff;}
+  :root:root:root:root:root:root:root body .featured-works {background:transparent;}
+  :root:root:root:root:root:root:root body .featured-works h2 {background:transparent;border-radius:0;}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .featured-works,
+  :root:root:root:root:root:root:root[data-theme="dark"] body .featured-works h2 {background:transparent;}
+  :root:root:root:root:root:root:root body .featured-work--sperm-whales-of-dominica {background:transparent;}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .featured-work--sperm-whales-of-dominica {background:transparent;}
+  :root:root:root:root:root:root:root body .featured-work--sperm-whales-of-dominica .featured-work__content {border-bottom:0;}
+  :root:root:root:root:root:root:root body .footer[data-compact-layout] {--mobile-strip-height:clamp(90px,14svh,150px);grid-template-rows:minmax(0,1fr) var(--mobile-strip-height)!important;}
+  :root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__bottom {padding-block:12.5px;}
+  :root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__compact-window {padding-block:10px;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .unified-dots {background:#d5d5d5;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .unified-dots button span {background:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .unified-dots i {background:#555;}
+  :root:root:root:root:root:root:root[data-theme="light"] body :is(.services-transition,.services-intro) {background:#fff;color:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects,
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects :is(.projects-stage,.projects-main,.projects-window,.projects-rail,.project-panel) {background-color:#ededed;color:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects :is(.projects-footer,.service-gallery-controls,.project-mobile-copy) {--foreground:#1c1c1c;background:#fff;color:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects :is(.projects-number,.projects-copy,.projects-copy h2,.projects-copy p) {color:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects .service-dots button>span {background:#999;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects .service-dots i {background:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects .projects-paging button {background:#ededed;border-color:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects .projects-paging .action-arrow {color:var(--button-coral,#ef6c65);}
+  :root:root:root:root:root:root:root[data-theme="light"] body .featured-brands {background:#ededed;}
+}
+@media (orientation:portrait) and (pointer:coarse), (orientation:portrait) and (max-width:700px) {
+  :root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__mobile-message {font-size:min(clamp(110px,32vw,360px),calc((100svh - var(--mobile-strip-height) - clamp(44px,8svh,90px) - clamp(20px,3svh,32px)) / 3));}
+}@media (orientation:portrait), (pointer:coarse), (max-width:700px), (max-width:1000px) and (max-height:500px) {
+  :root:root:root:root:root:root:root body .footer[data-compact-layout] :is(.footer__strip-window,.footer__strip-clip,.footer__bottom) {height:100%;min-height:0;}
+}@media (orientation:portrait) and (pointer:coarse) {
+  :root:root:root:root:root:root:root[data-ipad-home] body .footer[data-compact-layout] {display:grid!important;height:100svh!important;min-height:0!important;padding:0!important;gap:0!important;}
+  :root:root:root:root:root:root:root[data-ipad-home] body .footer[data-compact-layout] .footer__marquee {height:100%!important;min-height:0;}
+}
+/* Shared mobile corrections from the service and handoff screenshots. */
+@media (orientation:portrait), (max-width:700px), (max-width:1000px) and (max-height:500px) {
+  :root:root:root:root:root:root:root:root:root body .projects :is(.projects-window,.projects-rail,.project-panel) {background-color:#1c1c1c;}
+  :root:root:root:root:root:root:root:root:root body .projects .service-dots button>span,
+  :root:root:root:root:root:root:root:root:root body .projects .service-dots i {background:#1c1c1c;}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-view-all {gap:3px;padding-inline:10px;}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-view-all .action-arrow {font-size:inherit;width:1em;height:1.2em;line-height:1.2;}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-view-all [data-roll-label] {margin:0;}
+  :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer {row-gap:12.5px;}
+  :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] :is(.projects-copy-stack,.projects-number) {align-self:center;}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-paging button {border:0;background:transparent;box-shadow:inset 0 0 0 .667px rgb(28 28 28 / .25);}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-paging .action-arrow {color:#1c1c1c;}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-paging button:active {background:var(--button-coral,#ef6c65);}
+  :root:root:root:root:root:root:root:root:root body .science-interlude {height:100svh;top:0;background:#000;}
+  :root:root:root:root:root:root:root:root:root body .featured-works {background:#ededed;}
+  :root:root:root:root:root:root:root:root:root body .featured-works h2 {background:#ededed;color:#1c1c1c;border-radius:var(--radius-lg) var(--radius-lg) 0 0;}
+  :root:root:root:root:root:root:root:root:root body .featured-work--sperm-whales-of-dominica {background:#ededed;}
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .featured-works,
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .featured-work--sperm-whales-of-dominica {background:#000;}
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .featured-works h2 {background:#1c1c1c;color:#ededed;}
+}
+/* Center each service's natural copy height inside the shared caption row. */
+@media (orientation:portrait), (max-width:700px), (max-width:1000px) and (max-height:500px) {
+  :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy {align-self:center;height:max-content;}
+  :root:root:root:root:root:root:root:root:root body .featured-works[data-integrated-heading] {background:transparent;}
+  :root:root:root:root:root:root:root:root:root body .featured-works[data-integrated-heading] .featured-work--groaqua .featured-work__content {border-radius:var(--radius-lg) var(--radius-lg) 0 0;}
+  :root:root:root:root:root:root:root:root:root body .featured-works[data-integrated-heading] h2 {margin:-25px -25px 25px;width:calc(100% + 50px);}
+}
+/* Tablet spacing uses the same integrated surface, with its existing padding. */
+@media (orientation:portrait) and (min-width:701px) {
+  :root:root:root:root:root:root:root:root:root body .featured-works[data-integrated-heading] h2 {margin:-37.5px -50px 37.5px;width:calc(100% + 100px);}
+}
+@media (orientation:portrait) {
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .service-dots button>span,
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .service-dots i,
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .projects-paging .action-arrow {color:#ededed;}
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .service-dots button>span {background:#777;}
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .service-dots i {background:#ededed;}
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .projects-paging button {box-shadow:inset 0 0 0 .667px rgb(237 237 237 / .25);}
 }

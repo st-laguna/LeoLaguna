@@ -55,6 +55,13 @@ function mount(toggle: HTMLButtonElement) {
   on(document,'keydown',event=>{if(open&&['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes((event as KeyboardEvent).key))event.preventDefault();});
   on(toggle, 'click', () => { if (!toggle.disabled) setOpen(!open); });
   on(toggle, 'navigation-menu:close', () => setOpen(false));
+  on(document, 'click', event => {
+    if (!open || !(event.target instanceof Element)) return;
+    if (toggle.contains(event.target)) return;
+    if (panel.contains(event.target) && event.target.closest('a[href],button,input,select,textarea,label')) return;
+    event.preventDefault();
+    setOpen(false, true);
+  });
   on(panel, 'pointerdown', event => {
     if (!enabled()) return;
     select((event.target as Element).closest<HTMLAnchorElement>('[data-shared-nav-link]'));
