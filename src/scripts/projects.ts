@@ -417,9 +417,9 @@ if (brandsLayout && !compactServices()) {
     if(frozen||section!.hasAttribute("data-gallery-preparing"))return;
     if(button.hasAttribute('data-select'))select(button.closest<HTMLElement>('[data-panel]')!,Number(button.dataset.select));
     if(button.hasAttribute('data-step')){
-      const target=compactServices()?(current+Number(button.dataset.step)+4)%4:Math.max(0,Math.min(3,current+Number(button.dataset.step)));
+      const target=Math.max(0,Math.min(compactServices()?4:3,current+Number(button.dataset.step)));
       const trigger=timeline?.scrollTrigger;
-      if (trigger) { scrollPage( trigger.start + stops[target] / total * (trigger.end - trigger.start) ); }
+      if (trigger) { scrollPage( target===4?trigger.end+innerHeight*.67:trigger.start + stops[target] / total * (trigger.end - trigger.start) ); }
     }
   },{signal:events.signal});
   section.addEventListener('click',event=>{
@@ -445,12 +445,13 @@ if (brandsLayout && !compactServices()) {
   });
   // Shared by the footer category menu and the existing horizontal timeline.
   window.addEventListener('leo:project-jump', ((event: CustomEvent<number>) => {
+    if(compactServices() && Number(event.detail)>=panels.length){const trigger=timeline?.scrollTrigger;if(trigger)scrollPage(trigger.end+innerHeight*.67,true,.8);return;}
     const index = Math.max(0, Math.min(panels.length - 1, Number(event.detail)));
     if (!Number.isInteger(index) || !panels[index]) return;
     const trigger = timeline?.scrollTrigger;
     if ((desktopMotion()) && trigger) {
       const destination=trigger.start + stops[index] / total * (trigger.end - trigger.start);
-      if(!isMobileAbout()){commitScrollJump(()=>scrollPage(destination,false));ScrollTrigger.update();trigger.getTween()?.progress(1);timeline?.time(stops[index]);render();}else scrollPage(destination);
+      if(compactServices())scrollPage(destination,true,.8);else if(!isMobileAbout()){commitScrollJump(()=>scrollPage(destination,false));ScrollTrigger.update();trigger.getTween()?.progress(1);timeline?.time(stops[index]);render();}else scrollPage(destination);
     } else if ((mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches)) && mobileTimeline?.scrollTrigger) {
       const mobileTrigger = mobileTimeline.scrollTrigger;
       scrollPage(mobileTrigger.start + (index / 3 * .86) * (mobileTrigger.end - mobileTrigger.start));

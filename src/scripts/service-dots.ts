@@ -17,7 +17,7 @@ export function mountServiceDots(section:HTMLElement){
  dots.forEach((b,i)=>b.addEventListener('click',()=>{manual();choose(i)},{signal}));
  section.addEventListener('pointerdown',e=>{if(e.isTrusted)manual()},{passive:true,signal});section.addEventListener('touchstart',manual,{passive:true,signal});section.addEventListener('keydown',manual,{signal});
  const swipes=panels.map(panel=>mountSurfaceSwipe(panel.querySelector('.project-media')!,()=>compactServices()&&!panel.inert,d=>{manual();choose(selected()+d)}));
- swipes.push(mountSurfaceSwipe(section.querySelector('.projects-footer')!,compactServices,d=>{manual();window.dispatchEvent(new CustomEvent('leo:project-jump',{detail:(current()+d+panels.length)%panels.length}))}));
+ swipes.push(mountSurfaceSwipe(section.querySelector('.projects-footer')!,compactServices,d=>{manual();window.dispatchEvent(new CustomEvent('leo:project-jump',{detail:Math.max(0,current()+d)}))}));
  const changes=new MutationObserver(()=>{if(service!==current()){service=current();deadline=performance.now()+7000}paint();schedule()});changes.observe(section,{subtree:true,attributes:true,attributeFilter:['data-current','aria-selected','data-compact-services']});
  const gallery=document.querySelector('#projects-expanded');if(gallery)changes.observe(gallery,{attributes:true,attributeFilter:['open']});
  const footer=section.querySelector<HTMLElement>('.projects-footer')!,thumb=section.querySelector<HTMLElement>('.service-preview-nav button')!;

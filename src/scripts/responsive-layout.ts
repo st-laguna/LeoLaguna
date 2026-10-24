@@ -8,15 +8,15 @@ export const isPhoneViewport = () => !document.documentElement.hasAttribute('dat
 export function getHeroFrame(width: number, height: number) {
   const portrait = height > width;
   if (document.documentElement.hasAttribute('data-ipad-home')) {
-    const scale = width / 768;
-    return {portrait:true,mode:'ipad-portrait',masterWidth:768,masterHeight:1024,scale,x:0,
+    const scale = Math.max(width / 768,height / 1024);
+    return {portrait:true,mode:'ipad-portrait',masterWidth:768,masterHeight:1024,scale,x:(width-768*scale)/2,
       y:height * (335.27 / 1024) - 335.27 * scale,
       focalX:358.11 * scale,focalY:height * (335.27 / 1024)};
   }
   if (document.documentElement.hasAttribute('data-adaptive-hero')) {
     const masterWidth = portrait ? 390 : 844, masterHeight = portrait ? 844 : 390;
-    const scale = portrait ? width / masterWidth : Math.max(width / masterWidth, height / masterHeight);
-    const x = portrait ? 0 : width * (328.25 / 844) - 328.25 * scale;
+    const scale = Math.max(width / masterWidth, height / masterHeight);
+    const x = portrait ? (width-masterWidth*scale)/2 : width * (328.25 / 844) - 328.25 * scale;
     const y = height * (portrait ? 287.06 / 844 : 300.6 / 390) - (portrait ? 287.06 : 300.6) * scale;
     return {portrait,mode:portrait?'mobile-portrait':'mobile-landscape',masterWidth,masterHeight,scale,x,y,
       focalX:width*.52,focalY:height*.25};

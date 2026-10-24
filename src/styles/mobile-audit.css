@@ -127,3 +127,15 @@ html.mobile-menu-open,html.mobile-menu-open body{overflow:hidden!important;overs
 :root:root:root:root:root:root body .projects[data-compact-services] .projects-number>span{flex-shrink:0}
 :root:root:root:root:root:root body .projects[data-compact-services] .projects-digit-window{min-width:.65em}
 }
+
+@media(orientation:portrait){
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy p{text-transform:none;font-weight:300;white-space:normal}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging{left:6.25px;right:6.25px}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging button{width:37.5px;height:37.5px;min-height:37.5px;align-self:center;border:1px solid #ededed;background:#1c1c1c;color:#ededed}
+:root:root:root:root:root:root body .services-transition{margin-top:-16.5svh;position:relative;z-index:3}
+:root:root:root:root:root:root body .services-intro{background:var(--background);color:var(--foreground)}
+:root:root:root:root:root:root body .home-journey[data-mobile-journey] .hero__mask{height:100%!important;min-height:0;inset:0}
+}
+@media(orientation:portrait) and (max-width:700px){
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy p{font-size:clamp(11px,3.1vw,14px);line-height:1.25}
+}
