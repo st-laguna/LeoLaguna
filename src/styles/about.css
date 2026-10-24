@@ -79,7 +79,7 @@ html[data-page="about"][data-theme="dark"], html[data-page="about"][data-theme="
 
 html[data-page="about"] {--light-base:#EDEDED;--background:var(--light-base);--foreground:#171717;--surface:#efefef;color-scheme:light;}
 html[data-page="about"][data-theme="dark"] {--background:#181818;--foreground:#f7f7f7;--surface:#222;color-scheme:dark;}
-html[data-page="about"].mobile-menu-open {overflow:hidden;}
+html[data-page="about"].mobile-menu-open {}
 
 
 /* Align the existing status and controls as a single toolbar. */

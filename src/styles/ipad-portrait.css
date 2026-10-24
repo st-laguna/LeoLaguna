@@ -1,6 +1,6 @@
 /* Phone layouts reused for tablet portrait, including iPadOS desktop mode. */
 
-  html[data-tablet-portrait].mobile-menu-open {overflow:hidden;overscroll-behavior:none;}
+  html[data-tablet-portrait].mobile-menu-open {overscroll-behavior:none;}
   html[data-tablet-portrait].mobile-menu-open:not([data-page]) body>main {visibility:hidden;}
   html[data-tablet-portrait] .mobile-menu-toggle {
     position:fixed;top:18px;right:18px;left:auto;z-index:102;display:flex;width:48px;height:48px;

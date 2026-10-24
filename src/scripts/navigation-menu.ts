@@ -38,7 +38,9 @@ function mount(toggle: HTMLButtonElement) {
     panel.inert = enabled() ? !open : about;
     if (enabled() || about) panel.setAttribute('aria-hidden', String(!open)); else panel.removeAttribute('aria-hidden');
     root.classList.toggle('mobile-menu-open', !!document.querySelector('[data-shared-menu-panel][data-shared-menu-open]'));
-    syncMenuChrome(root.classList.contains('mobile-menu-open'));
+    const menuOpen=root.classList.contains('mobile-menu-open');
+    syncMenuChrome(menuOpen);
+    window.dispatchEvent(new CustomEvent('leo:menu-lock',{detail:menuOpen}));
     if (!open) select(null);
     if (focus) toggle.focus({ preventScroll: true });
   }
@@ -48,7 +50,7 @@ function mount(toggle: HTMLButtonElement) {
     setOpen(false);
   }
   const blockScroll = (event: Event) => { if(open) event.preventDefault(); };
-  window.addEventListener('wheel',blockScroll,{passive:false,signal:abort.signal});
+  window.addEventListener('wheel',blockScroll,{passive:false,capture:true,signal:abort.signal});
   window.addEventListener('touchmove',blockScroll,{passive:false,signal:abort.signal});
   on(document,'keydown',event=>{if(open&&['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes((event as KeyboardEvent).key))event.preventDefault();});
   on(toggle, 'click', () => { if (!toggle.disabled) setOpen(!open); });

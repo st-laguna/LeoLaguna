@@ -118,7 +118,7 @@
 :root:root:root:root:root:root body [data-portrait-footer-handoff]{height:180svh;padding:0!important}
 :root:root:root:root:root:root body [data-portrait-footer-handoff] .footer{position:sticky!important;top:0;transform:none!important}
 }
-html.mobile-menu-open,html.mobile-menu-open body{overflow:hidden!important;overscroll-behavior:none}
+html.mobile-menu-open,html.mobile-menu-open body{overscroll-behavior:none}
 
 /* Let the image use spare height; keep phone footer spacing content-driven. */
 @media(orientation:portrait) and (max-width:700px){

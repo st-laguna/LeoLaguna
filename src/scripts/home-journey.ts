@@ -53,7 +53,7 @@ if(root){
     pumpImages();
   }
 
-  const intermediateImages=[1,2,3,4].map(index=>{const image=new Image();image.dataset.src=`/imgs/hero/WEBP_EXPORT/in_${index}_720p.webp`;image.dataset.srcset=`/imgs/hero/WEBP_EXPORT/in_${index}_720p.webp 1280w, /imgs/hero/WEBP_EXPORT/in_${index}_1080p.webp 1920w, /imgs/hero/WEBP_EXPORT/in_${index}_2K.webp 2560w`;image.alt='';image.decoding='async';image.draggable=false;image.className='journey-intermediate-image';fish.append(image);return image;});
+  const intermediateImages=[1,2,3].map(index=>{const image=new Image();image.dataset.src=`/imgs/hero/WEBP_EXPORT/in_${index}_720p.webp`;image.dataset.srcset=`/imgs/hero/WEBP_EXPORT/in_${index}_720p.webp 1280w, /imgs/hero/WEBP_EXPORT/in_${index}_1080p.webp 1920w, /imgs/hero/WEBP_EXPORT/in_${index}_2K.webp 2560w`;image.alt='';image.decoding='async';image.draggable=false;image.className='journey-intermediate-image';fish.append(image);return image;});
   let intermediatesLoaded=false;
   const loadIntermediateImages=()=>{if(intermediatesLoaded)return;intermediatesLoaded=true;if(ipad){queueImages(intermediateImages);return;}intermediateImages.forEach(activateImage);};
   window.addEventListener('wheel',loadIntermediateImages,{once:true,passive:true});
@@ -195,8 +195,8 @@ if(root){
       const p=Math.max(requested,returnFloor.p);
         // El encogimiento comienza en .42.
         // Las imágenes empiezan a cambiar después.
-        const imageStarts = [.47, .53, .59, .65];
-        const saturations = [.25, .50, .75, 1];
+        const imageStarts = [.47, .56, .65];
+        const saturations = [.25, .625, 1];
 
       if(p>.30)loadIntermediateImages();
       if(p>.55)loadWorkflowImages();
@@ -205,7 +205,7 @@ if(root){
         const ready=image.complete&&image.naturalWidth>0;
         const progress=ease((p-imageStarts[index])/.04);
         image.style.opacity=ready?String(progress):'0';
-        image.style.visibility=ready&&progress>0&&(index===3||p<imageStarts[index+1]+.04)?'visible':'hidden';
+        image.style.visibility=ready&&progress>0&&(index===intermediateImages.length-1||p<imageStarts[index+1]+.04)?'visible':'hidden';
         image.style.filter=`saturate(${saturations[index]})`;
       });
       const staggerStep=.025,exitDuration=.09;
@@ -240,7 +240,7 @@ if(root){
 
 const shrink = ease((p - .42) / .29);
 
-// El giro empieza después de mostrar las cuatro imágenes.
+// El giro empieza después de mostrar las tres imágenes.
 const turn = ease((p - .72) / .12);
 
 // La última imagen se apaga antes de llegar a medio giro.
@@ -250,7 +250,7 @@ hero.style.width = `${width + (target.w - width) * shrink}px`;
 hero.style.height = `${height + (target.h - height) * shrink}px`;
 hero.style.left = `${target.x * shrink}px`;
 hero.style.top = `${target.y * shrink}px`;
-hero.style.borderRadius = "0";
+hero.style.borderRadius = `calc(var(--radius-lg, 24px) * ${shrink})`;
 hero.style.transform = `rotateY(${180 * turn}deg)`;
 
 hero.style.backgroundColor = p >= .72 ? '#000' : '';
@@ -459,7 +459,7 @@ slots.forEach((slot, i) => {
       }
 
       const ipadHome=compactServices();
-      const imageStarts=ipadHome?[.22,.30,.38,.46]:[.105,.135,.165,.195];
+      const imageStarts=ipadHome?[.22,.34,.46]:[.105,.15,.195];
       intermediateImages.forEach((img,index)=>{
         const reveal=ease((p-imageStarts[index])/.025);
         const replaced=index<intermediateImages.length-1&&p>=imageStarts[index+1]+.025;
@@ -474,7 +474,7 @@ slots.forEach((slot, i) => {
       hero.style.height=`${height+(target.h-height)*shrink}px`;
       hero.style.left=`${target.x*shrink}px`;
       hero.style.top=`${target.y*shrink}px`;
-      hero.style.borderRadius="0";
+      hero.style.borderRadius=`calc(var(--radius-lg, 24px) * ${shrink})`;
       hero.style.clipPath='none';
       const handoff=.32;
       const crossfade=ease((p-.29)/.03);
@@ -488,6 +488,9 @@ slots.forEach((slot, i) => {
       if(cardsReady && !ready && !ScrollTrigger.isRefreshing)workflow.dispatchEvent(new Event('workflow:reset'));
       cardsReady=ready;
       workflow.inert=!ready;
+      // Snap points must be measured only after the entry's stacked transforms
+      // reach their final positions; Chromium otherwise snaps back to slot 01.
+      if(compactServices()&&!ready)grid.style.scrollSnapType='none';
       const headingIn=ease((p-.23)/.07),headingOut=ease((p-.94)/.04);
       heading.style.opacity='1';
       heading.style.clipPath=`inset(${(1-headingIn)*100}% 0 ${headingOut*100}% 0)`;
@@ -496,6 +499,7 @@ slots.forEach((slot, i) => {
         heading.style.clipPath=`inset(${(1-ease((p-.54)/.08))*100}% 0 0)`;
         // The final existing image narrows into slot 01, then the other columns reveal.
         const settle=ease((p-.54)/.12);
+        hero.style.borderRadius=`calc(var(--radius-lg, 24px) * ${settle})`;
         hero.style.width=`${width+(target.w-width)*settle}px`;
         hero.style.height=`${height+(target.h-height)*settle}px`;
         hero.style.left=`${target.x*settle}px`;
@@ -516,6 +520,10 @@ slots.forEach((slot, i) => {
           slot.style.translate=`${i===0?0:-(slot.offsetLeft-slots[0].offsetLeft)*(1-spread)}px 0`;
           slot.style.zIndex=String(10-i);
         });
+        if(ready&&grid.style.scrollSnapType==='none'){
+          grid.getBoundingClientRect();
+          grid.style.removeProperty('scroll-snap-type');
+        }
         return;
       }
       slots.forEach((slot,i)=>{
@@ -548,7 +556,7 @@ slots.forEach((slot, i) => {
       removeStops();
       animation.scrollTrigger?.kill();animation.kill();resize.disconnect();
       aperture.remove();maskedCover.style.removeProperty('display');cover.style.removeProperty('display');cover.style.removeProperty('visibility');
-      host.removeAttribute('data-mobile-journey');hero.inert=false;workflow.inert=false;
+      host.removeAttribute('data-mobile-journey');hero.inert=false;workflow.inert=false;grid.style.removeProperty('scroll-snap-type');
       workflow.dispatchEvent(new Event('workflow:reset'));
       [hero,mask,fish,workflow,heading,...texts,...slots,...turns,...(mobileOverlay?[mobileOverlay]:[])].forEach(el=>{
         ['width','height','left','top','border-radius','transform','translate','visibility','opacity','z-index','transform-origin','clip-path','filter','mask-size','mask-position','-webkit-mask-size','-webkit-mask-position'].forEach(prop=>el.style.removeProperty(prop));
