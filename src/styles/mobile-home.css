@@ -1,0 +1,368 @@
+/* Portrait corrections share the existing components and their spacing units. */
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+:root:root:root:root:root:root body .home-journey[data-mobile-journey] .journey-stage{height:100dvh}
+:root:root:root:root:root:root body .home-journey[data-mobile-journey] .workflow{height:100%;min-height:0}
+:root:root:root:root:root:root body .workflow__heading{top:9%}
+:root:root:root:root:root:root body .workflow__grid{top:var(--workflow-grid-top,24%);bottom:12%}
+:root:root:root:root:root:root body .workflow__card{touch-action:pan-x pan-y}
+:root:root:root:root:root:root body .unified-workflow-controls{gap:0}
+:root:root:root:root:root:root body .unified-play{display:none!important}
+:root:root:root:root:root:root body .unified-dots{border-radius:0}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-stage{height:100dvh}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-main{grid-template-rows:minmax(0,1fr) 44px auto;overflow:visible}
+:root:root:root:root:root:root body .projects[data-compact-services] .project-panel{padding:0;background:transparent}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-stage:before{content:none}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-gallery-controls{padding:0 25px;gap:0}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-play{display:none!important}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer{grid-template-columns:max-content minmax(0,1fr) max-content;grid-template-rows:auto auto;gap:12.5px 25px;padding:12.5px 25px 25px}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-number{font-size:clamp(54px,8vw,96px);line-height:.95;grid-column:1;grid-row:1}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy-stack{grid-column:2;grid-row:1;overflow:visible;height:auto;align-self:start}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy{gap:6.25px;justify-content:flex-start}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy h2{font-size:clamp(20px,2.8vw,34px);line-height:1.05;margin:0}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy p{font-size:clamp(14px,1.6vw,19px);line-height:1.25;max-width:50ch}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-view-all{grid-column:3;grid-row:1;align-self:start;padding:8px 12.5px;min-height:36px;font-size:12px;margin:0}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav{grid-column:1/-1;grid-row:2;width:min(calc(100% - 100px),437.5px);margin:0;justify-self:center;padding-top:12.5px;height:auto}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav button{aspect-ratio:1;max-height:none;height:auto}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging{bottom:25px;height:var(--preview-height,100px)}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging button{min-width:37.5px}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer:after{bottom:calc(25px + var(--preview-height,100px) + 12.5px)}
+:root:root:root:root:root:root body .projects[data-compact-services] .project-media,:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer{touch-action:pan-y}
+:root:root:root:root:root:root body .science-interlude{isolation:isolate}
+:root:root:root:root:root:root body .featured-works h2{transform:none!important;clip-path:none!important}
+:root:root:root:root:root:root body .featured-work__summary{font-size:clamp(15px,1.8vw,21px)}
+:root:root:root:root:root:root body .brands-statement{font-size:clamp(18px,2.4vw,28px)}
+:root:root:root:root:root:root body .brands-layout{clip-path:none}
+:root:root:root:root:root:root body .brands-info{display:contents}
+:root:root:root:root:root:root body .brands-statement{order:0}
+:root:root:root:root:root:root body .brands-grid{order:1}
+:root:root:root:root:root:root body .brands-stats{order:2}
+:root:root:root:root:root:root body .brands[data-brands]{position:sticky!important;top:var(--brands-sticky-top,0)}}
+
+@media (orientation:portrait){
+:root:root:root:root:root:root body [data-brands-footer-handoff]{padding-top:0!important}}
+
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+:root:root:root:root:root:root body .footer{transform:none!important}}
+
+@media (orientation:portrait){
+:root:root:root:root:root:root body .site-header:has([data-shared-menu-open]):before{content:'';position:fixed;inset:0;background:rgb(0 0 0 / .25);z-index:99;pointer-events:none}}
+
+@media (orientation:portrait) and (max-width:700px), (orientation:landscape) and (any-pointer:coarse) and (max-width:700px), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (max-width:700px){
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer{grid-template-columns:max-content minmax(0,1fr);gap:12.5px;padding:12.5px 25px}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-number{font-size:64px}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy h2{font-size:20px}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy p{font-size:14px}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-view-all{grid-column:1;grid-row:2;justify-self:start;font-size:10px;padding:6px;min-height:32px}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav{width:100%;padding-top:12.5px;gap:12.5px}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging{inset:auto;grid-column:1/-1;height:32px}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer:after{display:none}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav:after{display:block;left:0;right:0}
+:root:root:root:root:root:root body .science-interlude .science-line{display:block}
+:root:root:root:root:root:root body .science-interlude br{display:none}
+:root:root:root:root:root:root body .science-interlude p{font-size:clamp(34px,8vw,52px);line-height:1.12}}
+
+@media (orientation:portrait) and (prefers-reduced-motion:reduce), (orientation:landscape) and (any-pointer:coarse) and (prefers-reduced-motion:reduce), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:reduce){
+:root:root:root:root:root:root body .home-journey .journey-stage{height:auto}
+:root:root:root:root:root:root body .workflow{min-height:100svh}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-stage{height:auto}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-main{display:block}
+:root:root:root:root:root:root body .brands[data-brands]{position:relative!important;top:auto}}
+
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+:root:root:root:root:root:root body .brand-front picture{display:block;width:100%;height:100%;min-height:0}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-gallery-controls{justify-content:space-between;gap:12.5px;padding-inline:25px}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-gallery-controls .projects-view-all{display:flex;align-items:center;justify-content:center;min-height:32px;font-size:11px;flex:none;padding:6px 10px;align-self:center;margin:0}}
+
+@media (orientation:portrait) and (max-width:700px), (orientation:landscape) and (any-pointer:coarse) and (max-width:700px), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (max-width:700px){
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer{grid-template-rows:auto auto;padding-bottom:12.5px}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav{grid-column:1/-1;grid-row:2;width:calc(100% - 100px);justify-self:center}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging{position:absolute;left:25px;right:25px;bottom:12.5px;height:var(--preview-height);display:flex;grid-row:auto}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav:after{left:-50px;right:-50px}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-dots button{min-width:24px;padding:4px}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-dots button[aria-pressed=true]>span{width:28px}}
+
+.science-mobile{display:none}
+
+@media (orientation:portrait) and (max-width:700px), (orientation:landscape) and (any-pointer:coarse) and (max-width:700px), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (max-width:700px){
+:root:root:root:root:root:root body .science-desktop{display:none}
+:root:root:root:root:root:root body .science-mobile,:root:root:root:root:root:root body .science-mobile>span,:root:root:root:root:root:root body .science-mobile em>span{display:block}}
+
+@media (orientation:portrait) and (max-width:700px) and (min-height:700px), (orientation:landscape) and (any-pointer:coarse) and (max-width:700px) and (min-height:700px), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (max-width:700px) and (min-height:700px){
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-main{grid-template-rows:minmax(0,1fr) 44px auto}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer{align-content:start}}
+
+.featured-index-portrait{display:none}
+
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){.featured-index-desktop{display:none}.featured-index-portrait{display:inline}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-main{grid-template-columns:minmax(0,1fr)}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-gallery-controls{min-width:0}}
+
+@media (orientation:portrait) and (max-width:350px), (orientation:landscape) and (any-pointer:coarse) and (max-width:350px), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (max-width:350px){
+:root:root:root:root:root:root body .projects[data-compact-services] .service-gallery-controls{padding-inline:12.5px;gap:6.25px}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer{grid-template-columns:max-content minmax(0,1fr)}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-number{font-size:54px}}
+
+/* Matched interludes, physical card faces and SVG closing strip. */
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+:root:root:root:root:root:root body .workflow__front,:root:root:root:root:root:root body .workflow__back{visibility:visible!important;transition:none!important;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+:root:root:root:root:root:root body .workflow__turn{transition:transform 650ms cubic-bezier(.45,0,.55,1);overflow:visible;transform-style:preserve-3d}
+:root:root:root:root:root:root body .workflow__front{transform:translateZ(1px)}
+:root:root:root:root:root:root body .workflow__back{transform:rotateY(180deg) translateZ(1px)}
+:root:root:root:root:root:root body .footer[data-compact-layout] .footer__compact-window{display:none!important}
+:root:root:root:root:root:root body .footer[data-compact-layout] .footer__strip-window{display:block!important;position:relative;inset:auto;grid-row:2;grid-column:1;height:100%;color:var(--footer-compact-ink,var(--background));background:var(--footer-compact-surface,var(--foreground))}
+:root:root:root:root:root:root body .footer[data-compact-layout] .footer__bottom{display:flex!important;align-items:center;justify-content:space-between;gap:25px;padding:25px;background:inherit;color:inherit}
+:root:root:root:root:root:root body .footer[data-compact-layout] .footer__center-group{position:static;transform:none;width:auto;min-width:0;gap:clamp(12.5px,3vw,25px)}
+:root:root:root:root:root:root body .footer[data-compact-layout] .footer__center-logo{width:clamp(60px,21.35vw,164px)}
+:root:root:root:root:root:root body .footer[data-compact-layout] .footer__contact-block{font-size:clamp(10px,2.2vw,18px)}
+:root:root:root:root:root:root body .footer[data-compact-layout] .footer__label{font-size:clamp(10px,1.7vw,13px)}
+:root:root:root:root:root:root body .footer[data-compact-layout] .footer__social{position:static;flex:none;font-size:clamp(12px,2.7vw,22px);gap:8px}
+:root:root:root:root:root:root body .footer[data-compact-layout] .footer__meta,:root:root:root:root:root:root body .footer[data-compact-layout] .footer__copyright,:root:root:root:root:root:root body .footer[data-compact-layout] .footer__back-top{display:none}}
+
+@media (orientation:portrait){
+:root:root:root:root:root:root body [data-portrait-footer-handoff]{height:180svh;padding:0!important}}
+
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+:root:root:root:root:root:root body [data-portrait-footer-handoff] .footer{position:sticky!important;top:0;transform:none!important}}
+html.mobile-menu-open,html.mobile-menu-open body{overscroll-behavior:none}
+
+/* Let the image use spare height; keep phone footer spacing content-driven. */
+@media (orientation:portrait) and (max-width:700px), (orientation:landscape) and (any-pointer:coarse) and (max-width:700px), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (max-width:700px){
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-number{width:max-content;min-width:max-content;line-height:1}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-number>span{flex-shrink:0}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-digit-window{min-width:.65em}}
+
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy p{text-transform:none;font-weight:300;white-space:normal}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging button{width:37.5px;height:37.5px;min-height:37.5px;align-self:center;border:1px solid #ededed;background:#1c1c1c;color:#ededed}
+:root:root:root:root:root:root body .services-transition{margin-top:0;position:relative;z-index:3;background:#000}
+:root:root:root:root:root:root body .services-intro{background:#000;color:#fff}
+:root:root:root:root:root:root body .home-journey[data-mobile-journey] .hero__mask{height:100%!important;min-height:0;inset:0}}
+
+@media (orientation:portrait) and (max-width:700px), (orientation:landscape) and (any-pointer:coarse) and (max-width:700px), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (max-width:700px){
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy p{font-size:clamp(11px,3.1vw,14px);line-height:1.25}}
+
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging button{padding:0;display:grid;place-items:center}}
+
+/* Keep the phrase at viewport center and arrow boxes off the preview edges. */
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+:root:root:root:root:root:root body .home-journey[data-mobile-journey] .journey-stage{height:max(100dvh,var(--live-viewport-height,100dvh))}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-stage{height:max(100dvh,var(--live-viewport-height,100dvh))}
+:root:root:root:root:root:root body .services-intro{height:100svh;top:0}
+:root:root:root:root:root:root body .services-intro .nexo__motion{top:calc(var(--live-viewport-height,100dvh) / 2);left:50%;transform:translate(-50%,-50%)}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging{left:10px;right:10px;padding:0;grid-column:auto;grid-row:auto;justify-content:space-between;pointer-events:none}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging button{pointer-events:auto}
+:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav{width:min(calc(100vw - 120px),437.5px)}
+:root:root:root:root:root:root body .home-journey[data-mobile-journey] .journey-stage{
+  box-shadow:0 max(0px,calc(100lvh - 100svh)) 0 0 var(--background);
+}
+:root:root:root:root:root:root body .projects[data-compact-services] .projects-stage{
+  box-shadow:0 max(0px,calc(100lvh - 100svh)) 0 0 var(--background);
+}}
+
+@media (orientation:portrait){
+/* Prepaint the possible toolbar expansion even while Safari defers resize
+   events during a held gesture. Keep layout and clipping unchanged. */}
+
+
+/* Focused touch refinements; desktop and laptop composition stays authored. */
+@media (orientation:portrait), (pointer:coarse), (max-width:700px), (max-width:1000px) and (max-height:500px), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+  :root:root:root:root:root:root:root body .projects .project-media {width:calc(100% - 8px);margin-inline:4px;}
+  :root:root:root:root:root:root:root body .projects .projects-view-all {display:flex;align-items:center;justify-content:center;gap:6px;text-align:center;}
+  :root:root:root:root:root:root:root body .projects .projects-view-all .action-arrow {display:inline-block;color:#1c1c1c;font-size:16px;}
+  :root:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer::before {content:'';position:absolute;inset:0 0 auto;border-top:1px solid #8885;pointer-events:none;}
+  :root:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav::after {content:'';display:block;left:calc(50% - 50vw);right:auto;width:100vw;border-top:1px solid #8885;}
+  :root:root:root:root:root:root:root body .brands-grid {border-radius:var(--radius-lg)!important;overflow:clip;}
+  :root:root:root:root:root:root:root body .workflow__explore {display:none;}
+  :root:root:root:root:root:root:root body .workflow__tap-cue {position:absolute;left:50%;top:50%;translate:-50% -50%;display:grid;place-items:center;width:48px;height:48px;border:1px solid currentColor;border-radius:50%;color:#fff;opacity:.5;z-index:2;pointer-events:none;}
+  :root:root:root:root:root:root:root body .workflow__tap-cue .action-arrow {font-size:24px;}
+  :root:root:root:root:root:root:root body .featured-works {border-radius:0!important;}
+  :root:root:root:root:root:root:root body .featured-works h2 {border-radius:var(--radius-lg) var(--radius-lg) 0 0;}
+  :root:root:root:root:root:root:root body .featured-work--sperm-whales-of-dominica .featured-work__content {border-radius:0 0 var(--radius-lg) var(--radius-lg);}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .science-interlude {color:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .featured-brands,:root:root:root:root:root:root:root[data-theme="dark"] body .featured-works,:root:root:root:root:root:root:root[data-theme="dark"] body .featured-work {background:#000;color:#ededed;}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .featured-works h2,:root:root:root:root:root:root:root[data-theme="dark"] body .featured-work__content {background:#1c1c1c;color:#ededed;}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .featured-works :is(figcaption,.featured-work__client,.featured-work__company,.featured-work__index,.featured-work__action,.featured-work__year,.featured-work__summary) {color:#ededed;}}
+/* The legacy iPad columns conflict with the shared mobile brands ordering. */
+@media (orientation:portrait) and (pointer:coarse), (orientation:landscape) and (any-pointer:coarse) and (pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (pointer:coarse){
+  :root:root:root:root:root:root:root[data-ipad-home] body .brands-layout {display:flex;flex-direction:column;}
+  :root:root:root:root:root:root:root[data-ipad-home] body .brands-grid {width:100%;height:auto;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:clamp(140px,19vw,230px);}}
+/* Mobile polish: shared touch surfaces in both themes. */
+@media (orientation:portrait), (pointer:coarse), (max-width:700px), (max-width:1000px) and (max-height:500px), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+  :root:root:root:root:root:root:root body .workflow__tap-cue {border:0;box-shadow:inset 0 0 0 .667px currentColor;}
+  :root:root:root:root:root:root:root body .projects .project-media {width:calc(100% - 20px);height:calc(100% - 20px);margin:10px;}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .projects,:root:root:root:root:root:root:root[data-theme="dark"] body .projects :is(.projects-stage,.projects-main,.projects-window,.projects-rail,.project-panel) {background-color:#1c1c1c;}
+  :root:root:root:root:root:root:root body .science-interlude {background:#000;color:#fff;}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .science-interlude {background:#000;color:#fff;}
+  :root:root:root:root:root:root:root body .featured-works {background:transparent;}
+  :root:root:root:root:root:root:root body .featured-works h2 {background:transparent;border-radius:0;}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .featured-works,:root:root:root:root:root:root:root[data-theme="dark"] body .featured-works h2 {background:transparent;}
+  :root:root:root:root:root:root:root body .featured-work--sperm-whales-of-dominica {background:transparent;}
+  :root:root:root:root:root:root:root[data-theme="dark"] body .featured-work--sperm-whales-of-dominica {background:transparent;}
+  :root:root:root:root:root:root:root body .featured-work--sperm-whales-of-dominica .featured-work__content {border-bottom:0;}
+  :root:root:root:root:root:root:root body .footer[data-compact-layout] {--mobile-strip-height:clamp(90px,14svh,150px);grid-template-rows:minmax(0,1fr) var(--mobile-strip-height)!important;}
+  :root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__bottom {padding-block:12.5px;}
+  :root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__compact-window {padding-block:10px;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .unified-dots {background:#d5d5d5;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .unified-dots button span {background:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .unified-dots i {background:#555;}
+  :root:root:root:root:root:root:root[data-theme="light"] body :is(.services-transition,.services-intro) {background:#fff;color:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects,:root:root:root:root:root:root:root[data-theme="light"] body .projects :is(.projects-stage,.projects-main,.projects-window,.projects-rail,.project-panel) {background-color:#1c1c1c;color:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects :is(.projects-footer,.service-gallery-controls,.project-mobile-copy) {--foreground:#1c1c1c;background:#fff;color:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects :is(.projects-number,.projects-copy,.projects-copy h2,.projects-copy p) {color:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects .service-dots button>span {background:#999;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects .service-dots i {background:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects .projects-paging button {background:#ededed;border-color:#1c1c1c;}
+  :root:root:root:root:root:root:root[data-theme="light"] body .projects .projects-paging .action-arrow {color:var(--button-coral,#ef6c65);}
+  :root:root:root:root:root:root:root[data-theme="light"] body .featured-brands {background:#ededed;}}
+
+@media (orientation:portrait) and (pointer:coarse), (orientation:portrait) and (max-width:700px), (orientation:landscape) and (any-pointer:coarse) and (pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (pointer:coarse), (orientation:landscape) and (any-pointer:coarse) and (max-width:700px), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (max-width:700px){
+  :root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__mobile-message {font-size:min(clamp(110px,32vw,360px),calc((100svh - var(--mobile-strip-height) - clamp(44px,8svh,90px) - clamp(20px,3svh,32px)) / 3));}}
+
+@media (orientation:portrait), (pointer:coarse), (max-width:700px), (max-width:1000px) and (max-height:500px), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+  :root:root:root:root:root:root:root body .footer[data-compact-layout] :is(.footer__strip-window,.footer__strip-clip,.footer__bottom) {height:100%;min-height:0;}}
+
+@media (orientation:portrait) and (pointer:coarse), (orientation:landscape) and (any-pointer:coarse) and (pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (pointer:coarse){
+  :root:root:root:root:root:root:root[data-ipad-home] body .footer[data-compact-layout] {display:grid!important;height:100svh!important;min-height:0!important;padding:0!important;gap:0!important;}
+  :root:root:root:root:root:root:root[data-ipad-home] body .footer[data-compact-layout] .footer__marquee {height:100%!important;min-height:0;}}
+/* Shared mobile corrections from the service and handoff screenshots. */
+@media (orientation:portrait), (max-width:700px), (max-width:1000px) and (max-height:500px), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+  :root:root:root:root:root:root:root:root:root body .projects :is(.projects-window,.projects-rail,.project-panel) {background-color:#1c1c1c;}
+  :root:root:root:root:root:root:root:root:root body .projects .service-dots button>span,:root:root:root:root:root:root:root:root:root body .projects .service-dots i {background:#1c1c1c;}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-view-all {gap:3px;padding-inline:10px;}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-view-all .action-arrow {font-size:inherit;width:1em;height:1.2em;line-height:1.2;}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-view-all [data-roll-label] {margin:0;}
+  :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer {row-gap:12.5px;}
+  :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] :is(.projects-copy-stack,.projects-number) {align-self:center;}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-paging button {border:0;background:transparent;box-shadow:inset 0 0 0 .667px rgb(28 28 28 / .25);}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-paging .action-arrow {color:#1c1c1c;}
+  :root:root:root:root:root:root:root:root:root body .projects .projects-paging button:active {background:var(--button-coral,#ef6c65);}
+  :root:root:root:root:root:root:root:root:root body .science-interlude {height:100svh;top:0;background:#000;}
+  :root:root:root:root:root:root:root:root:root body .featured-works {background:#ededed;}
+  :root:root:root:root:root:root:root:root:root body .featured-works h2 {background:#ededed;color:#1c1c1c;border-radius:var(--radius-lg) var(--radius-lg) 0 0;}
+  :root:root:root:root:root:root:root:root:root body .featured-work--sperm-whales-of-dominica {background:#ededed;}
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .featured-works,:root:root:root:root:root:root:root:root:root[data-theme="dark"] body .featured-work--sperm-whales-of-dominica {background:#000;}
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .featured-works h2 {background:#1c1c1c;color:#ededed;}}
+/* Center each service's natural copy height inside the shared caption row. */
+@media (orientation:portrait), (max-width:700px), (max-width:1000px) and (max-height:500px), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+  :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy {align-self:center;height:max-content;}
+  :root:root:root:root:root:root:root:root:root body .featured-works[data-integrated-heading] {background:transparent;}
+  :root:root:root:root:root:root:root:root:root body .featured-works[data-integrated-heading] .featured-work--groaqua .featured-work__content {border-radius:var(--radius-lg) var(--radius-lg) 0 0;}
+  :root:root:root:root:root:root:root:root:root body .featured-works[data-integrated-heading] h2 {margin:-25px -25px 25px;width:calc(100% + 50px);}}
+/* Tablet spacing uses the same integrated surface, with its existing padding. */
+@media (orientation:portrait) and (min-width:701px), (orientation:landscape) and (any-pointer:coarse) and (min-width:701px), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (min-width:701px){
+  :root:root:root:root:root:root:root:root:root body .featured-works[data-integrated-heading] h2 {margin:-37.5px -50px 37.5px;width:calc(100% + 100px);}}
+
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .service-dots button>span,:root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .service-dots i,:root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .projects-paging .action-arrow {color:#ededed;}
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .service-dots button>span {background:#777;}
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .service-dots i {background:#ededed;}
+  :root:root:root:root:root:root:root:root:root[data-theme="dark"] body .projects .projects-paging button {box-shadow:inset 0 0 0 .667px rgb(237 237 237 / .25);}}
+/* Landscape adapts the shared mobile surfaces; Services and Brands are unchanged. */
+@media (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px) {
+  :root:root:root:root:root:root:root:root:root body .home-journey[data-mobile-journey] {height:550svh;position:relative;}
+  :root:root:root:root:root:root:root:root:root body .home-journey[data-mobile-journey] .journey-stage {position:sticky;top:0;width:100%;height:100svh;overflow:clip;background:var(--background);perspective:1200px;}
+  :root:root:root:root:root:root:root:root:root body .home-journey[data-mobile-journey] .hero {position:absolute;inset:0;min-height:0;transform-origin:center;}
+  :root:root:root:root:root:root:root:root:root body .home-journey[data-mobile-journey] .workflow {position:absolute;inset:0;padding:0;}
+  :root:root:root:root:root:root:root:root:root body .workflow {height:100%;min-height:0;}
+  :root:root:root:root:root:root:root:root:root body .workflow__heading {left:4%;top:50%;transform:translateY(-50%);width:25%;font-size:clamp(19px,2.2vw,32px);line-height:1.15;text-align:left;}
+  :root:root:root:root:root:root:root:root:root body .workflow__grid {inset:clamp(56px,7svh,90px) 0 64px 33%;width:67%;padding:0 8%;gap:20px;}
+  :root:root:root:root:root:root:root:root:root body .workflow__slot {flex:0 0 88%;min-width:0;}
+  :root:root:root:root:root:root:root:root:root body .workflow__card {height:100%;max-height:none;max-width:none;}
+  :root:root:root:root:root:root:root:root:root body .workflow__back {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);grid-template-rows:auto minmax(0,1fr);align-content:center;align-items:center;padding:20px;gap:12px 18px;}
+  :root:root:root:root:root:root:root:root:root body .workflow__step {grid-column:1/-1;margin:0;font-size:14px;}
+  :root:root:root:root:root:root:root:root:root body .workflow__icon {grid-column:1;width:100%;height:auto;max-height:42svh;}
+  :root:root:root:root:root:root:root:root:root body .workflow__description {grid-column:2;font-size:clamp(14px,1.5vw,23px);line-height:1.25;max-width:28ch;}
+  :root:root:root:root:root:root:root:root:root body .unified-workflow-controls {left:38%;right:5%;bottom:8px;padding-top:6px;}
+  :root:root:root:root:root:root:root:root:root body .science-interlude {height:100svh;top:0;background:#000;color:#fff;}
+  :root:root:root:root:root:root:root:root:root body .science-interlude p {font-size:clamp(32px,5.3svh,70px);width:80%;max-width:20ch;}
+  :root:root:root:root:root:root:root:root:root body .services-intro {height:100svh;top:0;}
+  :root:root:root:root:root:root:root:root:root body .services-intro p {font-size:clamp(26px,5svh,58px);line-height:1.15;}
+  :root:root:root:root:root:root:root:root:root body .featured-works {margin:0;min-height:0;padding:0;}
+  :root:root:root:root:root:root:root:root:root body .featured-work__content {display:grid;grid-template-columns:minmax(0,18fr) minmax(0,64fr) minmax(0,18fr);grid-template-rows:[title] auto [cover] auto;gap:14px clamp(12px,2vw,28px);padding:clamp(20px,3vw,40px);margin:0;min-height:100svh;box-sizing:border-box;}
+  :root:root:root:root:root:root:root:root:root body .featured-work--groaqua .featured-work__content {grid-template-rows:[heading] auto [title] auto [cover] auto;}
+  :root:root:root:root:root:root:root:root:root body .featured-works[data-integrated-heading] h2 {grid-column:1/-1;grid-row:heading;margin:0 0 28px;padding:clamp(12px,3svh,30px) 0 0;width:100%;font-size:clamp(20px,2vw,32px);}
+  :root:root:root:root:root:root:root:root:root body .featured-work :is(figcaption,.featured-work__client) {display:contents;}
+  :root:root:root:root:root:root:root:root:root body .featured-work__index {grid-column:1;grid-row:cover;align-self:start;display:block;margin:0;font-size:clamp(44px,7.8vw,124px);font-weight:300;letter-spacing:-.06em;line-height:1;}
+  :root:root:root:root:root:root:root:root:root body .featured-work__company {grid-column:2;grid-row:title;align-self:end;min-width:0;padding-right:100px;font-size:clamp(20px,2.3vw,36px);line-height:1.05;}
+  :root:root:root:root:root:root:root:root:root body .featured-work__action {grid-column:2;grid-row:title;align-self:end;justify-self:end;position:static;transform:none;}
+  :root:root:root:root:root:root:root:root:root body .featured-work__year {font-size:clamp(12px,1.2vw,18px);}
+  :root:root:root:root:root:root:root:root:root body .featured-work__cover {grid-column:2;grid-row:cover;align-self:start;width:100%;height:min(75svh,900px);aspect-ratio:auto;margin:0;}
+  :root:root:root:root:root:root:root:root:root body .featured-work__cover img {width:100%;height:100%;object-fit:cover;}
+  :root:root:root:root:root:root:root:root:root body .featured-work--sperm-whales-of-dominica .featured-work__cover img {object-fit:cover;}
+  :root:root:root:root:root:root:root:root:root body .featured-work__summary {grid-column:3;grid-row:cover;align-self:start;display:block;min-width:0;max-width:none;margin:0;font-size:clamp(14px,1.35vw,21px);line-height:1.3;}
+  :root:root:root:root:root:root:root:root:root body .featured-index-desktop {display:none;}
+  :root:root:root:root:root:root:root:root:root body .featured-index-portrait {display:inline;}
+  :root:root:root:root:root:root:root:root:root body [data-portrait-footer-handoff] {height:180svh;padding:0!important;position:relative;}
+  :root:root:root:root:root:root:root:root:root body [data-portrait-footer-handoff] .footer {position:sticky!important;top:0;transform:none!important;}
+  :root:root:root:root:root:root:root:root:root body .footer[data-compact-layout] {height:100svh;min-height:0;padding:0;}
+  :root:root:root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__mobile-message {display:none!important;}
+  :root:root:root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__marquee>svg[data-marquee-svg] {display:block!important;position:absolute;inset:0;width:100%;height:100%;transform:none;}
+  :root:root:root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__marquee {padding:0;}
+  :root:root:root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__bottom {padding:12px 4vw;gap:clamp(18px,3vw,40px);}
+  :root:root:root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__center-logo {width:clamp(64px,11vw,144px);}
+  :root:root:root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__contact-block {font-size:clamp(11px,1.1vw,18px);}
+  :root:root:root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__social {font-size:clamp(12px,1.4vw,20px);gap:6px;}
+  :root:root:root:root:root:root:root:root:root body .footer[data-compact-layout] .footer__label {font-size:clamp(10px,1vw,14px);}
+}
+
+@media (orientation:landscape) and (any-pointer:coarse) and (prefers-reduced-motion:reduce), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:reduce) {
+  :root:root:root:root:root:root:root:root:root body .workflow {position:relative;min-height:100svh;height:100svh;visibility:visible;}
+  :root:root:root:root:root:root:root:root:root body .workflow__grid {height:calc(100svh - 120px);}
+}
+/* Reference: 1140-wide SVG compositions; tracks reflow by available height. */
+@media (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px) {
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-main {grid-template-rows:minmax(0,1fr) 48px auto;overflow:visible;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .project-panel {padding:0;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .service-gallery-controls {position:relative;justify-content:center;padding:0 14px;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .service-gallery-controls .projects-view-all {position:absolute;right:14px;top:50%;transform:translateY(-50%);margin:0;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer {display:grid;grid-template-columns:minmax(54px,12%) minmax(0,35%) minmax(0,1fr);grid-template-rows:auto;align-items:center;gap:clamp(10px,2.5vw,30px);padding:12px 2vw;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-number {grid-column:1;grid-row:1;font-size:clamp(46px,7.5vw,96px);}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy-stack {grid-column:2;grid-row:1;align-self:center;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy h2 {font-size:clamp(17px,2.1vw,28px);line-height:1.05;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-copy p {font-size:clamp(12px,1.25vw,18px);line-height:1.2;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav {grid-column:3;grid-row:1;width:calc(100% - 74px);margin:0;justify-self:center;padding:0;gap:clamp(5px,1vw,12px);}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav::after {display:none;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .service-preview-nav button {height:clamp(48px,13svh,105px);aspect-ratio:auto;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging {left:calc(47% + 3vw);right:12px;bottom:12px;height:clamp(48px,13svh,105px);padding:0;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-paging button {width:32px;min-width:32px;height:32px;min-height:32px;}
+ :root:root:root:root:root:root:root:root:root body .projects[data-compact-services] .projects-footer::after {display:none;}
+ :root:root:root:root:root:root:root:root:root body .brands[data-brands] {position:relative!important;top:auto;margin:0!important;height:auto;min-height:0;padding:clamp(32px,5.8vw,80px) 4.7vw;}
+ :root:root:root:root:root:root:root:root:root body .brands .brands-layout {display:grid;grid-template-columns:minmax(0,20fr) minmax(0,80fr);grid-template-rows:auto auto;gap:clamp(24px,5.8vw,80px) 2.8vw;height:auto;min-height:0;width:100%;max-width:none;}
+ :root:root:root:root:root:root:root:root:root body .brands-info {display:contents;}
+ :root:root:root:root:root:root:root:root:root body .brands-statement {grid-column:1;grid-row:1;position:static;align-self:start;width:100%;max-width:none;margin:0;font-size:clamp(14px,1.65vw,24px);line-height:1.25;}
+ :root:root:root:root:root:root:root:root:root body .brands-grid {grid-column:2;grid-row:1;width:100%;height:auto;aspect-ratio:auto;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:clamp(95px,12.7vw,205px);}
+ :root:root:root:root:root:root:root:root:root body .brands-stats {grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,4.9vw,68px);width:79%;justify-self:center;margin:0;padding:0;border:0;}
+ :root:root:root:root:root:root:root:root:root body .brands-stats>div {display:flex;flex-direction:column;align-items:center;gap:12px;}
+ :root:root:root:root:root:root:root:root:root body .brands-stats dd {font-size:clamp(42px,7vw,105px)!important;}
+ :root:root:root:root:root:root:root:root:root body .brands-stats dt {font-size:clamp(10px,1.2vw,18px);}
+ :root:root:root:root:root:root:root:root:root body .brands-cell {min-width:0;overflow:visible;}
+}
+
+/* Shared card cue: circle first, then the directional arrow. */
+@keyframes workflow-cue-circle {from{opacity:0;scale:.8}to{opacity:.5;scale:1}}
+@keyframes workflow-cue-arrow {from{opacity:0;transform:translate(-4px,4px)}to{opacity:1;transform:translate(0,0)}}
+@media (prefers-reduced-motion:no-preference) {
+ :root:root:root:root body .workflow[data-cue-visible] .workflow__tap-cue {animation:workflow-cue-circle .6s ease both;}
+ :root:root:root:root body .workflow[data-cue-visible] .workflow__tap-cue .action-arrow {animation:workflow-cue-arrow .5s .45s ease both;}
+}
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px) {
+ :root:root:root:root:root:root:root:root:root body .unified-workflow-controls {border-top:0;}
+}
+@media (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px) {
+ :root:root:root:root:root:root:root:root:root body .hero .action-pill {gap:3px;padding-inline:16px;}
+ :root:root:root:root:root:root:root:root:root body .hero .action-pill .action-arrow {width:1em;font-size:inherit;}
+ :root:root:root:root:root:root:root:root:root body [data-portrait-footer-handoff] {margin-top:-100svh;}
+ :root:root:root:root:root:root:root:root:root body [data-featured-brands]>.brands[data-brands] {position:sticky!important;top:var(--brands-sticky-top,0);}
+}
+/* Interludes share two offset lines and the same entrance choreography. */
+@media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px) {
+ :root:root:root:root:root:root:root:root:root body .science-interlude p {width:max-content;max-width:calc(100% - 64px);text-align:left;font-size:clamp(24px,4.8vw,58px);line-height:1.15;}
+ :root:root:root:root:root:root:root:root:root body .science-interlude :is(.science-mobile,.science-desktop) {width:max-content;max-width:100%;}
+ :root:root:root:root:root:root:root:root:root body .science-interlude :is(.science-mobile,.science-desktop)>span {display:inline-block;}
+ :root:root:root:root:root:root:root:root:root body .science-interlude :is(.science-mobile,.science-desktop)>span+span {margin-left:.25em;}
+ :root:root:root:root:root:root:root:root:root body .science-interlude em {display:block;position:relative;left:12%;white-space:nowrap;}
+ :root:root:root:root:root:root:root:root:root body .science-interlude .science-mobile em>span {display:inline;}
+ :root:root:root:root:root:root:root:root:root body .science-interlude .science-mobile em>span+span::before {content:' ';}
+ :root:root:root:root:root:root:root:root:root body .science-interlude br {display:none;}
+}

@@ -1,4 +1,4 @@
-import {compactServices} from './compact-services';
+import {isMobileJourneyLayout, mobileLandscapeMedia} from './responsive-layout';
 import { createHeroInfoTimeline, createHeroTitleTimeline } from './home-entrance.js';
 import { isTabletPortrait, getHeroFrame } from './responsive-layout';
 import { mountHeroDistortion } from './hero-distortion';
@@ -122,6 +122,7 @@ if(root){
   const clamp=(v:number)=>Math.max(0,Math.min(1,v));
   const ease=(v:number)=>{const x=clamp(v);return x*x*(3-2*x);};
   media.add('(min-width:1001px) and (orientation:landscape) and (prefers-reduced-motion:no-preference)',()=>{
+    if(isMobileJourneyLayout())return;
     host.setAttribute('data-journey','');
     // Desktop Journey owns the logo immediately, before the first measured render.
     mask.style.maskImage='none';
@@ -369,14 +370,14 @@ slots.forEach((slot, i) => {
     };
   });
 
-  media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',tablet:'(orientation:portrait)',reduced:'(prefers-reduced-motion:reduce)',always:'all'},context=>{
+  media.add({phone:'(max-width:700px) and (prefers-reduced-motion:no-preference), (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:no-preference)',tablet:'(orientation:portrait)',mobileLandscape:mobileLandscapeMedia,reduced:'(prefers-reduced-motion:reduce)',always:'all'},context=>{
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) {
       headerLogoMotion?.kill();
       headerLogo?.style.removeProperty('transform');
       const state=ScrollTrigger.create({trigger:workflow,start:'top bottom',end:'max',onToggle:self=>showWorkflowLogo(self.isActive),onRefresh:self=>showWorkflowLogo(self.isActive)});
       return()=>state.kill();
     }
-    if (!context.conditions?.phone && !context.conditions?.tablet) return;
+    if (!context.conditions?.phone && !context.conditions?.tablet && !context.conditions?.mobileLandscape) return;
     // Reuse the landscape tablet's viewport-sized vector aperture, avoiding a 19x CSS mask.
     const tablet=isTabletPortrait();
     const aperture=document.createElementNS('http://www.w3.org/2000/svg','path');
@@ -407,7 +408,7 @@ slots.forEach((slot, i) => {
       lastPortal=undefined; // A resize changes the path even at the same progress.
       const w=cards[0].offsetWidth,h=cards[0].offsetHeight;
       target={x:grid.offsetLeft+(grid.clientWidth-w)/2,y:grid.offsetTop+(grid.clientHeight-h)/2,w,h};
-      if(compactServices())target={x:grid.offsetLeft+(grid.clientWidth-w)/2,y:grid.offsetTop,w,h};
+      if(isMobileJourneyLayout())target={x:grid.offsetLeft+(grid.clientWidth-w)/2,y:grid.offsetTop,w,h};
       if(tablet)cover.setAttribute('viewBox',`0 0 ${width} ${height}`);
       render();
     }
@@ -416,7 +417,7 @@ slots.forEach((slot, i) => {
       if(!width)return;
       // Once interactive, keep the carousel settled through toolbar/scroll refreshes.
       const rawProgress=clamp(state.p);
-      const p=compactServices()&&cardsReady&&rawProgress>=.54?Math.max(.77,rawProgress):rawProgress;
+      const p=isMobileJourneyLayout()&&cardsReady&&rawProgress>=.54?Math.max(.77,rawProgress):rawProgress;
       if(p>.02)loadIntermediateImages();
       if(p>.18)loadWorkflowImages();
       distortion.setInitialState(p<.105,1-ease((p-.08)/.025));
@@ -458,7 +459,7 @@ slots.forEach((slot, i) => {
       else {mask.style.maskImage=master.mask;mask.style.webkitMaskImage=master.mask;}
       }
 
-      const ipadHome=compactServices();
+      const ipadHome=isMobileJourneyLayout();
       const imageStarts=ipadHome?[.22,.34,.46]:[.105,.15,.195];
       intermediateImages.forEach((img,index)=>{
         const reveal=ease((p-imageStarts[index])/.025);
@@ -484,18 +485,18 @@ slots.forEach((slot, i) => {
       hero.inert=p>.03;
       workflow.style.visibility=p>.22?'visible':'hidden';
       showWorkflowLogo(p>=cardsStart+.16*span*overlap);
-      const ready=compactServices() && (p>=.77 || (cardsReady && p>=.54));
+      const ready=isMobileJourneyLayout() && (p>=.77 || (cardsReady && p>=.54));
       if(cardsReady && !ready && !ScrollTrigger.isRefreshing)workflow.dispatchEvent(new Event('workflow:reset'));
       cardsReady=ready;
       workflow.inert=!ready;
       // Snap points must be measured only after the entry's stacked transforms
       // reach their final positions; Chromium otherwise snaps back to slot 01.
-      if(compactServices()&&!ready)grid.style.scrollSnapType='none';
+      if(isMobileJourneyLayout()&&!ready)grid.style.scrollSnapType='none';
       const headingIn=ease((p-.23)/.07),headingOut=ease((p-.94)/.04);
       heading.style.opacity='1';
       heading.style.clipPath=`inset(${(1-headingIn)*100}% 0 ${headingOut*100}% 0)`;
 
-      if(compactServices()) {
+      if(isMobileJourneyLayout()) {
         heading.style.clipPath=`inset(${(1-ease((p-.54)/.08))*100}% 0 0)`;
         // The final existing image narrows into slot 01, then the other columns reveal.
         const settle=ease((p-.54)/.12);
@@ -544,12 +545,12 @@ slots.forEach((slot, i) => {
       });
     }
 
-    const animation=gsap.to(state,{p:1,ease:'none',scrollTrigger:{trigger:host,start:'top top',end:'bottom bottom',scrub:compactServices()?1:.45,invalidateOnRefresh:true,onRefresh:measure},onUpdate:render});
+    const animation=gsap.to(state,{p:1,ease:'none',scrollTrigger:{trigger:host,start:'top top',end:'bottom bottom',scrub:isMobileJourneyLayout()?1:.45,invalidateOnRefresh:true,onRefresh:measure},onUpdate:render});
     const resize=new ResizeObserver(measure);resize.observe(stage);
     const removeStops=registerScrollStops(host,()=>{
       const trigger=animation.scrollTrigger;
       // Full front face: after entrance, before the existing scroll-driven flip.
-      return compactServices() && trigger ? [(trigger.end-trigger.start)*.78] : trigger?slots.map((_,i)=>(trigger.end-trigger.start)*(cardsStart+(i+.24*overlap)*span)):[];
+      return isMobileJourneyLayout() && trigger ? [(trigger.end-trigger.start)*.78] : trigger?slots.map((_,i)=>(trigger.end-trigger.start)*(cardsStart+(i+.24*overlap)*span)):[];
     });
     measure();ScrollTrigger.refresh();
     return()=>{

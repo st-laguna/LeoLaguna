@@ -1,3 +1,4 @@
+import {isMobileJourneyLayout} from './responsive-layout';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
@@ -265,7 +266,7 @@ window.addEventListener('resize', schedule, {
 });
 
 function updateGlass() {
-  const compact=matchMedia('(orientation:portrait)').matches || !root.hasAttribute('data-large-tablet-landscape') && (root.hasAttribute('data-ipad') || root.hasAttribute('data-tablet-portrait') || matchMedia('(max-width:700px), (any-pointer:coarse) and (max-width:1366px), (max-width:1000px) and (max-height:500px)').matches);
+  const compact=isMobileJourneyLayout() || !root.hasAttribute('data-large-tablet-landscape') && (root.hasAttribute('data-ipad') || root.hasAttribute('data-tablet-portrait') || matchMedia('(max-width:700px), (any-pointer:coarse) and (max-width:1366px), (max-width:1000px) and (max-height:500px)').matches);
   footer!.toggleAttribute('data-compact-layout',compact);
   const phoneLandscape=!root.hasAttribute('data-ipad') && matchMedia('(orientation:landscape) and (max-width:1000px) and (max-height:500px) and (any-pointer:coarse)').matches;
   footer!.toggleAttribute('data-phone-landscape',phoneLandscape);

@@ -1,3 +1,9 @@
+// Shared composition for Workflow, interludes, Featured Works and footer.
+// Services and Brands keep their existing layout until their own adaptation.
+export const mobileLandscapeMedia = '(orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px)';
+export const mobileJourneyMedia = '(orientation:portrait), ' + mobileLandscapeMedia;
+export const mobileJourneyMotionMedia = mobileJourneyMedia.split(', ').map(query => query + ' and (prefers-reduced-motion:no-preference)').join(', ');
+export const isMobileJourneyLayout = () => matchMedia(mobileJourneyMedia).matches;
 export const isTabletPortrait = () => document.documentElement.hasAttribute('data-tablet-portrait');
 export const phoneMedia = '(max-width:700px), (max-width:1000px) and (max-height:500px)';
 export const phonePortraitMedia = '(max-width:700px) and (orientation:portrait)';

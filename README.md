@@ -1,43 +1,25 @@
-# Astro Starter Kit: Minimal
+# Leo Laguna — Portafolio
+
+Sitio construido con Astro, CSS propio, GSAP/ScrollTrigger y Three.js.
+
+## Desarrollo
 
 ```sh
-npm create astro@latest -- --template minimal
+npm ci
+npm run dev -- --background
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+El servidor usa el puerto 4321 por defecto. La gestión del servidor en segundo plano se describe en `AGENTS.md`.
 
-## 🚀 Project Structure
+## Comprobaciones
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+npm run check:styles
+npm run build
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+`check:styles` detecta declaraciones repetidas en los mismos selectores y condiciones, y evita aumentar la especificidad de las hojas móviles compartidas. La compilación genera `dist/`.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Mantenimiento de la interfaz
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Consultar [la arquitectura de estilos](docs/STYLE_ARCHITECTURE.md) antes de cambiar las reglas responsive. Allí se documentan los archivos propietarios, el orden de importación, los estados dinámicos y la validación necesaria para conservar la misma composición móvil en celulares e iPads.

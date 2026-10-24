@@ -17,29 +17,4 @@
   .nexo__needs {grid-column:2;grid-row:1;}
   .nexo__second {grid-column:2;grid-row:2;}
 </style>
-<script>
-  import gsap from 'gsap';
-  import {ScrollTrigger} from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-  const intro=document.querySelector<HTMLElement>('[data-services-intro]');
-  if(intro){
-    const media=gsap.matchMedia();
-    media.add('(prefers-reduced-motion:no-preference)',()=>{
-      const host=intro.parentElement!;
-      const services=host.querySelector<HTMLElement>('[data-projects]')!;
-      const words=intro.querySelectorAll('p > span');
-      let phase=0,exitAt=0,motion:gsap.core.Tween|undefined;
-      gsap.set(words,{y:18});
-      const servicesTop=()=>services.getBoundingClientRect().top+scrollY;
-      function update(self:ScrollTrigger){
-        const next=self.progress<=0?0:scrollY>=exitAt?2:1;
-        if(next===phase)return;
-        phase=next;motion?.kill();
-        motion=gsap.to(words,{y:next===0?18:next===1?0:-18,duration:.8,stagger:.07,ease:'power3.inOut'});
-      }
-      ScrollTrigger.create({id:'nexo-entrance',trigger:host,start:'top 55%',end:()=>servicesTop()-innerHeight*.35,onUpdate:update,onRefresh:self=>{exitAt=servicesTop()-innerHeight*.6;update(self);}});
-      return()=>motion?.kill();
-    });
-    if(import.meta.hot)import.meta.hot.dispose(()=>media.revert());
-  }
-</script>
+<script>import '../scripts/interlude-entrance';</script>

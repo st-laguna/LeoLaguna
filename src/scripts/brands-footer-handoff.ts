@@ -1,3 +1,4 @@
+import {isMobileJourneyLayout} from './responsive-layout';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { openingClip } from './transition-motion.js';
@@ -15,7 +16,7 @@ export function mountBrandsFooterHandoff(brands:HTMLElement){
   function configure(){
     frame=0;if(disposed)return;
     const fits=brands.scrollHeight<=innerHeight+1;
-    const portrait=matchMedia('(orientation:portrait)').matches;
+    const portrait=isMobileJourneyLayout();
     brands.style.setProperty('--brands-sticky-top',Math.min(0,innerHeight-brands.offsetHeight)+'px');
     const next=portrait ? !matchMedia('(prefers-reduced-motion:reduce)').matches : conditions.matches&&fits&&!brands.hasAttribute('data-mobile-streams');
     if(next===enabled&&portrait===portraitMode)return;

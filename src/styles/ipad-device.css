@@ -1,5 +1,0 @@
-html[data-ios] {overflow-anchor:none;}
-/* Native scrolling, with no document bounce beyond either endpoint. */
-@media (pointer:coarse) {html,body {overscroll-behavior-y:none;}}
-
-html[data-ios], html[data-ios] body {overscroll-behavior-y:none;}

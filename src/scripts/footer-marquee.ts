@@ -1,3 +1,4 @@
+import {mobileLandscapeMedia} from './responsive-layout';
 import gsap from 'gsap';
 import { createFooterRefraction } from './footer-refraction';
 import { glyphs } from './footer-glyphs';
@@ -78,7 +79,7 @@ export function initFooterMarquee(host: HTMLElement) {
     }
     renderGlass();
   }
-  let canvasPaths:Path2D[]=[], opticalScale=1;
+  let canvasPaths:Path2D[]=[], opticalScale=1, opticalTop=MARQUEE_VIEW.top;
   function paintGlass(ctx:CanvasRenderingContext2D){
     if(htmlSource){
       for(const item of mobileRows)for(let i=0;i<item.spans.length;i++){
@@ -87,7 +88,7 @@ export function initFooterMarquee(host: HTMLElement) {
       }
       return;
     }
-    ctx.scale(opticalScale,opticalScale);ctx.translate(0,-MARQUEE_VIEW.top);
+    ctx.scale(opticalScale,opticalScale);ctx.translate(0,-opticalTop);
     const total=amounts.reduce((a,b)=>a+b,0),cycle=period+total;
     for(let k=0;k<copies.length;k++){
       ctx.save();ctx.translate(phase+(k-1)*cycle-total/2,0);
@@ -124,12 +125,16 @@ export function initFooterMarquee(host: HTMLElement) {
     if(!visible)return;
     if(!glassInitialized){glassInitialized=true;glass=createFooterRefraction(host);}
     htmlSource=getComputedStyle(message).display!=='none';
-    opticalScale=host.clientHeight/MARQUEE_VIEW.height;
+    const fitLine=matchMedia(mobileLandscapeMedia).matches;
+    const textHeight=fitLine?Math.min(host.clientHeight,host.clientWidth*MARQUEE_VIEW.height/1242.8):host.clientHeight;
+    opticalScale=textHeight/MARQUEE_VIEW.height;
     glass?.resize(htmlSource);glassDirty=true;
     if(htmlSource){measureMobile();drawMobile();return;}
     const height=Math.max(1,host.clientHeight);
-    viewWidth=host.clientWidth/height*MARQUEE_VIEW.height;
-    svg.setAttribute('viewBox',`0 ${MARQUEE_VIEW.top} ${viewWidth} ${MARQUEE_VIEW.height}`);
+    const viewHeight=height/opticalScale;
+    opticalTop=MARQUEE_VIEW.top-(viewHeight-MARQUEE_VIEW.height)/2;
+    viewWidth=host.clientWidth/opticalScale;
+    svg.setAttribute('viewBox',`0 ${opticalTop} ${viewWidth} ${viewHeight}`);
     const count=Math.ceil(viewWidth/period)+4;
     while(copies.length<count){
       const group=document.createElementNS(NS,'g');
