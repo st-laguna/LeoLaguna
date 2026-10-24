@@ -10,19 +10,22 @@ export function mountBrandsFooterHandoff(brands:HTMLElement){
   if(!host||!runway||!footer)return ()=>{};
   let context:gsap.Context|undefined;
   let enabled=false,frame=0,disposed=false;
+  let portraitMode=false;
   const conditions=matchMedia('(min-width:1001px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)');
   function configure(){
     frame=0;if(disposed)return;
     const fits=brands.scrollHeight<=innerHeight+1;
     const portrait=matchMedia('(orientation:portrait)').matches;
     brands.style.setProperty('--brands-sticky-top',Math.min(0,innerHeight-brands.offsetHeight)+'px');
-    const next=(portrait?!matchMedia('(prefers-reduced-motion:reduce)').matches:conditions.matches&&fits)&&!brands.hasAttribute('data-mobile-streams');
-    if(next===enabled)return;
+    const next=portrait ? !matchMedia('(prefers-reduced-motion:reduce)').matches : conditions.matches&&fits&&!brands.hasAttribute('data-mobile-streams');
+    if(next===enabled&&portrait===portraitMode)return;
+    portraitMode=portrait;
     context?.revert();context=undefined;enabled=next;
     if(!next){ScrollTrigger.refresh();return;}
     context=gsap.context(()=>{
       const footerInert=footer!.inert,brandsInert=brands.inert;
-      host!.setAttribute('data-footer-handoff','');
+      if(portrait)runway!.setAttribute('data-portrait-footer-handoff','');
+      else host!.setAttribute('data-footer-handoff','');
       const geometry={width:80,startTop:75,startBottom:25};
       gsap.set(footer!,{clipPath:openingClip(0,geometry)});
       const render=(progress:number)=>{
@@ -32,14 +35,15 @@ export function mountBrandsFooterHandoff(brands:HTMLElement){
         brands.inert=progress>=.99;
       };
       const timeline=gsap.timeline({scrollTrigger:{
-        id:'brands-footer-handoff',trigger:runway!,start:()=>matchMedia('(orientation:portrait)').matches?'top -10%':'top -80%',end:'bottom bottom',
+        id:'brands-footer-handoff',trigger:runway!,start:()=>portrait?'top top':'top -80%',end:'bottom bottom',
         scrub:true,invalidateOnRefresh:true,
         onUpdate:self=>render(self.progress),onRefresh:self=>render(self.progress),
       }});
-      timeline.fromTo(footer!,{y:()=>-innerHeight},{y:0,duration:1,ease:'none'},0);
+      if(!portrait) timeline.fromTo(footer!,{y:()=>-innerHeight},{y:0,duration:1,ease:'none'},0);
       render(timeline.scrollTrigger?.progress||0);
       return ()=>{
         host!.removeAttribute('data-footer-handoff');
+        runway!.removeAttribute('data-portrait-footer-handoff');
         delete footer!.dataset.handoffProgress;
         footer!.inert=footerInert;brands.inert=brandsInert;
       };

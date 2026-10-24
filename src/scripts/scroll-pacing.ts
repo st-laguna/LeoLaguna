@@ -65,7 +65,7 @@ export function createScrollPacing(blocked: () => boolean) {
   let stops: number[] = [], viewportHeight = innerHeight;
   function apply() {
     const tabletTouch = root.hasAttribute('data-tablet-portrait') && (navigator.maxTouchPoints > 0 || matchMedia('(any-pointer:coarse)').matches);
-    const enabled = !tabletTouch && (native || nativeInput) && !bypass && !blocked() && !reduced.matches && stops.length > 0;
+    const enabled = !matchMedia('(orientation:portrait)').matches && !tabletTouch && (native || nativeInput) && !bypass && !blocked() && !reduced.matches && stops.length > 0;
     if (enabled && root.getAttribute('data-scroll-pacing') !== 'native') root.setAttribute('data-scroll-pacing', 'native');
     else if (!enabled && root.hasAttribute('data-scroll-pacing')) root.removeAttribute('data-scroll-pacing');
   }
@@ -128,7 +128,7 @@ export function createScrollPacing(blocked: () => boolean) {
     setNative(value: boolean) { native = value; nativeInput = false; apply(); },
     suspend,
     wheel(from: number, delta: number) {
-      return reduced.matches || blocked() || bypass ? delta : paceWheel(from, delta, stops, viewportHeight);
+      return matchMedia('(orientation:portrait)').matches || reduced.matches || blocked() || bypass ? delta : paceWheel(from, delta, stops, viewportHeight);
     },
     dispose() {
       events.abort(); cancelAnimationFrame(frame); observe?.disconnect(); observe = undefined;

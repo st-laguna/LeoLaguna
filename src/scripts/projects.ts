@@ -231,7 +231,7 @@ if(section){
     // Marcas empieza a revelarse cuando la salida visual llega a la mitad.
 const brandsReveal = ease((outgoing - .5) / .5);
 
-if (brandsLayout) {
+if (brandsLayout && !compactServices()) {
   brandsLayout.style.clipPath =
     `inset(${(1 - brandsReveal) * 100}% 0 0 0)`;
 
@@ -258,7 +258,7 @@ if (brandsLayout) {
     if(root.classList.contains('projects-active')!==away)root.classList.toggle('projects-active',away);
     // The persistent header remains interactive above Work.
     stepButtons.forEach(button=>{
-      const disabled=Number(button.dataset.step)<0?current===0:current===3;
+      const disabled=!compactServices()&&(Number(button.dataset.step)<0?current===0:current===3);
       if(button.disabled!==disabled)button.disabled=disabled;
     });
   }
@@ -382,7 +382,7 @@ if (brandsLayout) {
       .to(state,{position:isMobileAbout()?2.965:3,duration:.9,ease:'power3.inOut'},4.5)
       .to(state, { position: 3, duration: 1.1, ease: 'none' }, 5.4)
       .to(state, { exit: 1, duration: 1, ease: 'none' }, 6.5);
-    removeGesture=mountTabletHorizontalGesture(section!,()=>timeline?.scrollTrigger,[0,6.5/7.5],()=>compactServices()||document.documentElement.hasAttribute('data-large-tablet-landscape'));
+    removeGesture=mountTabletHorizontalGesture(section!,()=>timeline?.scrollTrigger,[0,6.5/7.5],()=>!compactServices()&&document.documentElement.hasAttribute('data-large-tablet-landscape'));
     render();ScrollTrigger.refresh();
   }
   const selections=new Map<HTMLElement,{timeline:gsap.core.Timeline,pending:number|null}>();
@@ -417,7 +417,7 @@ if (brandsLayout) {
     if(frozen||section!.hasAttribute("data-gallery-preparing"))return;
     if(button.hasAttribute('data-select'))select(button.closest<HTMLElement>('[data-panel]')!,Number(button.dataset.select));
     if(button.hasAttribute('data-step')){
-      const target=Math.max(0,Math.min(3,current+Number(button.dataset.step)));
+      const target=compactServices()?(current+Number(button.dataset.step)+4)%4:Math.max(0,Math.min(3,current+Number(button.dataset.step)));
       const trigger=timeline?.scrollTrigger;
       if (trigger) { scrollPage( trigger.start + stops[target] / total * (trigger.end - trigger.start) ); }
     }

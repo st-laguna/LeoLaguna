@@ -47,6 +47,10 @@ function mount(toggle: HTMLButtonElement) {
     panel.toggleAttribute('data-menu-compact', enabled());
     setOpen(false);
   }
+  const blockScroll = (event: Event) => { if(open) event.preventDefault(); };
+  window.addEventListener('wheel',blockScroll,{passive:false,signal:abort.signal});
+  window.addEventListener('touchmove',blockScroll,{passive:false,signal:abort.signal});
+  on(document,'keydown',event=>{if(open&&['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes((event as KeyboardEvent).key))event.preventDefault();});
   on(toggle, 'click', () => { if (!toggle.disabled) setOpen(!open); });
   on(toggle, 'navigation-menu:close', () => setOpen(false));
   on(panel, 'pointerdown', event => {

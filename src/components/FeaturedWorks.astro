@@ -31,7 +31,7 @@ const covers = await Promise.all(featuredWorks.map(async work => {
           <div class={`featured-work featured-work--${work.slug}`} data-future-href={work.futureHref} data-phone-square={work.phoneSquare ? '' : undefined} style={work.slug !== 'sperm-whales-of-dominica' ? `--phone-cover-ratio:${work.width} / ${work.height};--phone-cover-aspect:${work.width! / work.height!}` : undefined}>
             <figure class="featured-work__content arrow-hover">
               <figcaption>
-                <span class="featured-work__client"><span class="featured-work__index">[{work.number}]</span> <span class="featured-work__company">{work.client}</span></span>
+                <span class="featured-work__client"><span class="featured-work__index"><span class="featured-index-desktop">[{work.number}]</span><span class="featured-index-portrait">[{work.slug === 'wewhale' ? '04' : work.slug === 'sperm-whales-of-dominica' ? '05' : work.number}]</span></span> <span class="featured-work__company">{work.client}</span></span>
                 <span class="featured-work__category" data-i18n={categoryKeys[work.categoryId]}>{labels[categoryKeys[work.categoryId]]}</span>
                 <span class="featured-work__action">
                   <span class="featured-work__year">{work.year}</span>

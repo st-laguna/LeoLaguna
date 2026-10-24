@@ -12,7 +12,7 @@ export function initFooter() {
       gsap.fromTo(row,{xPercent:i%2?100:-100},{xPercent:0,ease:'none',scrollTrigger:{trigger:row,start:'top bottom',end:'top 65%',scrub:.8}});
     });
     const brands=document.querySelector('.brands-layout');
-    if(brands)gsap.fromTo(brands,{clipPath:'inset(100% 0 0)'},{clipPath:'inset(0% 0 0)',ease:'none',scrollTrigger:{trigger:brands,start:'top 95%',end:'top 35%',scrub:.8}});
+    if(brands&&!matchMedia('(orientation:portrait)').matches)gsap.fromTo(brands,{clipPath:'inset(100% 0 0)'},{clipPath:'inset(0% 0 0)',ease:'none',scrollTrigger:{trigger:brands,start:'top 95%',end:'top 35%',scrub:.8}});
   });
   // One reversible reveal; measure the stationary seam only on refresh.
   entranceMedia.add('(prefers-reduced-motion: no-preference)', () => {

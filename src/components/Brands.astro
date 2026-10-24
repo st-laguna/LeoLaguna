@@ -29,7 +29,7 @@ const t = en as Record<string,string>;
           data-brand-name={brand.name}
           aria-label={brand.name}
         >
-          <span class="brand-turn"><span class="brand-front"><img src={`/imgs/brands/previews/${brand.file}.webp`} alt="" loading="lazy" decoding="async" /></span><span class="brand-logo"><img src={`/imgs/brands/${brand.file}.svg`} data-brand-original={`/imgs/brands/${brand.file}.svg`} data-brand-white={['WWF3','COA3','IMA3','SPERMWHALES3'].includes(brand.file)?`/imgs/brands/${brand.file}_W.svg`:undefined} alt="" loading="lazy" decoding="async" draggable="false" /></span></span>
+          <span class="brand-turn"><span class="brand-front"><picture><source media="(orientation:portrait)" srcset={`/imgs/brands/previews/responsive/${brand.file}-640.webp 640w, /imgs/brands/previews/responsive/${brand.file}-960.webp 960w, /imgs/brands/previews/${brand.file}.webp 1300w`} sizes={`(max-width:700px) calc((100vw - 50px) * ${brand.file === 'HAVIDA3' ? 2 : 1} / 3), calc((min(100vw, 1500px) - 100px) * ${['HAVIDA3','GROA3','MV'].includes(brand.file) ? 2 : 1} / 4)`} /><img src={`/imgs/brands/previews/${brand.file}.webp`} alt="" loading="lazy" decoding="async" /></picture></span><span class="brand-logo"><img src={`/imgs/brands/${brand.file}.svg`} data-brand-original={`/imgs/brands/${brand.file}.svg`} data-brand-white={['WWF3','COA3','IMA3','SPERMWHALES3'].includes(brand.file)?`/imgs/brands/${brand.file}_W.svg`:undefined} alt="" loading="lazy" decoding="async" draggable="false" /></span></span>
         </button>
       ))}
       </div>)}
