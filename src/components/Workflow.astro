@@ -44,7 +44,7 @@ const steps = [1, 2, 3, 4];
           <span class="workflow__number" aria-hidden="true">[0{step}]</span>
           <span class="workflow__turn">
             <span class="workflow__front">
-              <span class="workflow__explore">Tap to Explore</span>
+              <span class="workflow__explore">Tap to Explore</span><span class="workflow__tap-cue" aria-hidden="true"><span class="action-arrow" data-direction="diagonal"><span data-arrow="↗">↗</span></span></span>
               <img data-src={`/imgs/workflow/${step}.webp`} alt="" decoding="async" draggable="false" width="600" height="600"/>
               <strong
                 id={`workflow-title-${step}`}
@@ -81,6 +81,7 @@ const steps = [1, 2, 3, 4];
 </section>
 
 <style>
+  .workflow__tap-cue {display:none;}
   .workflow__number, .workflow__explore {display:none;}
   .workflow {
     --back-background: #111;
