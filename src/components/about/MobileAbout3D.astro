@@ -20,4 +20,16 @@ import '../../styles/about-mobile-3d.css';
  </aside>
  <button class="mobile-3d-toggle" type="button" data-mobile-3d-toggle aria-controls="mobile-3d-panel" aria-expanded="false" aria-label="Show information">→</button>
  <div class="mobile-3d-status" data-mobile-3d-status></div>
+ <div class="mobile-3d-hints" data-mobile-3d-hints>
+  <span data-en="TAP TO EXPLORE" data-es="TOCA PARA EXPLORAR">TAP TO EXPLORE</span>
+  <span data-en="DRAG TO ROTATE" data-es="ARRASTRA PARA GIRAR">DRAG TO ROTATE</span>
+  <span data-en="PINCH TO ZOOM" data-es="PELLIZCA PARA ACERCAR">PINCH TO ZOOM</span>
+ </div>
+ <div class="mobile-3d-roller" data-mobile-3d-roller role="group" aria-label="Explore models">
+  <button type="button" data-mobile-roll-prev aria-label="Previous model" disabled>↑</button>
+  <span data-mobile-roll-neighbor="prev" aria-hidden="true"></span>
+  <span data-mobile-roll-current aria-live="polite">All</span>
+  <span data-mobile-roll-neighbor="next" aria-hidden="true"></span>
+  <button type="button" data-mobile-roll-next aria-label="Next model" disabled>↓</button>
+ </div>
 </div>

@@ -27,8 +27,11 @@ export function createLookShader(config) {
         return sum * 0.25;
       }
       void main() {
-        vec2 cell = pixelSize / resolution;
-        vec2 p = cell * floor(vUv / cell) - 0.5;
+        vec2 p = vUv - 0.5;
+        if (pixelSize > 0.0) {
+          vec2 cell = pixelSize / resolution;
+          p = cell * floor(vUv / cell) - 0.5;
+        }
         float distanceFromCenter = length(p);
         vec2 uv = p * (1.0 + distortionAmount * dot(p, p)) + 0.5;
         float mask = smoothstep(0.2, 0.75, distanceFromCenter);

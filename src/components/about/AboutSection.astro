@@ -17,15 +17,8 @@ const base = import.meta.env.BASE_URL;
   <div class="about-preferences">    <div class="about__loading">
       <span class="about__dot" aria-hidden="true"></span>
       <p data-status role="status" aria-live="polite" aria-atomic="true">
-        A little world of mine.
+        Loading…
       </p>
-      <progress
-        data-load-progress
-        max="1"
-        value="0"
-        aria-label="3D assets loaded"
-        hidden
-      ></progress>
     </div>
 <PageControls /></div>
   <div class="about-mobile-copy">
@@ -623,15 +616,6 @@ const base = import.meta.env.BASE_URL;
     }
   }
 
-  .about__loading progress {
-    position: absolute;
-    left: 18px;
-    bottom: 5px;
-    width: calc(100% - 36px);
-    height: 3px;
-    border: 0;
-    accent-color: var(--accent);
-  }
 
   /* ELIMINAR TARJETAS DE PERSONAJES Y CONTROLES */
 

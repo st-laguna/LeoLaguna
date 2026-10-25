@@ -1,7 +1,8 @@
 // Adjust the look in one place. All sizes are world units except pixelSize.
 export const SCENE = {
   background: '#e0e0e0',
-  pixelSize: 3,
+  pixelSize: 0, // Temporary clean-render/shadow comparison; 3 restores pixelation.
+  shadow: { mapSize: 2048, extent: 5.5, wideExtent: 9, near: 0.5, far: 40 },
   renderScale: 0.85,
   mobileRenderScale: 0.75,
   minRenderScale: 0.6,

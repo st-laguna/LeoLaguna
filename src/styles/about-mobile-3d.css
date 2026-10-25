@@ -24,7 +24,7 @@ html[data-about-mobile] body .mobile-about-3d {display:block;position:absolute;i
 .mobile-3d-panel header {display:flex;align-items:center;justify-content:space-between;padding:22px 18px;gap:12px;}
 .mobile-3d-panel h2 {margin:0;font:700 22px/1.1 Archivo,sans-serif;}
 .mobile-3d-panel header button {width:40px;height:40px;border:0;background:none;color:inherit;font-size:24px;}
-.mobile-3d-panel img {display:block;width:calc(100% - 40px);height:auto;max-height:35dvh;object-fit:cover;margin:0 20px;border-radius:16px;}
+.mobile-3d-panel img {display:block;width:calc(100% - 40px);height:auto;max-height:none;flex:none;object-fit:cover;margin:0 20px;border-radius:16px;}
 .mobile-3d-toggle {position:absolute;left:calc(var(--mobile-panel-width) * var(--mobile-panel-progress,0));top:50%;translate:-50% -50%;width:40px;height:40px;aspect-ratio:1;box-sizing:border-box;padding:0;display:grid;place-items:center;border:1px solid #8887;border-radius:999px;background:var(--background);color:var(--foreground);font-size:22px;z-index:6;}
 .mobile-3d-toggle[aria-expanded=false] {translate:0 -50%;}
 .mobile-3d-status {position:absolute;left:calc(18px + var(--mobile-panel-width) * var(--mobile-panel-progress,0));top:max(24px,env(safe-area-inset-top));bottom:auto;right:76px;pointer-events:none;z-index:7;color:#fff;mix-blend-mode:difference;}
@@ -54,3 +54,26 @@ html[data-about-mobile] body .mobile-about-3d [data-shared-menu-panel] .shared-m
 html[data-about-mobile] body .mobile-about-3d [data-shared-menu-panel] .site-controls {display:grid!important;grid-template-columns:auto auto;justify-content:end;gap:12px;}
 .mobile-about-3d .site-controls>.action-pill {grid-column:1 / -1;justify-self:end;}
 .mobile-about-3d .shared-menu-footer .action-pill {min-width:190px;justify-content:space-between;box-sizing:border-box;}
+
+/* Keep the spinner visible without crowding the menu while the information column is open. */
+[data-mobile-panel-open] .mobile-3d-status [data-status],
+.mobile-about-3d[data-menu-open] .mobile-3d-status [data-status] {visibility:hidden;}
+
+.mobile-3d-hints {position:absolute;left:max(18px,env(safe-area-inset-left));bottom:max(20px,env(safe-area-inset-bottom));right:118px;z-index:7;display:grid;gap:7px;pointer-events:none;color:#fff;mix-blend-mode:difference;font:500 10px/1.4 'Host Grotesk',sans-serif;opacity:.6;}
+[data-mobile-panel-open] .mobile-3d-hints {visibility:hidden;}
+.mobile-3d-roller {position:absolute;right:max(12px,env(safe-area-inset-right));top:50%;translate:0 -50%;z-index:7;display:grid;justify-items:center;gap:4px;width:96px;color:#fff;mix-blend-mode:difference;font:500 11px/1.25 'Host Grotesk',sans-serif;}
+.mobile-3d-roller button {display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;background:none;color:inherit;font:400 22px/1 'Host Grotesk',sans-serif;touch-action:manipulation;}
+.mobile-3d-roller [data-mobile-roll-current] {font-size:14px;max-width:100%;text-align:center;overflow-wrap:anywhere;}
+.mobile-3d-roller [data-mobile-roll-neighbor] {opacity:.4;text-align:center;}
+.mobile-3d-roller button:disabled {opacity:.3;}
+.mobile-3d-roller button:focus-visible {outline:1px solid currentColor;border-radius:50%;}
+
+/* Formal CV link echoes the CV accordion's teal-to-indigo color cycle. */
+html body .about[data-editorial] .about-editorial .action-pill[href="/cv/"],
+.about .action-pill[href="/cv/"] {background:#14b8a6;animation:about-formal-color 2.4s cubic-bezier(.33,1,.68,1) infinite;}
+html[data-theme] body .about[data-editorial] .about-editorial .action-pill[href="/cv/"] {color:#000!important;}
+@keyframes about-formal-color {
+  0%,100% {background:#14b8a6;box-shadow:0 0 12px #14b8a633;}
+  50% {background:#6366f1;box-shadow:0 0 12px #6366f133;}
+}
+@media(prefers-reduced-motion:reduce) {.about .action-pill[href="/cv/"] {animation:none;}}

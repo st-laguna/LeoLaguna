@@ -21,9 +21,8 @@ function mount(section) {
   const intro = query('.box--intro');
   const timeEl = query('[data-local-time]');
   const status = query('[data-status]');
-  let statusMessage = 'Loading my little world…';
+  let statusMessage = 'Loading…';
   function setStatus(text) { statusMessage = text; status.textContent = message(text); editorial?.status(text); }
-  const progress = query('[data-load-progress]');
   const returnButton = query('[data-return]');
   const pauseButton = query('[data-pause]');
   const tooltip = query('[data-tooltip]');
@@ -252,8 +251,8 @@ function mount(section) {
     if (starting || destroyed || leaving) return;
     starting = true;
     section.removeAttribute('data-scene-unavailable');
-    setStatus('Loading my little world…');
-    progress.hidden = false;
+    setStatus('Loading…');
+
     section.setAttribute('aria-busy', 'true');
     watchdog = setTimeout(() => {
       if (!destroyed) {
@@ -286,9 +285,6 @@ function mount(section) {
           explore.append(button);
           picker.hidden = false;
         },
-        onProgress({ completed, total }) {
-          progress.value = completed / total;
-        },
         onFocus: select,
         onTransitionEnd(){editorial?.settled();},
         onZoom(value){editorial?.zoom(value);},
@@ -298,7 +294,7 @@ function mount(section) {
         onError(message) {
           void revealInitialAbout();
           setStatus(message);
-          progress.hidden = true;
+
           section.setAttribute('aria-busy', 'false');
         },
         onReady({ failed, interactive }) {
@@ -306,7 +302,7 @@ function mount(section) {
           clearTimeout(watchdog);
           editorial?.ready(interactive);
           section.setAttribute('aria-busy', 'false');
-          progress.hidden = true;
+
           section.toggleAttribute('data-scene-unavailable', interactive === 0);
           setStatus(focused
             ? 'Inspecting ' + focused.label
@@ -329,7 +325,7 @@ function mount(section) {
       if (destroyed) return;
       section.setAttribute('data-scene-unavailable', '');
       setStatus('The 3D view is unavailable on this browser. You can still read about me and get in touch.');
-      progress.hidden = true;
+
       pauseButton.disabled = true;
       section.setAttribute('aria-busy', 'false');
       void revealInitialAbout();

@@ -17,6 +17,10 @@ function mount(toggle: HTMLButtonElement) {
   const panel = document.getElementById(toggle.getAttribute('aria-controls')!)!;
   const host = toggle.closest<HTMLElement>('.site-header,.mobile-about')!;
   const root = document.documentElement;
+  const backdrop = document.createElement('div');
+  backdrop.className = 'shared-menu-backdrop';
+  backdrop.setAttribute('aria-hidden', 'true');
+  panel.before(backdrop);
   const about = toggle.dataset.menuContext === 'about';
   const media = matchMedia(compactMedia);
   const abort = new AbortController();
@@ -49,10 +53,10 @@ function mount(toggle: HTMLButtonElement) {
     panel.toggleAttribute('data-menu-compact', enabled());
     setOpen(false);
   }
-  const blockScroll = (event: Event) => { if(open) event.preventDefault(); };
+  const blockScroll = (event: Event) => { if(open && !(event.target instanceof Node && panel.contains(event.target))) event.preventDefault(); };
   window.addEventListener('wheel',blockScroll,{passive:false,capture:true,signal:abort.signal});
   window.addEventListener('touchmove',blockScroll,{passive:false,signal:abort.signal});
-  on(document,'keydown',event=>{if(open&&['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes((event as KeyboardEvent).key))event.preventDefault();});
+  on(document,'keydown',event=>{if(open&&!(event.target instanceof Node&&panel.contains(event.target))&&['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes((event as KeyboardEvent).key))event.preventDefault();});
   on(toggle, 'click', () => { if (!toggle.disabled) setOpen(!open); });
   on(toggle, 'navigation-menu:close', () => setOpen(false));
   on(document, 'click', event => {
@@ -94,7 +98,7 @@ function mount(toggle: HTMLButtonElement) {
   const observer = new MutationObserver(sync);
   observer.observe(root, {attributes:true,attributeFilter:['data-tablet-portrait','data-about-mobile']});
   sync();
-  return { dispose() { setOpen(false); abort.abort(); observer.disconnect(); } };
+  return { dispose() { setOpen(false); abort.abort(); observer.disconnect(); backdrop.remove(); } };
 }
 function boot() {
   for (const [toggle, controller] of mounted) if (!toggle.isConnected) { controller.dispose(); mounted.delete(toggle); }

@@ -1,5 +1,5 @@
 const es = {
-  'Loading my little world…': 'Cargando mi pequeño mundo…',
+  'Loading…': 'Cargando…',
   'Preparing the 3D scene…': 'Preparando la escena 3D…',
   'Back to the full scene.': 'De vuelta a la escena completa.',
   'Ready to explore.': 'Listo para explorar.',

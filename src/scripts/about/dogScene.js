@@ -79,13 +79,21 @@ export function createAboutScene(section, callbacks = {}) {
   const sun = new THREE.DirectionalLight(0xffffff, 1.2);
   sun.position.set(10, 15, 10);
   sun.castShadow = true;
+  // A fixed envelope covers the actors' roaming and floating props without
+  // chasing each animation frame (which would make shadow texels shimmer).
+  const shadowExtent = editorial ? SCENE.shadow.extent : SCENE.shadow.wideExtent;
   Object.assign(sun.shadow.camera, {
-    left: -10,
-    right: 10,
-    top: 10,
-    bottom: -10,
+    left: -shadowExtent,
+    right: shadowExtent,
+    top: shadowExtent,
+    bottom: -shadowExtent,
+    near: SCENE.shadow.near,
+    far: SCENE.shadow.far,
   });
-  sun.shadow.mapSize.set(1024, 1024);
+  sun.shadow.camera.updateProjectionMatrix();
+  sun.shadow.mapSize.set(SCENE.shadow.mapSize, SCENE.shadow.mapSize);
+  sun.shadow.normalBias = 0.015;
+  sun.shadow.bias = -0.00005;
   scene.add(sun);
   const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(50, 50),
