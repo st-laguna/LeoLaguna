@@ -3,7 +3,9 @@
 /* Coordinates follow carta.svg's 640.25 × 824.07 viewBox. */
 html body .contact-modal{--contact-backdrop:0;--contact-blur:0px;position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:#1c1c1c;overflow:auto;overscroll-behavior:contain;color-scheme:light;font-family:Contact Host,'Host Grotesk',sans-serif}
 .contact-modal:not([open]){display:none}
-.contact-modal::backdrop{background:rgb(0 0 0 / var(--contact-backdrop));backdrop-filter:blur(var(--contact-blur));-webkit-backdrop-filter:blur(var(--contact-blur))}
+.contact-modal::backdrop{background:rgb(0 0 0 / .22);opacity:0;backdrop-filter:blur(var(--contact-blur));-webkit-backdrop-filter:blur(var(--contact-blur));transition:opacity .45s ease}
+.contact-modal[data-contact-backdrop]::backdrop{opacity:1}
+@media(prefers-reduced-motion:reduce){.contact-modal::backdrop{transition:none}}
 .contact-modal__stage{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;box-sizing:border-box;perspective:1400px;gap:8px}
 html body .contact-card{position:relative;flex:none;width:min(640.25px,max(480px,calc((100svh - 96px) * .77694)),calc(100vw - 32px));aspect-ratio:640.25 / 824.07;margin:0;padding:0;border:0;background:transparent;container-type:inline-size;transform-origin:50% 65%;box-sizing:border-box;font-weight:500}
 .contact-card__geometry{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
@@ -143,10 +145,10 @@ html body .contact-modal[data-contact-moving]{overflow:clip}
 .contact-material,.contact-material *{position:absolute;inset:0;pointer-events:none!important}
 .contact-material{z-index:1;mix-blend-mode:hard-light}
 html body .contact-card__front>:is(input,textarea,button,h2,p,label,output,span){z-index:2}
-.contact-material__grain{mask:url('/icons/grain.svg') center/100% 100% no-repeat;-webkit-mask:url('/icons/grain.svg') center/100% 100% no-repeat;mask-mode:alpha;background:url('/img/cards/grain.webp') center/240px 240px repeat;mix-blend-mode:multiply;opacity:var(--fx-grain-opacity)}
+.contact-material__grain{mask:url('/img/cards/grain-shape.webp') center/100% 100% no-repeat;-webkit-mask:url('/img/cards/grain-shape.webp') center/100% 100% no-repeat;mask-mode:alpha;background:url('/img/cards/grain.webp') center/240px 240px repeat;mix-blend-mode:multiply;opacity:var(--fx-grain-opacity)}
 /* Both spectra and diagnostic interference remain within the galaxy SVG. */
-.contact-material__foil{mask:url('/icons/galaxy.svg') center/100% 100% no-repeat;-webkit-mask:url('/icons/galaxy.svg') center/100% 100% no-repeat;mask-mode:alpha;opacity:var(--fx-active)}
-.contact-material__galaxy,.contact-material__secondary{mask-image:url('/img/cards/galaxy.png');mask-mode:luminance;mask-size:125% 125%;mask-position:var(--foil-texture-x) var(--foil-texture-y);mask-repeat:no-repeat;background-size:220% 220%;background-repeat:no-repeat;filter:saturate(var(--fx-spectrum-saturation)) contrast(var(--fx-spectrum-contrast))}
+.contact-material__foil{mask:url('/img/cards/galaxy-shape.webp') center/100% 100% no-repeat;-webkit-mask:url('/img/cards/galaxy-shape.webp') center/100% 100% no-repeat;mask-mode:alpha;opacity:var(--fx-active)}
+.contact-material__galaxy,.contact-material__secondary{mask-image:url('/img/cards/galaxy-alpha.webp');mask-mode:alpha;mask-size:125% 125%;mask-position:var(--foil-texture-x) var(--foil-texture-y);mask-repeat:no-repeat;background-size:220% 220%;background-repeat:no-repeat;filter:saturate(var(--fx-spectrum-saturation)) contrast(var(--fx-spectrum-contrast))}
 .contact-material__galaxy{background-image:repeating-linear-gradient(var(--holo-angle),#ff2448 0%,#ff8c19 7%,#ffe62b 14%,#35ed58 21%,#16e9ed 28%,#397bff 35%,#a13dff 42%,#f42daf 49%,#ff2448 56%);background-position:var(--foil-bg-x) var(--foil-bg-y);opacity:var(--fx-galaxy-opacity)}
 .contact-material__secondary{background-image:repeating-linear-gradient(var(--holo-secondary-angle),#ff3159 0%,#ffd52b 12%,#29eb91 24%,#27bfff 36%,#a443ff 48%,#ff3159 60%);background-position:var(--foil-reverse-x) var(--foil-reverse-y);mix-blend-mode:exclusion;opacity:var(--fx-secondary-opacity)}
 .contact-material__illusion{background:url('/img/cards/illusion-mask.png') calc(50% + var(--fx-pointer-x) * var(--fx-illusion-parallax) * 1%) calc(50% - var(--fx-pointer-y) * var(--fx-illusion-parallax) * 1%)/calc(var(--fx-illusion-base-size) / var(--fx-illusion-density)) calc(var(--fx-illusion-base-size) / var(--fx-illusion-density)) repeat;mix-blend-mode:soft-light;opacity:var(--fx-illusion-opacity)}
@@ -186,3 +188,7 @@ html body .contact-card .contact-card__close{color:#ff6e4a}
  .contact-card__front :is(input,textarea) {touch-action:pan-y;}
  .contact-card__front button {touch-action:manipulation;}
 }
+
+/* Cache the two faces during entrance/exit; keep the preserve-3d parent unclipped. */
+.contact-modal[data-contact-moving] .contact-card,
+.contact-modal[data-contact-moving] :is(.contact-card__front,.contact-card__back) {will-change:transform;}

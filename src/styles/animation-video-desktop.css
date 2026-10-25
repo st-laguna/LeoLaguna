@@ -67,7 +67,7 @@ html[data-services-desktop] #projects-expanded .gallery-project-link {background
 .av-volume[hidden] {display:none;}
 .av-video-zoom {position:fixed;inset:0;margin:auto;width:min(92vw,1500px);height:min(82dvh,900px);max-width:none;max-height:none;padding:0;border:1px solid #8886;background:#111;overflow:visible;}
 .av-video-zoom::backdrop {background:#000b;}
-.av-video-zoom>div {width:100%;height:100%;}
+.av-video-zoom>.av-video-zoom__media {width:100%;height:100%;}
 .av-video-zoom video {width:100%;height:100%;object-fit:contain;}
 .av-video-zoom>button {position:absolute;right:0;top:-44px;width:44px;height:44px;border:0;border-radius:0;background:#1c1c1c;color:white;font-size:28px;cursor:pointer;}
 .av-video-zoom>button:focus-visible {outline:2px solid #fa777b;}
@@ -101,3 +101,8 @@ html[data-services-desktop] #projects-expanded [data-service-number] {animation:
 #projects-expanded [data-service-number]::after,
 #projects-expanded [data-service-number-morph]::before,
 #projects-expanded [data-service-number-morph]::after {display:inline-block;clip-path:inset(0 0 var(--number-bracket-reveal,0%) 0);transform:translateY(var(--number-bracket-offset,0em));}
+
+/* The video's own poster covers loading; never stack a second thumbnail below it. */
+.av-desktop-media:has(video)>img {visibility:hidden;}
+.av-desktop-media {overflow:hidden;}
+.av-video-zoom__media video {display:block;}

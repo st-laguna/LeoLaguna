@@ -78,6 +78,7 @@
   "model.close": "Close",
   "model.viewer": "Interactive 3D model",
   "model.preview": "Automatically rotating 3D model. Select Explore 3D model to interact.",
+  "model.reset": "Reset view",
   "model.drag": "Drag to rotate",
   "model.loading": "Loading 3D model…",
   "model.unavailable": "3D rendering is unavailable.",

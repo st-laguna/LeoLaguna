@@ -1,5 +1,5 @@
 ---
-const { project = true, preferences = true, projectHref = 'mailto:hello@leolaguna.com', projectLabel = 'Start a Project', projectI18n = true } = Astro.props;
+const { project = true, preferences = true, projectHref = 'mailto:hello@leolaguna.com', projectLabel = 'Start a Project', projectI18n = true, backHref } = Astro.props;
 ---
 <div class="site-controls" data-reveal>
   {preferences && <Fragment>
@@ -67,6 +67,7 @@ const { project = true, preferences = true, projectHref = 'mailto:hello@leolagun
     </svg>
   </button>
   </Fragment>}
+  {backHref && <a class="action-pill" data-case-back href={backHref}><span data-roll-label data-en="Go back" data-es="Volver">Go back</span><span class="action-arrow" data-direction="left" aria-hidden="true"><span data-arrow="←">←</span></span></a>}
   {project && <a class="action-pill" href={projectHref}><span data-roll-label data-i18n={projectI18n ? "button.startProject" : undefined}>{projectLabel}</span><span class="action-arrow" data-direction="diagonal" aria-hidden="true"><span data-arrow="↗">↗</span></span></a>}
 </div>
 <style>

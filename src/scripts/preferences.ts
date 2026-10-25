@@ -15,8 +15,7 @@ import { isMobileAbout } from './about/mobileAboutDevice.js';
 
   const root = document.documentElement;
 
-  const themeButton =
-    document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const themeButtons = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
 
   const languageButtons =
     document.querySelectorAll<HTMLButtonElement>('[data-language]');
@@ -46,10 +45,7 @@ import { isMobileAbout } from './about/mobileAboutDevice.js';
     if(!isAboutPage)root.dataset.globalTheme = theme;
     root.dataset.theme = theme;
 
-    themeButton?.setAttribute(
-      'aria-checked',
-      String(theme === 'dark')
-    );
+    themeButtons.forEach(button => button.setAttribute('aria-checked', String(theme === 'dark')));
     window.dispatchEvent(new CustomEvent('leo:theme-change', {detail:theme}));
   }
 
@@ -184,10 +180,10 @@ import { isMobileAbout } from './about/mobileAboutDevice.js';
   }
 
   // Keep one wipe in flight; all theme side effects still live in applyTheme.
-  themeButton?.addEventListener('click', () => {
+  themeButtons.forEach(button => button.addEventListener('click', () => {
     if (themeTransitioning) return;
     void transitionTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
-  });
+  }));
   // Cambia entre inglés y español.
   languageButtons.forEach((button) => {
     button.addEventListener('click', () => {

@@ -80,7 +80,7 @@ html body .about[data-editorial] .about-editorial__clock .clock__city,html body 
 html body .about[data-editorial] .about__hint {display:none!important;}
 
 .about-editorial__context {mix-blend-mode:difference;color:#fff;}
-.about-editorial__context>.about-editorial__number,.about-editorial__context-title,.about-editorial__context-content>p {mix-blend-mode:normal;}
+.about-editorial__context>.about-editorial__number,.about-editorial__context-title,.about-editorial__context-content>p {color:#fff;mix-blend-mode:difference;}
 
 .about[data-editorial] .about-editorial {font-weight:400;}
 .about-editorial__navigation>.about-editorial__links {font-weight:500;}
@@ -222,3 +222,9 @@ html:not([data-about-mobile]):not([data-ipad]) .about[data-editorial] .about-edi
 
 html:not([data-about-mobile]):not([data-ipad]):not([data-large-tablet-landscape]) body .about[data-editorial] .about-editorial .about-editorial__top .about-editorial__cta-cell {padding:0 8px;}
 html:not([data-about-mobile]):not([data-ipad]):not([data-large-tablet-landscape]) body .about[data-editorial] .about-editorial .about-editorial__top .action-pill {height:var(--ui-control-height);min-height:0;box-sizing:border-box;display:flex;align-items:center;justify-content:center;}
+
+/* Keep neutral interface ink white before Difference compositing. */
+.about[data-editorial] .about-editorial__links a {color:inherit;}
+.about[data-editorial] .about-editorial__bio {color:#fff;mix-blend-mode:difference;}
+html body .about .action-pill :is([data-roll-label],.action-arrow) {color:#000;mix-blend-mode:normal;}
+html[data-theme="dark"] body .about .action-pill :is([data-roll-label],.action-arrow) {color:#fff;}

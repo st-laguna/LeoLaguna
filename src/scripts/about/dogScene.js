@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
+import { mountShadowControls } from './shadowControls.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
@@ -33,10 +34,12 @@ export function createAboutScene(section, callbacks = {}) {
     && !document.documentElement.hasAttribute('data-large-tablet-landscape')
     && !document.documentElement.hasAttribute('data-tablet-portrait');
   const scene = new THREE.Scene();
+  let backgroundFormsMaterial;
   const mobilePortrait = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)');
   const isMobilePortrait = mobilePortrait.matches&&!mobile3D;
-  scene.background = new THREE.Color(document.documentElement.dataset.theme === 'dark' ? (editorial?'#1C1C1C':'#181818') : (editorial?getComputedStyle(section).getPropertyValue('--light-base').trim():SCENE.background));
-  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 150);
+  const backgroundColor = () => new THREE.Color(document.documentElement.dataset.theme === 'dark' ? (editorial?'#1C1C1C':'#181818') : (editorial?getComputedStyle(section).getPropertyValue('--light-base').trim():SCENE.background));
+  scene.background = backgroundColor();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 600);
   camera.position.fromArray(editorial?[0,2.3,4.5]:SCENE.camera);
   const renderer = new THREE.WebGLRenderer({
     antialias: false,
@@ -75,7 +78,8 @@ export function createAboutScene(section, callbacks = {}) {
   configureInput();
   coarse.addEventListener('change', configureInput, { signal: abort.signal });
 
-  scene.add(new THREE.HemisphereLight(0xffffff, 0xa0a0a0, 0.8));
+  // Neutral sky fill preserves pale highlights; cool ground fill tints darker undersides.
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x527fbd, 0.8));
   const sun = new THREE.DirectionalLight(0xffffff, 1.2);
   sun.position.set(10, 15, 10);
   sun.castShadow = true;
@@ -95,9 +99,23 @@ export function createAboutScene(section, callbacks = {}) {
   sun.shadow.normalBias = 0.015;
   sun.shadow.bias = -0.00005;
   scene.add(sun);
+  // A separate broad shadow map covers the authored distant forms without
+  // reducing the resolution of the original actor shadow map. ShadowMaterial
+  // uses this light's shadow mask independently of its lighting intensity.
+  const backgroundShadow = new THREE.DirectionalLight(0xffffff, 0);
+  backgroundShadow.position.set(500, 750, 500);
+  backgroundShadow.castShadow = true;
+  Object.assign(backgroundShadow.shadow.camera, {
+    left: -500, right: 500, top: 500, bottom: -500, near: 1, far: 1800,
+  });
+  backgroundShadow.shadow.camera.updateProjectionMatrix();
+  backgroundShadow.shadow.mapSize.set(2048, 2048);
+  backgroundShadow.shadow.normalBias = .08;
+  backgroundShadow.shadow.bias = -.00005;
+  scene.add(backgroundShadow);
   const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(50, 50),
-    new THREE.ShadowMaterial({ opacity: 0.2 }),
+    new THREE.PlaneGeometry(1200, 1200),
+    new THREE.ShadowMaterial({ color: document.documentElement.dataset.theme === 'dark' ? 0x111111 : 0x527fbd, opacity: document.documentElement.dataset.theme === 'dark' ? 1 : 0.3 }),
   );
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
@@ -162,6 +180,7 @@ export function createAboutScene(section, callbacks = {}) {
   let width = 1,
     height = 1,
     rect = null;
+  let readyFrame = 0;
   let renderScale = SCENE.renderScale;
   let maxScale = SCENE.renderScale;
   let disposed = false,
@@ -187,7 +206,7 @@ export function createAboutScene(section, callbacks = {}) {
     fastWindows = 0;
   let loaded = 0,
     failed = 0;
-  const total = isMobilePortrait ? 3 : 3 + PROPS.length + 4;
+  const total = (isMobilePortrait ? 3 : 3 + PROPS.length + 4) + 1;
   const on = (target, event, listener, options = {}) =>
     target.addEventListener(event, listener, {
       ...options,
@@ -655,7 +674,17 @@ export function createAboutScene(section, callbacks = {}) {
   controls.addEventListener('change', controlChange);
   // Read the final palette token, never an in-flight CSS background transition.
   on(window, 'leo:theme-change', () => {
-    const target=new THREE.Color(document.documentElement.dataset.theme === 'dark' ? (editorial?'#1C1C1C':'#181818') : (editorial?getComputedStyle(section).getPropertyValue('--light-base').trim():SCENE.background));if(editorial)animateValue(scene.background,{r:target.r,g:target.g,b:target.b,duration:.65,ease:'power2.inOut'});else scene.background.copy(target);
+    const dark=document.documentElement.dataset.theme==='dark';
+    const timing={duration:editorial?.65:0,ease:'power2.inOut'};
+    const tint=(color,target)=>animateValue(color,{r:target.r,g:target.g,b:target.b,...timing});
+    tint(floor.material.color,new THREE.Color(dark?0x111111:0x527fbd));
+    animateValue(floor.material,{opacity:dark?1:.3,...timing});
+    if(backgroundFormsMaterial){
+      const palette=new THREE.Color(dark?0x1c1c1c:0xededed);
+      tint(backgroundFormsMaterial.color,palette);
+      tint(backgroundFormsMaterial.emissive,palette);
+    }
+    if(!scene.background?.isTexture)tint(scene.background,backgroundColor());
     requestRender();
   });
 
@@ -706,6 +735,29 @@ export function createAboutScene(section, callbacks = {}) {
   async function load() {
     const base = import.meta.env?.BASE_URL || '/';
     const modelURL = (id) => base + 'about/models/' + id + '.glb';
+    await asset(base + 'models/formas.glb', async (gltf) => {
+      const background = gltf.scene;
+      background.name = 'ABOUT_BACKGROUND_FORMS';
+      const white = new THREE.MeshStandardMaterial({
+        color: 0xededed, emissive: 0xededed, emissiveIntensity: 0.57,
+        roughness: 1, metalness: 0,
+      });
+      backgroundFormsMaterial=white;
+      if(document.documentElement.dataset.theme==='dark'){white.color.set(0x1c1c1c);white.emissive.set(0x1c1c1c);}
+      // Positions are baked into the GLB vertices relative to the world origin.
+      // Preserve the authored spacing, heights, scale and orientation as one scene.
+      background.traverse(node => {
+        if (!node.isMesh) return;
+        node.material = white;
+        node.castShadow = true;
+        node.receiveShadow = false;
+      });
+      resources.track(background);
+      await renderer.compileAsync(background, camera, scene);
+      if (!disposed) scene.add(background);
+    });
+    if (disposed) return;
+
     await runPool(
       [
         ['simba', simba, 'Simba', 'My quieter companion.'],
@@ -796,6 +848,8 @@ export function createAboutScene(section, callbacks = {}) {
     composer.render();
     callbacks.onReady?.({ loaded, failed, interactive: entries.size });
     requestRender();
+    // Settle the first skinned-mesh draw before reduced-motion rendering idles.
+    readyFrame = requestAnimationFrame(() => { readyFrame = 0; requestRender(); });
   }
 
   function setPaused(value) {
@@ -850,13 +904,16 @@ export function createAboutScene(section, callbacks = {}) {
     abort.abort();
     resizeObserver.disconnect();
     cancelAnimationFrame(raf);
+    cancelAnimationFrame(readyFrame);
     for (const animation of [...tweens]) animation.kill();
     tweens.clear();
     controls.removeEventListener('change', controlChange);
     controls.dispose();
     for (const actor of actors) actor.dispose();
     props.dispose();
+    disposeShadowControls();
     sun.shadow.dispose();
+    backgroundShadow.shadow.dispose();
     resources.dispose();
     renderPass.dispose();
     lookPass.dispose();
@@ -869,6 +926,7 @@ export function createAboutScene(section, callbacks = {}) {
     entries.clear();
     scene.clear();
   }
+  const disposeShadowControls=mountShadowControls({section,sun,backgroundShadow,on,requestRender});
   requestRender();
   return {
     load,

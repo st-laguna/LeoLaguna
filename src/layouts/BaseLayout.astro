@@ -122,7 +122,7 @@ const {
     <div data-home-curtain aria-hidden="true"></div>
     <header class="site-header" data-site-header style={headerBlueprint}>
       <a class="site-header__footer-logo" href={page ? "/#home" : "#home"} aria-label="Leo Laguna — Home"></a>
-  <NavigationMenu context="site" id="mobile-navigation" preferences links={[
+  <NavigationMenu backHref={page === 'case-study' ? '/#featured-works' : undefined} context="site" id="mobile-navigation" preferences links={[
     {label:'Services',href:page ? '/#work' : '#work',i18n:'nav.services'},
     {label:'About',href:'/about/',i18n:'nav.about'},
     {label:'Works',href:Astro.url.pathname === '/' ? '#featured-works' : '/#featured-works',i18n:'nav.works'},

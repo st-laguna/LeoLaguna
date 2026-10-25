@@ -33,7 +33,8 @@ function paint(){
  const object=aboutCanvas?.getAttribute('data-about-cursor')==='object';
  ring.classList.toggle('is-visible',!!aboutCanvas);ring.classList.toggle('is-object',object);
  cursor.classList.toggle('is-about-scene',!!aboutCanvas);cursor.classList.toggle('is-text',aboutText);
- const text=brand||aboutCanvas||aboutText?'':drag?'DRAG':zoom?'ZOOM':visualClick?'CLICK':'';
+ const card=el.closest('.workflow__card');
+ const text=brand||aboutCanvas||aboutText?'':card?'CLICK':drag?'DRAG':zoom?'VIEW':visualClick?'CLICK':'';
  if(label.textContent!==text)label.textContent=text;
  cursor.classList.toggle('is-expanded',!!text);
  cursor.classList.toggle('is-control',!!click&&!text&&!brand&&!aboutCanvas&&!aboutText);

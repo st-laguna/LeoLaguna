@@ -1,0 +1,22 @@
+<div class="about-shadow-controls" data-shadow-controls>
+ <svg viewBox="0 0 300 300" data-sun-dial tabindex="0" role="group" aria-disabled="true" aria-label="Sun direction and height. Drag, or use arrow keys. / Dirección y altura de la luz. Arrastra o usa las flechas.">
+  <circle cx="150" cy="150" r="130" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-width="1.5" />
+  <path d="M45 150 A105 105 0 0 1 255 150" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="2" stroke-linecap="round" stroke-dasharray="0.1 6" />
+  <ellipse cx="150" cy="150" rx="105" ry="30" fill="currentColor" fill-opacity=".08" />
+  <line data-sun-ray x1="150" y1="150" x2="150" y2="65" stroke="currentColor" stroke-opacity=".55" />
+  <circle cx="150" cy="150" r="3" fill="currentColor" />
+  <circle data-sun-handle cx="150" cy="65" r="10" fill="currentColor" stroke="var(--background,#ededed)" stroke-width="3" />
+ </svg>
+ <output data-sun-values></output>
+</div>
+<style>
+ .about-shadow-controls {position:absolute;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:20;width:174px;color:var(--foreground,#1c1c1c);font:500 9px/1.4 'Host Grotesk',sans-serif;text-align:center;pointer-events:auto;background:transparent;border:0;box-shadow:none;-webkit-tap-highlight-color:transparent;}
+ .about-shadow-controls svg {display:block;width:100%;touch-action:none;user-select:none;cursor:crosshair;}
+ .about-shadow-controls [data-sun-handle] {cursor:grab;}
+ .about-shadow-controls svg:active [data-sun-handle] {cursor:grabbing;}
+ .about-shadow-controls output {position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;font-variant-numeric:tabular-nums;pointer-events:none;}
+ .about-shadow-controls svg:focus {outline:none;background:transparent;}
+ .about-shadow-controls svg:focus-visible [data-sun-handle] {stroke:#ef6b63;stroke-width:5px;}
+ :global(.about[data-editorial]) .about-shadow-controls {left:auto;right:24px;bottom:24px;color:inherit;}
+ @media(max-height:500px){.about-shadow-controls{width:132px;font-size:8px;}}
+</style>

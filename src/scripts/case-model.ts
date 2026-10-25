@@ -12,6 +12,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const status=viewport.querySelector<HTMLElement>('[data-model-status]')!;
   const translated=(key:string)=>(document.documentElement.lang==='es'?es:en)[key as keyof typeof en]||key;
   function setStatus(key:string){status.dataset.i18n=key;status.textContent=translated(key);}
+  const reset=viewport.querySelector<HTMLButtonElement>('[data-model-reset]')!;
   const zoom=viewport.querySelector<HTMLInputElement>('[data-model-zoom]')!;
   const zoomSteps=Array.from(viewport.querySelectorAll<HTMLButtonElement>('[data-zoom-step]'));
   const zoomState={amount:0};let zoomMotion:gsap.core.Tween|undefined;
@@ -51,13 +52,15 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   controls.touches.TWO=THREE.TOUCH.DOLLY_PAN;
   // Rotate the object about its own pivot, using fixed camera-space axes.
   controls.enableRotate=false;
-  const modelRotation=new THREE.Quaternion(),dragRotation=new THREE.Quaternion();
+  const modelRotation=new THREE.Quaternion(),yawRotation=new THREE.Quaternion(),pitchRotation=new THREE.Quaternion();
+  let yaw=0,pitch=0;
   const screenRight=new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion);
-  const screenUp=new THREE.Vector3(0,1,0).applyQuaternion(camera.quaternion);
   let drag:{id:number;x:number;y:number}|undefined;
   function rotateModel(dx:number,dy:number){
-    dragRotation.setFromAxisAngle(screenUp,dx).multiply(new THREE.Quaternion().setFromAxisAngle(screenRight,dy));
-    modelRotation.premultiply(dragRotation).normalize();request();
+    // Turntable angles never accumulate roll, even after diagonal drags.
+    yaw+=dx;pitch=THREE.MathUtils.clamp(pitch+dy,-Math.PI*.48,Math.PI*.48);
+    yawRotation.setFromAxisAngle(verticalAxis,yaw);pitchRotation.setFromAxisAngle(screenRight,pitch);
+    modelRotation.copy(pitchRotation).multiply(yawRotation).normalize();request();
   }
   canvas.addEventListener('pointerdown',event=>{
     if(preview||!loaded||event.button!==0)return;
@@ -199,7 +202,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
         const inverseParent=new THREE.Matrix3().setFromMatrix4(object.parent!.matrixWorld.clone().invert());
         parts.push({object,position:object.position.clone(),quaternion:object.quaternion.clone(),scale:object.scale.clone(),offset:new THREE.Vector3(x,y,z).multiplyScalar(distance).applyMatrix3(inverseParent),progress:0,delay,phase:index*2.399,period:22+index*.65});
       });
-      loaded=true;resetExperience();explore.disabled=false;button.disabled=false;zoom.disabled=false;zoomSteps.forEach(step=>step.disabled=false);delete status.dataset.i18n;status.textContent='';viewport.dataset.modelReady='';request();
+      loaded=true;resetExperience();reset.disabled=false;explore.disabled=false;button.disabled=false;zoom.disabled=false;zoomSteps.forEach(step=>step.disabled=false);delete status.dataset.i18n;status.textContent='';viewport.dataset.modelReady='';request();
     }catch(error){setStatus('model.error');console.error(error);}
   }
   const proximity=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){void load();proximity.disconnect();}},{rootMargin:'300px'});proximity.observe(viewport);
@@ -222,7 +225,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     parts.forEach(part=>{part.progress=0;part.object.position.copy(part.position);part.object.quaternion.copy(part.quaternion);part.object.scale.copy(part.scale);});
   }
   function resetExperience(){
-    drag=undefined;previewAngle=0;modelRotation.identity();root.quaternion.identity();
+    drag=undefined;yaw=pitch=0;previewAngle=0;modelRotation.identity();root.quaternion.identity();
     base.quaternion.copy(canonicalOrientation);last=0;
     zoomMotion?.kill();zoomState.amount=0;zoom.value='0';applyZoom();
     exploded=false;expandedWasInView=false;restoreAssembly();
@@ -243,6 +246,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     request();
   }
   button.addEventListener('click',()=>setExploded(!exploded),{signal});
+  reset.addEventListener('click',()=>{if(loaded)resetExperience();},{signal});
   canvas.addEventListener('keydown',event=>{if(preview)return;if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return;event.preventDefault();rotateModel(event.key==='ArrowLeft'?-.12:event.key==='ArrowRight'?.12:0,event.key==='ArrowUp'?-.12:event.key==='ArrowDown'?.12:0);},{signal});
   reduced.addEventListener('change',()=>{zoomMotion?.kill();zoomState.amount=Number(zoom.value)/100;applyZoom();motion?.kill();floating.amount=0;parts.forEach(part=>part.progress=exploded?1:0);request();},{signal});
   updateInteraction();

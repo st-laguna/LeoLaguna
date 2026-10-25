@@ -40,7 +40,23 @@ if(host){
   a.addEventListener('pointerenter',select,{signal});
   a.addEventListener('focus',select,{signal});
  });
- const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;},{threshold:.2});observer.observe(host.closest('.hero')!);
+ const hero=host.closest<HTMLElement>('.hero')!;
+ const masters=JSON.parse(hero.dataset.heroMasters||'{}');
+ const horizontal=masters.h;
+ const inPolygon=(x:number,y:number,points:number[][])=>{let inside=false;for(let i=0,j=points.length-1;i<points.length;j=i++){const a=points[i],b=points[j];if((a[1]>y)!==(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])inside=!inside;}return inside;};
+ const syncHeader=()=>{
+  const rect=hero.getBoundingClientRect(),root=document.documentElement;
+  const active=desktop.matches&&!root.hasAttribute('data-ipad')&&rect.top<=48&&rect.bottom>innerHeight*.75&&rect.width>innerWidth*.9;
+  root.toggleAttribute('data-hero-nav-white',active);
+  if(!active||!horizontal)return;
+  const css=getComputedStyle(hero),size=css.getPropertyValue('--hero-mask-size').trim().split(/\s+/).map(parseFloat),position=css.getPropertyValue('--hero-mask-position').trim().split(/\s+/).map(parseFloat),view=horizontal.viewBox.split(/\s+/).map(Number);
+  for(const link of document.querySelectorAll<HTMLElement>('.site-header [data-shared-nav-link]')){
+   const box=link.getBoundingClientRect(),x=(box.x+box.width/2-rect.x-position[0])*view[2]/size[0],y=(box.y+box.height/2-rect.y-position[1])*view[3]/size[1];
+   link.toggleAttribute('data-hero-image-link',horizontal.polygons.some((polygon:number[][])=>inPolygon(x,y,polygon)));
+  }
+ };
+ window.addEventListener('scroll',syncHeader,{passive:true,signal});window.addEventListener('resize',syncHeader,{passive:true,signal});syncHeader();
+ const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;syncHeader();},{threshold:.2});observer.observe(host.closest('.hero')!);
  const timer=setInterval(()=>{
   if((!adaptive&&(!desktop.matches||document.documentElement.hasAttribute('data-ipad')))||reduced.matches||document.hidden||!visible)return;
   serviceElapsed+=250;storyElapsed+=250;

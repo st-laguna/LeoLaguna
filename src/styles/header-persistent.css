@@ -126,3 +126,20 @@ html[data-theme="dark"]{--featured-nav-blend:var(--dark-featured-blend)}
 /* The head's intro flag hides both parts before the inline Hero timeline exists. */
 html[data-hero-intro] .site-header [data-shared-nav-link] > :is(.nav-state,[data-nav-entry-label]) {opacity:0;}
 .site-header [data-nav-entry-label] {display:inline-block;}
+@media(min-width:1001px) and (hover:hover) and (pointer:fine) {
+ html[data-hero-nav-white]:not([data-ipad]):not([data-adaptive-hero]) body .site-header .mobile-menu-panel .site-nav {mix-blend-mode:normal;color:var(--foreground);text-shadow:none;}
+ html[data-hero-nav-white]:not([data-ipad]):not([data-adaptive-hero]) body .site-header .mobile-menu-panel .site-nav__items>a[data-hero-image-link] {color:#fff;text-shadow:0 1px 3px #0008;}
+}
+
+[data-case-back] {display:none!important;}
+@media(min-width:1001px) and (hover:hover) and (pointer:fine) {
+ html body .site-header [data-case-back] {display:inline-flex!important;}
+}
+
+@media(min-width:1001px) and (hover:hover) and (pointer:fine) {
+ html[data-page="case-study"]:not([data-ipad]):not([data-adaptive-hero]) body .site-header .mobile-menu-panel .site-controls:has([data-case-back]) {
+  grid-template-columns:max(46px,var(--header-bot1-w)) var(--header-control-gap-1) max(48px,var(--header-bo2-w)) var(--header-control-gap-2) max-content 12px max-content;
+ }
+ html[data-page="case-study"]:not([data-ipad]):not([data-adaptive-hero]) body .site-header .site-controls>.action-pill {grid-row:1;}
+ html[data-page="case-study"]:not([data-ipad]):not([data-adaptive-hero]) body .site-header .site-controls>.action-pill:not([data-case-back]) {grid-column:7;}
+}

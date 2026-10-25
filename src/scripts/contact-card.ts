@@ -19,6 +19,18 @@ if(modal && typeof modal.showModal==='function') {
   const verification=modal.querySelector<HTMLElement>('[data-contact-verification]')!;
   const reduced=matchMedia('(prefers-reduced-motion:reduce)');
   const fine=matchMedia('(hover:hover) and (pointer:fine)');
+  // Decode material resources before the first animated dialog paint.
+  let warmed=false;
+  function warmContact(){
+    if(warmed)return;warmed=true;
+    for(const src of ['/img/cards/galaxy-alpha.webp','/img/cards/grain.webp','/img/cards/illusion-mask.png','/img/cards/ancient.png','/img/cards/galaxy-shape.webp','/img/cards/grain-shape.webp','/icons/backmask.svg']){
+      const image=new Image();image.src=src;void image.decode().catch(()=>{});
+    }
+    void document.fonts.load('500 16px "Contact Host"').catch(()=>{});
+  }
+  const warmTimer=setTimeout(warmContact,1800);
+  for(const name of ['pointerover','focusin'])document.addEventListener(name,event=>{if((event.target as Element)?.closest('a[href^="mailto:"]'))warmContact();},{passive:true,signal});
+
   let settled=false;
   const material=card.querySelector<HTMLElement>('.contact-card__front')!;
   const backMaterial=card.querySelector<HTMLElement>('.contact-card__back')!;
@@ -108,7 +120,7 @@ if(modal && typeof modal.showModal==='function') {
     finally{mounting=false;}
   }
   function release(){
-    cancelAnimationFrame(openingFrame);openingFrame=0;modal!.removeAttribute('data-contact-moving');
+    cancelAnimationFrame(openingFrame);openingFrame=0;modal!.removeAttribute('data-contact-moving');modal!.removeAttribute('data-contact-backdrop');
     stopTilt();generation++;if(widget!==undefined){window.turnstile?.remove(widget);widget=undefined;}verification.replaceChildren();token='';update();
     document.documentElement.style.overflow=originalOverflow;document.documentElement.style.paddingRight=originalPadding;document.documentElement.style.scrollbarGutter=originalGutter;
     window.dispatchEvent(new Event('leo:contact-close'));
@@ -124,14 +136,17 @@ if(modal && typeof modal.showModal==='function') {
       .fromTo(backMaterial,{'--fx-pointer-x':-25,'--fx-pointer-y':15,'--foil-x':'25%','--foil-y':'65%'},{'--fx-pointer-x':30,'--fx-pointer-y':-20,'--foil-x':'80%','--foil-y':'30%',duration:.55,ease:'power3.inOut'},0)
       // Hold the fully turned back for one second before returning below the viewport.
       .to(card,{y:window.innerHeight*1.2,scale:.95,duration:.65,ease:'power3.in'},0.65)
-      .to(modal,{'--contact-backdrop':0,'--contact-blur':'0px',duration:.5},0.6);
+      .call(()=>modal!.removeAttribute('data-contact-backdrop'),[],0.6);
   }
   function open(link:HTMLElement){
     if(modal!.open||closing)return false;
     // Prepare before showModal: no centered card or stale backdrop can be painted.
     animation?.kill();stopTilt();
-    modal!.setAttribute('data-contact-moving','');
-    gsap.set(modal,{'--contact-backdrop':0,'--contact-blur':'0px'});
+    modal!.setAttribute('data-contact-moving','');modal!.removeAttribute('data-contact-backdrop');
+    warmContact();
+    // A constant blur can be cached; animating its radius repaints the viewport.
+    const blur=reduced.matches?'0px':fine.matches?'5px':'2px';
+    gsap.set(modal,{'--contact-backdrop':0,'--contact-blur':blur});
     gsap.set(card,{rotateY:0,autoAlpha:reduced.matches?1:0,y:reduced.matches?0:window.innerHeight*1.2,rotateZ:reduced.matches?0:-7,rotateX:reduced.matches?0:7,scale:reduced.matches?1:.95});
     try{modal!.showModal();}catch{modal!.removeAttribute('data-contact-moving');return false;}
     opener=link;window.dispatchEvent(new Event('leo:close-menu'));
@@ -144,13 +159,12 @@ if(modal && typeof modal.showModal==='function') {
     }
     document.documentElement.style.overflow='hidden';
     window.dispatchEvent(new Event('leo:contact-open'));translate();say(undefined);
-    const blur=fine.matches?'5px':'2px';
     animation=gsap.timeline({paused:true,onComplete:()=>{
       animation=null;settled=true;modal!.removeAttribute('data-contact-moving');
       if(!closing){card.querySelector<HTMLElement>('#contact-card-title')!.focus({preventScroll:true});void mountVerification();}
     }})
       .set(card,{autoAlpha:1},0)
-      .to(modal,{'--contact-backdrop':.22,'--contact-blur':blur,duration:reduced.matches?0:.45,ease:'power2.inOut'},0)
+      .call(()=>modal!.setAttribute('data-contact-backdrop',''),[],0)
       .to(card,{y:0,scale:1,duration:reduced.matches?0:.9,ease:'power3.inOut'},0)
       .to(card,{rotateZ:0,rotateX:0,duration:reduced.matches?0:.8,ease:'power3.inOut'},reduced.matches?0:.1);
     if(reduced.matches)animation.play(0);
@@ -208,5 +222,5 @@ if(modal && typeof modal.showModal==='function') {
     finally{clearTimeout(timeout);busy=false;token='';submit.textContent=copy().send;update();if(widget!==undefined)window.turnstile?.reset(widget);}
   },{signal});
   window.addEventListener('pagehide',()=>{if(modal.open)finishClose();},{signal});
-  if(import.meta.hot)import.meta.hot.dispose(()=>{request?.abort();if(modal.open)finishClose();animation?.kill();tiltX.tween.kill();tiltY.tween.kill();foilX.tween.kill();foilY.tween.kill();foilStrength.tween.kill();events.abort();});
+  if(import.meta.hot)import.meta.hot.dispose(()=>{clearTimeout(warmTimer);request?.abort();if(modal.open)finishClose();animation?.kill();tiltX.tween.kill();tiltY.tween.kill();foilX.tween.kill();foilY.tween.kill();foilStrength.tween.kill();events.abort();});
 }

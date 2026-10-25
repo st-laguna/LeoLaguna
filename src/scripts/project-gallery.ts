@@ -172,7 +172,6 @@ if(gallery&&lightbox&&section){
   async function openImage(button:HTMLElement){
     if(lightboxBusy||l.open)return;lightboxBusy=true;lightboxOpener=button;
     image.src=button.dataset.zoomSrc!;image.alt=button.dataset.zoomAlt||'';
-    figure.querySelector('figcaption')!.textContent=image.alt;
     gsap.set(figure,{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)',y:reduced.matches?0:35});
     galleryScroll?.stop();
     lock();l.showModal();window.scrollTo({top:scroll,behavior:'instant'});

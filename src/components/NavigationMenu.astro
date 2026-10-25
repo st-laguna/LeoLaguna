@@ -8,8 +8,9 @@ interface Props {
   links: Link[];
   preferences?: boolean;
   formal?: boolean;
+  backHref?: string;
 }
-const { context, id, links, preferences = false, formal = false } = Astro.props;
+const { context, id, links, preferences = false, formal = false, backHref } = Astro.props;
 ---
 <button class="mobile-menu-toggle" data-shared-menu-toggle data-menu-context={context} data-mobile-menu-toggle={context === 'about' ? '' : undefined} disabled={context === 'about'} type="button" aria-expanded="false" aria-controls={id} aria-label={context === 'about' ? 'Open menu' : 'Open menu / Abrir menú'}>
   <span></span><span></span><span></span>
@@ -25,7 +26,7 @@ const { context, id, links, preferences = false, formal = false } = Astro.props;
     <slot name="submenu" />
   </nav>
   <div class="shared-menu-footer">
-    <SiteControls preferences={preferences} projectHref={formal ? '/cv/' : undefined} projectLabel={formal ? 'THE FORMAL STUFF' : undefined} projectI18n={!formal} />
+    <SiteControls backHref={backHref} preferences={preferences} projectHref={formal ? '/cv/' : undefined} projectLabel={formal ? 'THE FORMAL STUFF' : undefined} projectI18n={!formal} />
     <slot name="footer-extra" />
   </div>
 </div>

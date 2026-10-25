@@ -78,6 +78,7 @@
   "model.close": "Cerrar",
   "model.viewer": "Modelo 3D interactivo",
   "model.preview": "Modelo 3D con rotación automática. Selecciona Explorar modelo 3D para interactuar.",
+  "model.reset": "Restablecer vista",
   "model.drag": "Arrastra para girar",
   "model.loading": "Cargando modelo 3D…",
   "model.unavailable": "La visualización 3D no está disponible.",

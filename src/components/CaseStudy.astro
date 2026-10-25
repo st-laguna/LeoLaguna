@@ -40,7 +40,10 @@ const previewSize=await dimensions(preview);
             <input data-model-zoom disabled type="range" min="0" max="100" step="1" value="0" aria-label="Model zoom" data-i18n-aria-label="model.zoom" aria-orientation="horizontal" />
             <button data-zoom-step="1" disabled type="button" aria-label="Increase zoom" data-i18n-aria-label="model.zoomIn">+</button>
           </div>
+          <div class="case-study__model-actions">
+          <button class="case-study__model-reset" data-model-reset disabled type="button" aria-label="Reset view" data-i18n-aria-label="model.reset"><span aria-hidden="true"></span></button>
           <button class="case-study__explode" data-explode disabled type="button" aria-label="Explode model" data-i18n-aria-label="model.explode" aria-pressed="false"><span aria-hidden="true"></span></button>
+          </div>
         </div>
       </section>}
       <div class="case-study__images">

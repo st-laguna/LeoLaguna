@@ -24,7 +24,6 @@ function mount(section) {
   let statusMessage = 'Loading…';
   function setStatus(text) { statusMessage = text; status.textContent = message(text); editorial?.status(text); }
   const returnButton = query('[data-return]');
-  const pauseButton = query('[data-pause]');
   const tooltip = query('[data-tooltip]');
   const tooltipCard = query('[data-tooltip-card]');
   const picker = query('[data-picker]');
@@ -190,7 +189,7 @@ function mount(section) {
       setStatus('Back to the full scene.');
       if (returnHadFocus) {
         // The previous picker button is inside a closed details: focus its summary instead.
-        (launchElement ? picker.querySelector('summary') : pauseButton).focus({
+        (launchElement ? picker.querySelector('summary') : query('[data-sun-dial]')).focus({
           preventScroll: true,
         });
         launchElement = null;
@@ -204,21 +203,9 @@ function mount(section) {
   }
 
   function updatePause() {
-    pauseButton.textContent =
-      message(paused || reduced ? 'Play motion' : 'Pause motion');
-    pauseButton.setAttribute('aria-pressed', String(paused || reduced));
-    editorial?.pause(paused || reduced);
-    // Explicit Play overrides the preference for this visit; changing OS settings resets it.
     scene?.setReducedMotion(reduced);
     scene?.setPaused(paused);
   }
-  on(pauseButton, 'click', () => {
-    if (reduced) {
-      reduced = false;
-      paused = false;
-    } else paused = !paused;
-    updatePause();
-  });
   on(returnButton, 'click', () => scene?.reset());
   on(mobileQuery, 'change', () => {
     dispose();
@@ -312,12 +299,10 @@ function mount(section) {
                 ? 'Some details could not load. You can still explore the scene.'
                 : 'Ready to explore.');
           hint.hidden = interactive === 0;
-          pauseButton.disabled = interactive === 0;
         },
       });
       scene.setVisible(onScreen);
       updatePause();
-      pauseButton.disabled = false;
       await scene.load();
     } catch (error) {
       scene?.dispose();
@@ -326,7 +311,6 @@ function mount(section) {
       section.setAttribute('data-scene-unavailable', '');
       setStatus('The 3D view is unavailable on this browser. You can still read about me and get in touch.');
 
-      pauseButton.disabled = true;
       section.setAttribute('aria-busy', 'false');
       void revealInitialAbout();
       if (import.meta.env.DEV) console.warn('[About]', error);
