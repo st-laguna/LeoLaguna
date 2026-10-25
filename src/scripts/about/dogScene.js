@@ -349,6 +349,7 @@ export function createAboutScene(section, callbacks = {}) {
     scene.updateMatrixWorld(true);
     const entry = pick();
     if (entry) focus(entry.id);
+    else if (mobile3D && active) reset();
   });
   on(canvas, 'pointercancel', () => {
     pointerDown = null;
