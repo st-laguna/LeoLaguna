@@ -77,3 +77,9 @@ html[data-theme] body .about[data-editorial] .about-editorial .action-pill[href=
   50% {background:#6366f1;box-shadow:0 0 12px #6366f133;}
 }
 @media(prefers-reduced-motion:reduce) {.about .action-pill[href="/cv/"] {animation:none;}}
+
+/* Leave only the scene and its persistent controls beside an open information panel. */
+.mobile-3d-roller[hidden] {display:none;}
+html[data-about-mobile] body .about[data-mobile-panel-open] [data-return] {display:none;}
+html[data-about-mobile]:has([data-mobile-panel-open]) .site-cursor.is-about-scene,
+html[data-about-mobile]:has([data-mobile-panel-open]) .site-cursor-ring {display:none;}

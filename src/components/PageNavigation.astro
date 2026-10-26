@@ -9,6 +9,8 @@ const languageMasterWidth=Number(headerMaster.match(/<rect id="bot1"[^>]*width="
 const languageWidth=languageMasterWidth/headerMasterWidth*100+'vw';
 const themeWidth=themeMasterWidth/headerMasterWidth*100+'vw';
 import responsiveInit from '../scripts/responsive-init.js?raw';
+import tabletLayoutSource from '../scripts/tablet-layout.js?raw';
+import {phoneMedia} from '../scripts/responsive-layout';
 import '../styles/native-scroll.css';
 import motion from '../scripts/transition-motion.js?raw';
 import homeEntrance from '../scripts/home-entrance.js?raw';
@@ -16,12 +18,12 @@ import aboutDevice from '../scripts/about/mobileAboutDevice.js?raw';
 import navigation from '../scripts/document-navigation.js?raw';
 import '../styles/page-navigation.css';
 // Run before the first render: a deferred module can miss pagereveal.
-const source = `(() => {\n${homeEntrance.replace(/^export /gm, '')}\n${motion.replace(/^import .*home-entrance.*;$/gm, '').replace(/^export /gm, '')}\n${aboutDevice.replace(/^export /gm, '')}\n${navigation}\n})();`;
+const source = `(() => {\n${homeEntrance.replace(/^export /gm, '')}\n${motion.replace(/^import .*home-entrance.*;$/gm, '').replace(/^export /gm, '')}\n${aboutDevice.replace(/^export /gm, '')}\nif(document.documentElement.dataset.page==='case-study'){const root=document.documentElement,mobile=isMobileAbout();root.toggleAttribute('data-case-mobile',mobile);root.toggleAttribute('data-case-phone',mobile&&!root.hasAttribute('data-ipad')&&!root.hasAttribute('data-tablet-portrait')&&matchMedia(${JSON.stringify(phoneMedia)}).matches);}\n${navigation}\n})();`;
 ---
 <style is:inline set:html={`:root {--ui-theme-width:${themeWidth};--ui-language-width:${languageWidth};}`} />
 <link rel="icon" href={`/favicon.ico?v=${faviconVersion}`} sizes="16x16 32x32 48x48 96x96 192x192 256x256" />
 <link rel="icon" type="image/png" href={`/favicon.png?v=${faviconVersion}`} sizes="192x192" />
 <link rel="icon" type="image/svg+xml" href={`/favicon.svg?v=${faviconVersion}`} sizes="any" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-<script is:inline set:html={responsiveInit}></script>
+<script is:inline set:html={`(() => {\n${tabletLayoutSource.replace(/^export /gm, '')}\n${responsiveInit}\n})();`}></script>
 <script is:inline set:html={source}></script>

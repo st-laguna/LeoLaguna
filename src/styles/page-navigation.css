@@ -21,3 +21,9 @@ html[data-page-transition]::view-transition-new(root) {
 @media (prefers-reduced-motion: reduce) {
   @view-transition { navigation: none; }
 }
+
+/* Avoid the browser's tap overlay flashing before the explicit Work curtain.
+   Keyboard focus continues to use the existing focus-visible outline. */
+html[data-case-mobile] :is(.case-study__back,[data-case-back]),
+html :is([data-adaptive-hero],[data-tablet-layout]) .featured-work a,
+html [data-featured-works] a { -webkit-tap-highlight-color:transparent; }

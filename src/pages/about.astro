@@ -7,7 +7,6 @@ import PageNavigation from '../components/PageNavigation.astro';
 import '../styles/about.css';
 import '../styles/compact-laptop.css';
 import '../styles/large-tablet-landscape.css';
-import aboutLogoLoader from '../scripts/about/about-logo-loader.js?raw';
 import mobileAboutDevice from '../scripts/about/mobileAboutDevice.js?raw';
 // Keep the desktop preload behavior without fetching 3D assets on mobile/iPad.
 const mobileAboutPrepaint = '(() => {\n' + mobileAboutDevice.replace(/^export /gm, '') + `
@@ -35,32 +34,21 @@ const mobileAboutPrepaint = '(() => {\n' + mobileAboutDevice.replace(/^export /g
     <PageNavigation />
     <script is:inline set:html={mobileAboutPrepaint}></script>
     <script is:inline>
-      if (!document.documentElement.hasAttribute('data-about-mobile')) document.documentElement.setAttribute('data-about-loading', '');
+      document.documentElement.setAttribute('data-about-loading', '');
       // A failed runtime must never leave the biography or navigation hidden.
       window.__aboutLoadingFallback=setTimeout(()=>{
+        // A healthy scene may take longer; only recover a runtime that never started.
+        if(document.querySelector('[data-about][aria-busy="true"]'))return;
         document.documentElement.removeAttribute('data-about-loading');
+        document.documentElement.setAttribute('data-about-ready','');
         window.dispatchEvent(new Event('leo:about-loading-fallback'));
+        window.dispatchEvent(new Event('leo:about-ready'));
       },12000);
     </script>
     <link rel="preload" href="/fonts/HostGrotesk.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Archivo.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
-    <div class="about-loading-indicator" role="status" aria-live="polite" aria-label="Loading">
-      <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-        <g data-loader-logo>
-          <g>
-            <polygon data-loader-foot points="1242.8,1961.3 2899.7,1961.3 2377.3,2846.1 717.7,2846.1" />
-            <polygon data-loader-stem points="1172.9,0 2418,0 1242.8,1961.3 0,1961.3" />
-          </g>
-          <g transform="rotate(180 2566.45 1665.75)">
-            <polygon data-loader-foot points="1242.8,1961.3 2899.7,1961.3 2377.3,2846.1 717.7,2846.1" />
-            <polygon data-loader-stem points="1172.9,0 2418,0 1242.8,1961.3 0,1961.3" />
-          </g>
-        </g>
-      </svg>
-    </div>
-    <script is:inline set:html={aboutLogoLoader}></script>
     <main data-page-content><AboutSection /></main>
     <script>import '../scripts/preferences';</script>
     <ContactCard />

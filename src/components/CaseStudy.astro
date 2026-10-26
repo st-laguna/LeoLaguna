@@ -1,5 +1,6 @@
 ---
 import sharp from 'sharp';
+import CaseEdgeGlass from './CaseEdgeGlass.astro';
 import {resolve} from 'node:path';
 import type {CaseStudy} from '../data/case-studies';
 import {caseStudies} from '../data/case-studies';
@@ -8,6 +9,8 @@ import en from '../i18n/en.json';
 import '../styles/case-study.css';
 interface Props {project:CaseStudy}
 const {project}=Astro.props;
+// PROTOTYPE: set false to remove Work edge glass without changing the layout.
+const edgeGlassPrototype=true;
 const next=caseStudies.find(item=>item.slug===project.nextProject)!;
 const others=caseStudies.filter(item=>item.slug!==project.slug && item.slug!==next.slug);
 const labels=en as Record<string,string>;
@@ -18,11 +21,11 @@ const imageColumns=project.imageColumns || images.map((_,index)=>[index]);
 const preview=project.nextPreview||next.cover;
 const previewSize=await dimensions(preview);
 ---
-<main class="case-study" data-case-study data-page-content aria-labelledby="case-title">
+<main class="case-study" data-horizontal data-case-study data-page-content aria-labelledby="case-title">
   <div class="case-study__stage">
     <div class="case-study__rail" data-case-rail>
       <section class="case-study__intro">
-        <div class="case-study__intro-title"><h1 id="case-title" data-i18n={"case."+project.slug+".title"}>{labels["case."+project.slug+".title"]||project.title}</h1><span class="case-study__intro-direction" aria-hidden="true">→</span></div>
+        <div class="case-study__intro-title"><a class="case-study__back case-study__circle" href="/#featured-works" aria-label="Back to Featured Works / Volver a trabajos destacados"><span class="action-arrow" data-direction="diagonal-left" aria-hidden="true"><span data-arrow="↖">↖</span></span></a><h1 id="case-title" data-i18n={"case."+project.slug+".title"}>{labels["case."+project.slug+".title"]||project.title}</h1><span class="case-study__intro-direction" aria-hidden="true">→</span></div>
         <dl class="case-study__metadata">
           <div><dt data-i18n="case.client">Client</dt><dd>{project.client}</dd></div>
           <div><dt data-i18n="case.service">Service</dt><dd data-i18n={categoryKeys[project.categoryId]}>{labels[categoryKeys[project.categoryId]]}</dd></div>
@@ -31,6 +34,8 @@ const previewSize=await dimensions(preview);
         </dl>
       </section>
       {project.model && <section class="case-study__model" data-case-model data-model={project.model} aria-label="Interactive 3D model">
+        <button class="case-study__retreat case-study__circle" data-case-retreat type="button" aria-label="Back to project introduction / Volver a la introducción">←</button>
+        <button class="case-study__advance case-study__circle" data-case-advance type="button" aria-label="Continue to project images / Continuar a las imágenes">→</button>
         <span data-model-status role="status" data-i18n="model.loading">Loading 3D model…</span>
         <button class="case-study__model-explore" data-model-explore disabled type="button" data-i18n="model.explore">Explore 3D model</button>
         <div class="case-study__model-controls">
@@ -50,7 +55,7 @@ const previewSize=await dimensions(preview);
         {imageColumns.map(column=>(
           <div class:list={['case-study__image-column',{'case-study__image-stack':column.length>1}]} style={column.length>1?'--stack-ratio:'+Math.max(...column.map(index=>images[index]!.width/images[index]!.height)):undefined}>
           {column.map(index=>{const image=images[index];return (
-          <figure class="case-study__image" data-image-slot={index+1} hidden={!image} style={image?.kind==='video' && images[0] ? '--video-reference-ratio:'+images[0].width/images[0].height : undefined}>
+          <figure class="case-study__image" data-image-slot={index+1} hidden={!image} style={image ? '--image-ratio:'+image.width/image.height+(image.kind==='video' && images[0] ? ';--video-reference-ratio:'+images[0].width/images[0].height : '') : undefined}>
             {image?.kind==='image' && <img src={index===0?image.src:undefined} data-case-src={index===0?undefined:image.src} width={image.width} height={image.height} style={'--image-ratio:'+image.width/image.height} alt={project.client+' — '+String(index+1).padStart(2,'0')} loading="eager" fetchpriority={index===0?'high':'low'} decoding="async" />}
             {image?.kind==='video' && <video data-case-video src={image.src} width={image.width} height={image.height} style={'--image-ratio:'+image.width/image.height} muted loop playsinline preload="none" aria-label={project.client+' — animation'} />}
           </figure>
@@ -70,6 +75,7 @@ const previewSize=await dimensions(preview);
       </a>
       </section>
     </div>
+    {edgeGlassPrototype && <CaseEdgeGlass />}
   </div>
 </main>
 <script>import '../scripts/case-study';</script>

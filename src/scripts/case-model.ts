@@ -19,7 +19,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const explore=viewport.querySelector<HTMLButtonElement>('[data-model-explore]')!;
   const touchMedia=matchMedia('(any-pointer:coarse)');
   const touchCapable=()=>touchMedia.matches||navigator.maxTouchPoints>0||document.documentElement.hasAttribute('data-ipad');
-  let preview=touchCapable(),previewAngle=0;
+  let preview=false,previewAngle=0,idleTime=0;const pointers=new Set<number>();
   const previewRotation=new THREE.Quaternion(),verticalAxis=new THREE.Vector3(0,1,0);
   const dialog=document.createElement('dialog');dialog.className='case-model-dialog';
   dialog.dataset.lenisPrevent='';dialog.dataset.i18nAriaLabel='model.viewer';dialog.setAttribute('aria-label',translated('model.viewer'));
@@ -39,7 +39,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   // New minimum equals 75% of the former slider; maximum is modestly closer.
   const zoomMinimum=.55*.75;
   const zoomMaximum=.65;
-  const zoomFactor=()=>1+THREE.MathUtils.lerp(zoomMinimum,zoomMaximum,zoomState.amount);
+  const zoomFactor=()=>(touchCapable()?2:1)*(1+THREE.MathUtils.lerp(zoomMinimum,zoomMaximum,zoomState.amount));
   let renderer:THREE.WebGLRenderer;
   try{renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'default'});}
   catch{dialog.remove();setStatus('model.unavailable');return()=>events.abort();}
@@ -47,7 +47,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const canvas=renderer.domElement;canvas.tabIndex=0;canvas.dataset.i18nAriaLabel='model.canvas';canvas.setAttribute('aria-label',translated('model.canvas'));
   viewport.prepend(canvas);
   const controls=new OrbitControls(orbitCamera,canvas);
-  controls.enablePan=false;controls.enableZoom=false;controls.enableDamping=true;controls.dampingFactor=.09;controls.rotateSpeed=.55;
+  controls.enablePan=false;controls.enableZoom=touchCapable();controls.enableDamping=true;controls.dampingFactor=.09;controls.rotateSpeed=.55;
   canvas.style.touchAction='pan-y';
   controls.touches.TWO=THREE.TOUCH.DOLLY_PAN;
   // Rotate the object about its own pivot, using fixed camera-space axes.
@@ -64,6 +64,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   }
   canvas.addEventListener('pointerdown',event=>{
     if(preview||!loaded||event.button!==0)return;
+    pointers.add(event.pointerId);if(pointers.size>1){drag=undefined;return;}
     drag={id:event.pointerId,x:event.clientX,y:event.clientY};canvas.setPointerCapture(event.pointerId);
   },{signal});
   canvas.addEventListener('pointermove',event=>{
@@ -72,16 +73,16 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     rotateModel((event.clientX-drag.x)*amount,(event.clientY-drag.y)*amount);
     drag.x=event.clientX;drag.y=event.clientY;
   },{signal});
-  const endDrag=()=>{drag=undefined;};
+  const endDrag=(event:PointerEvent)=>{pointers.delete(event.pointerId);drag=undefined;};
   canvas.addEventListener('pointerup',endDrag,{signal});
   canvas.addEventListener('pointercancel',endDrag,{signal});
   canvas.addEventListener('lostpointercapture',endDrag,{signal});
   scene.add(new THREE.HemisphereLight(0xffffff,0x777777,2.0));
   const light=new THREE.DirectionalLight(0xffffff,2.5);light.position.set(3,5,4);scene.add(light);
   function updateInteraction(){
-    preview=touchCapable()&&!dialog.open;
+    preview=false;controls.enableZoom=touchCapable();viewport.toggleAttribute("data-touch-direct",touchCapable());
     viewport.toggleAttribute('data-touch-preview',preview);controls.enabled=!preview;
-    canvas.style.touchAction=preview?'auto':dialog.open?'none':'pan-y';canvas.tabIndex=preview?-1:0;
+    canvas.style.touchAction=touchCapable()?'none':'pan-y';canvas.tabIndex=preview?-1:0;
     canvas.dataset.i18nAriaLabel=preview?'model.preview':'model.canvas';canvas.setAttribute('aria-label',translated(canvas.dataset.i18nAriaLabel));
     request();
   }
@@ -129,7 +130,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   function render(now:number){
     frame=0;if(disposed||!visible||document.hidden)return;
     const elapsed=last?Math.min((now-last)/1000,.05):0;time+=elapsed;last=now;
-    if(preview&&loaded&&!reduced.matches)previewAngle+=elapsed*.18;
+    if(touchCapable()&&loaded&&!reduced.matches&&!pointers.size){idleTime+=elapsed;previewAngle=Math.sin(idleTime*.18)*THREE.MathUtils.degToRad(10);}
     const moving=controls.update();
     const distance=THREE.MathUtils.clamp(controls.getDistance(),controls.minDistance,controls.maxDistance);
     camera.position.copy(viewDirection).multiplyScalar(distance);
@@ -152,15 +153,15 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
       shadowTime+=performance.now()-renderStart;
       if(shadowFrames===48&&shadowTime/shadowFrames>32){renderer.shadowMap.enabled=false;light.castShadow=false;light.shadow.map?.dispose();request();}
     }
-    if((preview&&loaded&&!reduced.matches)||moving||zoomMotion?.isActive()||motion?.isActive()||(exploded&&!reduced.matches))request();
+    if((touchCapable()&&loaded&&!reduced.matches)||moving||zoomMotion?.isActive()||motion?.isActive()||(exploded&&!reduced.matches))request();
   }
   let renderWidth=0,renderHeight=0;
   function resize(){
-    const width=viewport.clientWidth,height=viewport.clientHeight;if(!width||!height||width===renderWidth&&height===renderHeight)return;
+    const width=canvas.clientWidth||viewport.clientWidth,height=canvas.clientHeight||viewport.clientHeight;if(!width||!height||width===renderWidth&&height===renderHeight)return;
     renderWidth=width;renderHeight=height;
     renderer.setSize(width,height,false);camera.aspect=width/height;
     defaultDistance=1.45*Math.max(1,1/camera.aspect)/Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
-    controls.minDistance=defaultDistance/(1+zoomMaximum);controls.maxDistance=defaultDistance/(1+zoomMinimum);
+    controls.minDistance=touchCapable()?defaultDistance*.3:defaultDistance/(1+zoomMaximum);controls.maxDistance=touchCapable()?defaultDistance*1.6:defaultDistance/(1+zoomMinimum);
     orbitCamera.position.sub(controls.target).normalize().multiplyScalar(defaultDistance/zoomFactor()).add(controls.target);
     controls.update();camera.updateProjectionMatrix();
     // setSize clears the drawing buffer: repaint synchronously before Safari composites.
@@ -225,7 +226,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     parts.forEach(part=>{part.progress=0;part.object.position.copy(part.position);part.object.quaternion.copy(part.quaternion);part.object.scale.copy(part.scale);});
   }
   function resetExperience(){
-    drag=undefined;yaw=pitch=0;previewAngle=0;modelRotation.identity();root.quaternion.identity();
+    drag=undefined;yaw=pitch=0;previewAngle=0;idleTime=0;pointers.clear();modelRotation.identity();root.quaternion.identity();
     base.quaternion.copy(canonicalOrientation);last=0;
     zoomMotion?.kill();zoomState.amount=0;zoom.value='0';applyZoom();
     exploded=false;expandedWasInView=false;restoreAssembly();
@@ -251,5 +252,5 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   reduced.addEventListener('change',()=>{zoomMotion?.kill();zoomState.amount=Number(zoom.value)/100;applyZoom();motion?.kill();floating.amount=0;parts.forEach(part=>part.progress=exploded?1:0);request();},{signal});
   updateInteraction();
   function disposeObject(object:THREE.Object3D){const textures=new Set<THREE.Texture>(),materials=new Set<THREE.Material>();object.traverse(item=>{if(!(item instanceof THREE.Mesh))return;item.geometry.dispose();(Array.isArray(item.material)?item.material:[item.material]).forEach(material=>materials.add(material));});materials.forEach(material=>{Object.values(material).forEach(value=>{if(value instanceof THREE.Texture)textures.add(value);});material.dispose();});textures.forEach(texture=>{const data=texture.source.data;if(typeof ImageBitmap!=='undefined'&&data instanceof ImageBitmap)data.close();texture.dispose();});}
-  return()=>{disposed=true;if(dialog.open)dialog.close();closeViewer();dialog.remove();viewport.removeAttribute("data-touch-preview");events.abort();motion?.kill();zoomMotion?.kill();cancelAnimationFrame(frame);proximity.disconnect();visibility.disconnect();resizeObserver.disconnect();controls.dispose();draco.dispose();disposeObject(root);light.shadow.dispose();renderer.dispose();canvas.remove();};
+  return()=>{disposed=true;if(dialog.open)dialog.close();closeViewer();dialog.remove();viewport.removeAttribute("data-touch-preview");viewport.removeAttribute("data-touch-direct");events.abort();motion?.kill();zoomMotion?.kill();cancelAnimationFrame(frame);proximity.disconnect();visibility.disconnect();resizeObserver.disconnect();controls.dispose();draco.dispose();disposeObject(root);light.shadow.dispose();renderer.dispose();canvas.remove();};
 }

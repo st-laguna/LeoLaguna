@@ -8,7 +8,7 @@
   let timer;
   function apply() {
     root.toggleAttribute('data-ipad-portrait', ipad && portrait.matches);
-    root.toggleAttribute('data-tablet-portrait', tablet.matches);
+    root.toggleAttribute('data-tablet-portrait', tablet.matches || ipad&&portrait.matches);
   }
   function resize() {
     apply();

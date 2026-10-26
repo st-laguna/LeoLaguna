@@ -16,7 +16,7 @@ uniform sampler2D source, blurred;
 uniform vec2 blurStep;
 uniform float blurPass;
 uniform vec2 sourceSize;
-uniform float band, padding, scale, height;
+uniform float band, padding, scale, height, colorSource;
 uniform vec3 background, foreground;
 float lens(float t){
  if(t<.2)return mix(.45,.28,t/.2);
@@ -39,6 +39,17 @@ void main(){
  }
  float edge=side<.5?uv.x:1.-uv.x;
  vec2 p=vec2(side*(band+2.*padding)+padding+uv.x*band,uv.y*height);
+ // Color pixels use the very same lens, channel offsets, falloff and blurred texture.
+ // The footer keeps its original alpha-mask branch below, unchanged.
+ if(colorSource>.5){
+   vec4 originalColor=texture2D(source,p/sourceSize);
+   if(edge>.995){gl_FragColor=vec4(originalColor.rgb*originalColor.a,originalColor.a);return;}
+   float shift=lens(edge)*scale*(side<.5?1.:-1.);
+   vec3 refracted=vec3(texture2D(blurred,(p+vec2(106.*shift,0.))/sourceSize).r,
+     texture2D(blurred,(p+vec2(70.*shift,0.))/sourceSize).g,texture2D(blurred,(p+vec2(54.*shift,0.))/sourceSize).b);
+   vec3 rgb=mix(originalColor.rgb,refracted,falloff(edge));
+   gl_FragColor=vec4(rgb*originalColor.a,originalColor.a);return;
+ }
  float original=sampleAlpha(p);
  if(edge>.995){gl_FragColor=vec4(mix(background,foreground,original),1.);return;}
  float shift=lens(edge)*scale*(side<.5?1.:-1.);
@@ -48,8 +59,13 @@ void main(){
  gl_FragColor=vec4(mix(background,foreground,coverage),1.);
 }`;
 
-export function createFooterRefraction(host: HTMLElement) {
-  const canvas=host.querySelector<HTMLCanvasElement>('[data-footer-refraction-canvas]')!;
+interface RefractionOptions {
+  colorSource?: boolean;
+  canvasSelector?: string;
+  bandSelector?: string;
+}
+export function createFooterRefraction(host: HTMLElement, options: RefractionOptions = {}) {
+  const canvas=host.querySelector<HTMLCanvasElement>(options.canvasSelector || '[data-footer-refraction-canvas]')!;
   const input=document.createElement('canvas');
   const ctx=input.getContext('2d');
   const gl=canvas.getContext('webgl',{alpha:true,antialias:false,depth:false,stencil:false,preserveDrawingBuffer:false,powerPreference:'low-power'});
@@ -80,7 +96,7 @@ export function createFooterRefraction(host: HTMLElement) {
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
   }catch(error){console.warn('Footer refraction: using lightweight fallback.',error);release();gl.getExtension('WEBGL_lose_context')?.loseContext();return null;}
-  const uniforms=Object.fromEntries(['source','blurred','blurPass','blurStep','sourceSize','band','padding','scale','edgeFraction','height','background','foreground'].map(name=>[name,gl.getUniformLocation(program,name)]));
+  const uniforms=Object.fromEntries(['source','blurred','blurPass','blurStep','sourceSize','band','padding','scale','edgeFraction','height','background','foreground','colorSource'].map(name=>[name,gl.getUniformLocation(program,name)]));
   const limit=Math.min(2048,gl.getParameter(gl.MAX_TEXTURE_SIZE),gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
   let width=0,height=0,band=0,padding=0,ratio=1,lost=false,blurWidth=0,blurHeight=0,softness=0;
   for(let i=0;i<2;i++){
@@ -101,7 +117,7 @@ export function createFooterRefraction(host: HTMLElement) {
   function resize(htmlSource:boolean){
     if(lost)return;
     width=host.clientWidth;height=host.clientHeight;
-    band=host.querySelector<HTMLElement>('[data-footer-glass]')!.clientWidth;
+    band=host.querySelector<HTMLElement>(options.bandSelector || '[data-footer-glass]')!.clientWidth;
     if(!width||!height||!band)return;
     const scale=htmlSource?1:height/200;
     softness=3.2*scale/1.689;
@@ -130,6 +146,7 @@ export function createFooterRefraction(host: HTMLElement) {
       gl!.bindFramebuffer(gl!.FRAMEBUFFER,null);gl!.bindTexture(gl!.TEXTURE_2D,texture);
     }
     gl!.uniform1i(uniforms.source,0);gl!.uniform1i(uniforms.blurred,1);
+    gl!.uniform1f(uniforms.colorSource,options.colorSource?1:0);
     gl!.uniform2f(uniforms.sourceSize,iw/ratio,h/ratio);
     gl!.uniform1f(uniforms.band,band);gl!.uniform1f(uniforms.padding,padding);
     gl!.uniform1f(uniforms.height,height);gl!.uniform1f(uniforms.scale,scale);

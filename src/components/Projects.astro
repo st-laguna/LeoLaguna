@@ -8,6 +8,8 @@ import GlassSidebar from './GlassSidebar.astro';
 import ServiceStickyGrid from './ServiceStickyGrid.astro';
 import GalleryFooter from './GalleryFooter.astro';
 import AnimationVideoPlayer from './AnimationVideoPlayer.astro';
+import NavigationMenu from './NavigationMenu.astro';
+import '../styles/gallery-mobile-controls.css';
 
 
 const t = en as Record<string,string>;
@@ -97,6 +99,13 @@ const t = en as Record<string,string>;
   </div>
 </section>
 <dialog id="projects-expanded" class="gallery-dialog" aria-labelledby="gallery-heading">
+  <div class="gallery-menu">
+    <NavigationMenu context="site" id="gallery-navigation" preferences links={[
+      {label:'Services',href:'/#work',i18n:'nav.services'},
+      {label:'About',href:'/about/',i18n:'nav.about'},
+      {label:'Works',href:'/#featured-works',i18n:'nav.works'},
+    ]} />
+  </div>
   <div class="gallery-shell">
     <header class="gallery-header">
       <h2 id="gallery-heading" data-i18n="projects.gallery">{t['projects.gallery']}</h2>

@@ -1,3 +1,4 @@
+import {isPhoneViewport} from './responsive-layout';
 import { isMobileAbout, mobileAboutMedia } from './about/mobileAboutDevice.js';
 import '../styles/animation-video-player.css';
 
@@ -45,10 +46,11 @@ if(editor){
    button.querySelector('use')!.setAttribute('href',`/icons/iconos_reproductor.svg#sound-${muted?'off':'on'}`);
  }
  function select(index:number){
-   selected=Math.max(0,Math.min(clips.length-1,index));
+   selected=((index%clips.length)+clips.length)%clips.length;
+   root.querySelectorAll<HTMLButtonElement>('[data-av-neighbor]').forEach(button=>{const next=(selected+(button.dataset.avNeighbor==='previous'?-1:1)+clips.length)%clips.length;button.hidden=false;button.querySelector('img')!.src=clips[next].dataset.poster!;});
    video?.pause();stopFrame();status.textContent='';
    clips.forEach((clip,i)=>clip.setAttribute('aria-pressed',String(i===selected)));
-   control('previous').disabled=selected===0;control('next').disabled=selected===clips.length-1;
+   control('previous').disabled=false;control('next').disabled=false;
    if(video){video.muted=clips[selected].dataset.hasAudio!=='true';syncSound();video.poster=clips[selected].dataset.poster!;video.src=clips[selected].dataset.src!;video.load();}
    root.style.setProperty('--av-progress','0%');current.textContent=end.textContent='00:00:00:00';showClip();
  }
@@ -56,7 +58,7 @@ if(editor){
  // usable while the lower part of the picture remains in view.
  const observer=new IntersectionObserver(entries=>{visible=entries[0].intersectionRatio>=.05;if(!visible)video?.pause();sync();},{threshold:[0,.05,.25,.5,1]});
  function configure(){
-   const mobile=isMobileAbout();gallery.toggleAttribute('data-av-layout',mobile);root.hidden=!mobile;
+   const mobile=isMobileAbout();dialog.toggleAttribute('data-av-phone',mobile&&isPhoneViewport());gallery.toggleAttribute('data-av-layout',mobile);root.hidden=!mobile;
    desktopVideos.forEach(({original,poster})=>{if(original.isConnected){original.pause();original.replaceWith(poster);}});
    if(!mobile){if(video){observer.unobserve(video);video.pause();video.removeAttribute('src');video.load();video.remove();video=undefined;}stopFrame();return;}
    if(video||!dialog.open||gallery.hidden)return;
@@ -68,6 +70,7 @@ if(editor){
    video.addEventListener('error',()=>{status.textContent='Video unavailable / Video no disponible';stopFrame();},options);
    select(selected);
  }
+ root.querySelectorAll<HTMLButtonElement>('[data-av-neighbor]').forEach(button=>button.addEventListener('click',()=>select(selected+(button.dataset.avNeighbor==='previous'?-1:1)),options));
  clips.forEach((clip,i)=>clip.addEventListener('click',()=>select(i),options));
  control('previous').addEventListener('click',()=>select(selected-1),options);
  control('next').addEventListener('click',()=>select(selected+1),options);
@@ -83,8 +86,8 @@ if(editor){
  mutation.observe(gallery,{attributes:true,attributeFilter:['hidden']});
  const device=new MutationObserver(configure);device.observe(document.documentElement,{attributes:true,attributeFilter:['data-ipad','data-tablet-portrait','data-large-tablet-landscape']});
  media.addEventListener('change',configure,options);
- window.addEventListener('resize',showClip,options);
+ window.addEventListener('resize',()=>{configure();showClip();},options);
  document.addEventListener('visibilitychange',()=>{if(document.hidden)video?.pause();},options);
  configure();
- if(import.meta.hot)import.meta.hot.dispose(()=>{events.abort();observer.disconnect();mutation.disconnect();device.disconnect();video?.pause();video?.remove();stopFrame();});
+ if(import.meta.hot)import.meta.hot.dispose(()=>{events.abort();observer.disconnect();mutation.disconnect();device.disconnect();video?.pause();video?.remove();stopFrame();dialog.removeAttribute('data-av-phone');});
 }

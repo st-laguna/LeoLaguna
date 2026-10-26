@@ -33,3 +33,9 @@ Workflow, los intermedios, Featured Works y el footer comparten `mobileJourneyMe
 `compactServices()` comparte ahora `mobileJourneyMedia`: servicios y marcas también se adaptan al horizontal móvil. Sus reglas de distribución siguen separadas de Workflow. Las referencias son services-landscape.svg, marcas horizontal.svg y featured works landscape.svg (1140 px de ancho de diseño); usar proporciones y mínimos legibles, no coordenadas absolutas.
 
 Workflow conserva su selección y progreso al girar mediante su controlador existente. Featured Works usa una sola cabecera dentro de GroAqua y las mismas superficies de salida. El footer reutiliza el SVG, la franja completa y el handoff sticky; el tamaño horizontal del texto se limita por el ancho disponible.
+
+## Detección compartida de tablets
+
+`data-ipad` conserva la identidad real de iPadOS. `data-tablet-layout` selecciona la composición compartida: incluye iPads sin límite de ancho y la vista de tablet por proporción definida en `src/scripts/tablet-layout.js`, aunque el navegador de pruebas exponga UA de escritorio y puntero fino. El inicializador previo al primer render actualiza ese estado al girar. No añadir excepciones para1590px ni otros anchos particulares.
+
+Los selectores de composición que antes dependían solo de `data-ipad` admiten también `data-tablet-layout`; las reglas nativas de Safari permanecen ligadas a identidad real. `mobileLandscapeMedia` incluye la misma consulta geométrica. Las reglas antiguas de `large-tablet-landscape.css` se excluyen cuando la composición compartida es propietaria del layout. La navegación, Work, About y las galerías usan el mismo estado. Escritorios16:9 y laptops16:10 siguen en su composición de escritorio.

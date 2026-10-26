@@ -1,3 +1,4 @@
+import {isPhoneViewport} from './responsive-layout';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -10,9 +11,12 @@ export function mountGalleryReturn(dialog:HTMLDialogElement,scroller:HTMLElement
   const footer=slot?.closest<HTMLElement>('.gallery-footer');
   // Video uses only the actual footer control, with the same button DOM/style.
   if(dialog.hasAttribute('data-footer-only-return')&&slot){
-    const marker=document.createComment('gallery-return-home');motion.before(marker);slot.append(motion);
+    const marker=document.createComment('gallery-return-home');motion.before(marker);const arrow=button.querySelector<HTMLElement>('[data-arrow]'),direction=button.querySelector<HTMLElement>('[data-direction]');const originalArrow=arrow?.textContent,originalDirection=direction?.dataset.direction;
+    const setArrow=(phone:boolean)=>{if(arrow){arrow.textContent=phone?'↖':originalArrow||'↑';arrow.dataset.arrow=arrow.textContent;}if(direction)direction.dataset.direction=phone?'diagonal-left':originalDirection;};
+    const place=()=>{const phone=isPhoneViewport();if(phone)dialog.append(motion);else slot.append(motion);setArrow(phone);};place();window.addEventListener('resize',place);
     gsap.set([motion,entry],{clearProps:'transform,opacity'});
-    return ()=>{marker.replaceWith(motion);};
+    const entrance=isPhoneViewport()?gsap.fromTo(entry,{opacity:reduced.matches?1:0,y:reduced.matches?0:10,scale:reduced.matches?1:.94},{opacity:1,y:0,scale:1,duration:reduced.matches?0:.42,ease:'power3.out'}):undefined;
+    return ()=>{entrance?.kill();gsap.set(entry,{clearProps:'transform,opacity'});window.removeEventListener('resize',place);setArrow(false);marker.replaceWith(motion);};
   }
   const state={p:0};
   let disposed=false;
@@ -80,3 +84,4 @@ export function mountGalleryReturn(dialog:HTMLDialogElement,scroller:HTMLElement
     slot!.style.removeProperty('--gallery-return-width');slot!.style.removeProperty('--gallery-return-height');
   };
 }
+

@@ -1,0 +1,9 @@
+/* Prototype switch: edgeGlassPrototype in CaseStudy.astro. Optics are shared with Footer. */
+.case-edge-glass {--case-glass-band:clamp(28px,6.5vw,140px);position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden;}
+html[data-case-mobile] .case-edge-glass {--case-glass-band:clamp(28px,4.5vw,66px);}
+.case-edge-glass>[data-case-glass-side] {position:absolute;top:0;bottom:0;width:var(--case-glass-band);}
+.case-edge-glass>[data-case-glass-side=left] {left:0;}
+.case-edge-glass>[data-case-glass-side=right] {right:0;}
+.case-edge-glass>canvas {position:absolute;inset:0;width:100%;height:100%;visibility:hidden;}
+.case-edge-glass[data-glass-gpu]>canvas {visibility:visible;}
+@media print {.case-edge-glass {display:none;}}

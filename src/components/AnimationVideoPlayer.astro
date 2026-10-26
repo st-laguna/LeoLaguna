@@ -8,7 +8,7 @@ const icons = [{id:'sound-off',x:448,label:'Enable sound / Activar sonido',actio
 <div class:list={['av-editor', {'av-desktop':desktop}]} data-av-editor={desktop ? undefined : ""} data-av-desktop={desktop ? "" : undefined} hidden>
   {desktop ? <div class="av-desktop-track" data-desktop-track data-lenis-prevent tabindex="0" aria-label="Video gallery / Galería de videos">
     {project.assets.map((asset,i)=><button type="button" class="av-desktop-item" data-desktop-item={i} aria-label={`Select video ${i+1}`}><div class="av-desktop-media"><img src={asset.poster || asset.src.replace('/videos/','/videos/mini/').replace('.webm','.webp')} alt="" loading="lazy" /></div></button>)}
-  </div> : <div class="av-screen" data-av-screen></div>}
+  </div> : <div class="av-screen" data-av-screen><button class="av-neighbor av-neighbor--previous" data-av-neighbor="previous" type="button" aria-label="Previous video / Video anterior"><img alt="" /></button><button class="av-neighbor av-neighbor--next" data-av-neighbor="next" type="button" aria-label="Next video / Video siguiente"><img alt="" /></button></div>}
   <div class="av-controls" role="group" aria-label="Video controls / Controles de video">
     {icons.map(icon => <button type="button" data-av-action={icon.action} aria-label={icon.label}>
       <svg viewBox={`${icon.x} 0 64 64`} aria-hidden="true"><use href={`/icons/iconos_reproductor.svg#${icon.id}`} /></svg>

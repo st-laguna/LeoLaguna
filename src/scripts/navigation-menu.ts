@@ -15,20 +15,21 @@ const compactMedia = '(max-width:700px), (max-width:1000px) and (max-height:500p
 
 function mount(toggle: HTMLButtonElement) {
   const panel = document.getElementById(toggle.getAttribute('aria-controls')!)!;
-  const host = toggle.closest<HTMLElement>('.site-header,.mobile-about')!;
+  const host = toggle.closest<HTMLElement>('.site-header,.mobile-about,.gallery-menu')!;
   const root = document.documentElement;
   const backdrop = document.createElement('div');
   backdrop.className = 'shared-menu-backdrop';
   backdrop.setAttribute('aria-hidden', 'true');
   panel.before(backdrop);
   const about = toggle.dataset.menuContext === 'about';
+  const galleryMenu=host.classList.contains('gallery-menu');
   const media = matchMedia(compactMedia);
   const abort = new AbortController();
   const on = (target: EventTarget, name: string, handler: EventListener) => target.addEventListener(name, handler, { signal: abort.signal });
   const links = [...panel.querySelectorAll<HTMLAnchorElement>('[data-shared-nav-link]')];
   const group = panel.querySelector<HTMLElement>('[data-shared-menu-links]')!;
-  const enabled = () => about ? root.hasAttribute('data-about-mobile') : media.matches || root.hasAttribute('data-tablet-portrait') || root.hasAttribute('data-adaptive-hero');
-  let open = false;
+  const enabled = () => galleryMenu ? root.hasAttribute('data-adaptive-hero')||root.hasAttribute('data-tablet-layout')||root.hasAttribute('data-ipad')||media.matches : about ? root.hasAttribute('data-about-mobile') : media.matches || root.hasAttribute('data-tablet-layout') || root.hasAttribute('data-case-mobile') || root.hasAttribute('data-tablet-portrait') || root.hasAttribute('data-adaptive-hero');
+  let open = false, readyFrame = 0;
   function select(link: HTMLAnchorElement | null) {
     group.toggleAttribute('data-selection-active', !!link);
     links.forEach(item => item.toggleAttribute('data-menu-selected', item === link));
@@ -48,10 +49,33 @@ function mount(toggle: HTMLButtonElement) {
     if (!open) select(null);
     if (focus) toggle.focus({ preventScroll: true });
   }
+  const cornerScope=toggle.closest<HTMLElement>('dialog')||root;
+  let cornerFrame=0;
+  const syncCorner=()=>{
+    cancelAnimationFrame(cornerFrame);
+    cornerFrame=requestAnimationFrame(()=>{
+      const rect=toggle.getBoundingClientRect();
+      if(!rect.width||!rect.height)return;
+      cornerScope.style.setProperty('--corner-control-top',rect.top+'px');
+      cornerScope.style.setProperty('--corner-control-gap',Math.max(0,innerWidth-rect.right)+'px');
+      cornerScope.style.setProperty('--corner-control-size',rect.width+'px');
+    });
+  };
+  on(window,'resize',syncCorner);
+  on(window,'leo:orientation-ready',syncCorner);
+  const cornerObserver=new ResizeObserver(syncCorner);cornerObserver.observe(toggle);
+  abort.signal.addEventListener('abort',()=>{cornerObserver.disconnect();cancelAnimationFrame(cornerFrame);});
   function sync() {
+    syncCorner();
+    cancelAnimationFrame(readyFrame);
+    panel.setAttribute('data-menu-pending','');
     toggle.toggleAttribute('data-menu-compact', enabled());
     panel.toggleAttribute('data-menu-compact', enabled());
     setOpen(false);
+    // Commit the offscreen/hidden state without a closing transition on load
+    // or responsive reconfiguration. User toggles keep their normal animation.
+    void panel.offsetWidth;
+    readyFrame=requestAnimationFrame(()=>panel.removeAttribute('data-menu-pending'));
   }
   const blockScroll = (event: Event) => { if(open && !(event.target instanceof Node && panel.contains(event.target))) event.preventDefault(); };
   window.addEventListener('wheel',blockScroll,{passive:false,capture:true,signal:abort.signal});
@@ -93,12 +117,12 @@ function mount(toggle: HTMLButtonElement) {
   on(media, 'change', sync);
   on(window, 'leo:orientation-ready', sync);
   on(window, 'leo:close-menu', () => setOpen(false));
-  on(window, 'pagehide', () => setOpen(false));
-  on(window, 'pageshow', () => setOpen(false));
+  on(window, 'pagehide', sync);
+  on(window, 'pageshow', sync);
   const observer = new MutationObserver(sync);
-  observer.observe(root, {attributes:true,attributeFilter:['data-tablet-portrait','data-about-mobile']});
+  observer.observe(root, {attributes:true,attributeFilter:['data-tablet-portrait','data-about-mobile','data-case-mobile','data-tablet-layout']});
   sync();
-  return { dispose() { setOpen(false); abort.abort(); observer.disconnect(); backdrop.remove(); } };
+  return { dispose() { setOpen(false); cancelAnimationFrame(readyFrame); panel.removeAttribute('data-menu-pending'); abort.abort(); observer.disconnect(); backdrop.remove(); } };
 }
 function boot() {
   for (const [toggle, controller] of mounted) if (!toggle.isConnected) { controller.dispose(); mounted.delete(toggle); }

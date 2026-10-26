@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import {PROPS} from './sceneConfig.js';
 import {message} from './messages.js';
+import {isPhoneViewport} from '../responsive-layout';
 const characters={leo:"Part marine biologist, part art nerd, and very easily distracted by new technology. I love traveling, animals, the ocean, and discovering things I didn’t know I’d be obsessed with yet.",simba:"Almost nine, slightly grumpy, ridiculously smart, and somehow still very athletic. No one warned him that Morena would arrive with this much energy, but he ended up becoming her favorite playmate anyway.",morena:"Two years old, endlessly playful, and usually waiting outside my door with a toy before I’m fully awake. She also decided Simba needed a lot more fun in his life, whether he agreed or not."};
 export function mountMobileAbout3D(section,getScene,on,reduced){
  const q=s=>section.querySelector(s),panel=q('.mobile-3d-panel'),toggle=q('[data-mobile-3d-toggle]'),bio=q('[data-mobile-3d-bio]'),selection=q('[data-mobile-3d-selection]');
@@ -13,6 +14,9 @@ export function mountMobileAbout3D(section,getScene,on,reduced){
  const menu=q('[data-menu-context="about"][data-shared-menu-toggle]');menu.disabled=false;
  let open=false,selected=null,ready=false,version=0,timer,animation,framing;
  const roller=q('[data-mobile-3d-roller]');let options=[null],rollTween,busy=true,rollDirection=0;
+ function syncViewerControls(){roller.hidden=open||isPhoneViewport();roller.inert=roller.hidden;}
+ syncViewerControls();
+ on(window,'resize',syncViewerControls);
  function setRollBusy(value){busy=value;for(const button of roller.querySelectorAll('button'))button.disabled=value||!ready;}
  function rollLabel(button){const es=document.documentElement.lang==='es';const prop=PROPS.find(p=>p.id===button?.dataset.id);return prop?prop.objectName[es?'es':'en']:button?message(button.dataset.label):(es?'Todo':'All');}
  function updateRoll(direction=0){let index=selected?options.findIndex(b=>b?.dataset.id===selected.id):0;if(index<0)index=0;roller.querySelector('[data-mobile-roll-neighbor="prev"]').textContent=rollLabel(options[(index-1+options.length)%options.length]);roller.querySelector('[data-mobile-roll-neighbor="next"]').textContent=rollLabel(options[(index+1)%options.length]);const current=roller.querySelector('[data-mobile-roll-current]');rollTween?.kill();current.textContent=rollLabel(options[index]);if(direction&&!reduced)rollTween=gsap.fromTo(current,{y:direction*12,opacity:0},{y:0,opacity:1,duration:.4,ease:'power3.out'});}
@@ -22,7 +26,7 @@ export function mountMobileAbout3D(section,getScene,on,reduced){
  function rollLanguage(){const es=document.documentElement.lang==='es';roller.setAttribute('aria-label',es?'Explorar modelos':'Explore models');q('[data-mobile-roll-prev]').setAttribute('aria-label',es?'Modelo anterior':'Previous model');q('[data-mobile-roll-next]').setAttribute('aria-label',es?'Modelo siguiente':'Next model');updateRoll();}
  on(window,'leo:language-change',rollLanguage);rollLanguage();
 
- function setOpen(value){open=value;section.toggleAttribute('data-mobile-panel-open',open);panel.inert=!open;panel.setAttribute('aria-hidden',String(!open));toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Hide information':'Show information');toggle.textContent=open?'←':'→';
+ function setOpen(value){open=value;syncViewerControls();section.toggleAttribute('data-mobile-panel-open',open);panel.inert=!open;panel.setAttribute('aria-hidden',String(!open));toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Hide information':'Show information');toggle.textContent=open?'←':'→';
   framing?.kill();const state={value:parseFloat(section.style.getPropertyValue('--mobile-panel-progress'))||0};framing=gsap.to(state,{value:open?1:0,duration:reduced?0:.7,ease:'power3.inOut',onUpdate:()=>{section.style.setProperty('--mobile-panel-progress',String(state.value));getScene()?.setPanelOffset(panel.offsetWidth/innerWidth/2*state.value);}});
  }
  on(toggle,'click',()=>{version++;clearTimeout(timer);setOpen(!open)});

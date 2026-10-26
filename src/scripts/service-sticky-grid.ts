@@ -56,7 +56,7 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
   }
   function configureMedia() {
     if (signal.aborted || !isCurrent()) return;
-    const state = `${queries.phone.matches}/${isPhonePortrait()}/${queries.compact.matches}/${queries.reduced.matches}`;
+    const state = `${queries.phone.matches}/${isPhonePortrait()}/${queries.compact.matches||isMobileAbout()}/${queries.reduced.matches||isMobileAbout()}`;
     // Several queries can change in one resize; rebuild once for that state.
     if (state === mediaState) return;
     mediaState = state;
@@ -76,7 +76,7 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
     });
     // The compact editorial header has no title reveal: show the image grid
     // directly on touch layouts instead of retaining an empty intro scene.
-    const compact = queries.compact.matches, reduced = queries.reduced.matches || isMobileAbout();
+    const compact = queries.compact.matches || isMobileAbout(), reduced = queries.reduced.matches || isMobileAbout();
     const phone=queries.phone.matches && isPhoneViewport();
     restoreRow();section.removeAttribute('data-grid-revealed');
     // Phone portrait has a normal-flow intro and the complete two-column list.
@@ -199,6 +199,7 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
   }
   Object.values(queries).forEach(query => query.addEventListener('change', configureMedia, {signal}));
   configureMedia();
+  window.addEventListener('leo:orientation-ready',configureMedia,{signal});
   // Width/orientation changes rebuild distances; mobile toolbar-only changes do not.
   let resizeTimer: ReturnType<typeof setTimeout>;
   const geometryObserver = new ResizeObserver(() => {

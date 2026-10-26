@@ -75,77 +75,77 @@
 :root:root:root:root body .brands-stats dt{order:1;font-size:clamp(9px,2vw,16px);line-height:1;margin:0}}
 
 @media (orientation:landscape){
-:root:where([data-ipad]):root:root:root body .home-journey[data-mobile-journey]{height:550svh}
-:root:where([data-ipad]):root:root:root body .workflow{min-height:100svh;padding:0}
-:root:where([data-ipad]):root:root:root body .workflow__heading{position:absolute;left:11.4%;top:7%;width:77.2%;margin:0;font-size:clamp(20px,3.4vw,38px);text-align:left;line-height:1.15}
-:root:where([data-ipad]):root:root:root body .workflow__heading em{color:var(--coral,#ed6861)}
-:root:where([data-ipad]):root:root:root body .workflow__grid{position:absolute;inset:26% 0 12%;display:flex;gap:25px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 11.4%;border:0;touch-action:pan-x pan-y;width:100%;height:auto;box-sizing:border-box}
-:root:where([data-ipad]):root:root:root body .workflow__grid::-webkit-scrollbar{display:none}
-:root:where([data-ipad]):root:root:root body .workflow__slot{position:relative;inset:auto;flex:0 0 100%;width:100%!important;height:100%;margin:0!important;transform:none!important;scroll-snap-align:center;perspective:1100px}
-:root:where([data-ipad]):root:root:root body .workflow__card{width:100%;height:100%;max-width:none;max-height:none;aspect-ratio:auto}
-:root:where([data-ipad]):root:root:root body .workflow__turn{transform:none}
-:root:where([data-ipad]):root:root:root body .workflow__card[aria-pressed=true] .workflow__turn{transform:rotateY(180deg)}
-:root:where([data-ipad]):root:root:root body .workflow__number{display:none}
-:root:where([data-ipad]):root:root:root body .workflow__front,:root:where([data-ipad]):root:root:root body .workflow__back{backface-visibility:hidden;transition:visibility 0s .325s}
-:root:where([data-ipad]):root:root:root body .workflow__front{visibility:visible}
-:root:where([data-ipad]):root:root:root body .workflow__back{visibility:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:25px;gap:25px;overflow:auto}
-:root:where([data-ipad]):root:root:root body .workflow__card[aria-pressed=true] .workflow__front{visibility:hidden}
-:root:where([data-ipad]):root:root:root body .workflow__card[aria-pressed=true] .workflow__back{visibility:visible}
-:root:where([data-ipad]):root:root:root body .workflow__front img{width:100%;height:100%;object-fit:cover}
-:root:where([data-ipad]):root:root:root body .workflow__front strong{position:absolute;font-size:clamp(20px,3vw,32px);color:var(--coral,#ed6861)}
-:root:where([data-ipad]):root:root:root body .workflow__explore{display:block;position:absolute;top:25px;left:0;width:100%;text-align:center;font-size:14px;color:white;z-index:2;text-shadow:0 1px 6px #000}
-:root:where([data-ipad]):root:root:root body .workflow__description{font-size:clamp(18px,2.4vw,28px);max-width:26ch;line-height:1.2}
-:root:where([data-ipad]):root:root:root body .workflow__icon{width:min(75%,228px);height:min(25svh,228px);object-fit:contain}
-:root:where([data-ipad]):root:root:root body :is(.workflow__track,.workflow__cursor){display:none!important}
-:root:where([data-ipad]):root:root:root body .unified-workflow-controls{position:absolute;bottom:3%;left:11.4%;right:11.4%;display:flex;justify-content:center;align-items:center;gap:25px;padding-top:12.5px;border-top:1px solid #8886}
-:root:where([data-ipad]):root:root:root body .unified-dots{display:flex;background:#2b2b2d;padding:0 12.5px;align-items:center;border-radius:24px}
-:root:where([data-ipad]):root:root:root body .unified-dots button{border:0;background:none;min-width:44px;height:44px;display:grid;place-items:center;padding:0;color:#fff}
-:root:where([data-ipad]):root:root:root body .unified-dots button span{display:block;position:relative;width:8px;height:8px;background:#777;border-radius:50%;overflow:hidden;transition:width .3s}
-:root:where([data-ipad]):root:root:root body .unified-dots button[aria-pressed=true] span{width:48px;border-radius:0;background:#aaa}
-:root:where([data-ipad]):root:root:root body .unified-dots i{display:block;position:absolute;inset:0;transform:scaleX(0);transform-origin:left;background:white}
-:root:where([data-ipad]):root:root:root body .unified-play{width:44px;height:44px;border:0;border-radius:50%;background:#2b2b2d;color:white}
-:root:where([data-ipad]):root:root:root body .science-interlude{display:grid;place-items:center;position:sticky;top:0;padding:25px;background:var(--background,#ededed)}
-:root:where([data-ipad]):root:root:root body .science-interlude p{font-size:clamp(36px,7vw,84px);line-height:1.08;max-width:16ch;text-align:center}
-:root:where([data-ipad]):root:root:root body .science-interlude em{color:var(--coral,#ed6861);font-style:normal}
-:root:where([data-ipad]):root:root:root body .featured-works{position:relative;z-index:2;margin:0;padding:0;height:auto;min-height:0;background:#1c1c1c}
-:root:where([data-ipad]):root:root:root body .featured-works h2{position:static;display:flex;align-items:center;gap:12.5px;padding:25px;margin:0;width:100%;font-size:clamp(20px,4vw,36px);background:var(--background,#ededed)}
-:root:where([data-ipad]):root:root:root body .featured-works__composition{display:flex;flex-direction:column;gap:0;margin:0;padding:0}
-:root:where([data-ipad]):root:root:root body .featured-works__column{display:contents}
-:root:where([data-ipad]):root:root:root body .featured-work{position:relative;inset:auto;width:100%;margin:0;padding:0;perspective:1400px;transform-origin:50% 8%;background:#1c1c1c}
-:root:where([data-ipad]):root:root:root body .featured-work--groaqua{order:1}:root:where([data-ipad]):root:root:root body .featured-work--wwf{order:2}:root:where([data-ipad]):root:root:root body .featured-work--exo-environmental{order:3}:root:where([data-ipad]):root:root:root body .featured-work--wewhale{order:4}:root:where([data-ipad]):root:root:root body .featured-work--sperm-whales-of-dominica{order:5}
-:root:where([data-ipad]):root:root:root body .featured-work__content{padding:25px 25px 37.5px;margin:0;background:var(--background,#ededed);transform-origin:50% 10%;border-bottom:1px solid #8885}
-:root:where([data-ipad]):root:root:root body .featured-work figcaption{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12.5px;padding:0 0 25px;margin:0}
-:root:where([data-ipad]):root:root:root body .featured-work__client{display:block}
-:root:where([data-ipad]):root:root:root body .featured-work__index{display:block;margin-bottom:12.5px;font-size:14px;font-weight:400}
-:root:where([data-ipad]):root:root:root body .featured-work__company{font-size:clamp(30px,7vw,58px);text-transform:uppercase;line-height:1.05}
-:root:where([data-ipad]):root:root:root body .featured-work__action,:root:where([data-ipad]):root:root:root body .featured-work__year{position:static;transform:none;display:block;font-size:14px}
-:root:where([data-ipad]):root:root:root body :is(.featured-work__category,.featured-work__view,.featured-works__closing){display:none!important}
-:root:where([data-ipad]):root:root:root body .featured-work__cover{aspect-ratio:1/.92;width:100%;height:auto;margin:0 0 25px;overflow:hidden}
-:root:where([data-ipad]):root:root:root body .featured-work__cover img{width:100%;height:100%;object-fit:cover;transform:none}
-:root:where([data-ipad]):root:root:root body .featured-work__summary{display:block;font-size:clamp(16px,2vw,24px);line-height:1.3;max-width:48ch;margin:0}
-:root:where([data-ipad]):root:root:root body .brands[data-brands]{position:relative!important;inset:auto;margin:0!important;height:auto;min-height:0;padding:50px 25px;background:var(--background,#ededed);z-index:3;display:block}
-:root:where([data-ipad]):root:root:root body .brands-layout{display:flex;flex-direction:column;gap:0;height:auto;width:100%;max-width:1400px;margin:auto;transform:none!important}
-:root:where([data-ipad]):root:root:root body .brands-info{display:contents}
-:root:where([data-ipad]):root:root:root body .brands-statement{order:0;position:static;width:100%;max-width:43ch;margin:0 0 37.5px;font-size:clamp(20px,2.7vw,32px);line-height:1.2;text-align:left}
-:root:where([data-ipad]):root:root:root body .brands-grid{order:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:row dense;grid-template-rows:none;grid-auto-rows:clamp(100px,27vw,180px);border-top:1px solid #8885;border-left:1px solid #8885;gap:0;height:auto;width:100%;overflow:visible;transform:none}
-:root:where([data-ipad]):root:root:root body .brands-column{display:contents}
-:root:where([data-ipad]):root:root:root body .brands-cell{grid-column:span 1;grid-row:auto;order:var(--brand-order);position:relative;width:100%;height:100%;padding:0;border:0;border-right:1px solid #8885;border-bottom:1px solid #8885;perspective:900px;background:none;overflow:visible}
-:root:where([data-ipad]):root:root:root body .brands-cell[data-brand-name="Havida"]{grid-column:span 2}
-:root:where([data-ipad]):root:root:root body .brand-turn{display:block;position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s}
-:root:where([data-ipad]):root:root:root body .brands-cell[aria-pressed=true] .brand-turn{transform:rotateY(180deg)}
-:root:where([data-ipad]):root:root:root body .brand-front,:root:where([data-ipad]):root:root:root body .brand-logo{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;backface-visibility:hidden;transition:visibility 0s .35s}
-:root:where([data-ipad]):root:root:root body .brand-front{clip-path:inset(100% 0 0);transition:clip-path .65s ease,visibility 0s .35s;visibility:visible}
-:root:where([data-ipad]):root:root:root body .brands-cell.entered .brand-front{clip-path:inset(0)}
-:root:where([data-ipad]):root:root:root body .brand-front img{width:100%;height:100%;max-width:none!important;max-height:none!important;object-fit:cover;filter:none!important;transform:none!important}
-:root:where([data-ipad]):root:root:root body .brand-logo{transform:rotateY(180deg);visibility:hidden;padding:12.5px;background:var(--background,#ededed)}
-:root:where([data-ipad]):root:root:root body .brand-logo img{width:100%;height:100%;max-width:100%!important;max-height:100%!important;object-fit:contain;transform:none!important}
-:root:where([data-ipad]):root:root:root body .brands-cell[data-brand-shape=square] .brand-logo img,:root:where([data-ipad]):root:root:root body .brands-cell[data-brand-name="BirdLife International"] .brand-logo img{width:70%;height:70%}
-:root:where([data-ipad]):root:root:root body .brands-cell[aria-pressed=true] .brand-front{visibility:hidden}
-:root:where([data-ipad]):root:root:root body .brands-cell[aria-pressed=true] .brand-logo{visibility:visible}
-:root:where([data-ipad]):root:root:root body .brands-stats{order:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12.5px;margin:75px 0 0;padding:50px 0 0;border-top:1px solid #8885;text-align:center;width:100%}
-:root:where([data-ipad]):root:root:root body .brands-stats>div{display:flex;flex-direction:column;gap:6.25px;align-items:center}
-:root:where([data-ipad]):root:root:root body .brands-stats dd{order:0;font-size:clamp(34px,8vw,88px)!important;line-height:1;margin:0}
-:root:where([data-ipad]):root:root:root body .brands-stats dt{order:1;font-size:clamp(9px,2vw,16px);line-height:1;margin:0}}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .home-journey[data-mobile-journey]{height:550svh}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow{min-height:100svh;padding:0}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__heading{position:absolute;left:11.4%;top:7%;width:77.2%;margin:0;font-size:clamp(20px,3.4vw,38px);text-align:left;line-height:1.15}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__heading em{color:var(--coral,#ed6861)}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__grid{position:absolute;inset:26% 0 12%;display:flex;gap:25px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 11.4%;border:0;touch-action:pan-x pan-y;width:100%;height:auto;box-sizing:border-box}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__grid::-webkit-scrollbar{display:none}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__slot{position:relative;inset:auto;flex:0 0 100%;width:100%!important;height:100%;margin:0!important;transform:none!important;scroll-snap-align:center;perspective:1100px}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__card{width:100%;height:100%;max-width:none;max-height:none;aspect-ratio:auto}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__turn{transform:none}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__card[aria-pressed=true] .workflow__turn{transform:rotateY(180deg)}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__number{display:none}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__front,:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__back{backface-visibility:hidden;transition:visibility 0s .325s}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__front{visibility:visible}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__back{visibility:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:25px;gap:25px;overflow:auto}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__card[aria-pressed=true] .workflow__front{visibility:hidden}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__card[aria-pressed=true] .workflow__back{visibility:visible}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__front img{width:100%;height:100%;object-fit:cover}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__front strong{position:absolute;font-size:clamp(20px,3vw,32px);color:var(--coral,#ed6861)}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__explore{display:block;position:absolute;top:25px;left:0;width:100%;text-align:center;font-size:14px;color:white;z-index:2;text-shadow:0 1px 6px #000}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__description{font-size:clamp(18px,2.4vw,28px);max-width:26ch;line-height:1.2}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__icon{width:min(75%,228px);height:min(25svh,228px);object-fit:contain}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body :is(.workflow__track,.workflow__cursor){display:none!important}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .unified-workflow-controls{position:absolute;bottom:3%;left:11.4%;right:11.4%;display:flex;justify-content:center;align-items:center;gap:25px;padding-top:12.5px;border-top:1px solid #8886}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .unified-dots{display:flex;background:#2b2b2d;padding:0 12.5px;align-items:center;border-radius:24px}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .unified-dots button{border:0;background:none;min-width:44px;height:44px;display:grid;place-items:center;padding:0;color:#fff}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .unified-dots button span{display:block;position:relative;width:8px;height:8px;background:#777;border-radius:50%;overflow:hidden;transition:width .3s}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .unified-dots button[aria-pressed=true] span{width:48px;border-radius:0;background:#aaa}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .unified-dots i{display:block;position:absolute;inset:0;transform:scaleX(0);transform-origin:left;background:white}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .unified-play{width:44px;height:44px;border:0;border-radius:50%;background:#2b2b2d;color:white}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .science-interlude{display:grid;place-items:center;position:sticky;top:0;padding:25px;background:var(--background,#ededed)}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .science-interlude p{font-size:clamp(36px,7vw,84px);line-height:1.08;max-width:16ch;text-align:center}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .science-interlude em{color:var(--coral,#ed6861);font-style:normal}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-works{position:relative;z-index:2;margin:0;padding:0;height:auto;min-height:0;background:#1c1c1c}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-works h2{position:static;display:flex;align-items:center;gap:12.5px;padding:25px;margin:0;width:100%;font-size:clamp(20px,4vw,36px);background:var(--background,#ededed)}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-works__composition{display:flex;flex-direction:column;gap:0;margin:0;padding:0}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-works__column{display:contents}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work{position:relative;inset:auto;width:100%;margin:0;padding:0;perspective:1400px;transform-origin:50% 8%;background:#1c1c1c}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work--groaqua{order:1}:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work--wwf{order:2}:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work--exo-environmental{order:3}:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work--wewhale{order:4}:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work--sperm-whales-of-dominica{order:5}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__content{padding:25px 25px 37.5px;margin:0;background:var(--background,#ededed);transform-origin:50% 10%;border-bottom:1px solid #8885}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work figcaption{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12.5px;padding:0 0 25px;margin:0}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__client{display:block}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__index{display:block;margin-bottom:12.5px;font-size:14px;font-weight:400}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__company{font-size:clamp(30px,7vw,58px);text-transform:uppercase;line-height:1.05}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__action,:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__year{position:static;transform:none;display:block;font-size:14px}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body :is(.featured-work__category,.featured-work__view,.featured-works__closing){display:none!important}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__cover{aspect-ratio:1/.92;width:100%;height:auto;margin:0 0 25px;overflow:hidden}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__cover img{width:100%;height:100%;object-fit:cover;transform:none}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__summary{display:block;font-size:clamp(16px,2vw,24px);line-height:1.3;max-width:48ch;margin:0}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands[data-brands]{position:relative!important;inset:auto;margin:0!important;height:auto;min-height:0;padding:50px 25px;background:var(--background,#ededed);z-index:3;display:block}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-layout{display:flex;flex-direction:column;gap:0;height:auto;width:100%;max-width:1400px;margin:auto;transform:none!important}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-info{display:contents}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-statement{order:0;position:static;width:100%;max-width:43ch;margin:0 0 37.5px;font-size:clamp(20px,2.7vw,32px);line-height:1.2;text-align:left}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-grid{order:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:row dense;grid-template-rows:none;grid-auto-rows:clamp(100px,27vw,180px);border-top:1px solid #8885;border-left:1px solid #8885;gap:0;height:auto;width:100%;overflow:visible;transform:none}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-column{display:contents}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-cell{grid-column:span 1;grid-row:auto;order:var(--brand-order);position:relative;width:100%;height:100%;padding:0;border:0;border-right:1px solid #8885;border-bottom:1px solid #8885;perspective:900px;background:none;overflow:visible}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-cell[data-brand-name="Havida"]{grid-column:span 2}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brand-turn{display:block;position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-cell[aria-pressed=true] .brand-turn{transform:rotateY(180deg)}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brand-front,:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brand-logo{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;backface-visibility:hidden;transition:visibility 0s .35s}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brand-front{clip-path:inset(100% 0 0);transition:clip-path .65s ease,visibility 0s .35s;visibility:visible}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-cell.entered .brand-front{clip-path:inset(0)}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brand-front img{width:100%;height:100%;max-width:none!important;max-height:none!important;object-fit:cover;filter:none!important;transform:none!important}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brand-logo{transform:rotateY(180deg);visibility:hidden;padding:12.5px;background:var(--background,#ededed)}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brand-logo img{width:100%;height:100%;max-width:100%!important;max-height:100%!important;object-fit:contain;transform:none!important}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-cell[data-brand-shape=square] .brand-logo img,:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-cell[data-brand-name="BirdLife International"] .brand-logo img{width:70%;height:70%}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-cell[aria-pressed=true] .brand-front{visibility:hidden}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-cell[aria-pressed=true] .brand-logo{visibility:visible}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-stats{order:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12.5px;margin:75px 0 0;padding:50px 0 0;border-top:1px solid #8885;text-align:center;width:100%}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-stats>div{display:flex;flex-direction:column;gap:6.25px;align-items:center}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-stats dd{order:0;font-size:clamp(34px,8vw,88px)!important;line-height:1;margin:0}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-stats dt{order:1;font-size:clamp(9px,2vw,16px);line-height:1;margin:0}}
 
 @media (orientation:portrait){
 :root:root:root:root body [data-brands-footer-handoff]{padding-top:0!important;position:relative;z-index:4}}
@@ -156,15 +156,15 @@
 :root:root:root:root body .brands-cell:is([data-brand-name="GroAqua"],[data-brand-name="MarViva"]){grid-column:span 2}:root:root:root:root body .brand-logo{padding:25px}}
 
 @media (orientation:landscape) and (min-width:701px){
-:root:where([data-ipad]):root:root:root body .featured-work__content{padding:37.5px 50px 50px}:root:where([data-ipad]):root:root:root body .featured-work__cover{aspect-ratio:1.35}
-:root:where([data-ipad]):root:root:root body .brands[data-brands]{padding-inline:50px}:root:where([data-ipad]):root:root:root body .brands-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:clamp(140px,19vw,230px)}
-:root:where([data-ipad]):root:root:root body .brands-cell:is([data-brand-name="GroAqua"],[data-brand-name="MarViva"]){grid-column:span 2}:root:where([data-ipad]):root:root:root body .brand-logo{padding:25px}}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__content{padding:37.5px 50px 50px}:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__cover{aspect-ratio:1.35}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands[data-brands]{padding-inline:50px}:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:clamp(140px,19vw,230px)}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-cell:is([data-brand-name="GroAqua"],[data-brand-name="MarViva"]){grid-column:span 2}:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brand-logo{padding:25px}}
 
 @media (orientation:portrait) and (prefers-reduced-motion:reduce), (orientation:landscape) and (any-pointer:coarse) and (prefers-reduced-motion:reduce), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:reduce){
 :root:root:root:root body .home-journey{height:auto}}
 
 @media (orientation:landscape) and (prefers-reduced-motion:reduce){
-:root:where([data-ipad]):root:root:root body .home-journey{height:auto}}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .home-journey{height:auto}}
 
 @media (orientation:portrait) and (prefers-reduced-motion:reduce){:root:root:root:root body .journey-stage{position:relative;height:auto;display:block}}
 
@@ -173,8 +173,8 @@
 :root:root:root:root body .brand-front{clip-path:none}:root:root:root:root body .brand-turn{transition:none}}
 
 @media (orientation:landscape) and (prefers-reduced-motion:reduce){
-:root:where([data-ipad]):root:root:root body .workflow{position:relative;height:100svh;visibility:visible}:root:where([data-ipad]):root:root:root body .workflow__slot{opacity:1;visibility:visible;clip-path:none}
-:root:where([data-ipad]):root:root:root body .brand-front{clip-path:none}:root:where([data-ipad]):root:root:root body .brand-turn{transition:none}}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow{position:relative;height:100svh;visibility:visible}:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__slot{opacity:1;visibility:visible;clip-path:none}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brand-front{clip-path:none}:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brand-turn{transition:none}}
 
 @media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
 :root:root:root:root body .featured-work__action{grid-column:2;grid-row:1}
@@ -185,19 +185,19 @@
 :root:root:root:root body .brands-statement.entered{animation:brand-statement-enter .7s both}}
 
 @media (orientation:landscape){
-:root:where([data-ipad]):root:root:root body .featured-work__action{grid-column:2;grid-row:1}
-:root:where([data-ipad]):root:root:root body .featured-work__client{overflow-wrap:normal}
-:root:where([data-ipad]):root:root:root body .featured-works{--background:#ededed}
-:root:where([data-ipad])[data-theme=dark]:root:root:root body .featured-works{--background:#1c1c1c}
-:root:where([data-ipad]):root:root:root body .brands-cell{cursor:pointer}
-:root:where([data-ipad]):root:root:root body .brands-statement.entered{animation:brand-statement-enter .7s both}}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__action{grid-column:2;grid-row:1}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-work__client{overflow-wrap:normal}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-works{--background:#ededed}
+:root:where(:is([data-ipad],[data-tablet-layout]))[data-theme=dark]:root:root:root body .featured-works{--background:#1c1c1c}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-cell{cursor:pointer}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .brands-statement.entered{animation:brand-statement-enter .7s both}}
 @keyframes brand-statement-enter{from{opacity:0;translate:0 15px}to{opacity:1;translate:0 0}}
 
 @media(prefers-reduced-motion:reduce){:root:root:root:root body .brands-statement{animation:none}}
 
 @media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){:root:root:root:root body .workflow__card{pointer-events:auto}}
 
-@media (orientation:landscape){:root:where([data-ipad]):root:root:root body .workflow__card{pointer-events:auto}}
+@media (orientation:landscape){:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__card{pointer-events:auto}}
 
 @media (orientation:portrait) and (max-height:740px), (orientation:portrait) and (max-width:370px), (orientation:landscape) and (any-pointer:coarse) and (max-height:740px), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (max-height:740px), (orientation:landscape) and (any-pointer:coarse) and (max-width:370px), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (max-width:370px){
 :root:root:root:root body .workflow__heading{font-size:16px;top:5%;line-height:1.15}
@@ -212,16 +212,16 @@
 :root:root:root:root body .unified-play{flex:0 0 44px}}
 
 @media (orientation:landscape) and (max-height:740px), (orientation:landscape) and (max-width:370px){
-:root:where([data-ipad]):root:root:root body .workflow__heading{font-size:16px;top:5%;line-height:1.15}
-:root:where([data-ipad]):root:root:root body .workflow__grid{top:32%;bottom:14%}
-:root:where([data-ipad]):root:root:root body .workflow__front strong{font-size:18px;bottom:12.5px}
-:root:where([data-ipad]):root:root:root body .workflow__back{padding:12.5px;gap:12.5px}
-:root:where([data-ipad]):root:root:root body .workflow__description{font-size:16px}
-:root:where([data-ipad]):root:root:root body .workflow__icon{height:15svh}
-:root:where([data-ipad]):root:root:root body .unified-workflow-controls{gap:12.5px}
-:root:where([data-ipad]):root:root:root body .unified-dots{padding-inline:6.25px}
-:root:where([data-ipad]):root:root:root body .unified-dots button{min-width:36px}
-:root:where([data-ipad]):root:root:root body .unified-play{flex:0 0 44px}}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__heading{font-size:16px;top:5%;line-height:1.15}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__grid{top:32%;bottom:14%}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__front strong{font-size:18px;bottom:12.5px}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__back{padding:12.5px;gap:12.5px}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__description{font-size:16px}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__icon{height:15svh}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .unified-workflow-controls{gap:12.5px}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .unified-dots{padding-inline:6.25px}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .unified-dots button{min-width:36px}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .unified-play{flex:0 0 44px}}
 
 /* Match the established desktop card typography and preserve its physical flip. */
 @media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){
@@ -231,11 +231,11 @@
 :root:root:root:root body .science-interlude p{position:fixed;top:50svh;left:50%;transform:translate(-50%,-50%);width:calc(100% - 50px);margin:0}
 :root:root:root:root body [data-footer-handoff]>.brands[data-brands]{position:sticky!important;top:var(--brands-sticky-top,0)}}
 @media (orientation:landscape){
-:root:where([data-ipad]):root:root:root body .workflow__front strong{left:22px;right:22px;bottom:22px;color:#fff;font-size:clamp(12px,1.05vw,17px);font-weight:700;line-height:1.2;letter-spacing:-.025em}
-:root:where([data-ipad]):root:root:root body .workflow__turn{transition:transform 650ms cubic-bezier(.22,1,.36,1);transform-style:preserve-3d}
-:root:where([data-ipad]):root:root:root body .science-interlude{height:67svh;top:16.5svh;clip-path:inset(0);z-index:1}
-:root:where([data-ipad]):root:root:root body .science-interlude p{position:fixed;top:50svh;left:50%;transform:translate(-50%,-50%);width:calc(100% - 50px);margin:0}
-:root:where([data-ipad]):root:root:root body [data-footer-handoff]>.brands[data-brands]{position:sticky!important;top:var(--brands-sticky-top,0)}}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__front strong{left:22px;right:22px;bottom:22px;color:#fff;font-size:clamp(12px,1.05vw,17px);font-weight:700;line-height:1.2;letter-spacing:-.025em}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__turn{transition:transform 650ms cubic-bezier(.22,1,.36,1);transform-style:preserve-3d}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .science-interlude{height:67svh;top:16.5svh;clip-path:inset(0);z-index:1}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .science-interlude p{position:fixed;top:50svh;left:50%;transform:translate(-50%,-50%);width:calc(100% - 50px);margin:0}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body [data-footer-handoff]>.brands[data-brands]{position:sticky!important;top:var(--brands-sticky-top,0)}}
 
 @media (orientation:portrait){
 :root:root:root:root body [data-footer-handoff]>[data-brands-footer-handoff]{padding-top:110svh!important;z-index:4}}
@@ -244,16 +244,16 @@
 :root:root:root:root body .footer[data-compact-portrait]{--footer-portrait-type:clamp(110px,32vw,320px);--footer-portrait-contact:clamp(15px,2.5vw,30px);--footer-portrait-label:clamp(11px,1.6vw,18px)}}
 
 @media (orientation:landscape){
-:root:where([data-ipad]):root:root:root body .footer[data-compact-portrait]{--footer-portrait-type:clamp(110px,32vw,320px);--footer-portrait-contact:clamp(15px,2.5vw,30px);--footer-portrait-label:clamp(11px,1.6vw,18px)}}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .footer[data-compact-portrait]{--footer-portrait-type:clamp(110px,32vw,320px);--footer-portrait-contact:clamp(15px,2.5vw,30px);--footer-portrait-label:clamp(11px,1.6vw,18px)}}
 
 @media (orientation:portrait) and (prefers-reduced-motion:reduce), (orientation:landscape) and (any-pointer:coarse) and (prefers-reduced-motion:reduce), (orientation:landscape) and (max-width:1000px) and (max-height:500px) and (prefers-reduced-motion:reduce){:root:root:root:root body .workflow__turn{transition:none}}
 
-@media (orientation:landscape) and (prefers-reduced-motion:reduce){:root:where([data-ipad]):root:root:root body .workflow__turn{transition:none}}
+@media (orientation:landscape) and (prefers-reduced-motion:reduce){:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .workflow__turn{transition:none}}
 
 @media (orientation:portrait), (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px){:root:root:root:root body .footer[data-compact-layout] .footer__mobile-message{font-size:min(clamp(110px,32vw,360px),calc((100svh - clamp(180px,28svh,300px) - clamp(44px,8svh,90px) - clamp(20px,3svh,32px)) / 3))}
 :root:root:root:root body .featured-brands,:root:root:root:root body .science-interlude{background:#fff}
 :root:root:root:root body .science-interlude{color:#1c1c1c}}
 
-@media (orientation:landscape){:root:where([data-ipad]):root:root:root body .footer[data-compact-layout] .footer__mobile-message{font-size:min(clamp(110px,32vw,360px),calc((100svh - clamp(180px,28svh,300px) - clamp(44px,8svh,90px) - clamp(20px,3svh,32px)) / 3))}
-:root:where([data-ipad]):root:root:root body .featured-brands,:root:where([data-ipad]):root:root:root body .science-interlude{background:#fff}
-:root:where([data-ipad]):root:root:root body .science-interlude{color:#1c1c1c}}
+@media (orientation:landscape){:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .footer[data-compact-layout] .footer__mobile-message{font-size:min(clamp(110px,32vw,360px),calc((100svh - clamp(180px,28svh,300px) - clamp(44px,8svh,90px) - clamp(20px,3svh,32px)) / 3))}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .featured-brands,:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .science-interlude{background:#fff}
+:root:where(:is([data-ipad],[data-tablet-layout])):root:root:root body .science-interlude{color:#1c1c1c}}

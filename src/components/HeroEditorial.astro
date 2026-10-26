@@ -20,8 +20,8 @@ const services=[0,1,2,3].map(i=>labels[`hero.service.${i}`]);
 <style>
 .hero-editorial{display:none;}
 @media(min-width:1001px) and (orientation:landscape){
- :global(html:not([data-ipad])) .hero-editorial{display:block;position:absolute;inset:0;pointer-events:none;color:#fff;--editorial-gap:var(--header-bot1-x,var(--page-gap));font-family:'Host Grotesk',sans-serif;}
- :global(html:not([data-ipad]) .hero__info){display:none;}
+ :global(html:not(:is([data-ipad],[data-tablet-layout]))) .hero-editorial{display:block;position:absolute;inset:0;pointer-events:none;color:#fff;--editorial-gap:var(--header-bot1-x,var(--page-gap));font-family:'Host Grotesk',sans-serif;}
+ :global(html:not(:is([data-ipad],[data-tablet-layout])) .hero__info){display:none;}
  .hero-services{position:absolute;right:calc(var(--editorial-gap) - var(--hero-service-shift,28px));bottom:calc(50% + 3.78vw + var(--editorial-gap));width:clamp(225px,17vw,360px);pointer-events:auto;}
  .hero-services a{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:center;padding:6px 0;color:inherit;text-decoration:none;font-size:calc(clamp(10px,.75vw,14px) + 1px);line-height:1.35;}
  .hero-services a>span:last-child{opacity:.48;transform-origin:left center;transition:opacity .35s,transform .35s;}

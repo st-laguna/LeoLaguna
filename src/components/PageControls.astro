@@ -15,9 +15,9 @@ const { home = false, project = true } = Astro.props;
   .home-link:focus-visible { outline:2px solid currentColor; outline-offset:3px; }
   :global(html[data-theme='dark']) .page-controls { color:#f7f7f7; }
   /* Shared tablet targets also apply on CV, which does not load global.css. */
-  :global(html[data-ipad]) .page-controls {gap:16px;}
-  :global(html[data-ipad]) .page-controls :global(.site-controls) {gap:12px;}
-  :global(html[data-ipad]) .page-controls :global(.theme) {width:92px;}
-  :global(html[data-ipad]) .page-controls :global(.language button) {min-width:44px;}
-  :global(html[data-ipad]) .home-link {min-width:44px;padding-inline:12px;}
+  :global(html:is([data-ipad],[data-tablet-layout])) .page-controls {gap:16px;}
+  :global(html:is([data-ipad],[data-tablet-layout])) .page-controls :global(.site-controls) {gap:12px;}
+  :global(html:is([data-ipad],[data-tablet-layout])) .page-controls :global(.theme) {width:92px;}
+  :global(html:is([data-ipad],[data-tablet-layout])) .page-controls :global(.language button) {min-width:44px;}
+  :global(html:is([data-ipad],[data-tablet-layout])) .home-link {min-width:44px;padding-inline:12px;}
 </style>

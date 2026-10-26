@@ -1,4 +1,28 @@
 import { prepareHomeEntrance } from './home-entrance.js';
+// Shared by mobile Work pages and View All dialogs.
+/** @type {KeyframeAnimationOptions & {duration:number}} */
+export const DOUBLE_SWEEP = {duration:560, easing:'cubic-bezier(.4, 0, .2, 1)', fill:'both'};
+export function doubleSweepFrames(direction, revealing) {
+  const sign = direction === 'return' ? -1 : 1;
+  return revealing
+    ? [{transform:'translateY(0%)'}, {transform:'translateY('+(-sign*100)+'%)'}]
+    : [{transform:'translateY('+(sign*100)+'%)'}, {transform:'translateY(0%)'}];
+}
+export function prepareReturnEntrance(scope = document, delay) {
+  const animations = matchMedia('(prefers-reduced-motion: reduce)').matches ? [] :
+    [...scope.querySelectorAll('.case-study__back, [data-case-back]')].filter(element => {
+      const rect = element.getBoundingClientRect();
+      return rect.width && rect.height && rect.top < innerHeight && rect.bottom > 0 && rect.left < innerWidth && rect.right > 0;
+    }).map(element => {
+      const animation = element.animate([
+        {opacity:0,translate:'0 10px',scale:'.94'},
+        {opacity:1,translate:'0 0',scale:'1'},
+      ], {duration:420,delay:delay ?? entranceDelay(element),easing:'cubic-bezier(.22, 1, .36, 1)',fill:'both'});
+      animation.pause(); return animation;
+    });
+  return {play:()=>animations.forEach(a=>a.play()),clean:()=>animations.forEach(a=>a.cancel()),finished:()=>Promise.all(animations.map(a=>a.finished.catch(()=>{})))};
+}
+
 // All timings are seconds. Insets are percentages of the viewport.
 export const SECTION_TRANSITION = {
   width: 80,

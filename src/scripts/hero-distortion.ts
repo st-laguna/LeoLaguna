@@ -11,7 +11,7 @@ export function mountHeroDistortion(hero: HTMLElement) {
   const ipad = document.documentElement.hasAttribute('data-ipad') || /iPad/.test(ua) || (/Macintosh/.test(ua) && touch);
   const mobile = !ipad && (/Android.*Mobile|iPhone|iPod/.test(ua) ||
     (touch && coarse.matches && Math.min(screen.width,screen.height) <= 600));
-  const tablet = ipad || (touch && document.documentElement.hasAttribute('data-tablet-portrait')) ||
+  const tablet = ipad || document.documentElement.hasAttribute('data-tablet-layout') || (touch && document.documentElement.hasAttribute('data-tablet-portrait')) ||
     (/Android/.test(ua) && !/Mobile/.test(ua)) || (touch && coarse.matches && !mobile);
   const limited = (nav.deviceMemory !== undefined && nav.deviceMemory < 4) ||
     (navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency < 4) || !!nav.connection?.saveData;
@@ -43,7 +43,7 @@ export function mountHeroDistortion(hero: HTMLElement) {
   }
   function sync() {
     if (ended || !initial || unavailable) return;
-    if (reduced.matches || mobile || ipad || (!tablet && !mouse.matches)) { deactivate(); return; }
+    if (reduced.matches || mobile || ipad || document.documentElement.hasAttribute('data-tablet-layout') || (!tablet && !mouse.matches)) { deactivate(); return; }
     if (!visible || document.hidden || covered) { pause?.(); return; }
     if (resume) resume(); else void init();
   }

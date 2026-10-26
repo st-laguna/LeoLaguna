@@ -3,7 +3,7 @@ import { isMobileAbout } from './about/mobileAboutDevice.js';
 import { prepareHomeEntrance } from './home-entrance.js';
 import { scrollPage, isScrollLocked, beginScrollTransition, endScrollTransition, commitScrollJump, trackScrollDestination } from './smooth-scroll';
 
-import { SECTION_TRANSITION, smoothPulse, openingClip, prepareEntrances, snapshotFrames } from './transition-motion.js';
+import { SECTION_TRANSITION, smoothPulse, openingClip, prepareEntrances, snapshotFrames, DOUBLE_SWEEP, doubleSweepFrames } from './transition-motion.js';
 export { SECTION_TRANSITION } from './transition-motion.js';
 
 let transitioning = false;
@@ -265,7 +265,7 @@ function transitionTo(changePosition: () => void, focus?: HTMLElement | null, lo
   transitioning = true;
   document.documentElement.dataset.sectionTransition = 'covering';
   window.dispatchEvent(new Event('leo:section-cover'));
-  if (!isMobileAbout() && typeof document.startViewTransition === 'function') {
+  if (typeof document.startViewTransition === 'function') {
     snapshotSequence(commit, focus, logical);
     return true;
   }
@@ -347,7 +347,41 @@ function transitionTo(changePosition: () => void, focus?: HTMLElement | null, lo
 }
 
 // Dialog destinations reuse the exact section navigation sequence and entrances.
-export function transitionDialog(change:()=>void, dialog:HTMLDialogElement) {
+export function transitionDialog(change:()=>void, dialog:HTMLDialogElement, reverse=false, principal=false, ready?:()=>Promise<void>) {
+  if (isMobileAbout()) {
+    let committed=false,complete=false,animation:Animation|undefined,resolve!:()=>void;
+    const finished=new Promise<void>(done=>resolve=done);
+    const panel=document.createElement('div');
+    if(principal)panel.dataset.principalDialog='';
+    else panel.dataset.doubleSweep=reverse?'return':'enter';
+    const principalFrames=principal?snapshotFrames():undefined;
+    const options=principal?{duration:SECTION_TRANSITION.duration*1000,fill:'both' as FillMode}:DOUBLE_SWEEP;
+    panel.setAttribute('aria-hidden','true');
+    Object.assign(panel.style,{position:'fixed',inset:'0',zIndex:'2147483647',background:principal?getComputedStyle(document.documentElement).getPropertyValue('--foreground').trim()||'#171717':'#EDEDED',pointerEvents:'auto'});
+    const commit=()=>{
+      if(committed)return; committed=true; change();
+      (dialog.open?dialog:document.documentElement).append(panel);
+    };
+    const done=()=>{if(complete)return;complete=true;animation?.cancel();panel.remove();resolve();};
+    const finish=()=>{if(complete)return;try{commit();}finally{done();}};
+    if(reduced.matches){finish();return {finished,finish,dispose:finish};}
+    (dialog.open?dialog:document.documentElement).append(panel);
+    void (async()=>{
+      try {
+        animation=panel.animate(principalFrames?.newFrames||doubleSweepFrames(reverse?'return':'enter',false),options);
+        await animation.finished;
+        if(complete)return;
+        commit();
+        await ready?.();
+        await new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
+        if(complete)return;
+        animation=panel.animate(principalFrames?.oldFrames.map(({offset,clipPath})=>({offset,clipPath}))||doubleSweepFrames(reverse?'return':'enter',true),options);
+        await animation.finished;
+      } catch { if(!complete)commit(); }
+      finally { done(); }
+    })();
+    return {finished,finish,dispose:finish};
+  }
   let resolve!:()=>void,committed=false,finishedAlready=false;
   const finished=new Promise<void>(done=>resolve=done);
   const commit=()=>{if(!committed){committed=true;change();}};
@@ -355,6 +389,30 @@ export function transitionDialog(change:()=>void, dialog:HTMLDialogElement) {
   if(!transitionTo(commit,dialog,false,done)){commit();done();}
   const finish=()=>{if(finishedAlready)return;commit();nativeTransition?.skipTransition();release();};
   return {finished,finish,dispose:finish};
+}
+
+// A menu selection leaves the dialog under the principal mask, without first
+// running the dialog's inverse double sweep and exposing its underlying section.
+export function transitionDialogSection(change:()=>void, dialog:HTMLDialogElement, url:URL) {
+  const hash=sectionHash(url.hash)||'';
+  const focus=hash?document.querySelector<HTMLElement>(hash):document.querySelector<HTMLElement>('.hero');
+  let controller:ReturnType<typeof trackScrollDestination>|undefined,scrollOwned=false;
+  const operation=transitionDialog(()=>{
+    change();
+    if(!focus)return;
+    scrollOwned=beginScrollTransition();
+    const position=()=>scrollPage(hash?sectionScrollTop(focus):0,false);
+    commitScrollJump(position);
+    controller=trackScrollDestination(position,()=>{});
+    commitSectionHistory(hash);
+  },dialog,false,true,async()=>{await controller?.ready();announceReveal();});
+  void operation.finished.then(()=>{
+    controller?.dispose();
+    if(scrollOwned)endScrollTransition();
+    delete document.documentElement.dataset.sectionTransition;
+    focusDestination(focus);
+  });
+  return operation;
 }
 
 // Capture runs before the older footer/sidebar handlers: no duplicate jump.

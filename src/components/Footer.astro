@@ -160,27 +160,27 @@ import '../styles/footer.css';
 <style>
   /* The phone's landscape closing row mirrors its portrait logo/contact content. */
   @media (max-width:1000px) and (max-height:500px) and (orientation:landscape) and (any-pointer:coarse) {
-    :global(html:not([data-ipad])) .footer {
+    :global(html:not(:is([data-ipad],[data-tablet-layout]))) .footer {
       display:grid;
       grid-template-columns:minmax(60px,14vw) minmax(0,1fr);
       column-gap:24px;
       row-gap:24px;
       padding-inline:24px;
     }
-    :global(html:not([data-ipad])) .footer .footer__marquee {
+    :global(html:not(:is([data-ipad],[data-tablet-layout]))) .footer .footer__marquee {
       grid-column:1/-1;
       grid-row:1;
       width:calc(100% + 48px);
       margin-inline:-24px;
     }
-    :global(html:not([data-ipad])) .footer .footer__heading {
+    :global(html:not(:is([data-ipad],[data-tablet-layout]))) .footer .footer__heading {
       grid-column:1;
       grid-row:2;
       margin:0;
       align-self:center;
     }
-    :global(html:not([data-ipad])) .footer .footer__name { display:none; }
-    :global(html:not([data-ipad])) .footer .footer__mark {
+    :global(html:not(:is([data-ipad],[data-tablet-layout]))) .footer .footer__name { display:none; }
+    :global(html:not(:is([data-ipad],[data-tablet-layout]))) .footer .footer__mark {
       display:block;
       position:relative;
       inset:auto;
@@ -189,7 +189,7 @@ import '../styles/footer.css';
       height:auto;
       aspect-ratio:494.6 / 277.66;
     }
-    :global(html:not([data-ipad])) .footer .footer__contact-info {
+    :global(html:not(:is([data-ipad],[data-tablet-layout]))) .footer .footer__contact-info {
       grid-column:2;
       grid-row:2;
       display:flex;
@@ -200,7 +200,7 @@ import '../styles/footer.css';
       min-width:0;
       margin:0;
     }
-    :global(html:not([data-ipad])) .footer .footer__contact-info a {
+    :global(html:not(:is([data-ipad],[data-tablet-layout]))) .footer .footer__contact-info a {
       font-size:clamp(14px,2.2vw,20px);
       overflow-wrap:anywhere;
     }
@@ -233,10 +233,10 @@ import '../styles/footer.css';
     :global(html) .footer[data-compact-portrait] .footer__compact-piece .footer__contact-info {grid-row:1;}
   }
   @media (max-width:1000px) and (max-height:500px) and (orientation:landscape) and (any-pointer:coarse) {
-    :global(html:not([data-ipad])) .footer .footer__compact-window {display:grid;grid-column:1/-1;grid-row:2;grid-template-columns:subgrid;column-gap:inherit;row-gap:0;}
-    :global(html:not([data-ipad])) .footer .footer__compact-piece {display:grid;grid-column:1/-1;grid-template-columns:subgrid;column-gap:inherit;row-gap:0;}
-    :global(html:not([data-ipad])) .footer .footer__compact-piece .footer__heading,
-    :global(html:not([data-ipad])) .footer .footer__compact-piece .footer__contact-info {grid-row:1;}
+    :global(html:not(:is([data-ipad],[data-tablet-layout]))) .footer .footer__compact-window {display:grid;grid-column:1/-1;grid-row:2;grid-template-columns:subgrid;column-gap:inherit;row-gap:0;}
+    :global(html:not(:is([data-ipad],[data-tablet-layout]))) .footer .footer__compact-piece {display:grid;grid-column:1/-1;grid-template-columns:subgrid;column-gap:inherit;row-gap:0;}
+    :global(html:not(:is([data-ipad],[data-tablet-layout]))) .footer .footer__compact-piece .footer__heading,
+    :global(html:not(:is([data-ipad],[data-tablet-layout]))) .footer .footer__compact-piece .footer__contact-info {grid-row:1;}
   }
 </style>
 <style>

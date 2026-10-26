@@ -101,20 +101,14 @@ function mount(section) {
       const root=document.documentElement;
       if(!root.hasAttribute('data-about-loading'))return;
       await document.fonts.ready;
-      if(root.hasAttribute('data-page-transition'))await new Promise(resolve=>{
-        on(window,'leo:page-reveal',resolve,{once:true});
-        abort.signal.addEventListener('abort',resolve,{once:true});
-      });
       if(destroyed)return;
       clearTimeout(window.__aboutLoadingFallback);
-      // The opaque loader wipe owns the reveal, including the scene beneath it.
-      const logoWipe=!!document.querySelector('.about-loading-indicator[data-loader-visible]');
-      const content=section.hasAttribute('data-editorial') ? section.querySelector('.about__scene-shell') : section.closest('[data-page-content]');
-      if(content&&!reduced&&!logoWipe)gsap.set(content,{opacity:0});
       root.removeAttribute('data-about-loading');
-      // One entrance owns the complete interface; the scene is already rendered.
+      // Signal readiness while the navigation mask still covers the scene.
+      // Loading the scene must never wait for the mask that is waiting for it.
+      root.setAttribute('data-about-ready','');
       enter();
-      if(content&&!reduced&&!logoWipe)tween(content,{opacity:1,duration:.45,ease:'power2.out',onComplete:()=>content.style.removeProperty('opacity')});
+      window.dispatchEvent(new Event('leo:about-ready'));
     })();
     return initialReveal;
   }
@@ -124,9 +118,8 @@ function mount(section) {
     editorial?.enter();
     for (const animation of [...animations]) animation.kill();
     leaving = false;
-    const logoWipe=!!document.querySelector('.about-loading-indicator[data-loader-visible]');
     boxes.forEach((box, index) => {
-      if(logoWipe){gsap.set(box,{autoAlpha:1,y:0});return;}
+      if(document.documentElement.hasAttribute('data-page-transition')){gsap.set(box,{autoAlpha:1,y:0});return;}
       gsap.set(box, { autoAlpha: reduced ? 1 : 0, y: reduced ? 0 : 18 });
       tween(box, {
         autoAlpha: 1,
@@ -253,12 +246,7 @@ function mount(section) {
         starting = false;
         return;
       }
-      if (document.documentElement.hasAttribute('data-page-transition')) {
-        await new Promise(resolve => {
-          on(window, 'leo:page-reveal', resolve, {once:true});
-          abort.signal.addEventListener('abort', resolve, {once:true});
-        });
-      }
+
       if (destroyed || leaving) { starting = false; return; }
       scene = createAboutScene(section, {
         onItem(item) {
