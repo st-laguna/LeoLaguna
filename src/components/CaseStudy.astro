@@ -57,7 +57,7 @@ const previewSize=await dimensions(preview);
           {column.map(index=>{const image=images[index];return (
           <figure class="case-study__image" data-image-slot={index+1} hidden={!image} style={image ? '--image-ratio:'+image.width/image.height+(image.kind==='video' && images[0] ? ';--video-reference-ratio:'+images[0].width/images[0].height : '') : undefined}>
             {image?.kind==='image' && <img src={index===0?image.src:undefined} data-case-src={index===0?undefined:image.src} width={image.width} height={image.height} style={'--image-ratio:'+image.width/image.height} alt={project.client+' — '+String(index+1).padStart(2,'0')} loading="eager" fetchpriority={index===0?'high':'low'} decoding="async" />}
-            {image?.kind==='video' && <video data-case-video src={image.src} width={image.width} height={image.height} style={'--image-ratio:'+image.width/image.height} muted loop playsinline preload="none" aria-label={project.client+' — animation'} />}
+            {image?.kind==='video' && <video data-case-video data-case-poster={image.src.replace('/videos/','/videos/mini/').replace(/\.webm$/i,'.webp')} src={image.src} width={image.width} height={image.height} style={'--image-ratio:'+image.width/image.height} muted loop playsinline preload="none" aria-label={project.client+' — animation'} />}
           </figure>
           );})}
           </div>

@@ -7,6 +7,7 @@ if(section){
  const buttons=Array.from(nav.querySelectorAll<HTMLButtonElement>('[data-service-preview]'));
  const video=nav.querySelector<HTMLVideoElement>('video')!;
  // Hover animates only its own offsets; CSS adds them to the scroll offset.
+ const reduced=matchMedia('(prefers-reduced-motion:reduce)');
  const hoverQuery=matchMedia('(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)');
  let hoverEnabled=false;
  const hoverItems=buttons.map(button=>{
@@ -35,10 +36,10 @@ if(section){
   button.addEventListener('pointercancel',leave);
   return {reset,dispose:()=>{reset();size.disconnect();button.removeEventListener('pointerenter',move);button.removeEventListener('pointermove',move);button.removeEventListener('pointerleave',leave);button.removeEventListener('pointercancel',leave);}};
  });
- let visible=false;
+ let visible=false,near=false;
  let initialFrameRequested=false;
  const prepareInitialFrame=()=>{
-  if(initialFrameRequested||video.readyState<HTMLMediaElement.HAVE_METADATA)return;
+  if(reduced.matches||initialFrameRequested||video.readyState<HTMLMediaElement.HAVE_METADATA)return;
   initialFrameRequested=true;
   // Decode a visible frame without playing; never rewind after activation.
   if(video.paused&&video.currentTime===0)video.currentTime=.01;
@@ -54,7 +55,7 @@ if(section){
    section.toggleAttribute('data-service-preview-hover',hoverEnabled);
    if(!hoverEnabled)hoverItems.forEach(item=>item.reset());
   }
-  if(enabled&&!video.getAttribute('src')){
+  if(enabled&&near&&!reduced.matches&&!video.getAttribute('src')){
    video.preload='auto';
    video.src=video.dataset.src!;
    video.load();
@@ -62,12 +63,14 @@ if(section){
   const active=Number(section.dataset.current||0);
   buttons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===active)));
   nav.style.setProperty('--service-preview-progress',String((active+1)/4));
-  if(enabled&&visible&&active===3&&!document.hidden&&!document.querySelector<HTMLDialogElement>('#projects-expanded')?.open){if(video.paused)void video.play().catch(()=>{});}else video.pause();
+  if(!reduced.matches&&enabled&&visible&&active===3&&!document.hidden&&!document.querySelector<HTMLDialogElement>('#projects-expanded')?.open){if(video.paused)void video.play().catch(()=>{});}else video.pause();
  };
  buttons.forEach((button,i)=>button.addEventListener('click',()=>window.dispatchEvent(new CustomEvent('leo:project-jump',{detail:i}))));
  const observer=new MutationObserver(sync);observer.observe(section,{attributes:true,attributeFilter:['data-current','data-horizontal']});observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-ipad','data-about-mobile','data-large-tablet-landscape']});const dialog=document.querySelector('#projects-expanded');if(dialog)observer.observe(dialog,{attributes:true,attributeFilter:['open']});
  const intersection=new IntersectionObserver(entries=>{visible=entries[entries.length-1].isIntersecting;sync();});intersection.observe(nav);
+ const proximity=new IntersectionObserver(entries=>{near=entries[entries.length-1].isIntersecting;sync();},{rootMargin:'400px 0px'});proximity.observe(nav);
+ reduced.addEventListener('change',sync);
  hoverQuery.addEventListener('change',sync);
  window.addEventListener('resize',sync);document.addEventListener('visibilitychange',sync);sync();
- if(import.meta.hot)import.meta.hot.dispose(()=>{hoverQuery.removeEventListener('change',sync);hoverItems.forEach(item=>item.dispose());section.removeAttribute('data-service-preview-hover');observer.disconnect();intersection.disconnect();video.removeEventListener('loadedmetadata',prepareInitialFrame);video.removeEventListener('loadeddata',prepareInitialFrame);video.removeEventListener('canplay',prepareInitialFrame);window.removeEventListener('resize',sync);document.removeEventListener('visibilitychange',sync);video.pause();});
+ if(import.meta.hot)import.meta.hot.dispose(()=>{reduced.removeEventListener('change',sync);proximity.disconnect();hoverQuery.removeEventListener('change',sync);hoverItems.forEach(item=>item.dispose());section.removeAttribute('data-service-preview-hover');observer.disconnect();intersection.disconnect();video.removeEventListener('loadedmetadata',prepareInitialFrame);video.removeEventListener('loadeddata',prepareInitialFrame);video.removeEventListener('canplay',prepareInitialFrame);window.removeEventListener('resize',sync);document.removeEventListener('visibilitychange',sync);video.pause();});
 }

@@ -7,6 +7,8 @@ import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import { scrollPage, isCommittingScrollJump } from './smooth-scroll';
 import { registerScrollStops } from './scroll-pacing';
 gsap.registerPlugin(ScrollTrigger);
+// GSAP exposes this live runtime flag, but omits it from its declarations.
+const refreshState=ScrollTrigger as typeof ScrollTrigger & {readonly isRefreshing:boolean};
 const root=document.querySelector<HTMLElement>('.home-journey');
 if(root){
   const host=root;
@@ -66,7 +68,7 @@ if(root){
   let headerLogoMotion:gsap.core.Tween|undefined;
   function showWorkflowLogo(active:boolean){
     // Refresh temporarily rewinds scrub state; preserve the live entrance state.
-    if(ScrollTrigger.isRefreshing)return;
+    if(refreshState.isRefreshing)return;
     // The mark persists after the journey gives way to the remaining sections.
     if(!active && scrollY>=host.offsetTop+host.offsetHeight-innerHeight)active=true;
     if(active===headerLogoActive)return;
@@ -175,7 +177,7 @@ if(root){
     let refreshFrame=0;
     function render(){
       if(!active || !width)return;
-      if(ipad&&ScrollTrigger.isRefreshing){
+      if(ipad&&refreshState.isRefreshing){
         if(!refreshFrame)refreshFrame=requestAnimationFrame(()=>{refreshFrame=0;render();});
         return;
       }
@@ -395,6 +397,7 @@ slots.forEach((slot, i) => {
     const cards=slots.map(slot=>slot.querySelector<HTMLButtonElement>('.workflow__card')!);
     const state={p:0};
     let cardsReady=false;
+    let slotOffsets:number[]=[];
     let width=0,height=0,target={x:0,y:0,w:0,h:0};
     let frame:ReturnType<typeof getHeroFrame>;
     let lastPortal:number|undefined;
@@ -408,6 +411,8 @@ slots.forEach((slot, i) => {
       frame=getHeroFrame(width,height);
       lastPortal=undefined; // A resize changes the path even at the same progress.
       const w=cards[0].offsetWidth,h=cards[0].offsetHeight;
+      const firstSlotLeft=slots[0].offsetLeft;
+      slotOffsets=slots.map(slot=>slot.offsetLeft-firstSlotLeft);
       target={x:grid.offsetLeft+(grid.clientWidth-w)/2,y:grid.offsetTop+(grid.clientHeight-h)/2,w,h};
       if(isMobileJourneyLayout())target={x:grid.offsetLeft+(grid.clientWidth-w)/2,y:grid.offsetTop,w,h};
       if(tablet)cover.setAttribute('viewBox',`0 0 ${width} ${height}`);
@@ -487,7 +492,7 @@ slots.forEach((slot, i) => {
       workflow.style.visibility=p>.22?'visible':'hidden';
       showWorkflowLogo(p>=cardsStart+.16*span*overlap);
       const ready=isMobileJourneyLayout() && (p>=.77 || (cardsReady && p>=.54));
-      if(cardsReady && !ready && !ScrollTrigger.isRefreshing)workflow.dispatchEvent(new Event('workflow:reset'));
+      if(cardsReady && !ready && !refreshState.isRefreshing)workflow.dispatchEvent(new Event('workflow:reset'));
       cardsReady=ready;
       workflow.inert=!ready;
       workflow.toggleAttribute('data-cue-ready',isMobileJourneyLayout() && p>=.77);
@@ -520,7 +525,7 @@ slots.forEach((slot, i) => {
           slot.style.visibility=(i===0?p>=.66:spread>0)?'visible':'hidden';
           slot.style.opacity='1';
           slot.style.clipPath='none';
-          slot.style.translate=`${i===0?0:-(slot.offsetLeft-slots[0].offsetLeft)*(1-spread)}px 0`;
+          slot.style.translate=`${i===0?0:-slotOffsets[i]*(1-spread)}px 0`;
           slot.style.zIndex=String(10-i);
         });
         if(ready&&grid.style.scrollSnapType==='none'){

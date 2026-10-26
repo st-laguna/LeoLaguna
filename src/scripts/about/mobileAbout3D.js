@@ -14,6 +14,7 @@ export function mountMobileAbout3D(section,getScene,on,reduced){
  const menu=q('[data-menu-context="about"][data-shared-menu-toggle]');menu.disabled=false;
  let open=false,selected=null,ready=false,version=0,timer,animation,framing;
  let targetOpen=false,panelTimeline;
+ let panelProgress=0,panelWidth=panel.offsetWidth;
  const statusChrome=q('[data-mobile-3d-status]'),hints=q('[data-mobile-3d-hints]'),dial=q('[data-shadow-controls]');
  const chrome=[statusChrome,hints,dial].filter(Boolean);
  const roller=q('[data-mobile-3d-roller]');let options=[null],rollTween,busy=true,rollDirection=0;
@@ -35,7 +36,7 @@ export function mountMobileAbout3D(section,getScene,on,reduced){
   targetOpen=value;panelTimeline?.kill();framing?.kill();
   toggle.disabled=true;
   chrome.forEach(node=>{node.inert=true;node.setAttribute('aria-hidden','true');});
-  const state={value:parseFloat(section.style.getPropertyValue('--mobile-panel-progress'))||0};
+  const state={value:panelProgress};
   const commit=()=>{
     open=value;syncViewerControls();section.toggleAttribute('data-mobile-panel-open',open);
     panel.inert=!open;panel.setAttribute('aria-hidden',String(!open));
@@ -45,7 +46,8 @@ export function mountMobileAbout3D(section,getScene,on,reduced){
     toggle.textContent=open?'←':'→';
     section.dataset.mobilePanelPhase=open?'opening':'closing';
   };
-  const update=()=>{section.style.setProperty('--mobile-panel-progress',String(state.value));getScene()?.setPanelOffset(panel.offsetWidth/innerWidth/2*state.value);};
+  // Only these controls consume progress; keep it out of the section's subtree.
+  const update=()=>{panelProgress=state.value;const progress=String(panelProgress);toggle.style.setProperty('--mobile-panel-progress',progress);statusChrome.style.setProperty('--mobile-panel-progress',progress);getScene()?.setPanelOffset(panelWidth/innerWidth/2*panelProgress);};
   const finish=()=>{
     toggle.disabled=false;section.dataset.mobilePanelPhase=value?'open':'closed';
     if(!value){chrome.forEach(node=>{node.inert=false;node.removeAttribute('aria-hidden');});syncViewerControls();}
@@ -96,7 +98,7 @@ export function mountMobileAbout3D(section,getScene,on,reduced){
  }
  const fitHeading=()=>{const line=title.querySelector('span');line.style.transform='none';line.style.transform=`scaleX(${Math.min(1,(title.clientWidth-36)/line.scrollWidth)})`;};
  const language=new MutationObserver(fitHeading);language.observe(title,{subtree:true,childList:true,characterData:true});
- const resize=new ResizeObserver(()=>{fitHeading();getScene()?.setPanelOffset(open?panel.offsetWidth/innerWidth/2:0)});resize.observe(panel);
+ const resize=new ResizeObserver(()=>{panelWidth=panel.offsetWidth;fitHeading();getScene()?.setPanelOffset(open?panelWidth/innerWidth/2:0)});resize.observe(panel);
  on(q('[data-mobile-3d-image]'),'error',()=>q('[data-mobile-3d-image]').hidden=true);
- return {select,enter(){},ready(interactive){ready=interactive>0;const choices=[...q('[data-explore]').querySelectorAll('button')];options=[null,...choices.filter(b=>b.dataset.id==='laptop'),...choices.filter(b=>!['laptop','morena'].includes(b.dataset.id)),...choices.filter(b=>b.dataset.id==='morena')];updateRoll();setRollBusy(false);clearTimeout(timer);const schedule=()=>{timer=setTimeout(()=>{if(version||!ready)return;const opening=setOpen(true);if(!reduced)opening?.fromTo(bio.children,{opacity:0,y:14},{opacity:1,y:0,duration:.65,stagger:.1,ease:'power3.out'},.4);},reduced?0:1800);};if(document.documentElement.hasAttribute('data-page-transition'))on(window,'leo:page-reveal',schedule,{once:true});else schedule();if(!ready)setOpen(true);},status(text){section.toggleAttribute('data-mobile-3d-busy',/Loading|Preparing|Inspecting|Opening/i.test(text));if(/unavailable|could not/i.test(text)&&!ready)setOpen(true);},settled(){section.removeAttribute('data-mobile-3d-busy');setRollBusy(false);},pause(){},zoom(){},clock(){},dispose(){version++;clearTimeout(timer);animation?.kill();framing?.kill();panelTimeline?.kill();gsap.set([...chrome,roller,...hints.children],{clearProps:'opacity,visibility,transform,clipPath'});chrome.forEach(node=>{node.inert=false;node.removeAttribute('aria-hidden');});delete section.dataset.mobilePanelPhase;rollTween?.kill();resize.disconnect();language.disconnect();moves.reverse().forEach(f=>f());bio.replaceChildren();section.removeAttribute('data-mobile-3d');section.removeAttribute('data-mobile-panel-open');section.style.removeProperty('--mobile-panel-progress');}};
+ return {select,enter(){},ready(interactive){ready=interactive>0;const choices=[...q('[data-explore]').querySelectorAll('button')];options=[null,...choices.filter(b=>b.dataset.id==='laptop'),...choices.filter(b=>!['laptop','morena'].includes(b.dataset.id)),...choices.filter(b=>b.dataset.id==='morena')];updateRoll();setRollBusy(false);clearTimeout(timer);const schedule=()=>{timer=setTimeout(()=>{if(version||!ready)return;const opening=setOpen(true);if(!reduced)opening?.fromTo(bio.children,{opacity:0,y:14},{opacity:1,y:0,duration:.65,stagger:.1,ease:'power3.out'},.4);},reduced?0:1800);};if(document.documentElement.hasAttribute('data-page-transition'))on(window,'leo:page-reveal',schedule,{once:true});else schedule();if(!ready)setOpen(true);},status(text){section.toggleAttribute('data-mobile-3d-busy',/Loading|Preparing|Inspecting|Opening/i.test(text));if(/unavailable|could not/i.test(text)&&!ready)setOpen(true);},settled(){section.removeAttribute('data-mobile-3d-busy');setRollBusy(false);},pause(){},zoom(){},clock(){},dispose(){version++;clearTimeout(timer);animation?.kill();framing?.kill();panelTimeline?.kill();gsap.set([...chrome,roller,...hints.children],{clearProps:'opacity,visibility,transform,clipPath'});chrome.forEach(node=>{node.inert=false;node.removeAttribute('aria-hidden');});delete section.dataset.mobilePanelPhase;rollTween?.kill();resize.disconnect();language.disconnect();moves.reverse().forEach(f=>f());bio.replaceChildren();section.removeAttribute('data-mobile-3d');section.removeAttribute('data-mobile-panel-open');section.style.removeProperty('--mobile-panel-progress');toggle.style.removeProperty('--mobile-panel-progress');statusChrome.style.removeProperty('--mobile-panel-progress');}};
 }

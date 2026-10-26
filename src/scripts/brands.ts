@@ -8,8 +8,9 @@ import { registerScrollStops } from './scroll-pacing';
 import { mountBrandsFooterHandoff } from './brands-footer-handoff';
 import { centerBrandComposition } from './brand-centering';
 gsap.registerPlugin(ScrollTrigger);
-const section=document.querySelector<HTMLElement>('[data-brands]');
-if(section){
+const brandsSection=document.querySelector<HTMLElement>('[data-brands]');
+if(brandsSection){
+  const section=brandsSection;
   const removeMobileReveal=mountMobileBrandsReveal(section);
   const removeFooterHandoff=mountBrandsFooterHandoff(section);
   const removeCentering=centerBrandComposition(section);
@@ -90,14 +91,14 @@ if(section){
       // Pause the existing presentation between phases until the cover is 70% gone.
       presentation.addPause(informationStart);
       presentation.fromTo(section!.querySelectorAll('.brands-stats > div, .brands-statement'),{translate:'0 12px',clipPath:'inset(100% 0 0)'},{translate:'0 0',clipPath:'inset(0% 0 0)',duration:1,stagger:.14,ease:'power3.inOut'},informationStart);
-      informationTweens.push({tween:presentation.recent(),offset:0});
+      informationTweens.push({tween:presentation.recent() as gsap.core.Tween,offset:0});
       counters.forEach((element,index)=>{
         const state={value:0},goal=Number(element.dataset.countTo);
         presentation.fromTo(state,{value:0},{value:goal,duration:1.6,ease:'power2.inOut',onUpdate:()=>{
           const text=String(Math.round(state.value));
           if(element.textContent!==text)element.textContent=text;
         }},informationStart+index*.12);
-        informationTweens.push({tween:presentation.recent(),offset:index*.12});
+        informationTweens.push({tween:presentation.recent() as gsap.core.Tween,offset:index*.12});
       });
       let phase=0;
       function reveal(progress:number){

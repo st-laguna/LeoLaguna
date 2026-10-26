@@ -2,6 +2,7 @@ const videos = Array.from(
   document.querySelectorAll<HTMLVideoElement>('[data-auto-video]')
 );
 
+const reduced = matchMedia('(prefers-reduced-motion:reduce)');
 const visibility = new Map<HTMLVideoElement, number>();
 
 function updatePlayback() {
@@ -12,7 +13,7 @@ function updatePlayback() {
     const allowed = !modal || modal.contains(video);
     // Keep the gallery's existing pause in force throughout its exit animation.
     const closing = !!video.closest('[data-media-closing]');
-    const shouldPlay = visible && allowed && !closing && !document.hidden;
+    const shouldPlay = !reduced.matches && visible && allowed && !closing && !document.hidden;
 
     if (shouldPlay) {
       video.muted = true;
@@ -51,9 +52,11 @@ document.querySelectorAll('dialog').forEach(dialog => {
 });
 
 document.addEventListener('visibilitychange', updatePlayback);
+reduced.addEventListener('change', updatePlayback);
 
 if (import.meta.hot) {
   import.meta.hot.dispose(() => {
+    reduced.removeEventListener('change', updatePlayback);
     observer.disconnect();
     dialogs.disconnect();
     document.removeEventListener('visibilitychange', updatePlayback);

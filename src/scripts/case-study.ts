@@ -26,6 +26,7 @@ if(host){
   if(import.meta.hot)import.meta.hot.dispose(()=>images.disconnect());
 }
 if(host&&rail){
+  const casePage=host;
   const media=gsap.matchMedia();
   const endPanel=host.querySelector<HTMLElement>('.case-study__end');
   // Safari can expose the document canvas while bouncing the coral end panel.
@@ -39,7 +40,7 @@ if(host&&rail){
   function endEntrance(){
     if(!endPanel||matchMedia('(prefers-reduced-motion:reduce)').matches)return null;
     const items=endPanel.querySelectorAll<HTMLElement>('.case-study__others > span, .case-study__others > a > span:first-child, .case-study__next-label, .case-study__next-heading > *, .case-study__preview > img, .case-study__next-meta');
-    return gsap.timeline({paused:true,onUpdate:()=>host.dispatchEvent(new Event('case:reveal-frame'))}).fromTo(items,{y:28,clipPath:'inset(100% 0 0 0)'},{y:0,clipPath:'inset(0% 0 0 0)',duration:.9,stagger:.12,ease:'power3.inOut'});
+    return gsap.timeline({paused:true,onUpdate:()=>casePage.dispatchEvent(new Event('case:reveal-frame'))}).fromTo(items,{y:28,clipPath:'inset(100% 0 0 0)'},{y:0,clipPath:'inset(0% 0 0 0)',duration:.9,stagger:.12,ease:'power3.inOut'});
   }
   media.add('all',()=>{
     host.setAttribute('data-horizontal','');
@@ -196,13 +197,22 @@ const video=host?.querySelector<HTMLVideoElement>('[data-case-video]');
 if(video){
   let visible=false,pending=false,suspended=false;
   const events=new AbortController();
+  const reduced=matchMedia('(prefers-reduced-motion:reduce)');
+  const originalPoster=video.getAttribute('poster');
   const allowed=()=>visible&&!document.hidden&&!suspended;
   function update(){
+    video!.controls=reduced.matches;
+    if(reduced.matches&&video!.dataset.casePoster)video!.poster=video!.dataset.casePoster;
+    else if(originalPoster===null)video!.removeAttribute('poster');
     if(!allowed()){video!.pause();return;}
+    // Reduced motion permits explicit native controls, never autoplay.
+    if(reduced.matches)return;
     if(video!.paused&&!pending){pending=true;void video!.play().catch(()=>{}).finally(()=>{pending=false;if(!allowed())video!.pause();});}
   }
   const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;update();});
   observer.observe(video);
+  reduced.addEventListener('change',()=>{if(reduced.matches)video!.pause();update();},{signal:events.signal});
+  update();
   document.addEventListener('visibilitychange',update,{signal:events.signal});
   window.addEventListener('pagehide',()=>{suspended=true;update();},{signal:events.signal});
   window.addEventListener('pageshow',()=>{suspended=false;update();},{signal:events.signal});

@@ -45,6 +45,7 @@ export function smoothPulse(progress, start, end) {
   return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
+/** @param {{width:number,startTop:number,startBottom:number}} geometry */
 export function openingClip(progress, geometry = SECTION_TRANSITION) {
   const rise = smoothPulse(progress, 0, 0.76);
   const spread = smoothPulse(progress, 0.38, 1);
