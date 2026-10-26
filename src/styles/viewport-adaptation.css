@@ -1,0 +1,27 @@
+/* Geometry fallbacks reuse approved compositions; no model-specific presentation. */
+html {text-size-adjust:100%;-webkit-text-size-adjust:100%;}
+html[data-layout-family] body {min-width:0;}
+html[data-layout-family] :is(button,a,input,select,textarea):focus-visible {outline:2px solid var(--button-coral,#ef6c65);outline-offset:3px;}
+/* Only the newly covered intermediate band: never retune approved endpoints. */
+@media(orientation:landscape) and (min-width:701px) and (max-width:1000px) and (min-height:501px) {
+  html[data-layout-family="tablet"] body [data-shared-menu-toggle][data-menu-compact] {display:flex!important;}
+  html[data-layout-family="tablet"] .case-study .case-study__metadata dd {overflow-wrap:break-word;}
+}
+/* Small height is an accessibility constraint, not a fourth visual design. */
+@media(max-height:360px) {
+  html[data-about-mobile] body .mobile-3d-panel {overflow-y:auto;}
+  html[data-about-mobile] body [data-shadow-controls] {width:96px;}
+  html[data-about-mobile] body .mobile-3d-hints {font-size:9px;gap:3px;bottom:8px;}
+  html[data-about-mobile] body .mobile-3d-status {top:10px;}
+}
+@media(forced-colors:active) {
+  :is(.case-study__circle,.mobile-3d-toggle,.workflow__tap-cue) {forced-color-adjust:auto;mix-blend-mode:normal!important;}
+}
+
+/* A fixed-width information panel can reflow its own content independently. */
+html[data-about-mobile] .mobile-3d-panel {container-type:inline-size;}
+@container(max-width:220px) {
+  .mobile-3d-panel header {gap:6px;padding-inline:12px;}
+  .mobile-3d-panel header h2 {min-width:0;font-size:18px;overflow-wrap:anywhere;}
+  .mobile-3d-panel header button {flex:none;}
+}

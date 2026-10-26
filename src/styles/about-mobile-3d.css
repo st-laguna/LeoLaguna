@@ -83,3 +83,6 @@ html[data-theme] body .about[data-editorial] .about-editorial .action-pill[href=
 html[data-about-mobile] body .about[data-mobile-panel-open] [data-return] {display:none;}
 html[data-about-mobile]:has([data-mobile-panel-open]) .site-cursor.is-about-scene,
 html[data-about-mobile]:has([data-mobile-panel-open]) .site-cursor-ring {display:none;}
+
+html[data-about-mobile] .about[data-mobile-panel-phase] [data-shadow-controls] {transform-origin:50% 50%;}
+html[data-about-mobile] .mobile-3d-toggle:disabled {cursor:wait;}

@@ -30,6 +30,13 @@ export function mountIPadWorkflow(section:HTMLElement,cards:HTMLButtonElement[],
   if(rotationPending||orientation.matches!==portrait)return;
   const center=grid.scrollLeft+grid.clientWidth/2;
   active=cards.reduce((best,c,i)=>Math.abs(c.parentElement!.offsetLeft+c.parentElement!.clientWidth/2-center)<Math.abs(cards[best].parentElement!.offsetLeft+cards[best].parentElement!.clientWidth/2-center)?i:best,0);
+  cards.forEach((card,index)=>{
+    const ideal=card.parentElement!.offsetLeft+card.parentElement!.clientWidth/2-grid.clientWidth/2;
+    const settled=Math.max(0,Math.min(grid.scrollWidth-grid.clientWidth,ideal));
+    const delta=Math.abs(grid.scrollLeft-settled);
+    const centered=index===active&&delta<Math.max(6,grid.clientWidth*.025);
+    card.toggleAttribute('data-cue-centered',centered);
+  });
   controls.sync();remember();
  }
  cards.forEach((card,i)=>{
@@ -63,5 +70,5 @@ export function mountIPadWorkflow(section:HTMLElement,cards:HTMLButtonElement[],
  const cueObserver=new IntersectionObserver(([entry])=>section.toggleAttribute('data-cue-visible',entry.isIntersecting&&!section.inert),{threshold:.3});cueObserver.observe(section);
  const cueState=new MutationObserver(()=>section.toggleAttribute('data-cue-visible',!section.inert&&section.getBoundingClientRect().bottom>0&&section.getBoundingClientRect().top<innerHeight));cueState.observe(section,{attributes:true,attributeFilter:['inert']});
  sync();
- return()=>{cueObserver.disconnect();cueState.disconnect();clearTimeout(restoreTimer);controls.dispose();events.abort();resize.disconnect();host.remove()};
+ return()=>{cueObserver.disconnect();cueState.disconnect();clearTimeout(restoreTimer);controls.dispose();events.abort();resize.disconnect();host.remove();cards.forEach(card=>card.removeAttribute('data-cue-centered'))};
 }

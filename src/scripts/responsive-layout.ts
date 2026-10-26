@@ -1,13 +1,13 @@
-import {tabletLandscapeMedia} from './tablet-layout.js';
+import {tabletLandscapeMedia, phoneLayoutMedia} from './tablet-layout.js';
 // Shared composition for Workflow, interludes, Featured Works and footer.
 // iPadOS may expose a fine pointer when a trackpad is connected.
 const ipadLayout = typeof document !== 'undefined' && document.documentElement.hasAttribute('data-ipad');
-export const mobileLandscapeMedia = ipadLayout ? '(orientation:landscape)' : tabletLandscapeMedia + ', (orientation:landscape) and (any-pointer:coarse), (orientation:landscape) and (max-width:1000px) and (max-height:500px)';
+export const mobileLandscapeMedia = ipadLayout ? '(orientation:landscape)' : tabletLandscapeMedia + ', (orientation:landscape) and (max-width:700px), (orientation:landscape) and (max-width:1000px) and (max-height:500px)';
 export const mobileJourneyMedia = '(orientation:portrait), ' + mobileLandscapeMedia;
 export const mobileJourneyMotionMedia = mobileJourneyMedia.split(', ').map(query => query + ' and (prefers-reduced-motion:no-preference)').join(', ');
 export const isMobileJourneyLayout = () => matchMedia(mobileJourneyMedia).matches;
 export const isTabletPortrait = () => document.documentElement.hasAttribute('data-tablet-portrait');
-export const phoneMedia = '(max-width:700px), (max-width:1000px) and (max-height:500px)';
+export const phoneMedia = phoneLayoutMedia;
 export const phonePortraitMedia = '(max-width:700px) and (orientation:portrait)';
 export const isPhonePortrait = () => isPhoneViewport() && matchMedia(phonePortraitMedia).matches;
 export const isPhoneViewport = () => !document.documentElement.hasAttribute('data-ipad') && !isTabletPortrait() && matchMedia(phoneMedia).matches;

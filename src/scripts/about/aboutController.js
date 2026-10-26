@@ -45,7 +45,7 @@ function mount(section) {
   const editorial=mobile3D?mountMobileAbout3D(section,()=>scene,on,reduced):mountEditorialAbout(section,()=>scene,on,reduced);
   const desktopQuery=matchMedia(editorialMedia);
   on(desktopQuery,'change',()=>{dispose();mounted.set(section,mount(section));});
-  on(window,'leo:orientation-ready',()=>{if(!mobile3D&&!!editorial!==isEditorialAbout()){dispose();mounted.set(section,mount(section));}});
+  on(window,'leo:orientation-ready',()=>{if(mobile3D!==isMobileAbout()||(!mobile3D&&!!editorial!==isEditorialAbout())){dispose();mounted.set(section,mount(section));}});
 
   // A remount (for example during HMR) may reuse the same HTML nodes.
   explore.replaceChildren();

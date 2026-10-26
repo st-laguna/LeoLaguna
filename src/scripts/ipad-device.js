@@ -8,7 +8,7 @@
   let timer;
   function apply() {
     root.toggleAttribute('data-ipad-portrait', ipad && portrait.matches);
-    root.toggleAttribute('data-tablet-portrait', tablet.matches || ipad&&portrait.matches);
+    root.toggleAttribute('data-tablet-portrait', (root.dataset.layoutFamily==='tablet'||ipad)&&portrait.matches);
   }
   function resize() {
     apply();
@@ -27,4 +27,5 @@
   tablet.addEventListener('change', resize);
   window.addEventListener('DOMContentLoaded', apply, {once:true});
   window.addEventListener('pageshow', apply);
+  window.addEventListener('leo:layout-change',apply);
 })();

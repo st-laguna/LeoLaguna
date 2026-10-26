@@ -92,6 +92,75 @@ function panelScroll(panel:HTMLElement){
   for(let i=0;i<20;i++){const middle=(low+high)/2;if(ease(middle)<desired)low=middle;else high=middle;}
   return trigger.start+(low+high)/2*(trigger.end-trigger.start);
 }
+// The cover's advance control moves to the first real project panel.
+const introNext=host?.querySelector<HTMLButtonElement>('[data-case-intro-next]');
+let introScrollMotion:gsap.core.Tween|undefined;
+const advanceIntroduction=()=>{
+  const panel=host?.querySelector<HTMLElement>('[data-case-model], .case-study__images');
+  if(!panel)return;
+  introScrollMotion?.kill();
+  const target=panelScroll(panel);
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){scrollPage(target,false);return;}
+  const position={y:scrollY};
+  introScrollMotion=gsap.to(position,{y:target,duration:1.2,ease:'power3.inOut',onUpdate:()=>scrollPage(position.y,false)});
+};
+introNext?.addEventListener('click',advanceIntroduction);
+if(import.meta.hot)import.meta.hot.dispose(()=>{introNext?.removeEventListener('click',advanceIntroduction);introScrollMotion?.kill();});
+// Prefer balanced phrases at a large size; two or three lines are both valid.
+const coverTitle=host?.querySelector<HTMLElement>('#case-title');
+const coverTitleLines:Record<string,Record<string,string[]>>={
+  en:{groaqua:['Visualizing','Aquaculture','Engineering'],'exo-environmental':['Marine','Habitat','Engineering'],wewhale:['Whale','Watching','Education'],wwf:['Whale','Science &','Conservation'],'sperm-whales-of-dominica':['Cataloguing','Dominica’s','Sperm Whales']},
+  es:{groaqua:['Visualización','de ingeniería','acuícola'],'exo-environmental':['Ingeniería','de hábitats','marinos'],wewhale:['Educación','para avistar','ballenas'],wwf:['Ciencia y','conservación','de ballenas'],'sperm-whales-of-dominica':['Catálogo de','cachalotes','de Dominica']},
+};
+let titleFrame=0;
+function layoutCoverTitle(){
+  if(!coverTitle)return;
+  cancelAnimationFrame(titleFrame);
+  titleFrame=requestAnimationFrame(()=>{
+    const language=document.documentElement.lang==='es'?'es':'en';
+    const slug=location.pathname.split('/').filter(Boolean).at(-1)!;
+    let lines=coverTitleLines[language][slug];
+    if(!lines)return;
+    if(!isMobileAbout()){
+      if(coverTitle.hasAttribute('data-cover-lines'))coverTitle.textContent=lines.join(' ');
+      coverTitle.removeAttribute('data-cover-lines');coverTitle.removeAttribute('aria-label');coverTitle.style.removeProperty('font-size');return;
+    }
+    const fullTitle=lines.join(' ');
+    coverTitle.dataset.coverLines='';coverTitle.setAttribute('aria-label',fullTitle);
+    coverTitle.style.removeProperty('font-size');
+    const size=parseFloat(getComputedStyle(coverTitle).fontSize);
+    const heightLimit=innerHeight*(matchMedia('(orientation:portrait)').matches?.2333:.5276);
+    const render=(parts:string[])=>{
+      coverTitle.replaceChildren(...parts.map((line,index)=>{
+        const span=document.createElement('span');span.textContent=line+(index<parts.length-1?' ':'');span.setAttribute('aria-hidden','true');return span;
+      }));
+      const widest=Math.max(...Array.from(coverTitle.children,span=>span.getBoundingClientRect().width));
+      return Math.min(size,size*coverTitle.clientWidth/widest,heightLimit/(parts.length*1.03));
+    };
+    const threeLineSize=render(lines);
+    const words=fullTitle.split(/\s+/);
+    let bestTwo:string[]|undefined,twoLineSize=0,bestBalance=Infinity;
+    for(let split=1;split<words.length;split++){
+      const parts=[words.slice(0,split).join(' '),words.slice(split).join(' ')];
+      // A conjunction is attached to its phrase, never left on its own line.
+      if(parts.some(part=>/^(?:&|and|y|de|para)$/i.test(part)))continue;
+      const candidateSize=render(parts);
+      const balance=Math.abs(parts[0].length-parts[1].length);
+      if(candidateSize>twoLineSize+.1||(Math.abs(candidateSize-twoLineSize)<=.1&&balance<bestBalance)){
+        bestTwo=parts;twoLineSize=candidateSize;bestBalance=balance;
+      }
+    }
+    // Keep the approved large scale; do not make a title small just to use two lines.
+    if(bestTwo&&twoLineSize>=threeLineSize*.95){lines=bestTwo;}
+    const fitted=render(lines);
+    coverTitle.style.fontSize=Math.floor(fitted*100)/100+'px';
+  });
+}
+layoutCoverTitle();
+void document.fonts.ready.then(layoutCoverTitle);
+window.addEventListener('resize',layoutCoverTitle);
+window.addEventListener('leo:language-change',layoutCoverTitle);
+if(import.meta.hot)import.meta.hot.dispose(()=>{cancelAnimationFrame(titleFrame);window.removeEventListener('resize',layoutCoverTitle);window.removeEventListener('leo:language-change',layoutCoverTitle);});
 const modelViewport=host?.querySelector<HTMLElement>('[data-case-model]');
 if(modelViewport){
   let scrollMotion:gsap.core.Tween|undefined;

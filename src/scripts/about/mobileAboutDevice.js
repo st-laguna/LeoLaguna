@@ -4,5 +4,6 @@ export function isMobileAbout() {
   const root = document.documentElement;
   const ipad = root.hasAttribute('data-ipad') || /iPad/.test(navigator.userAgent) ||
     (/Mac/.test(navigator.platform || navigator.userAgent) && navigator.maxTouchPoints > 1);
+  if(root.dataset.layoutFamily)return root.dataset.layoutFamily!=='desktop';
   return ipad || root.hasAttribute('data-tablet-layout') || root.hasAttribute('data-large-tablet-landscape') || matchMedia(mobileAboutMedia).matches;
 }

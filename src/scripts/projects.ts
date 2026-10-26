@@ -102,6 +102,7 @@ if(section){
     sidebarTravel=sidebar.offsetLeft+sidebar.offsetWidth+16;
     if(!(desktopMotion()))return;
     section!.removeAttribute('data-service-cells');
+    section!.removeAttribute('data-mobile-stack');
     if(ipadHome())return; // Portrait geometry is defined by the SVG proportions in CSS.
     const height=main.clientHeight;
     const stageTop=parseFloat(getComputedStyle(stage).top)||0;
@@ -166,6 +167,7 @@ if(section){
   const compactMedia=matchMedia(compactServiceMedia);
   const disposeDots=mountServiceDots(section!);
   compactMedia.addEventListener('change',()=>scheduleConfigure(),{signal:events.signal});
+  window.addEventListener('leo:layout-change',()=>scheduleConfigure(),{signal:events.signal});
   const state={position:0,exit:0};
   const featured = document.querySelector<HTMLElement>('[data-featured-works]');
   const brandsLayout =

@@ -7,6 +7,7 @@ export function mountServiceDots(section:HTMLElement){
  const viewAll=section.querySelector<HTMLElement>('.projects-view-all')!,origin=document.createComment('View All original position');viewAll.before(origin);
  const controlRow=section.querySelector<HTMLElement>('.service-gallery-controls')!;
  function positionAction(){if(compactServices()){if(viewAll.parentElement!==controlRow)controlRow.append(viewAll)}else origin.after(viewAll)}
+ window.addEventListener('leo:layout-change',positionAction,{signal});
  positionAction();const orientation=matchMedia('(orientation:portrait)');orientation.addEventListener('change',positionAction,{signal});
  let timer:ReturnType<typeof setTimeout>|undefined,visible=false,deadline=0,service=current(),disposed=false;
  const allowed=()=>!disposed&&visible&&compactServices()&&!reduced.matches&&!document.hidden&&!document.querySelector<HTMLDialogElement>('#projects-expanded')?.open;

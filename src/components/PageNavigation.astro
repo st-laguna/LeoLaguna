@@ -17,6 +17,7 @@ import homeEntrance from '../scripts/home-entrance.js?raw';
 import aboutDevice from '../scripts/about/mobileAboutDevice.js?raw';
 import navigation from '../scripts/document-navigation.js?raw';
 import '../styles/page-navigation.css';
+import '../styles/viewport-adaptation.css';
 // Run before the first render: a deferred module can miss pagereveal.
 const source = `(() => {\n${homeEntrance.replace(/^export /gm, '')}\n${motion.replace(/^import .*home-entrance.*;$/gm, '').replace(/^export /gm, '')}\n${aboutDevice.replace(/^export /gm, '')}\nif(document.documentElement.dataset.page==='case-study'){const root=document.documentElement,mobile=isMobileAbout();root.toggleAttribute('data-case-mobile',mobile);root.toggleAttribute('data-case-phone',mobile&&!root.hasAttribute('data-ipad')&&!root.hasAttribute('data-tablet-portrait')&&matchMedia(${JSON.stringify(phoneMedia)}).matches);}\n${navigation}\n})();`;
 ---

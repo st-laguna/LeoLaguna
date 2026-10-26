@@ -25,7 +25,7 @@ const previewSize=await dimensions(preview);
   <div class="case-study__stage">
     <div class="case-study__rail" data-case-rail>
       <section class="case-study__intro">
-        <div class="case-study__intro-title"><a class="case-study__back case-study__circle" href="/#featured-works" aria-label="Back to Featured Works / Volver a trabajos destacados"><span class="action-arrow" data-direction="diagonal-left" aria-hidden="true"><span data-arrow="↖">↖</span></span></a><h1 id="case-title" data-i18n={"case."+project.slug+".title"}>{labels["case."+project.slug+".title"]||project.title}</h1><span class="case-study__intro-direction" aria-hidden="true">→</span></div>
+        <div class="case-study__intro-title"><a class="case-study__back case-study__circle" href="/#featured-works" aria-label="Back to Featured Works / Volver a trabajos destacados"><span class="action-arrow" data-direction="diagonal-left" aria-hidden="true"><span data-arrow="↖">↖</span></span></a><h1 id="case-title" data-i18n={"case."+project.slug+".title"}>{labels["case."+project.slug+".title"]||project.title}</h1><button class="case-study__intro-direction case-study__circle" data-case-intro-next type="button" aria-label="Continue to project / Continuar al proyecto">→</button></div>
         <dl class="case-study__metadata">
           <div><dt data-i18n="case.client">Client</dt><dd>{project.client}</dd></div>
           <div><dt data-i18n="case.service">Service</dt><dd data-i18n={categoryKeys[project.categoryId]}>{labels[categoryKeys[project.categoryId]]}</dd></div>
