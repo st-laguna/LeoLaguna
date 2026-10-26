@@ -19,9 +19,12 @@ if (section) {
     if(isMobileJourneyLayout())return;
     const services=document.querySelector<HTMLElement>('[data-projects] .projects-stage');
     const brands=section.closest('[data-featured-brands]')?.querySelector<HTMLElement>('[data-brands]');
-    // Follow the native sticky overlaps; these layers change paint, not layout.
-    if(services)gsap.fromTo(services,{'--handoff-shade':0},{'--handoff-shade':1,ease:'none',scrollTrigger:{id:'works-services-shadow',trigger:section,start:'top bottom',end:'top top',scrub:true,invalidateOnRefresh:true}});
-    if(brands)gsap.fromTo(brands,{'--handoff-shade':1},{'--handoff-shade':0,ease:'none',scrollTrigger:{id:'works-brands-shadow',trigger:section,start:'bottom bottom',end:'bottom top',scrub:true,invalidateOnRefresh:true}});
+    const shadeLayers:Array<{host:HTMLElement;layer:HTMLSpanElement}>=[];
+    const createShade=(host:HTMLElement)=>{const layer=document.createElement('span');layer.className='works-handoff-shade';layer.setAttribute('aria-hidden','true');host.setAttribute('data-handoff-layer','');host.append(layer);shadeLayers.push({host,layer});return layer;};
+    // Animate one overlay without inheriting progress through the section.
+    const servicesShade=services?createShade(services):null,brandsShade=brands?createShade(brands):null;
+    if(servicesShade)gsap.fromTo(servicesShade,{opacity:0},{opacity:1,ease:'none',scrollTrigger:{id:'works-services-shadow',trigger:section,start:'top bottom',end:'top top',scrub:true,invalidateOnRefresh:true}});
+    if(brandsShade)gsap.fromTo(brandsShade,{opacity:1},{opacity:0,ease:'none',scrollTrigger:{id:'works-brands-shadow',trigger:section,start:'bottom bottom',end:'bottom top',scrub:true,invalidateOnRefresh:true}});
 
     gsap.fromTo(section.querySelector('h2'), { y:40 }, { y:0, duration:1, ease:'power3.inOut', scrollTrigger:{id:'works-heading',trigger:section.querySelector('h2'),start:'top 85%',toggleActions:'play none none reverse'} });
     const closing=section.querySelector<HTMLElement>('.featured-works__closing');
@@ -32,6 +35,7 @@ if (section) {
         scrollTrigger: { id:'featured-entry-' + index, trigger:figure, start:'top 90%', toggleActions:'play none none reverse' },
       });
     });
+    return()=>shadeLayers.forEach(({host,layer})=>{host.removeAttribute('data-handoff-layer');layer.remove();});
   });
   media.add(mobileJourneyMotionMedia,()=>{
     const cards=[...section.querySelectorAll<HTMLElement>('.featured-work')].sort((a,b)=>Number(getComputedStyle(a).order)-Number(getComputedStyle(b).order)).slice(0,-1);

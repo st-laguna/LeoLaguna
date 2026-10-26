@@ -24,7 +24,7 @@ if(gallery&&lightbox&&section){
   const figure=l.querySelector<HTMLElement>('.lightbox-figure')!;
   const closeGalleryButton=g.querySelector<HTMLButtonElement>('[data-gallery-close]')!;
   let locks=0,scroll=0,previousOverflow='';
-  let galleryBusy=false,lightboxBusy=false;
+  let galleryBusy=false,lightboxBusy=false,lightboxCloseRequested=false;
   let galleryOpener:HTMLElement|null=null,lightboxOpener:HTMLElement|null=null;
   let observer:IntersectionObserver|undefined;
   let generation=0;
@@ -181,7 +181,7 @@ if(gallery&&lightbox&&section){
   }
   g.querySelector('.gallery-menu')?.addEventListener('click',event=>{const link=(event.target as Element).closest<HTMLAnchorElement>('a[href]');if(!link)return;const url=new URL(link.href,location.href);if(url.origin===location.origin&&url.pathname===location.pathname){event.preventDefault();if(isMobileAbout())void closeGallery(url);else void closeGallery().then(()=>location.assign(url.href));}},{signal:events.signal});
   async function openImage(button:HTMLElement){
-    if(lightboxBusy||l.open)return;lightboxBusy=true;lightboxOpener=button;
+    if(lightboxBusy||l.open)return;lightboxBusy=true;lightboxCloseRequested=false;lightboxOpener=button;
     image.src=button.dataset.zoomSrc!;image.alt=button.dataset.zoomAlt||'';
     gsap.set(figure,{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)',y:reduced.matches?0:35});
     galleryScroll?.stop();
@@ -189,11 +189,15 @@ if(gallery&&lightbox&&section){
     l.querySelector<HTMLButtonElement>('[data-lightbox-close]')!.focus({preventScroll:true});
     await gsap.fromTo(figure,{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)',y:reduced.matches?0:35},{clipPath:'inset(0% 0 0)',y:0,duration:reduced.matches?0:.55,ease:'power3.inOut'});
     lightboxBusy=false;
+    if(lightboxCloseRequested){lightboxCloseRequested=false;await closeImage();}
   }
   async function closeImage(){
-    if(lightboxBusy||!l.open)return;lightboxBusy=true;
+    if(!l.open)return;
+    // Preserve cancellation during the existing opening animation.
+    if(lightboxBusy){lightboxCloseRequested=true;return;}
+    lightboxBusy=true;lightboxCloseRequested=false;
     await gsap.to(figure,{clipPath:reduced.matches?'inset(0)':'inset(0 0 100%)',y:reduced.matches?0:-30,duration:reduced.matches?0:.45,ease:'power3.inOut'});
-    l.close();unlock();if(galleryScroll)galleryScroll.start();else configureGalleryScroll();lightboxOpener?.focus({preventScroll:true});lightboxOpener=null;lightboxBusy=false;
+    l.close();unlock();if(galleryScroll)galleryScroll.start();else configureGalleryScroll();lightboxOpener?.focus({preventScroll:true});lightboxOpener=null;lightboxBusy=false;lightboxCloseRequested=false;
   }
   document.addEventListener('click',event=>{
     const button=(event.target as Element).closest<HTMLElement>('button');

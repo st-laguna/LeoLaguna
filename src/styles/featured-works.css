@@ -95,6 +95,13 @@ html body [data-featured-brands] > .brands[data-brands] {position:sticky;top:0;z
   }
 }
 
+/* Only desktop mounts real overlays; mobile retains its existing effects. */
+@media(prefers-reduced-motion:no-preference) {
+  [data-projects] .projects-stage[data-handoff-layer]::after,
+  [data-featured-brands] > [data-brands][data-handoff-layer]::after {content:none;}
+  .works-handoff-shade {position:absolute;inset:0;z-index:100;background:#1C1C1C;opacity:0;pointer-events:none;}
+}
+
 /* Extend the existing sticky stack only when its desktop composition fits. */
 [data-featured-brands][data-footer-handoff]::after {display:none;}
 [data-featured-brands][data-footer-handoff] > [data-brands-footer-handoff] {
