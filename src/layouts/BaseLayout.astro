@@ -40,7 +40,7 @@ interface Props {
 const {
   title = 'Leo Laguna',
   description = 'Ilustración científica y comunicación visual.',
-  lang = 'es',
+  lang = 'en',
   page,
 } = Astro.props;
 ---
@@ -54,7 +54,7 @@ const {
     <meta name="description" content={description} />
     <title>{title}</title>
     <Canonical />
-    {Astro.url.pathname === '/' && <HomeSEO title={title} description={description} />}
+    <HomeSEO title={title} description={description} />
     <PageNavigation />
     <script is:inline>
       (() => {

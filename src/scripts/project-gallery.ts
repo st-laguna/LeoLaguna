@@ -197,8 +197,18 @@ if(gallery&&lightbox&&section){
     if(lightboxBusy){lightboxCloseRequested=true;return;}
     lightboxBusy=true;lightboxCloseRequested=false;
     await gsap.to(figure,{clipPath:reduced.matches?'inset(0)':'inset(0 0 100%)',y:reduced.matches?0:-30,duration:reduced.matches?0:.45,ease:'power3.inOut'});
-    l.close();unlock();if(galleryScroll)galleryScroll.start();else configureGalleryScroll();lightboxOpener?.focus({preventScroll:true});lightboxOpener=null;lightboxBusy=false;lightboxCloseRequested=false;
+    l.close();unlock();if(galleryScroll)galleryScroll.start();else configureGalleryScroll();lightboxBusy=false;lightboxCloseRequested=false;
   }
+  // Native dialog close processing may restore focus after close() returns.
+  // Restore only once that processing has completed, while the parent remains open.
+  l.addEventListener('close',()=>{
+    const opener=lightboxOpener;lightboxOpener=null;
+    requestAnimationFrame(()=>{
+      if(l.open)return;
+      if(opener?.isConnected&&!opener.closest('[inert]'))opener.focus({preventScroll:true});
+      if(g.open&&!g.contains(document.activeElement))scroller.focus({preventScroll:true});
+    });
+  },{signal:events.signal});
   document.addEventListener('click',event=>{
     const button=(event.target as Element).closest<HTMLElement>('button');
     if(!button)return;

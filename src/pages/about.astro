@@ -1,6 +1,7 @@
 ---
 import ContactCard from '../components/ContactCard.astro';
 import '../styles/surface-radii.css';
+import HomeSEO from '../components/HomeSEO.astro';
 import Canonical from '../components/Canonical.astro';
 import AboutSection from '../components/about/AboutSection.astro';
 import PageNavigation from '../components/PageNavigation.astro';
@@ -31,6 +32,7 @@ const mobileAboutPrepaint = '(() => {\n' + mobileAboutDevice.replace(/^export /g
     <title>About — Leo Laguna</title>
     <meta name="description" content="Meet Leo Laguna, a marine biology graduate creating scientific illustrations, technical visuals, 3D and animation for research and conservation projects." />
     <Canonical />
+    <HomeSEO title="About — Leo Laguna" description="Meet Leo Laguna, a marine biology graduate creating scientific illustrations, technical visuals, 3D and animation for research and conservation projects." />
     <PageNavigation />
     <script is:inline set:html={mobileAboutPrepaint}></script>
     <script is:inline>

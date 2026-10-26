@@ -1,6 +1,7 @@
 ---
 import ContactCard from '../components/ContactCard.astro';
 import '../styles/surface-radii.css';
+import HomeSEO from '../components/HomeSEO.astro';
 import Canonical from '../components/Canonical.astro';
 import "../styles/cv.css";
 import PageNavigation from "../components/PageNavigation.astro";
@@ -22,6 +23,7 @@ const { title = "Leonardo S. Laguna — CV" }: Props = Astro.props;
     <title>{title}</title>
     <meta name="description" content="Explore Leonardo S. Laguna’s experience, education and skills in marine biology, scientific illustration, 3D visualization and science communication." />
     <Canonical />
+    <HomeSEO title={title} description="Explore Leonardo S. Laguna’s experience, education and skills in marine biology, scientific illustration, 3D visualization and science communication." />
     <PageNavigation />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

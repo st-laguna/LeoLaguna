@@ -15,7 +15,7 @@ export const brands = [
   { file:'GROA3', name:'GroAqua', span:3, scale:1.14 },
   { file:'EXO3', name:'Exo Environmental', span:2 },
 
-  { file:'SPERMWHALES3', name:'Sperm Whales Dominicana', span:3, scale:1.82 },
+  { file:'SPERMWHALES3', name:'Sperm Whales Dominica', span:3, scale:1.82 },
   { file:'VH', name:'Valhalla Expedition', span:4, scale:1.10 },
 
   { file:'SOA3', name:'Sustainable Ocean Alliance Perú', span:3, scale:1.36 },
