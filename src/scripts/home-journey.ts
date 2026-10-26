@@ -276,6 +276,7 @@ hero.inert = p > .15;
 workflow.style.visibility = p >= .42 ? 'visible' : 'hidden';
 showWorkflowLogo(p>=.90);
 workflow.inert = requested < .995 || returning !== null;
+workflow.toggleAttribute('data-cue-ready',p>=.999 && returning===null);
 
 heading.style.clipPath =
   `inset(${(1 - ease((p - .49) / .19)) * 100}% 0 0)`;
@@ -354,7 +355,7 @@ slots.forEach((slot, i) => {
       animation.scrollTrigger?.kill();animation.kill();resize.disconnect();
       hero.querySelector('a[href="#workflow"]')?.removeEventListener('click',jump);
       aperture.remove();maskedCover.style.removeProperty('display');
-      host.removeAttribute('data-journey');hero.inert=false;workflow.inert=false;
+      host.removeAttribute('data-journey');hero.inert=false;workflow.inert=false;workflow.removeAttribute('data-cue-ready');
       [hero,mask,fish,workflow,heading,track,...texts,...slots].forEach(el=>{
         ['width','height','left','top','border-radius','transform','translate','rotate','visibility','clip-path','opacity','z-index'].forEach(prop=>el.style.removeProperty(prop));
       });
@@ -489,6 +490,7 @@ slots.forEach((slot, i) => {
       if(cardsReady && !ready && !ScrollTrigger.isRefreshing)workflow.dispatchEvent(new Event('workflow:reset'));
       cardsReady=ready;
       workflow.inert=!ready;
+      workflow.toggleAttribute('data-cue-ready',isMobileJourneyLayout() && p>=.77);
       // Snap points must be measured only after the entry's stacked transforms
       // reach their final positions; Chromium otherwise snaps back to slot 01.
       if(isMobileJourneyLayout()&&!ready)grid.style.scrollSnapType='none';
@@ -557,7 +559,7 @@ slots.forEach((slot, i) => {
       removeStops();
       animation.scrollTrigger?.kill();animation.kill();resize.disconnect();
       aperture.remove();maskedCover.style.removeProperty('display');cover.style.removeProperty('display');cover.style.removeProperty('visibility');
-      host.removeAttribute('data-mobile-journey');hero.inert=false;workflow.inert=false;grid.style.removeProperty('scroll-snap-type');
+      host.removeAttribute('data-mobile-journey');hero.inert=false;workflow.inert=false;workflow.removeAttribute('data-cue-ready');grid.style.removeProperty('scroll-snap-type');
       workflow.dispatchEvent(new Event('workflow:reset'));
       [hero,mask,fish,workflow,heading,...texts,...slots,...turns,...(mobileOverlay?[mobileOverlay]:[])].forEach(el=>{
         ['width','height','left','top','border-radius','transform','translate','visibility','opacity','z-index','transform-origin','clip-path','filter','mask-size','mask-position','-webkit-mask-size','-webkit-mask-position'].forEach(prop=>el.style.removeProperty(prop));

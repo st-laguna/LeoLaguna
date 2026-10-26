@@ -37,5 +37,24 @@ if (section) {
     [...section.querySelectorAll<HTMLElement>('.featured-work')].sort((a,b)=>Number(getComputedStyle(a).order)-Number(getComputedStyle(b).order)).slice(0,-1).forEach((card,i)=>{const surface=card.querySelector('.featured-work__content');gsap.to(surface,{x:i%2?26:-26,y:-14,rotationX:-11,rotationY:i%2?14:-14,rotationZ:i%2?3.5:-3.5,scale:.94,ease:'none',scrollTrigger:{trigger:card,start:'top top',end:'80% top',scrub:true}})});
     gsap.fromTo(section.querySelectorAll('h2 > span'),{opacity:0},{opacity:1,duration:.7,scrollTrigger:{trigger:section,start:'top 90%',once:true}});
   });
-  if (import.meta.hot) import.meta.hot.dispose(() => media.revert());
+  const covers=[...section.querySelectorAll<HTMLElement>('.featured-work__cover')];
+  const visible=new Set<HTMLElement>();
+  const events=new AbortController();
+  const syncCue=(cover:HTMLElement)=>{
+    const img=cover.querySelector('img')!;
+    const root=document.documentElement;
+    cover.toggleAttribute('data-cue-visible',visible.has(cover)&&img.complete&&img.naturalWidth>0&&!root.hasAttribute('data-page-transition')&&!root.hasAttribute('data-section-transition'));
+  };
+  const cueObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+    const cover=entry.target as HTMLElement;
+    if(entry.isIntersecting&&entry.intersectionRatio>=.15)visible.add(cover);else visible.delete(cover);
+    syncCue(cover);
+  }),{threshold:[0,.15]});
+  covers.forEach(cover=>{
+    cueObserver.observe(cover);
+    cover.querySelector('img')!.addEventListener('load',()=>syncCue(cover),{signal:events.signal});
+  });
+  const cueState=new MutationObserver(()=>covers.forEach(syncCue));
+  cueState.observe(document.documentElement,{attributes:true,attributeFilter:['data-page-transition','data-section-transition']});
+  if (import.meta.hot) import.meta.hot.dispose(() => {media.revert();cueObserver.disconnect();cueState.disconnect();events.abort();covers.forEach(cover=>cover.removeAttribute('data-cue-visible'));});
 }

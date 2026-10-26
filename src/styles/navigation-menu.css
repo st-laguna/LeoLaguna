@@ -86,19 +86,19 @@ html body [data-shared-menu-panel][data-menu-pending] {transition:none!important
 html[data-case-mobile] body .site-header [data-shared-menu-panel][data-menu-pending]:not([data-menu-compact]) {display:none!important;}
 
 /* One arrow drawing for every circular case/gallery navigation button. */
-html body .case-study__circle,html body .mobile-3d-toggle,html body .workflow__tap-cue,html body #projects-expanded[data-gallery-phone] [data-gallery-close] {--circle-arrow-angle:0deg;}
+html body .case-study__circle,html body .mobile-3d-toggle,html body .workflow__tap-cue,.card-action-cue,html body #projects-expanded[data-gallery-phone] [data-gallery-close] {--circle-arrow-angle:0deg;}
 html body :is(.case-study__back,#projects-expanded[data-gallery-phone] [data-gallery-close]) {--circle-arrow-angle:-135deg;}
 html body .case-study__retreat {--circle-arrow-angle:180deg;}
-html body :is(.case-study__circle,.mobile-3d-toggle,.workflow__tap-cue,#projects-expanded[data-gallery-phone] [data-gallery-close])::before {content:'';display:block;grid-area:1/1;width:24px;height:24px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;rotate:var(--circle-arrow-angle);pointer-events:none;}
-html body :is(.case-study__circle,.mobile-3d-toggle,.workflow__tap-cue,#projects-expanded[data-gallery-phone] [data-gallery-close]) {font-size:0;}
-html body :is(.case-study__circle,.mobile-3d-toggle,.workflow__tap-cue,#projects-expanded[data-gallery-phone] [data-gallery-close])>.action-arrow {display:none!important;}
+html body :is(.case-study__circle,.mobile-3d-toggle,.workflow__tap-cue,.card-action-cue,#projects-expanded[data-gallery-phone] [data-gallery-close])::before {content:'';display:block;grid-area:1/1;width:24px;height:24px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;rotate:var(--circle-arrow-angle);pointer-events:none;}
+html body :is(.case-study__circle,.mobile-3d-toggle,.workflow__tap-cue,.card-action-cue,#projects-expanded[data-gallery-phone] [data-gallery-close]) {font-size:0;}
+html body :is(.case-study__circle,.mobile-3d-toggle,.workflow__tap-cue,.card-action-cue,#projects-expanded[data-gallery-phone] [data-gallery-close])>.action-arrow {display:none!important;}
 
 html body .mobile-3d-toggle[aria-expanded="true"] {--circle-arrow-angle:180deg;}
 
 /* Shared mobile circles: one outline, arrow stroke and optical center. */
 html[data-case-mobile] body .case-study .case-study__circle,
 html[data-about-mobile] body .mobile-3d-toggle {box-sizing:border-box;width:48px;height:48px;border:1px solid currentColor;border-radius:50%;background:transparent;color:#fff;mix-blend-mode:difference;}
-html body :is(.case-study__circle,.mobile-3d-toggle,.workflow__tap-cue,#projects-expanded[data-gallery-phone] [data-gallery-close])::before {position:absolute;left:50%;top:50%;margin:-12px 0 0 -12px;grid-area:auto;rotate:none;transform:rotate(var(--circle-arrow-angle,0deg));}
+html body :is(.case-study__circle,.mobile-3d-toggle,.workflow__tap-cue,.card-action-cue,#projects-expanded[data-gallery-phone] [data-gallery-close])::before {position:absolute;left:50%;top:50%;margin:-12px 0 0 -12px;grid-area:auto;rotate:none;transform:rotate(var(--circle-arrow-angle,0deg));}
 html body .workflow__tap-cue {--circle-arrow-angle:-45deg;}
 html body .mobile-3d-toggle::before {transition:transform .45s cubic-bezier(.65,0,.35,1);}
 html[data-case-mobile] body .case-study .case-study__intro-direction::before {transform:rotate(var(--circle-arrow-angle,0deg));}

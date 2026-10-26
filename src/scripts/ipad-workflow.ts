@@ -34,7 +34,8 @@ export function mountIPadWorkflow(section:HTMLElement,cards:HTMLButtonElement[],
     const ideal=card.parentElement!.offsetLeft+card.parentElement!.clientWidth/2-grid.clientWidth/2;
     const settled=Math.max(0,Math.min(grid.scrollWidth-grid.clientWidth,ideal));
     const delta=Math.abs(grid.scrollLeft-settled);
-    const centered=index===active&&delta<Math.max(6,grid.clientWidth*.025);
+    const centered=!isMobileJourneyLayout() || index===active&&delta<Math.max(6,grid.clientWidth*.025);
+    card.style.setProperty('--cue-delay',isMobileJourneyLayout()?'0s':`${index*.12}s`);
     card.toggleAttribute('data-cue-centered',centered);
   });
   controls.sync();remember();
@@ -67,8 +68,17 @@ export function mountIPadWorkflow(section:HTMLElement,cards:HTMLButtonElement[],
   if(rotationPending||orientation.matches!==portrait)return;
   controls.pause();grid.scrollTo({left:0,behavior:'instant'});active=0;controls.reset();
  },{signal});
- const cueObserver=new IntersectionObserver(([entry])=>section.toggleAttribute('data-cue-visible',entry.isIntersecting&&!section.inert),{threshold:.3});cueObserver.observe(section);
- const cueState=new MutationObserver(()=>section.toggleAttribute('data-cue-visible',!section.inert&&section.getBoundingClientRect().bottom>0&&section.getBoundingClientRect().top<innerHeight));cueState.observe(section,{attributes:true,attributeFilter:['inert']});
+ function updateCue(){
+  const bounds=section.getBoundingClientRect();
+  const animated=journey.hasAttribute('data-journey')||journey.hasAttribute('data-mobile-journey');
+  const root=document.documentElement;
+  const ready=!animated||section.hasAttribute('data-cue-ready');
+  section.toggleAttribute('data-cue-visible',ready&&!section.inert&&bounds.bottom>0&&bounds.top<innerHeight&&!root.hasAttribute('data-page-transition')&&!root.hasAttribute('data-section-transition')&&!root.hasAttribute('data-hero-intro'));
+ }
+ const cueObserver=new IntersectionObserver(updateCue,{threshold:[0,.3,1]});cueObserver.observe(section);
+ const cueState=new MutationObserver(updateCue);cueState.observe(section,{attributes:true,attributeFilter:['inert','data-cue-ready']});cueState.observe(journey,{attributes:true,attributeFilter:['data-journey','data-mobile-journey']});cueState.observe(document.documentElement,{attributes:true,attributeFilter:['data-page-transition','data-section-transition','data-hero-intro']});
+ window.addEventListener('leo:layout-change',()=>{sync();updateCue()},{signal});
+ window.addEventListener('scroll',updateCue,{passive:true,signal});
  sync();
- return()=>{cueObserver.disconnect();cueState.disconnect();clearTimeout(restoreTimer);controls.dispose();events.abort();resize.disconnect();host.remove();cards.forEach(card=>card.removeAttribute('data-cue-centered'))};
+ return()=>{cueObserver.disconnect();cueState.disconnect();clearTimeout(restoreTimer);controls.dispose();events.abort();resize.disconnect();host.remove();section.removeAttribute('data-cue-visible');cards.forEach(card=>{card.removeAttribute('data-cue-centered');card.style.removeProperty('--cue-delay')})};
 }

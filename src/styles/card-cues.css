@@ -1,0 +1,12 @@
+/* Shared visual cue. The parent link/button owns the hit area and accessible name. */
+html body .featured-work__cover {position:relative;}
+:root:root:root:root:root:root:root:root:root:root body .card-action-cue {position:absolute;left:50%;top:50%;translate:-50% -50%;display:grid;place-items:center;box-sizing:border-box;width:48px;height:48px;border:1px solid currentColor;border-radius:50%;color:#fff;mix-blend-mode:difference;box-shadow:none;overflow:hidden;pointer-events:none;z-index:2;opacity:0;visibility:hidden;--circle-arrow-angle:-45deg;animation:none;}
+:root:root:root:root:root:root:root:root:root:root body :is(.workflow[data-cue-visible] .workflow__card[data-cue-centered],.featured-work__cover[data-cue-visible]) .card-action-cue {visibility:visible;opacity:1;}
+@media(prefers-reduced-motion:no-preference){
+ :root:root:root:root:root:root:root:root:root:root body :is(.workflow[data-cue-visible] .workflow__card[data-cue-centered],.featured-work__cover[data-cue-visible]) .card-action-cue {animation:workflow-cue-circle .6s var(--cue-delay,0s) ease both;}
+ :root:root:root:root:root:root:root:root:root:root body :is(.workflow[data-cue-visible] .workflow__card[data-cue-centered],.featured-work__cover[data-cue-visible]) .card-action-cue::before {animation:workflow-tap-loop 2.4s calc(var(--cue-delay,0s) + .45s) cubic-bezier(.65,0,.35,1) infinite;}
+ .featured-work__cover {--cue-delay:.85s;}
+ html:not([data-layout-family="desktop"]) .featured-work__cover {--cue-delay:.12s;}
+}
+@media(prefers-reduced-motion:reduce){html body .card-action-cue,html body .card-action-cue::before {animation:none!important;}}
+@media(forced-colors:active){html body .card-action-cue {mix-blend-mode:normal!important;forced-color-adjust:auto;}}

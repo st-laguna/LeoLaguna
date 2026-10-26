@@ -1,5 +1,6 @@
 ---
 import en from '../i18n/en.json';
+import '../styles/card-cues.css';
 import step1 from '../../public/icons/stp1.svg?raw';
 import step2 from '../../public/icons/stp2.svg?raw';
 import step3 from '../../public/icons/stp3.svg?raw';
@@ -44,7 +45,7 @@ const steps = [1, 2, 3, 4];
           <span class="workflow__number" aria-hidden="true">[0{step}]</span>
           <span class="workflow__turn">
             <span class="workflow__front">
-              <span class="workflow__explore">Tap to Explore</span><span class="workflow__tap-cue" aria-hidden="true"><span class="action-arrow" data-direction="diagonal"><span data-arrow="↗">↗</span></span></span>
+              <span class="workflow__explore">Tap to Explore</span><span class="workflow__tap-cue card-action-cue" aria-hidden="true"><span class="action-arrow" data-direction="diagonal"><span data-arrow="↗">↗</span></span></span>
               <img data-src={`/imgs/workflow/${step}.webp`} alt="" decoding="async" draggable="false" width="600" height="600"/>
               <strong
                 id={`workflow-title-${step}`}
