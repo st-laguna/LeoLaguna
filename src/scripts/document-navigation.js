@@ -12,8 +12,9 @@ void initializationFailed.catch(() => {});
 window.addEventListener('error', event => {
   if (event.target instanceof HTMLScriptElement && event.target.type === 'module') {
     rejectInitialization(new Error('A navigation module could not load.'));
-  } else if (document.readyState !== 'complete' && event instanceof ErrorEvent && event.error) {
-    rejectInitialization(event.error);
+  // Optional 3D/assets and browser extensions can report global errors before
+  // load completes. Their owners recover independently; they do not invalidate
+  // the destination document or its explicit About readiness signal.
   }
 }, true);
 let themeInitialized = false;

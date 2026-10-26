@@ -46,6 +46,7 @@
     const liveViewport=window.visualViewport;
     if(!liveViewport || Math.abs(liveViewport.scale-1)<.01){
       root.style.setProperty('--live-viewport-height', (liveViewport?.height || innerHeight)+'px');
+      root.style.setProperty('--live-viewport-top', (liveViewport?.offsetTop || 0)+'px');
     }
     if (!root.hasAttribute('data-large-tablet-landscape')) return;
     const viewport=window.visualViewport;
@@ -79,6 +80,7 @@
   largeLandscape.addEventListener('change',resize);
   touch.addEventListener('change',resize);
   window.visualViewport?.addEventListener('resize',dynamicViewport,{passive:true});
+  window.visualViewport?.addEventListener('scroll',dynamicViewport,{passive:true});
   window.addEventListener('resize',dynamicViewport,{passive:true});
   function resize() {
     apply();

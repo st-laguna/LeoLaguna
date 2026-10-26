@@ -1,0 +1,14 @@
+/* The entry runway also accommodates Brands compositions taller than the viewport. */
+:root:root:root:root:root:root:root:root:root:root body [data-mobile-brands-reveal] {position:relative;z-index:1;display:flow-root;background:var(--background,#ededed);margin-top:calc(-1 * var(--brands-entry-overlap,100svh));}
+:root:root:root:root:root:root:root:root:root:root body [data-mobile-brands-reveal]>.brands[data-brands] {position:sticky!important;top:var(--brands-hold-top,0px);margin:0!important;}
+@media(prefers-reduced-motion:no-preference){
+ [data-mobile-brands-reveal]>[data-brands]::after {content:'';position:absolute;inset:0;z-index:100;background:#1c1c1c;opacity:var(--handoff-shade,1);pointer-events:none;}
+}
+
+
+/* The final cover leaves a rounded lower edge above the Brands layer. */
+html body .featured-work--sperm-whales-of-dominica,
+html body .featured-work--sperm-whales-of-dominica .featured-work__content {border-bottom-left-radius:var(--radius-lg,24px)!important;border-bottom-right-radius:var(--radius-lg,24px)!important;}
+html body .featured-work--sperm-whales-of-dominica {overflow:clip;}
+/* Begin the footer as soon as the bottom statistics reach the viewport. */
+:root:root:root:root:root:root:root:root:root:root body [data-mobile-brands-reveal]>[data-brands-footer-handoff] {margin-top:calc(-1 * var(--brands-entry-overlap,100svh));}

@@ -11,3 +11,8 @@ html body #projects-expanded .gallery-menu:has([data-menu-compact]) {display:con
 
 #projects-expanded[data-gallery-phone] .gallery-return-motion {top:var(--corner-control-top,18px);left:var(--corner-control-gap,18px);}
 #projects-expanded[data-gallery-phone] [data-gallery-close] {width:var(--corner-control-size,48px);height:var(--corner-control-size,48px);}
+
+/* Tablet and phone galleries share uncluttered View All chrome. */
+html body #projects-expanded[data-gallery-mobile] .service-gallery :is(.gallery-footer--compact,.service-intro-number) {display:none!important;}
+html body #projects-expanded[data-gallery-mobile] [data-av-layout]:not([hidden]) {grid-template-rows:minmax(0,1fr);}
+html body #projects-expanded[data-gallery-mobile] [data-av-layout] .service-video-intro {display:none!important;}

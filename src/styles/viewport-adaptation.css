@@ -25,3 +25,15 @@ html[data-about-mobile] .mobile-3d-panel {container-type:inline-size;}
   .mobile-3d-panel header h2 {min-width:0;font-size:18px;overflow-wrap:anywhere;}
   .mobile-3d-panel header button {flex:none;}
 }
+
+/* Live browser chrome affects screen-filling surfaces, not scroll runways. */
+:root:root:root:root:root:root:root:root:root:root:root[data-layout-family]:not([data-layout-family="desktop"]) body .footer[data-compact-layout] {height:var(--live-viewport-height,100dvh)!important;min-height:0!important;}
+html[data-about-mobile] body {height:var(--live-viewport-height,100dvh);min-height:0;overflow:hidden;}
+html[data-about-mobile] body main[data-page-content] {height:var(--live-viewport-height,100dvh);min-height:0;}
+:root:root:root:root:root:root:root:root:root:root:root[data-about-mobile] body .about[data-mobile-3d] {position:fixed;top:var(--live-viewport-top,0px);left:0;width:100%;height:var(--live-viewport-height,100dvh)!important;min-height:0;max-height:none;margin:0;}
+:root:root:root:root:root:root:root:root:root:root:root[data-layout-family]:not([data-layout-family="desktop"]) body .featured-work__index,
+:root:root:root:root:root:root:root:root:root:root:root[data-layout-family]:not([data-layout-family="desktop"]) body .featured-work__index>span {font-weight:200;}
+html body .featured-work[data-card-exiting] .card-action-cue {visibility:hidden!important;animation:none!important;}
+html body .featured-work[data-card-exiting] .card-action-cue::before {animation:none!important;}
+@font-face {font-family:'Featured Index';src:url('/fonts/HostGrotesk.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap;}
+:root:root:root:root:root:root:root:root:root:root:root[data-layout-family]:not([data-layout-family="desktop"]) body .featured-work__index {font-family:'Featured Index','Host Grotesk',sans-serif;}

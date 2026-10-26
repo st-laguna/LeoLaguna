@@ -15,7 +15,7 @@ if(gallery&&lightbox&&section){
   const events=new AbortController();
   const reduced=matchMedia('(prefers-reduced-motion:reduce)');
   const portrait=matchMedia(phonePortraitMedia);
-  const configurePhone=()=>{g.toggleAttribute('data-phone-portrait',isPhonePortrait());g.toggleAttribute('data-gallery-phone',isPhoneViewport());};
+  const configurePhone=()=>{g.toggleAttribute('data-phone-portrait',isPhonePortrait());g.toggleAttribute('data-gallery-phone',isPhoneViewport());g.toggleAttribute('data-gallery-mobile',isMobileAbout());};
   window.addEventListener('resize',configurePhone,{signal:events.signal});
   configurePhone();portrait.addEventListener('change',configurePhone,{signal:events.signal});
   const shell=g.querySelector<HTMLElement>('.gallery-shell')!;

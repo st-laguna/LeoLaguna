@@ -1,3 +1,4 @@
+import {mountMobileBrandsReveal} from './mobile-brands-reveal';
 import {mountUnifiedBrands} from './unified-brands';
 import {compactServices} from './compact-services';
 import { initBrandPreview } from './brand-preview';
@@ -9,10 +10,11 @@ import { centerBrandComposition } from './brand-centering';
 gsap.registerPlugin(ScrollTrigger);
 const section=document.querySelector<HTMLElement>('[data-brands]');
 if(section){
+  const removeMobileReveal=mountMobileBrandsReveal(section);
   const removeFooterHandoff=mountBrandsFooterHandoff(section);
   const removeCentering=centerBrandComposition(section);
   const removeStop = registerScrollStops(section);
-  if(import.meta.hot)import.meta.hot.dispose(()=>{removeStop();removeFooterHandoff();removeCentering();});
+  if(import.meta.hot)import.meta.hot.dispose(()=>{removeStop();removeFooterHandoff();removeCentering();removeMobileReveal();});
   function updateLogos(){
     const dark=document.documentElement.dataset.theme==='dark';
     section!.querySelectorAll<HTMLImageElement>('[data-brand-white]').forEach(img=>{
@@ -142,3 +144,4 @@ if(section){
   window.addEventListener('resize',resize,{passive:true});
   if(import.meta.hot)import.meta.hot.dispose(()=>{clearTimeout(resizeTimer);window.removeEventListener('resize',resize);layoutObserver.disconnect();disposeUnified?.();media.revert();themeObserver.disconnect();});
 }
+

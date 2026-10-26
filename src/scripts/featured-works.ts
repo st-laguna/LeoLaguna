@@ -34,8 +34,13 @@ if (section) {
     });
   });
   media.add(mobileJourneyMotionMedia,()=>{
-    [...section.querySelectorAll<HTMLElement>('.featured-work')].sort((a,b)=>Number(getComputedStyle(a).order)-Number(getComputedStyle(b).order)).slice(0,-1).forEach((card,i)=>{const surface=card.querySelector('.featured-work__content');gsap.to(surface,{x:i%2?26:-26,y:-14,rotationX:-11,rotationY:i%2?14:-14,rotationZ:i%2?3.5:-3.5,scale:.94,ease:'none',scrollTrigger:{trigger:card,start:'top top',end:'80% top',scrub:true}})});
+    const cards=[...section.querySelectorAll<HTMLElement>('.featured-work')].sort((a,b)=>Number(getComputedStyle(a).order)-Number(getComputedStyle(b).order)).slice(0,-1);
+    cards.forEach((card,i)=>{const surface=card.querySelector<HTMLElement>('.featured-work__content')!;
+      // Keep the receding motion on one compositor plane; no huge 3D blend surfaces.
+      gsap.to(surface,{x:i%2?26:-26,y:-14,rotationZ:i%2?2:-2,scale:.94,force3D:true,ease:'none',scrollTrigger:{trigger:card,start:'top top',end:'80% top',scrub:true,onUpdate:self=>card.toggleAttribute('data-card-exiting',self.progress>0),onToggle:self=>{surface.style.willChange=self.isActive?'transform':'';}}});
+    });
     gsap.fromTo(section.querySelectorAll('h2 > span'),{opacity:0},{opacity:1,duration:.7,scrollTrigger:{trigger:section,start:'top 90%',once:true}});
+    return()=>cards.forEach(card=>{card.removeAttribute('data-card-exiting');(card.querySelector('.featured-work__content') as HTMLElement).style.removeProperty('will-change');});
   });
   const covers=[...section.querySelectorAll<HTMLElement>('.featured-work__cover')];
   const visible=new Set<HTMLElement>();
