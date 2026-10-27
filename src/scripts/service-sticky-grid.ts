@@ -1,3 +1,4 @@
+import {prepareImage} from './image-readiness';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isPhoneViewport, phoneMedia, isPhonePortrait, phonePortraitMedia } from './responsive-layout';
@@ -51,7 +52,7 @@ export function mountServiceStickyGrid(section: HTMLElement, scroller: HTMLEleme
   section.style.setProperty('--service-viewport', `${viewport}px`);
   function hydrate() {
     grid.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(image => {
-      if (image.parentElement?.getClientRects().length) { image.loading='eager';image.src=image.dataset.src!; }
+      if (image.parentElement?.getClientRects().length) { void prepareImage(image,1,isCurrent); }
     });
   }
   function configureMedia() {

@@ -1,4 +1,5 @@
 ---
+import {responsiveWorkImage} from '../data/responsive-work-image';
 import { projectAssetLabel, type Project } from '../data/projects';
 import en from '../i18n/en.json';
 import '../styles/service-sticky-grid.css';
@@ -8,6 +9,7 @@ const { project } = Astro.props;
 const t = en as Record<string, string>;
 // A bounded sample represents this service; the full gallery follows below.
 const sample = project.assets.filter(asset => asset.kind === 'image').slice(0, 6);
+const responsiveImages=new Map(await Promise.all(sample.map(async asset=>[asset.src,await responsiveWorkImage(asset.src)] as const)));
 const columns = [0, 1, 2].map(column => sample.filter((_, index) => index % 3 === column));
 ---
 <section class="service-sticky-grid" data-service-sticky aria-labelledby={`service-grid-title-${project.id}`}>
@@ -16,7 +18,7 @@ const columns = [0, 1, 2].map(column => sample.filter((_, index) => index % 3 ==
       <div class="service-image-grid" data-sticky-grid>
         {columns.map(column => <div class="service-image-column" data-sticky-column>
           {column.map(asset => <figure class="service-grid-image" data-sticky-item>
-            <button type="button" data-zoom-src={asset.src} data-zoom-alt={projectAssetLabel(asset, project)} aria-label={`Ampliar / Enlarge: ${projectAssetLabel(asset, project)}`}><img data-src={asset.src} alt={projectAssetLabel(asset, project)} loading="lazy" decoding="async" width="640" height="512" /></button>
+            <button type="button" data-zoom-src={asset.src} data-zoom-alt={projectAssetLabel(asset, project)} aria-label={`Ampliar / Enlarge: ${projectAssetLabel(asset, project)}`}><img data-src={asset.src} data-srcset={responsiveImages.get(asset.src)?.srcset} sizes="(max-width:700px) 90vw, 40vw" alt={projectAssetLabel(asset, project)} loading="lazy" decoding="async" width="640" height="512" /></button>
           </figure>)}
         </div>)}
       </div>

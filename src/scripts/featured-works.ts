@@ -1,3 +1,4 @@
+import {prepareImage} from './image-readiness';
 import {isMobileJourneyLayout, mobileJourneyMedia, mobileJourneyMotionMedia} from './responsive-layout';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -47,6 +48,8 @@ if (section) {
     return()=>cards.forEach(card=>{card.removeAttribute('data-card-exiting');(card.querySelector('.featured-work__content') as HTMLElement).style.removeProperty('will-change');});
   });
   const covers=[...section.querySelectorAll<HTMLElement>('.featured-work__cover')];
+  const warmImages=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){void prepareImage(entry.target.querySelector('img')!,1);warmImages.unobserve(entry.target);}}},{rootMargin:'150% 100%'});
+  covers.forEach(cover=>warmImages.observe(cover));
   const visible=new Set<HTMLElement>();
   const events=new AbortController();
   const syncCue=(cover:HTMLElement)=>{
@@ -65,5 +68,5 @@ if (section) {
   });
   const cueState=new MutationObserver(()=>covers.forEach(syncCue));
   cueState.observe(document.documentElement,{attributes:true,attributeFilter:['data-page-transition','data-section-transition']});
-  if (import.meta.hot) import.meta.hot.dispose(() => {media.revert();cueObserver.disconnect();cueState.disconnect();events.abort();covers.forEach(cover=>cover.removeAttribute('data-cue-visible'));});
+  if (import.meta.hot) import.meta.hot.dispose(() => {media.revert();cueObserver.disconnect();warmImages.disconnect();cueState.disconnect();events.abort();covers.forEach(cover=>cover.removeAttribute('data-cue-visible'));});
 }

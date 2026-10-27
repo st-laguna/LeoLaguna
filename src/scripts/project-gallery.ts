@@ -1,3 +1,4 @@
+import {prepareImage,prepareImages} from './image-readiness';
 import { transitionDialog, transitionDialogSection } from './page-transition';
 import { isMobileAbout } from './about/mobileAboutDevice.js';
 import {isPhonePortrait,isPhoneViewport,phonePortraitMedia} from './responsive-layout';
@@ -26,7 +27,7 @@ if(gallery&&lightbox&&section){
   let locks=0,scroll=0,previousOverflow='';
   let galleryBusy=false,lightboxBusy=false,lightboxCloseRequested=false;
   let galleryOpener:HTMLElement|null=null,lightboxOpener:HTMLElement|null=null;
-  let observer:IntersectionObserver|undefined;
+  let observer:IntersectionObserver|undefined,warmObserver:IntersectionObserver|undefined;
   let generation=0;
   type GalleryOwner={id:number;events:AbortController};
   let activeOwner:GalleryOwner|undefined;
@@ -78,7 +79,7 @@ if(gallery&&lightbox&&section){
   }
   function pause(root:Element){root.querySelectorAll('video').forEach(video=>video.pause());}
   function disconnectItems(){
-    observer?.disconnect();observer=undefined;
+    observer?.disconnect();observer=undefined;warmObserver?.disconnect();warmObserver=undefined;
   }
   function clearItemAnimations(){
     gsap.killTweensOf(Array.from(g.querySelectorAll('[data-gallery] .gallery-item')).map(item=>item.firstElementChild));
@@ -86,10 +87,19 @@ if(gallery&&lightbox&&section){
   function animateItems(owner:GalleryOwner){
     disconnectItems();
     const items=Array.from(g.querySelectorAll<HTMLElement>('[data-gallery]:not([hidden]) .gallery-item'));
-    gsap.set(items.map(item=>item.firstElementChild),{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)'});
+    gsap.set(items.map(item=>item.firstElementChild),{clipPath:'inset(100% 0 0)'});
+    const warming=new IntersectionObserver(entries=>{for(const entry of entries){
+      if(!entry.isIntersecting||!owns(owner))continue;
+      void prepareImages(entry.target,1,()=>owns(owner));warming.unobserve(entry.target);
+    }},{root:scroller,rootMargin:'200% 100%'});
+    warmObserver=warming;items.forEach(item=>warming.observe(item));
     const itemObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
-      if(!owns(owner))return;
-      if(entry.isIntersecting){entry.target.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>img.src=img.dataset.src!);if(!reduced.matches)gsap.to(entry.target.firstElementChild,{clipPath:'inset(0% 0 0)',duration:.65,ease:'power3.inOut'});itemObserver.unobserve(entry.target);}
+      if(!entry.isIntersecting||!owns(owner))return;
+      itemObserver.unobserve(entry.target);
+      void prepareImages(entry.target,0,()=>owns(owner)).then(()=>{
+        if(!owns(owner))return;
+        if(reduced.matches)gsap.set(entry.target.firstElementChild,{clipPath:'inset(0)'});else gsap.to(entry.target.firstElementChild,{clipPath:'inset(0% 0 0)',duration:.65,ease:'power3.inOut'});
+      });
     }),{root:scroller,threshold:.05});
     observer=itemObserver;items.forEach(item=>itemObserver.observe(item));
   }
@@ -106,6 +116,9 @@ if(gallery&&lightbox&&section){
     g.querySelectorAll<HTMLElement>('[data-gallery]').forEach((grid,i)=>{
       grid.hidden=i!==index;
     });
+    const activeGallery=g.querySelector<HTMLElement>('[data-gallery]:not([hidden])');
+    if(!isPhonePortrait())activeGallery?.querySelectorAll<HTMLImageElement>('[data-service-sticky] img').forEach(image=>void prepareImage(image,1,()=>owns(owner)));
+    if(isPhonePortrait())activeGallery?.querySelectorAll<HTMLImageElement>('.gallery-item img').forEach((image,index)=>{if(index<3)void prepareImage(image,1,()=>owns(owner));});
     gsap.set(shell,{yPercent:0});
     g.removeAttribute('data-media-closing');
     g.setAttribute('data-sticky-gallery','');closeGalleryButton.classList.remove('action-pill');
@@ -183,6 +196,9 @@ if(gallery&&lightbox&&section){
   async function openImage(button:HTMLElement){
     if(lightboxBusy||l.open)return;lightboxBusy=true;lightboxCloseRequested=false;lightboxOpener=button;
     image.src=button.dataset.zoomSrc!;image.alt=button.dataset.zoomAlt||'';
+    const parentWasOpen=g.open;
+    const ready=await prepareImage(image,0);
+    if(!ready||(parentWasOpen&&!g.open)||events.signal.aborted){lightboxBusy=false;return;}
     gsap.set(figure,{clipPath:reduced.matches?'inset(0)':'inset(100% 0 0)',y:reduced.matches?0:35});
     galleryScroll?.stop();
     lock();l.showModal();window.scrollTo({top:scroll,behavior:'instant'});

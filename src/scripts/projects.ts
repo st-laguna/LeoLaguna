@@ -1,3 +1,4 @@
+import {prepareImages} from './image-readiness';
 import {isMobileAbout as originalMobileAbout} from './about/mobileAboutDevice.js';
 import {compactServices,compactServiceMedia} from './compact-services';
 const ipadHome=compactServices;
@@ -53,16 +54,14 @@ if(section){
     if(!slide || enteredSlides.has(slide))return;
     enteredSlides.add(slide);revealSlide(slide);
   }
-  function hydrateImages(root:Element){
-    root.querySelectorAll<HTMLImageElement>('img[data-src]:not([src])').forEach(img=>{
-      img.loading='eager';
-      if(img.dataset.srcset)img.srcset=img.dataset.srcset;
-      img.src=img.dataset.src!;
-    });
-  }
+  let imagesNearby=false;
+  function hydrateImages(root:Element){void prepareImages(root,0,()=>!events.signal.aborted);}
   const panelSlides=new Map(panels.map(panel=>[panel,Array.from(panel.querySelectorAll<HTMLElement>('[data-slide]'))]));
   function hydratePanel(panel:HTMLElement){
-    panelSlides.get(panel)?.forEach(slide=>{if(!slide.hidden)hydrateImages(slide);});
+    const slides=panelSlides.get(panel)||[],index=Math.max(0,slides.findIndex(slide=>!slide.hidden));
+    if(slides[index])hydrateImages(slides[index]);
+    if(imagesNearby)for(const offset of [1,2,-1]){const adjacent=slides[(index+offset+slides.length)%slides.length];if(adjacent)void prepareImages(adjacent,1,()=>!events.signal.aborted);}
+    if(imagesNearby){const nextPanel=panels[panels.indexOf(panel)+1],first=nextPanel&&panelSlides.get(nextPanel)?.[0];if(first)void prepareImages(first,1,()=>!events.signal.aborted);}
     if(checkedThumbs.has(panel))return;
     if(getComputedStyle(panel).visibility==='hidden')return;
     panel.querySelectorAll<HTMLImageElement>('.project-thumbs img[data-src]:not([src])').forEach(img=>{
@@ -77,17 +76,17 @@ if(section){
       if(rect.bottom>0 && rect.top<innerHeight){hydratePanel(panel);revealPanel(panel);}
     });
   }
-  const warmTabletImages=navigator.maxTouchPoints>0 && Math.min(innerWidth,innerHeight)>700;
   const imageObserver=new IntersectionObserver(entries=>{
-    if(warmTabletImages)entries.forEach(entry=>{
+    entries.forEach(entry=>{
       if(!entry.isIntersecting)return;
+      imagesNearby=true;
       const slide=entry.target.querySelector<HTMLElement>('[data-slide]:not([hidden])');
       if(!slide)return;
       hydratePanel(entry.target as HTMLElement);
-      slide.querySelectorAll<HTMLImageElement>('img').forEach(img=>void img.decode().catch(()=>{}));
+
     });
     hydrateStaticPanels();
-  },{rootMargin:warmTabletImages?'100% 100%':'0px'});
+  },{rootMargin:'150% 100%'});
   panels.forEach(panel=>imageObserver.observe(panel));
   let sidebarTravel=200;
   function closeMenu() {
@@ -394,7 +393,17 @@ if (brandsLayout && !compactServices()) {
   function settleSelections(){
     Array.from(selections).forEach(([panel,state])=>{const latest=state.pending;state.pending=null;state.timeline.progress(1);if(latest!==null){select(panel,latest);selections.get(panel)?.timeline.progress(1);}});
   }
+  const requestedSelections=new Map<HTMLElement,number>();
   function select(panel:HTMLElement,index:number){
+    if(frozen||section!.hasAttribute('data-gallery-preparing'))return;
+    const slide=panelSlides.get(panel)?.[index];if(!slide)return;
+    requestedSelections.set(panel,index);
+    void prepareImages(slide,0,()=>!events.signal.aborted).then(ready=>{
+      if(ready.some(value=>!value)||requestedSelections.get(panel)!==index||events.signal.aborted)return;
+      commitSelection(panel,index);
+    });
+  }
+  function commitSelection(panel:HTMLElement,index:number){
     if(frozen||section!.hasAttribute("data-gallery-preparing"))return;
     const active=selections.get(panel);
     if(active){active.pending=index;return;}
@@ -403,7 +412,9 @@ if (brandsLayout && !compactServices()) {
     const previous=Number(panel.querySelector<HTMLElement>('[aria-selected="true"]')?.dataset.select||0);
     if(previous===index)return;
     slides.forEach(slide=>{slideReveals.get(slide)?.revert();slideReveals.delete(slide);gsap.killTweensOf(slide);gsap.set(slide,{clearProps:'transform,clipPath'});delete slide.dataset.leaving;slide.hidden=true;slide.querySelector('video')?.pause();});
-    hydrateImages(slides[index]);enteredSlides.add(slides[index]);
+    hydrateImages(slides[index]);
+    for(const offset of [1,2,-1])void prepareImages(slides[(index+offset+slides.length)%slides.length],1,()=>!events.signal.aborted);
+    enteredSlides.add(slides[index]);
     slides[index].hidden=false;slides[previous].hidden=false;
     panel.querySelectorAll<HTMLElement>('[data-select]').forEach(button=>{const selected=Number(button.dataset.select)===index;button.setAttribute('aria-selected',String(selected));if(button.getAttribute('role')!=='tab')button.setAttribute('aria-pressed',String(selected));button.tabIndex=selected?0:-1;});
     const direction=index>previous?1:-1;

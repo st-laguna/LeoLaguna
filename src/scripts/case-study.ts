@@ -1,3 +1,4 @@
+import {prepareImage} from './image-readiness';
 import {isMobileAbout} from './about/mobileAboutDevice.js';
 import {isPhoneViewport} from './responsive-layout';
 import gsap from 'gsap';
@@ -17,12 +18,20 @@ function caseDistance(){
 if(host){
   const configureMobile=()=>{document.documentElement.toggleAttribute('data-case-mobile',isMobileAbout());document.documentElement.toggleAttribute('data-case-phone',isMobileAbout()&&isPhoneViewport());};configureMobile();window.addEventListener('resize',configureMobile);window.addEventListener('leo:orientation-ready',configureMobile);
   if(import.meta.hot)import.meta.hot.dispose(()=>{window.removeEventListener('resize',configureMobile);window.removeEventListener('leo:orientation-ready',configureMobile);document.documentElement.removeAttribute('data-case-mobile');document.documentElement.removeAttribute('data-case-phone');});
+  const sequence=[...host.querySelectorAll<HTMLImageElement>('.case-study__images img')];
+  const warmSequence=(image:HTMLImageElement)=>{
+    void prepareImage(image,0);
+    const index=sequence.indexOf(image);
+    if(index>=0)for(const next of sequence.slice(index+1,index+3))void prepareImage(next,1);
+  };
+  // overflow:hidden on the stage clips IntersectionObserver's look-ahead.
+  // Warm a bounded sequence independently of that clip, then advance it on entry.
+  sequence.slice(0,3).forEach((image,index)=>void prepareImage(image,index===0?0:1));
   const images=new IntersectionObserver(entries=>{for(const entry of entries){
     if(!entry.isIntersecting)continue;
-    const image=entry.target as HTMLImageElement;
-    image.src=image.dataset.caseSrc!;images.unobserve(image);
+    warmSequence(entry.target as HTMLImageElement);images.unobserve(entry.target);
   }},{rootMargin:'100% 100%'});
-  host.querySelectorAll<HTMLImageElement>('img[data-case-src]').forEach(image=>images.observe(image));
+  host.querySelectorAll<HTMLImageElement>('.case-study__images img,img[data-case-src]').forEach(image=>images.observe(image));
   if(import.meta.hot)import.meta.hot.dispose(()=>images.disconnect());
 }
 if(host&&rail){
