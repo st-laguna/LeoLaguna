@@ -12,16 +12,26 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
   const deviceShortSide=Math.min(screen.width,screen.height);
   let lastWidth = 0, lastHeight = 0;
   let lastTabletPortrait;
+  let lastLayoutKey;
   let lastPortrait;
-  function layout(width, height) {
+  function layout(width, height, force = false) {
     if (!width || !height) return;
+    // A breakpoint can update before Journey releases its previous stage size.
+    // Use the viewport until that stage agrees with the new orientation.
+    if ((height > width) !== (innerHeight > innerWidth)) {
+      width=document.documentElement.clientWidth; height=innerHeight;
+    }
     const tabletPortrait = isTabletPortrait();
-    if (width === lastWidth && height === lastHeight && tabletPortrait === lastTabletPortrait) return;
+    const adaptive = document.documentElement.hasAttribute('data-adaptive-hero');
+    const f = getHeroFrame(width, height);
+    const layoutKey=adaptive+':'+f.mode;
+    if (!force && width === lastWidth && height === lastHeight && tabletPortrait === lastTabletPortrait && layoutKey === lastLayoutKey) return;
+    if(layoutKey!==lastLayoutKey)lastPortrait=undefined;
+    lastLayoutKey=layoutKey;
     lastWidth = width;
     lastHeight = height;
     lastTabletPortrait = tabletPortrait;
-    const f = getHeroFrame(width, height);
-    const adaptive = document.documentElement.hasAttribute('data-adaptive-hero');
+
     const portraitOffset = tabletPortrait && !adaptive ? Math.min(32, height * .02) : 0;
     const m = f.mode === 'ipad-portrait' ? masters.ip : adaptive ? (f.portrait ? masters.mp : masters.ml) : (f.portrait ? masters.v : masters.h);
     if (hero.dataset.heroFrame !== f.mode) hero.dataset.heroFrame = f.mode;
@@ -31,6 +41,8 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
     if (adaptive) {
       hero.style.setProperty('--hero-mask', m.mask);
       compositions.forEach(c => {c.style.transform='none';c.style.width='100%';c.style.height='100%';});
+      // Remove the preceding desktop/tablet anchor geometry before reading CSS.
+      anchors.forEach(el=>el.removeAttribute('style'));
       // Browser chrome changes height, not the authored type scale.
       const shortSide=deviceShortSide||Math.min(width,height);
       const left=parseFloat(getComputedStyle(anchors.find(el=>el.dataset.heroAnchor==='laguna')).left)||12;
@@ -62,9 +74,9 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
     });
     hero.setAttribute('data-hero-layout-ready', '');
   }
-  const measure = () => {
+  const measure = (force = false) => {
     const { width, height } = (journeyReady() ? stage : hero).getBoundingClientRect();
-    layout(width, height);
+    layout(width, height, force === true);
   };
   const observer = new ResizeObserver(([entry]) => {
     // Before Journey initializes, the stage includes other content in normal flow.
@@ -78,11 +90,12 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
   measure();
   // Inline setup can precede the stylesheet's first valid layout. Commit again
   // after parsing; readiness must never depend on a scroll or theme event.
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',measure,{once:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>measure(true),{once:true});
   else requestAnimationFrame(measure);
-  document.fonts.ready.then(measure);
+  document.fonts.ready.then(()=>measure(true));
   // Also covers a responsive attribute change without a stage-size change.
-  window.addEventListener('leo:orientation-ready', measure);
+  window.addEventListener('leo:orientation-ready', ()=>measure(true));
+  window.addEventListener('leo:hero-layout-change',()=>measure(true));
 
   const root = document.documentElement;
   if(root.hasAttribute('data-adaptive-hero')) {

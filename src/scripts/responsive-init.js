@@ -59,6 +59,7 @@
     dynamicTimer=setTimeout(()=>window.dispatchEvent(new Event('leo:tablet-viewport-ready')),220);
   }
   let previousLayout;
+  let previousHeroLayout;
   function apply() {
     const tabletLayout=root.hasAttribute('data-ipad')||tablet.matches||tabletLandscape.matches;
     root.toggleAttribute('data-tablet-layout',tabletLayout);
@@ -75,6 +76,12 @@
     const key=family+':'+root.dataset.layoutOrientation+':'+tabletLayout;
     if(previousLayout!==undefined&&previousLayout!==key)window.dispatchEvent(new CustomEvent('leo:layout-change',{detail:{family,previous:previousLayout}}));
     previousLayout=key;
+    const heroKey=root.hasAttribute('data-adaptive-hero')+':'+root.hasAttribute('data-ipad-home')+':'+root.dataset.layoutOrientation;
+    if(previousHeroLayout!==undefined && previousHeroLayout!==heroKey){
+      document.querySelector('.hero')?.removeAttribute('data-hero-layout-ready');
+      window.dispatchEvent(new Event('leo:hero-layout-change'));
+    }
+    previousHeroLayout=heroKey;
     if(large)dynamicViewport();else {clearTimeout(dynamicTimer);lastHeight=0;root.style.removeProperty('--tablet-viewport');}
   }
   largeLandscape.addEventListener('change',resize);
