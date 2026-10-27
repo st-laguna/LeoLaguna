@@ -228,3 +228,8 @@ html:not([data-about-mobile]):not([data-ipad]):not([data-large-tablet-landscape]
 .about[data-editorial] .about-editorial__bio {color:#fff;mix-blend-mode:difference;}
 html body .about .action-pill :is([data-roll-label],.action-arrow) {color:#000;mix-blend-mode:normal;}
 html[data-theme="dark"] body .about .action-pill :is([data-roll-label],.action-arrow) {color:#fff;}
+
+/* Supplied outlined title: stable geometry before font loading, accessible copy retained. */
+html body .about [data-vector-title] {position:relative;font-size:inherit;line-height:0;}
+html body .about [data-vector-title]::before {content:'';display:block;width:100%;aspect-ratio:389.47/135.36;background:currentColor;mask:url('/icons/Tittle_about.svg') center/contain no-repeat;}
+html body .about [data-vector-title]>:is(span,strong) {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}

@@ -105,3 +105,5 @@ html[data-case-mobile] body .case-study .case-study__intro-direction::before {tr
 @media(prefers-reduced-motion:reduce) {html body .mobile-3d-toggle::before {transition:none;}}
 
 html body #projects-expanded[data-gallery-phone] [data-gallery-close] {position:relative;}
+
+html[data-case-mobile] body .case-study .case-study__model .case-study__circle {color:var(--light-ink,#1c1c1c);background:var(--light-base,#ededed);mix-blend-mode:normal;}

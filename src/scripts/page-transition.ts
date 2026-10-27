@@ -26,7 +26,7 @@ const sectionHash = (hash: string): string | null =>
 const sectionURL = (hash: string) => '/' + location.search + hash;
 function sectionScrollTop(target:HTMLElement){
   const runway=target.closest<HTMLElement>('[data-brands-footer-handoff]');
-  if(target.id==='contact'&&runway?.parentElement?.hasAttribute('data-footer-handoff')){
+  if(target.id==='contact'&&(runway?.hasAttribute('data-portrait-footer-handoff')||runway?.parentElement?.hasAttribute('data-footer-handoff'))){
     return runway.getBoundingClientRect().bottom+scrollY-innerHeight;
   }
   return target.getBoundingClientRect().top+scrollY;

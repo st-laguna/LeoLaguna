@@ -287,10 +287,13 @@ if (brandsLayout && !compactServices()) {
     document.documentElement.classList.remove('projects-active');if(nav)nav.inert=false;
   }
   const mobileState={p:0};
+  let mobileHeight=0,mobileLandscape=false,lastMobileLayout='';
+  function measureMobile(){mobileLandscape=matchMedia('(max-width:1000px) and (max-height:500px) and (orientation:landscape)').matches;mobileHeight=mobileLandscape?main.clientWidth:main.clientHeight;lastMobileLayout='';}
   function renderMobile(){
     if(frozen || !layoutMatchesViewport())return;
-    const landscape=matchMedia('(max-width:1000px) and (max-height:500px) and (orientation:landscape)').matches;
-    const height=landscape?main.clientWidth:main.clientHeight;
+    const landscape=mobileLandscape,height=mobileHeight;
+    const layoutKey=mobileState.p+':'+height+':'+landscape;
+    if(layoutKey===lastMobileLayout)return;lastMobileLayout=layoutKey;
     const strip=landscape?48:Math.max(62,Math.min(82,height*.09));
     const p=clamp(mobileState.p);
     const position=Math.min(3,p/.86*3);
@@ -330,8 +333,8 @@ if (brandsLayout && !compactServices()) {
     });
     sidebar.inert=true;
     gsap.set(section!.querySelectorAll('.project-media,.project-thumbs,.project-mobile-copy'),{clearProps:'clipPath'});
-    mobileState.p=0;
-    mobileTimeline=gsap.to(mobileState,{p:1,ease:'none',scrollTrigger:{trigger:section,start:'top top',end:featured ? 'bottom 200%' : 'bottom bottom',scrub:.35,invalidateOnRefresh:true,onRefresh:renderMobile},onUpdate:renderMobile});
+    mobileState.p=0;measureMobile();
+    mobileTimeline=gsap.to(mobileState,{p:1,ease:'none',scrollTrigger:{trigger:section,start:'top top',end:featured ? 'bottom 200%' : 'bottom bottom',scrub:matchMedia('(any-pointer:coarse)').matches?true:.35,invalidateOnRefresh:true,onRefreshInit:measureMobile,onRefresh:renderMobile},onUpdate:renderMobile});
     renderMobile();ScrollTrigger.refresh();
   }
   function configure(){
@@ -453,7 +456,7 @@ if (brandsLayout && !compactServices()) {
     const trigger = timeline?.scrollTrigger;
     if ((desktopMotion()) && trigger) {
       const destination=trigger.start + stops[index] / total * (trigger.end - trigger.start);
-      if(compactServices())scrollPage(destination,true,.8);else if(!isMobileAbout()){commitScrollJump(()=>scrollPage(destination,false));ScrollTrigger.update();trigger.getTween()?.progress(1);timeline?.time(stops[index]);render();}else scrollPage(destination);
+      if(compactServices())scrollPage(destination,true,.8);else if(!isMobileAbout()){commitScrollJump(()=>scrollPage(destination,false));ScrollTrigger.update();trigger.getTween()?.progress?.(1);timeline?.time(stops[index]);render();}else scrollPage(destination);
     } else if ((mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches)) && mobileTimeline?.scrollTrigger) {
       const mobileTrigger = mobileTimeline.scrollTrigger;
       scrollPage(mobileTrigger.start + (index / 3 * .86) * (mobileTrigger.end - mobileTrigger.start));
@@ -487,14 +490,14 @@ if (brandsLayout && !compactServices()) {
   },{signal:events.signal});
   window.addEventListener('leo:gallery-lock',()=>{
     settleSelections();galleryService=current;frozen=true;
-    timeline?.scrollTrigger?.getTween()?.pause();
-    mobileTimeline?.scrollTrigger?.getTween()?.pause();
+    timeline?.scrollTrigger?.getTween()?.pause?.();
+    mobileTimeline?.scrollTrigger?.getTween()?.pause?.();
   },{signal:events.signal});
   window.addEventListener('leo:gallery-unlock',()=>{
-    frozen=false;
+    frozen=false;lastMobileLayout='';
     if(compactServices() && timeline?.scrollTrigger){
       const trigger=timeline.scrollTrigger;
-      ScrollTrigger.update();trigger.getTween()?.progress(1);timeline.time(stops[galleryService]);
+      ScrollTrigger.update();trigger.getTween()?.progress?.(1);timeline.time(stops[galleryService]);
       panels.forEach(panel=>{
         const selected=Number(panel.querySelector<HTMLElement>('[data-select][aria-selected="true"]')?.dataset.select||0);
         panelSlides.get(panel)?.forEach((slide,i)=>{
@@ -502,16 +505,16 @@ if (brandsLayout && !compactServices()) {
           gsap.killTweensOf(slide);gsap.set(slide,{clearProps:'transform,clipPath,visibility,opacity'});slide.hidden=i!==selected;
         });
       });
-      hydratePanel(panels[galleryService]);render();trigger.getTween()?.play();return;
+      hydratePanel(panels[galleryService]);render();trigger.getTween()?.play?.();return;
     }
     // Resume el seguimiento desde el mismo fotograma; nunca reconstruye el pin.
     if((mobileMotion.matches || (isTabletPortrait() && !ipadHome() && !matchMedia('(prefers-reduced-motion:reduce)').matches))){
       // Update only the mobile stack: the desktop render clips the whole main.
       ScrollTrigger.update();
-      mobileTimeline?.scrollTrigger?.getTween()?.play();
+      mobileTimeline?.scrollTrigger?.getTween()?.play?.();
       renderMobile();
     }else if((desktopMotion())){
-      timeline?.scrollTrigger?.getTween()?.play();
+      timeline?.scrollTrigger?.getTween()?.play?.();
       render();
     }
   },{signal:events.signal});

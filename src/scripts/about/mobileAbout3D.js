@@ -96,7 +96,7 @@ export function mountMobileAbout3D(section,getScene,on,reduced){
     if(!reduced)opening?.fromTo(item?selection:bio,{opacity:0,y:12},{opacity:1,y:0,duration:.5,ease:'power3.out'},.4);
   }
  }
- const fitHeading=()=>{const line=title.querySelector('span');line.style.transform='none';line.style.transform=`scaleX(${Math.min(1,(title.clientWidth-36)/line.scrollWidth)})`;};
+ const fitHeading=()=>{if(title.hasAttribute('data-vector-title'))return;const line=title.querySelector('span');line.style.transform='none';line.style.transform=`scaleX(${Math.min(1,(title.clientWidth-36)/line.scrollWidth)})`;};
  const language=new MutationObserver(fitHeading);language.observe(title,{subtree:true,childList:true,characterData:true});
  const resize=new ResizeObserver(()=>{panelWidth=panel.offsetWidth;fitHeading();getScene()?.setPanelOffset(open?panelWidth/innerWidth/2:0)});resize.observe(panel);
  on(q('[data-mobile-3d-image]'),'error',()=>q('[data-mobile-3d-image]').hidden=true);

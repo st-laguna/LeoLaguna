@@ -59,7 +59,7 @@ if(host&&rail){
       if(visible)entrance.play();else entrance.reverse();
     };
     const tween=gsap.to(rail,{x:()=>-distance(),ease:matchMedia('(any-pointer:coarse)').matches?'none':'power1.inOut',scrollTrigger:{
-      id:'case-study-rail',trigger:host,start:'top top',end:()=>'+='+distance(),scrub:matchMedia('(prefers-reduced-motion:reduce)').matches?true:.65,
+      id:'case-study-rail',trigger:host,start:'top top',end:()=>'+='+distance(),scrub:matchMedia('(prefers-reduced-motion:reduce), (any-pointer:coarse)').matches?true:.65,
       invalidateOnRefresh:true,onRefreshInit:measure,onRefresh:updateEnd,
     },onUpdate:updateEnd});
     updateEnd();

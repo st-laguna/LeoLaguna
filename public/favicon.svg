@@ -2,10 +2,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 
   <style>
+    .plate {fill:#EDEDED;}
     .logo {fill:#1C1C1C;stroke:#EDEDED;stroke-width:18;stroke-linejoin:round;paint-order:stroke fill;}
-    @media(prefers-color-scheme:dark) {.logo {fill:#EDEDED;stroke:#1C1C1C;}}
+    @media(prefers-color-scheme:dark) {.plate {fill:#1C1C1C;} .logo {fill:#EDEDED;stroke:#1C1C1C;}}
   </style>
 
+  <rect class="plate" width="512" height="512" rx="72" />
   <g transform="translate(8.7 117.17)">
     <polygon class="logo"
       points="373.41 111.59 423.82 25.1 261.97 25.1 211.8 111.6 373.41 111.59 275.63 277.66 397.03 277.66 494.6 111.6 373.41 111.59"/>

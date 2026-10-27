@@ -25,7 +25,7 @@ html[data-about-mobile] body .mobile-about-3d {display:block;position:absolute;i
 .mobile-3d-panel h2 {margin:0;font:700 22px/1.1 Archivo,sans-serif;}
 .mobile-3d-panel header button {width:40px;height:40px;border:0;background:none;color:inherit;font-size:24px;}
 .mobile-3d-panel img {display:block;width:calc(100% - 40px);height:auto;max-height:none;flex:none;object-fit:cover;margin:0 20px;border-radius:16px;}
-.mobile-3d-toggle {position:absolute;left:calc(var(--mobile-panel-width) * var(--mobile-panel-progress,0));top:50%;translate:-50% -50%;width:40px;height:40px;aspect-ratio:1;box-sizing:border-box;padding:0;display:grid;place-items:center;border:1px solid #8887;border-radius:999px;background:var(--background);color:var(--foreground);font-size:22px;z-index:6;}
+.mobile-3d-toggle {position:absolute;left:calc(var(--mobile-panel-width) * var(--mobile-panel-progress,0));top:50%;translate:0 -50%;width:40px;height:40px;aspect-ratio:1;box-sizing:border-box;padding:0;display:grid;place-items:center;border:1px solid #8887;border-radius:999px;background:var(--background);color:var(--foreground);font-size:22px;z-index:6;}
 .mobile-3d-toggle[aria-expanded=false] {translate:0 -50%;}
 .mobile-3d-status {position:absolute;left:calc(18px + var(--mobile-panel-width) * var(--mobile-panel-progress,0));top:max(24px,env(safe-area-inset-top));bottom:auto;right:76px;pointer-events:none;z-index:7;color:#fff;mix-blend-mode:difference;}
 .mobile-3d-status .about__loading {display:flex;align-items:center;gap:9px;color:var(--foreground);font:600 11px/1.2 'Host Grotesk',sans-serif;}

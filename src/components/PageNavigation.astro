@@ -25,6 +25,6 @@ const source = `(() => {\n${homeEntrance.replace(/^export /gm, '')}\n${motion.re
 <link rel="icon" href={`/favicon.ico?v=${faviconVersion}`} sizes="16x16 32x32 48x48 96x96 192x192 256x256" />
 <link rel="icon" type="image/png" href={`/favicon.png?v=${faviconVersion}`} sizes="192x192" />
 <link rel="icon" type="image/svg+xml" href={`/favicon.svg?v=${faviconVersion}`} sizes="any" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link rel="apple-touch-icon" href={`/apple-touch-icon.png?v=${faviconVersion}`} sizes="180x180" />
 <script is:inline set:html={`(() => {\n${tabletLayoutSource.replace(/^export /gm, '')}\n${responsiveInit}\n})();`}></script>
 <script is:inline set:html={source}></script>

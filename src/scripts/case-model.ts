@@ -57,13 +57,14 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const screenRight=new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion);
   let drag:{id:number;x:number;y:number}|undefined;
   function rotateModel(dx:number,dy:number){
+    if(resetting)return;
     // Turntable angles never accumulate roll, even after diagonal drags.
     yaw+=dx;pitch=THREE.MathUtils.clamp(pitch+dy,-Math.PI*.48,Math.PI*.48);
     yawRotation.setFromAxisAngle(verticalAxis,yaw);pitchRotation.setFromAxisAngle(screenRight,pitch);
     modelRotation.copy(pitchRotation).multiply(yawRotation).normalize();request();
   }
   canvas.addEventListener('pointerdown',event=>{
-    if(preview||!loaded||event.button!==0)return;
+    if(preview||!loaded||event.button!==0||resetting)return;
     pointers.add(event.pointerId);if(pointers.size>1){drag=undefined;return;}
     drag={id:event.pointerId,x:event.clientX,y:event.clientY};canvas.setPointerCapture(event.pointerId);
   },{signal});
@@ -126,11 +127,12 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
   const parts:Part[]=[];const floating={amount:0};const deltaRotation=new THREE.Quaternion(),angles=new THREE.Euler();
   let loaded=false,loading=false,disposed=false,visible=false,frame=0,time=0,last=0,exploded=false;
   let motion:gsap.core.Timeline|undefined;
+  let resetting=false;
   function request(){if(!disposed&&visible&&!document.hidden&&!frame)frame=requestAnimationFrame(render);}
   function render(now:number){
     frame=0;if(disposed||!visible||document.hidden)return;
     const elapsed=last?Math.min((now-last)/1000,.05):0;time+=elapsed;last=now;
-    if(touchCapable()&&loaded&&!reduced.matches&&!pointers.size){idleTime+=elapsed;previewAngle=Math.sin(idleTime*.18)*THREE.MathUtils.degToRad(10);}
+    if(touchCapable()&&loaded&&!reduced.matches&&!pointers.size&&!resetting){idleTime+=elapsed;previewAngle=Math.sin(idleTime*.18)*THREE.MathUtils.degToRad(10);}
     const moving=controls.update();
     const distance=THREE.MathUtils.clamp(controls.getDistance(),controls.minDistance,controls.maxDistance);
     camera.position.copy(viewDirection).multiplyScalar(distance);
@@ -225,7 +227,21 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     motion?.kill();floating.amount=0;
     parts.forEach(part=>{part.progress=0;part.object.position.copy(part.position);part.object.quaternion.copy(part.quaternion);part.object.scale.copy(part.scale);});
   }
-  function resetExperience(){
+  function resetExperience(animate=false){
+    if(animate&&!reduced.matches&&visible){
+      motion?.kill();zoomMotion?.kill();drag=undefined;pointers.clear();resetting=true;
+      const start=modelRotation.clone(),identity=new THREE.Quaternion();
+      const state={progress:0,angle:previewAngle,distance:controls.getDistance()},endDistance=defaultDistance/((touchCapable()?2:1)*(1+zoomMinimum));
+      const startYaw=yaw,startPitch=pitch;
+      exploded=false;expandedWasInView=false;button.setAttribute('aria-pressed','false');button.dataset.i18nAriaLabel='model.explode';button.setAttribute('aria-label',translated('model.explode'));
+      motion=gsap.timeline({onUpdate:request,onComplete:()=>{resetting=false;resetExperience();},onInterrupt:()=>{resetting=false;}});
+      motion.to(state,{progress:1,angle:0,distance:endDistance,duration:.85,ease:'power3.inOut',onUpdate:()=>{
+        modelRotation.slerpQuaternions(start,identity,state.progress);yaw=startYaw*(1-state.progress);pitch=startPitch*(1-state.progress);previewAngle=state.angle;
+        orbitCamera.position.sub(controls.target).normalize().multiplyScalar(state.distance).add(controls.target);controls.update();
+      }},0).to(zoomState,{amount:0,duration:.85,onUpdate:()=>{zoom.value=String(Math.round(zoomState.amount*100));}},0).to(floating,{amount:0,duration:.5},0);
+      parts.forEach(part=>motion!.to(part,{progress:0,duration:.85,ease:'power3.inOut'},0));request();return;
+    }
+    resetting=false;
     drag=undefined;yaw=pitch=0;previewAngle=0;idleTime=0;pointers.clear();modelRotation.identity();root.quaternion.identity();
     base.quaternion.copy(canonicalOrientation);last=0;
     zoomMotion?.kill();zoomState.amount=0;zoom.value='0';applyZoom();
@@ -234,7 +250,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     button.setAttribute('aria-label',translated('model.explode'));request();
   }
   function setExploded(next:boolean){
-    if(!loaded||exploded===next)return;
+    if(!loaded||resetting||exploded===next)return;
     exploded=next;expandedWasInView=next&&visibleRatio>=.6;button.setAttribute('aria-pressed',String(exploded));button.dataset.i18nAriaLabel=exploded?'model.assemble':'model.explode';button.setAttribute('aria-label',translated(button.dataset.i18nAriaLabel));
     if(exploded&&!dialog.open)bringIntoView();
     motion?.kill();
@@ -247,7 +263,7 @@ export function mountCaseModel(viewport:HTMLElement,bringIntoView:()=>void=()=>{
     request();
   }
   button.addEventListener('click',()=>setExploded(!exploded),{signal});
-  reset.addEventListener('click',()=>{if(loaded)resetExperience();},{signal});
+  reset.addEventListener('click',()=>{if(loaded)resetExperience(true);},{signal});
   canvas.addEventListener('keydown',event=>{if(preview)return;if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return;event.preventDefault();rotateModel(event.key==='ArrowLeft'?-.12:event.key==='ArrowRight'?.12:0,event.key==='ArrowUp'?-.12:event.key==='ArrowDown'?.12:0);},{signal});
   reduced.addEventListener('change',()=>{zoomMotion?.kill();zoomState.amount=Number(zoom.value)/100;applyZoom();motion?.kill();floating.amount=0;parts.forEach(part=>part.progress=exploded?1:0);request();},{signal});
   updateInteraction();

@@ -7,11 +7,11 @@ export function mountTabletHorizontalGesture(host:HTMLElement,getTrigger:()=>Scr
   const events=new AbortController(),signal=events.signal;
   let x=0,y=0,lastX=0,lastTime=0,velocity=0,intent='',tracking=false,targetScroll=0,suppressClick=false;
   const bounds=(trigger:ScrollTrigger)=>[trigger.start+(trigger.end-trigger.start)*range[0],trigger.start+(trigger.end-trigger.start)*range[1]];
-  const drive=(trigger:ScrollTrigger,position:number)=>{if(!enabled()){inertia?.kill();return;}const [start,end]=bounds(trigger);targetScroll=gsap.utils.clamp(start,end,position);scrollPage(targetScroll,false);ScrollTrigger.update();trigger.getTween()?.progress(1);};
+  const drive=(trigger:ScrollTrigger,position:number)=>{if(!enabled()){inertia?.kill();return;}const [start,end]=bounds(trigger);targetScroll=gsap.utils.clamp(start,end,position);scrollPage(targetScroll,false);ScrollTrigger.update();trigger.getTween()?.progress?.(1);};
   let inertia:gsap.core.Tween|undefined;
   host.addEventListener('touchstart',event=>{
-    inertia?.kill();tracking=false;
-    if(!enabled()||event.touches.length!==1||(event.target as Element).closest('input,textarea,a:not(.case-study__next),button:not(.project-enlarge),[data-case-model]:not([data-touch-preview])'))return;
+    inertia?.kill();tracking=false;suppressClick=false;
+    if(!enabled()||event.touches.length!==1||(event.target as Element).closest('input,textarea,a:not(.case-study__next),button:not(.project-enlarge):not(.case-study__circle),[data-case-model]:not([data-touch-preview]) canvas'))return;
     const trigger=getTrigger();if(!trigger)return;const [start,end]=bounds(trigger);if(scrollY<start-2||scrollY>end+2)return;targetScroll=scrollY;suppressClick=false;
     const finger=event.touches[0];x=lastX=finger.clientX;y=finger.clientY;lastTime=performance.now();velocity=0;intent='';tracking=true;
   },{passive:true,signal});
@@ -19,11 +19,11 @@ export function mountTabletHorizontalGesture(host:HTMLElement,getTrigger:()=>Scr
     if(!tracking||!enabled()||event.touches.length!==1)return;
     const finger=event.touches[0],dx=finger.clientX-x,dy=finger.clientY-y;
     if(!intent){if(Math.max(Math.abs(dx),Math.abs(dy))<12)return;intent=Math.abs(dx)>Math.abs(dy)*1.3?'horizontal':'vertical';}
-    if(intent!=='horizontal')return;
+    if(intent!=='horizontal'){tracking=false;return;}
     suppressClick=true;
     const trigger=getTrigger();if(!trigger)return;
     event.preventDefault();const now=performance.now(),step=lastX-finger.clientX;
-    velocity=step/Math.max(8,now-lastTime);lastX=finger.clientX;lastTime=now;
+    velocity=velocity*.3+step/Math.max(8,now-lastTime)*.7;lastX=finger.clientX;lastTime=now;
     drive(trigger,targetScroll+step);
   },{passive:false,signal});
   host.addEventListener('touchend',()=>{
