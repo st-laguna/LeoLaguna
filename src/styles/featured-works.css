@@ -29,7 +29,7 @@ html body [data-featured-brands] > .brands[data-brands] {position:sticky;top:0;z
   font-size:var(--ui-nav-size,clamp(11px,.95vw,15px));font-weight:400;line-height:1.4;white-space:normal;
 }
 .featured-work__client {grid-column:1;grid-row:1;min-width:0;overflow-wrap:anywhere;}
-.featured-work__category {font-size:calc(var(--ui-nav-size,clamp(11px,.95vw,15px)) - 2px);grid-column:2;grid-row:1;min-width:0;text-align:center;opacity:.6;text-transform:none;overflow-wrap:anywhere;}
+.featured-work__category {font-size:calc(var(--ui-nav-size,clamp(11px,.95vw,15px)) - 2px);grid-column:2;grid-row:1;min-width:0;text-align:center;opacity:1;text-transform:none;overflow-wrap:anywhere;}
 .featured-work__action {grid-column:3;grid-row:1;align-self:end;justify-self:end;display:grid;overflow:hidden;text-align:right;white-space:nowrap;}
 .featured-work__action > span {grid-area:1 / 1;}
 .featured-work__view {transform:translateY(120%);}

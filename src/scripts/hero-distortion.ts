@@ -18,6 +18,9 @@ export function mountHeroDistortion(hero: HTMLElement) {
   const full = !tablet && mouse.matches && !limited;
   const maxDisplacement = full ? .085 : .018;
   const force = full ? .5 : .2;
+  let enhancementReady = false;
+  let idleHandle:number|undefined;
+  let idleTimer:ReturnType<typeof setTimeout>|undefined;
   let ended = false, initial = true, visible = true, loading = false, generation = 0, covered=false;
   let release: (() => void) | undefined;
   let resume: (() => void) | undefined;
@@ -39,14 +42,26 @@ export function mountHeroDistortion(hero: HTMLElement) {
     if (ended) return;
     ended = true;
     events.abort(); observer.disconnect(); themeObserver.disconnect();
+    clearTimeout(idleTimer);
+    if(idleHandle!==undefined)window.cancelIdleCallback(idleHandle);
     deactivate();
   }
   function sync() {
-    if (ended || !initial || unavailable) return;
+    if (ended || !initial || unavailable || !enhancementReady) return;
     if (reduced.matches || mobile || ipad || document.documentElement.hasAttribute('data-tablet-layout') || (!tablet && !mouse.matches)) { deactivate(); return; }
     if (!visible || document.hidden || covered) { pause?.(); return; }
     if (resume) resume(); else void init();
   }
+  // Preserve the static image during critical loading and the entrance.
+  function scheduleEnhancement() {
+    if(ended || enhancementReady || idleHandle!==undefined || idleTimer!==undefined ||
+       document.readyState!=='complete' || document.documentElement.hasAttribute('data-home-entry'))return;
+    const start=()=>{idleHandle=undefined;idleTimer=undefined;if(ended)return;enhancementReady=true;sync();};
+    if('requestIdleCallback' in window)idleHandle=window.requestIdleCallback(start,{timeout:2000});
+    else idleTimer=setTimeout(start,200);
+  }
+  window.addEventListener('load',scheduleEnhancement,{once:true,signal});
+  window.addEventListener('leo:hero-entry-ready',scheduleEnhancement,{once:true,signal});
   const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); });
   observer.observe(hero);
   // Keep the existing theme wipe entirely owned by the original images.
@@ -221,6 +236,7 @@ export function mountHeroDistortion(hero: HTMLElement) {
       image.style.visibility='hidden';resizeObserver.observe(image);sync();
     } catch { if(token===generation){deactivate();unavailable=true;} }
   }
+  scheduleEnhancement();
   sync();
   // Re-entering the initial masked state creates one fresh, temporary renderer.
   return {setInitialState(active:boolean,intensity=1){if(strength!==intensity){strength=intensity;updateStrength?.();}if(initial===active){if(active&&!resume&&!loading&&!recoveryTimer)sync();return;}initial=active;if(active){unavailable=false;recoveryAttempts=0;sync();}else deactivate();},dispose:finish};

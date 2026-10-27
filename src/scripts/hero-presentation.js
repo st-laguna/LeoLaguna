@@ -101,15 +101,15 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
   const phone = matchMedia('(max-width:700px), (max-width:1000px) and (max-height:500px)').matches;
   const duration = phone ? 380 : 500;
   const entrance = prepareHomeEntrance(hero, { delay: duration * .7 });
-  let wipe, timeout, finished = false;
+  let wipe, finished = false;
   function finish() {
     if (finished) return;
     finished = true;
-    clearTimeout(timeout);
     entrance.clean();
     wipe?.cancel();
     root.removeAttribute('data-home-entry');
     hero.removeAttribute('data-hero-pending');
+    window.dispatchEvent(new Event('leo:hero-entry-ready'));
     if (!root.hasAttribute('data-section-history')) history.scrollRestoration = 'auto';
     events.abort();
   }
@@ -118,12 +118,8 @@ function initHeroPresentation(getHeroFrame, prepareHomeEntrance) {
   document.addEventListener('visibilitychange', () => { if (document.hidden) finish(); }, options);
   window.addEventListener('pagehide', finish, options);
   if (reduced.matches || document.hidden) { finish(); return; }
-  const activeImage = hero.querySelector(root.dataset.theme === 'dark' ? '.hero__image--dark' : '.hero__image--light');
-  const critical = [...hero.querySelectorAll('.hero__artwork img'), activeImage].filter(Boolean);
-  const ready = Promise.allSettled(critical.map(image => Promise.resolve().then(() => image.decode())));
-  const deadline = new Promise(resolve => { timeout = setTimeout(resolve, 450); });
-  void Promise.race([ready, deadline]).then(async () => {
-    clearTimeout(timeout);
+  // Readable content must not wait for a decorative image to decode.
+  void Promise.resolve().then(async () => {
     if (finished) return;
     wipe = curtain?.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-100%)' }],
       { duration, easing: 'cubic-bezier(.76,0,.24,1)', fill: 'both' });

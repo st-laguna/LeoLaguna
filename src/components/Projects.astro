@@ -39,7 +39,7 @@ const responsiveImages=new Map(await Promise.all(projects.flatMap(project=>proje
                 {project.assets.map((asset,j) => (
                   <figure class="project-slide" data-slide={j} hidden={j!==0}>
                     {asset.kind === 'image' ? (
-                      <button class="project-enlarge" type="button" data-zoom-src={asset.src} data-zoom-alt={projectAssetLabel(asset, project)} aria-label={`Ampliar / Enlarge: ${projectAssetLabel(asset, project)}`}><img src={index===0 && j===0 ? asset.src : undefined} srcset={index===0 && j===0 ? responsiveImages.get(asset.src)?.srcset : undefined} data-src={asset.src} data-srcset={responsiveImages.get(asset.src)?.srcset} sizes="(max-width:1400px) 100vw, 70vw" {...projectImageSize(asset.src)} alt={projectAssetLabel(asset, project)} loading="lazy" decoding="async" /></button>
+                      <button class="project-enlarge" type="button" data-zoom-src={asset.src} data-zoom-alt={projectAssetLabel(asset, project)} aria-label={`Ampliar / Enlarge: ${projectAssetLabel(asset, project)}`}><img data-src={asset.src} data-srcset={responsiveImages.get(asset.src)?.srcset} sizes="(max-width:1400px) 100vw, 70vw" {...projectImageSize(asset.src)} alt={projectAssetLabel(asset, project)} loading="lazy" decoding="async" /></button>
                     ) : (
                       <video data-auto-video width={asset.width || 1920} height={asset.height || 1080} style={`--video-aspect:${asset.width || 1920}/${asset.height || 1080}`} src={asset.src} poster={asset.poster || asset.src.replace('/videos/', '/videos/mini/').replace(/\.webm$/i, '.webp')} muted loop playsinline preload="none" aria-label={projectAssetLabel(asset, project)} ></video>
                     )}

@@ -102,7 +102,7 @@ export function createHeroInfoTimeline(hero) {
         a.effect.updateTiming({delay:offset,endDelay:total-offset-duration});
         a.currentTime=0;a.pause();
       });if(reduced())visible();},
-    playInitial(){if(direction<0)return;if(!reduced())animations.forEach(a=>{a.updatePlaybackRate(1);a.play();});else visible();},
+    playInitial(){if(direction<0)return;visible();},
     play(){change(1);},reverse(){change(-1);},
     show:visible,
     hide(){direction=-1;animations.forEach(a=>{a.playbackRate=-1;a.finish();});},
@@ -147,7 +147,7 @@ export function createHeroTitleTimeline(hero) {
         a.effect.updateTiming({delay:offset,endDelay:total-offset-duration});
         a.currentTime=0;a.pause();
       });if(reduced())visible();},
-    playInitial(){if(direction<0)return;if(!reduced())animations.forEach(a=>{a.updatePlaybackRate(1);a.play();});else visible();},
+    playInitial(){if(direction<0)return;visible();},
     play(){change(1);},reverse(){change(-1);},
     show:visible,
     hide(){direction=-1;animations.forEach(a=>{a.playbackRate=-1;a.finish();});},
