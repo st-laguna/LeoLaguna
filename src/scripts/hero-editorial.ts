@@ -6,7 +6,11 @@ if(host){
  const panels=Array.from(host.querySelectorAll<HTMLElement>('[data-hero-story]'));
  const dots=Array.from(host.querySelectorAll<HTMLButtonElement>('[data-story-select]'));
  let service=0,story=0,visible=false;
- let serviceElapsed=0,storyElapsed=0;
+ let serviceElapsed=0,storyElapsed=0,engaged=false;
+ // Keep the first composition stable while reading. Autoplay starts on intent,
+ // so a background timer does not replace the primary content during loading.
+ const engage=()=>{engaged=true;};
+ for(const type of ['pointerdown','wheel','touchstart','keydown'])window.addEventListener(type,engage,{once:true,passive:true,signal});
  const bars=dots.map(dot=>dot.querySelector<HTMLElement>('i')!);
  let barAnimations:Animation[]=[];
  function showStory(index:number){
@@ -47,18 +51,20 @@ if(host){
  const syncHeader=()=>{
   const rect=hero.getBoundingClientRect(),root=document.documentElement;
   const active=desktop.matches&&!root.hasAttribute('data-ipad')&&!root.hasAttribute('data-tablet-layout')&&rect.top<=48&&rect.bottom>innerHeight*.75&&rect.width>innerWidth*.9;
-  root.toggleAttribute('data-hero-nav-white',active);
-  if(!active||!horizontal)return;
+  if(!active||!horizontal){root.toggleAttribute('data-hero-nav-white',active);return;}
   const css=getComputedStyle(hero),size=css.getPropertyValue('--hero-mask-size').trim().split(/\s+/).map(parseFloat),position=css.getPropertyValue('--hero-mask-position').trim().split(/\s+/).map(parseFloat),view=horizontal.viewBox.split(/\s+/).map(Number);
+  const updates:Array<[HTMLElement,boolean]>=[];
   for(const link of document.querySelectorAll<HTMLElement>('.site-header [data-shared-nav-link]')){
    const box=link.getBoundingClientRect(),x=(box.x+box.width/2-rect.x-position[0])*view[2]/size[0],y=(box.y+box.height/2-rect.y-position[1])*view[3]/size[1];
-   link.toggleAttribute('data-hero-image-link',horizontal.polygons.some((polygon:number[][])=>inPolygon(x,y,polygon)));
+   updates.push([link,horizontal.polygons.some((polygon:number[][])=>inPolygon(x,y,polygon))]);
   }
+  root.toggleAttribute('data-hero-nav-white',active);
+  updates.forEach(([link,inside])=>link.toggleAttribute('data-hero-image-link',inside));
  };
  window.addEventListener('scroll',syncHeader,{passive:true,signal});window.addEventListener('resize',syncHeader,{passive:true,signal});syncHeader();
  const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;syncHeader();},{threshold:.2});observer.observe(host.closest('.hero')!);
  const timer=setInterval(()=>{
-  if((!adaptive&&(!desktop.matches||(document.documentElement.hasAttribute('data-ipad')||document.documentElement.hasAttribute('data-tablet-layout'))))||reduced.matches||document.hidden||!visible)return;
+  if(!engaged||(!adaptive&&(!desktop.matches||(document.documentElement.hasAttribute('data-ipad')||document.documentElement.hasAttribute('data-tablet-layout'))))||reduced.matches||document.hidden||!visible)return;
   serviceElapsed+=250;storyElapsed+=250;
   if(serviceElapsed>=2200){showService((service+1)%links.length);serviceElapsed=0;}
   if(!adaptive&&storyElapsed>=7000){showStory((story+1)%panels.length);storyElapsed=0;}

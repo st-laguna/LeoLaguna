@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/check-build-assets.mjs",
+    "check:assets": "node scripts/check-build-assets.mjs",
     "check:styles": "node scripts/check-mobile-styles.mjs",
     "preview": "astro preview",
     "astro": "astro"

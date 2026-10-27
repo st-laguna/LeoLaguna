@@ -18,7 +18,8 @@ export default defineConfig({
     },
   }],
   build: {
-    inlineStylesheets: 'always',
+    // Share and cache large stylesheets across documents; small rules stay inline.
+    inlineStylesheets: 'auto',
   },
   vite: {
     // Builds must not invalidate the running dev server's optimized 3D modules.
