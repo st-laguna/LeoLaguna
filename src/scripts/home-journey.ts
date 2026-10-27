@@ -1,3 +1,4 @@
+import {prepareWorkflowIcons} from './workflow-icons';
 import {isMobileJourneyLayout, mobileLandscapeMedia} from './responsive-layout';
 import { createHeroInfoTimeline, createHeroTitleTimeline } from './home-entrance.js';
 import { isTabletPortrait, getHeroFrame } from './responsive-layout';
@@ -94,7 +95,7 @@ if(root){
     host.hasAttribute('data-journey')||host.hasAttribute('data-mobile-journey')?[]:[0]);
   const workflowImages=Array.from(workflow.querySelectorAll<HTMLImageElement>('.workflow__front img'));
   let workflowImagesLoaded=false;
-  const loadWorkflowImages=()=>{if(workflowImagesLoaded)return;workflowImagesLoaded=true;if(ipad){queueImages(workflowImages);return;}workflowImages.forEach(img=>{if(img.dataset.src)img.src=img.dataset.src;});};
+  const loadWorkflowImages=(warmIcons=true)=>{if(warmIcons)void prepareWorkflowIcons(workflow);if(workflowImagesLoaded)return;workflowImagesLoaded=true;if(ipad){queueImages(workflowImages);return;}workflowImages.forEach(img=>{if(img.dataset.src)img.src=img.dataset.src;});};
   let warmupTimer:ReturnType<typeof setTimeout>|undefined;
   const warmupHero=hero.querySelector<HTMLImageElement>('picture[data-loaded] img');
   // iPad loads transition images on scroll intent, not while the landing is idle.
@@ -103,7 +104,7 @@ if(root){
       if(disposed)return;
       warmupTimer=setTimeout(()=>{
         if(disposed)return;
-        loadIntermediateImages();loadWorkflowImages();
+        loadIntermediateImages();loadWorkflowImages(false);
         if(!ipad)[...intermediateImages,...workflowImages].forEach(img=>void img.decode().catch(()=>{}));
       },250);
     });

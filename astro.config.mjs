@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-import { readdir, unlink } from 'node:fs/promises';
+import { readdir, unlink, readFile, writeFile } from 'node:fs/promises';
 
 export default defineConfig({
   output: 'static',
@@ -7,6 +7,19 @@ export default defineConfig({
     name: 'exclude-illustrator-temporaries',
     hooks: {
       'astro:build:done': async ({ dir, logger }) => {
+        // Eliminate stylesheet discovery round trips for the first screen.
+        // Preserve the generated order and keep the shared CSS files for other routes.
+        const landing=new URL('index.html',dir);
+        let html=await readFile(landing,'utf8');
+        const links=[...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)];
+        for(const [tag] of links){
+          const href=tag.match(/href="([^"?#]+)/)?.[1];
+          if(!href?.startsWith('/_astro/'))continue;
+          const css=await readFile(new URL(href.slice(1),dir),'utf8');
+          if(/url\(\s*["']?(?:\.\.?\/)/.test(css))throw new Error('Landing CSS contains a relative URL: '+href);
+          html=html.replace(tag,'<style>'+css.replaceAll('</style','<\\/style')+'</style>');
+        }
+        await writeFile(landing,html);
         // Keep editor recovery files in public; omit them from deployment output.
         const icons = new URL('icons/', dir);
         for (const entry of await readdir(icons, { withFileTypes: true })) {

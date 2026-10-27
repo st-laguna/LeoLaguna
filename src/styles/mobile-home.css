@@ -699,3 +699,8 @@ html.mobile-menu-open,html.mobile-menu-open body{overscroll-behavior:none}
   78%,100% {transform:translate(0,0) rotate(-45deg);opacity:1;}
 }
 @media (prefers-reduced-motion:reduce) {:root:root:root:root:root:root:root:root:root body .workflow__tap-cue,:root:root:root:root:root:root:root:root:root body .workflow__tap-cue::before {animation:none!important;}}
+
+/* Hidden back artwork must not paint before its card turns. Keep both physical
+   surfaces intact for Safari; the back content visibility follows the face state. */
+:root:root:root:root:root:root:root body .workflow__back[aria-hidden="true"] > * {visibility:hidden!important;transition:visibility 0s 325ms!important;}
+:root:root:root:root:root:root:root body .workflow__back[aria-hidden="false"] > * {visibility:visible!important;transition:visibility 0s!important;}

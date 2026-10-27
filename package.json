@@ -6,7 +6,9 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "predev": "node scripts/build-workflow-icons.mjs",
     "dev": "astro dev",
+    "prebuild": "node scripts/build-workflow-icons.mjs",
     "build": "astro build && node scripts/check-build-assets.mjs",
     "check:assets": "node scripts/check-build-assets.mjs",
     "check:styles": "node scripts/check-mobile-styles.mjs",
