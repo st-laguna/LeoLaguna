@@ -14,7 +14,7 @@ import '../styles/gallery-mobile-controls.css';
 
 
 const t = en as Record<string,string>;
-const responsiveImages=new Map(await Promise.all(projects.flatMap(project=>project.assets.filter(asset=>asset.kind==='image')).map(async asset=>[asset.src,await responsiveWorkImage(asset.src)] as const)));
+const responsiveImages=new Map(await Promise.all(projects.flatMap(project=>[...project.assets,...(project.galleryAssets || [])].filter(asset=>asset.kind==='image')).map(async asset=>[asset.src,await responsiveWorkImage(asset.src)] as const)));
 ---
 <section id="work" class="projects" aria-label="Projects" data-projects data-featured-handoff>
   <div class="projects-stage">
@@ -126,7 +126,7 @@ const responsiveImages=new Map(await Promise.all(projects.flatMap(project=>proje
 
           <div class:list={["gallery-masonry", {"service-gallery-list": index !== 3}]}>
           {index !== 3 && [0,1,2].map(i=><div class="service-gallery-lead-slot" data-service-lead={i} hidden></div>)}
-          {project.assets.map((asset,assetIndex)=>(
+          {(project.galleryAssets ?? project.assets).map((asset,assetIndex)=>(
             <figure class="gallery-item" data-phone-gallery-item={index !== 3 && assetIndex < 6}>
               {asset.kind==='image' ? (
                 <button type="button" data-zoom-src={asset.src} data-zoom-alt={projectAssetLabel(asset, project)} aria-label={`Ampliar / Enlarge: ${projectAssetLabel(asset, project)}`}>

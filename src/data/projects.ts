@@ -1,5 +1,5 @@
 export type ProjectAsset = { src: string; client: string; kind: 'image' | 'video'; poster?: string; width?: number; height?: number };
-export type Project = { id: string; assets: ProjectAsset[] };
+export type Project = { id: string; assets: ProjectAsset[]; galleryAssets?: ProjectAsset[] };
 
 const images = (names: string[]): ProjectAsset[] => names.map(name => ({
   src: `/img/${name}.webp`,
@@ -24,6 +24,13 @@ export const projects: Project[] = [
       'EXO1','EXO2','EXO3','EXO4',
       'GRO','GRO2','GRO3',
       'IGOR1','IGOR2','IGOR3'
+    ]),
+    // Keep preview and intro images stable; extra illustrations are View All only.
+    galleryAssets: images([
+      'EXO1','EXO2','EXO3','EXO4',
+      'GRO','GRO2','GRO3',
+      'IGOR1','IGOR2','IGOR3',
+      'EXO5','EXO6','GRO4','GRO5','GRO6','GRO7','KISTA1'
     ]),
   },
   {
