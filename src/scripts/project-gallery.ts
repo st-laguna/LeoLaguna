@@ -160,6 +160,11 @@ if(gallery&&lightbox&&section){
     disposeReturn?.();disposeReturn=undefined;
     disposeSticky?.();disposeSticky=undefined;clearInterval(clockTimer);
     owner.events.abort();activeOwner=undefined;g.close();s.removeAttribute('data-video-title-owned');g.removeAttribute('data-video-title-owner');shell.inert=false;clearItemAnimations();unlock();
+    const url=new URL(location.href);
+    if(url.searchParams.get('gallery')==='technical-visualization'){
+      url.searchParams.delete('gallery');
+      history.replaceState(history.state,'',url.pathname+url.search+url.hash);
+    }
     s.querySelectorAll('[data-open]').forEach(button=>button.setAttribute('aria-expanded','false'));
     galleryOpener?.focus({preventScroll:true});galleryOpener=null;galleryBusy=false;
     };
@@ -239,6 +244,22 @@ if(gallery&&lightbox&&section){
   reduced.addEventListener('change',()=>{if(reduced.matches)opening?.finish();configureGalleryScroll();},{signal:events.signal});
   mouseScroll.addEventListener('change',configureGalleryScroll,{signal:events.signal});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){opening?.finish();galleryScroll?.stop();}else if(!l.open&&!galleryBusy)galleryScroll?.start();},{signal:events.signal});
+  // Shared links use the existing entry readiness and gallery transition.
+  // #work positions the underlying page; the query selects its View All.
+  let sharedGalleryPending=new URL(location.href).searchParams.get('gallery')==='technical-visualization';
+  const openSharedGallery=()=>{
+    if(!sharedGalleryPending||events.signal.aborted||document.readyState!=='complete'||
+      document.documentElement.hasAttribute('data-page-transition')||
+      document.documentElement.hasAttribute('data-home-entry'))return;
+    const button=s.querySelector<HTMLElement>('[data-open="0"]');
+    if(!button)return;
+    sharedGalleryPending=false;
+    void openGallery(button);
+  };
+  window.addEventListener('leo:page-reveal',openSharedGallery,{signal:events.signal});
+  window.addEventListener('leo:hero-entry-ready',openSharedGallery,{signal:events.signal});
+  window.addEventListener('load',()=>requestAnimationFrame(openSharedGallery),{once:true,signal:events.signal});
+  if(document.readyState==='complete')requestAnimationFrame(openSharedGallery);
   if(import.meta.hot)import.meta.hot.dispose(()=>{
     destroyGalleryScroll();opening?.dispose();disposeReturn?.();
     activeOwner?.events.abort();activeOwner=undefined;events.abort();clearInterval(clockTimer);disposeSticky?.();disconnectItems();clearItemAnimations();gsap.killTweensOf([shell,figure]);pause(g);
