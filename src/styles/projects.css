@@ -114,6 +114,9 @@
 .gallery-header h2 {margin:0;font-size:clamp(24px,3vw,50px);line-height:1.1;}
 .gallery-header button {border:0;background:none;font-weight:700;white-space:nowrap;font-size:12px;}
 .gallery-scroll {overflow-y:auto;overscroll-behavior:contain;padding:clamp(24px,4vw,64px);scrollbar-gutter:stable;}
+/* Lenis uses overflow:clip when stopped. Keep this nested scroll container
+   intact behind the lightbox so its position and scroll animations stay put. */
+.gallery-dialog .gallery-scroll.lenis.lenis-stopped {overflow:hidden;}
 .gallery-masonry {columns:3;column-gap:clamp(18px,2vw,36px);}
 .gallery-item {break-inside:avoid;display:inline-block;width:100%;margin:0 0 clamp(18px,2vw,36px);vertical-align:top;}
 .gallery-item button {display:block;padding:0;width:100%;border:0;background:none;cursor:zoom-in;overflow:hidden;border-radius:0;}
