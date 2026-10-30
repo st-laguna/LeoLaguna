@@ -14,6 +14,7 @@ const section=document.querySelector<HTMLElement>('[data-projects]');
 if(gallery&&lightbox&&section){
   const g=gallery,l=lightbox,s=section;
   const events=new AbortController();
+  const sharedGalleryNames=['technical-visualization','scientific-illustration','educational-visuals','animation-and-video'];
   const reduced=matchMedia('(prefers-reduced-motion:reduce)');
   const portrait=matchMedia(phonePortraitMedia);
   const configurePhone=()=>{g.toggleAttribute('data-phone-portrait',isPhonePortrait());g.toggleAttribute('data-gallery-phone',isPhoneViewport());g.toggleAttribute('data-gallery-mobile',isMobileAbout());};
@@ -161,7 +162,7 @@ if(gallery&&lightbox&&section){
     disposeSticky?.();disposeSticky=undefined;clearInterval(clockTimer);
     owner.events.abort();activeOwner=undefined;g.close();s.removeAttribute('data-video-title-owned');g.removeAttribute('data-video-title-owner');shell.inert=false;clearItemAnimations();unlock();
     const url=new URL(location.href);
-    if(url.searchParams.get('gallery')==='technical-visualization'){
+    if(sharedGalleryNames.includes(url.searchParams.get('gallery') || '')){
       url.searchParams.delete('gallery');
       history.replaceState(history.state,'',url.pathname+url.search+url.hash);
     }
@@ -246,12 +247,13 @@ if(gallery&&lightbox&&section){
   document.addEventListener('visibilitychange',()=>{if(document.hidden){opening?.finish();galleryScroll?.stop();}else if(!l.open&&!galleryBusy)galleryScroll?.start();},{signal:events.signal});
   // Shared links use the existing entry readiness and gallery transition.
   // #work positions the underlying page; the query selects its View All.
-  let sharedGalleryPending=new URL(location.href).searchParams.get('gallery')==='technical-visualization';
+  const sharedGalleryIndex=sharedGalleryNames.indexOf(new URL(location.href).searchParams.get('gallery') || '');
+  let sharedGalleryPending=sharedGalleryIndex!==-1;
   const openSharedGallery=()=>{
     if(!sharedGalleryPending||events.signal.aborted||document.readyState!=='complete'||
       document.documentElement.hasAttribute('data-page-transition')||
       document.documentElement.hasAttribute('data-home-entry'))return;
-    const button=s.querySelector<HTMLElement>('[data-open="0"]');
+    const button=s.querySelector<HTMLElement>(`[data-open="${sharedGalleryIndex}"]`);
     if(!button)return;
     sharedGalleryPending=false;
     void openGallery(button);
