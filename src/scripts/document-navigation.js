@@ -161,8 +161,24 @@ function cleanNavigation(nav) {
   physicalNavigationStyle?.remove();physicalNavigationStyle=undefined;
   window.dispatchEvent(new Event('leo:page-reveal'));
 }
-function failNavigation(nav, error) {
+async function failNavigation(nav, error) {
+  const homeAnchor = sectionHistory && ['#work', '#featured-works', '#contact'].includes(location.hash);
+  // A module can report an error while the destination HTML is still parsing.
+  if (homeAnchor) await documentReady;
   if (activeNavigation !== nav || nav.failed) return;
+  // Home anchors already exist in the HTML. A failed entrance must not cover
+  // usable content or prevent a shared gallery from opening after reveal.
+  const anchor = homeAnchor
+    ? document.getElementById(location.hash.slice(1)) : null;
+  if (anchor) {
+    nav.failed = true;
+    nav.transition?.skipTransition();
+    // An interrupted destination may already have been replaced by Back/Forward.
+    if (error?.name !== 'AbortError') anchor.scrollIntoView({block:'start', behavior:'instant'});
+    cleanNavigation(nav);
+    console.warn('Section entrance fell back to the page:', error);
+    return;
+  }
   recoverNavigation(nav);
   nav.failed = true;
   nav.controller?.dispose();
